@@ -6,6 +6,8 @@ It provides scaffolder actions to:
 
 1. Create AWS resources using the AWS Cloud Control API
 2. Post an event to AWS EventBridge via the `PutEvents` API
+3. Publish files to an Amazon S3 bucket
+4. Create and publish files to a new AWS CodeCommit repository
 
 ## Installing
 
