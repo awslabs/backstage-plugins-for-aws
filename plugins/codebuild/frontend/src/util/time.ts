@@ -1,0 +1,76 @@
+/**
+ * Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License").
+ * You may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import humanizeDuration from 'humanize-duration';
+
+export function formatTime(date: Date | undefined): string {
+  if (date) {
+    const difference = new Date().getTime() - new Date(date).getTime();
+    return humanizeDuration(difference, {
+      largest: 1,
+    });
+  }
+
+  return '-';
+}
+
+/**
+ * Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License").
+ * You may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+export function getDuration(duration: number): string {
+  const durationSeconds = Math.floor(duration / 1000);
+
+  const hours = Math.floor(durationSeconds / 3600);
+  const minutes = Math.floor((durationSeconds % 3600) / 60);
+  const seconds = Math.floor((durationSeconds % 3600) % 60);
+
+  const hoursString =
+    hours > 0 ? hours + (hours === 1 ? ' hour ' : ' hours ') : '';
+  const minutesString =
+    minutes > 0 ? minutes + (minutes === 1 ? ' minute ' : ' minutes ') : '';
+  const secondsString =
+    seconds > 0 ? seconds + (seconds === 1 ? ' second' : ' seconds') : '';
+  return hoursString + minutesString + secondsString;
+}
+
+export function getDurationFromDates(
+  start: Date | undefined,
+  end: Date | undefined,
+): string {
+  if (start && end) {
+    return getDuration(end.getTime() - start.getTime());
+  }
+
+  return 'Unknown';
+}
+
+export function getDurationFromStringDates(
+  start: Date | undefined,
+  end: Date | undefined,
+): string {
+  if (start && end) {
+    return getDuration(new Date(end).getTime() - new Date(start).getTime());
+  }
+
+  return 'Unknown';
+}
