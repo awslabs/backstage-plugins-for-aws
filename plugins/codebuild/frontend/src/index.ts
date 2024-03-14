@@ -11,4 +11,8 @@
  * limitations under the License.
  */
 
-export { awsCodeBuildPlugin, isAwsCodeBuildAvailable } from './plugin';
+export {
+  awsCodeBuildPlugin,
+  isAwsCodeBuildAvailable,
+  EntityAwsCodeBuildCard,
+} from './plugin';
