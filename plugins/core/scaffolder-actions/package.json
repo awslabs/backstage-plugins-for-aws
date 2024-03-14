@@ -1,7 +1,7 @@
 {
   "name": "@aws/aws-core-plugin-for-backstage-scaffolder-actions",
   "description": "Scaffolder actions related to the AWS core plugin for Backstage",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "repository": {
     "type": "git",
     "url": "github:awslabs/backstage-plugins-for-aws",

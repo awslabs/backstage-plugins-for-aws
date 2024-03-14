@@ -1,7 +1,7 @@
 {
   "name": "@aws/aws-core-plugin-for-backstage-react",
   "description": "Web library for the aws-core-plugin-for-backstage plugin",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "repository": {
     "type": "git",
     "url": "github:awslabs/backstage-plugins-for-aws",
