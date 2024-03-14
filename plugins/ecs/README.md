@@ -114,3 +114,37 @@ const serviceEntityPage = (
   {/* ... */}
 );
 ```
+
+## Entity annotations
+
+There are two annotations that can be used to reference ECS services for an entity.
+
+The first will retrieve all ECS services with the matching tags, this is done with the `aws.amazon.com/amazon-ecs-service-tags` annotation:
+
+```yaml
+# Example
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  # ...
+  annotations:
+    aws.amazon.com/amazon-ecs-service-tags: component=myapp,environment=prod
+spec:
+  type: service
+  # ...
+```
+
+The alternative is to reference a specific ECS service by ARN, this is done with the `aws.amazon.com/amazon-ecs-service-arn` annotation:
+
+```yaml
+# Example
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  # ...
+  annotations:
+    aws.amazon.com/amazon-ecs-service-arn: arn:aws:ecs:us-west-2:1234567890:service/cluster1/myapp-service
+spec:
+  type: service
+  # ...
+```

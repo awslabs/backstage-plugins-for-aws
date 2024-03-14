@@ -114,3 +114,37 @@ const cicdContent = (
       <EntityAwsCodeBuildExecutionsContent />
     </EntitySwitch.Case>
 ```
+
+## Entity annotations
+
+There are two annotations that can be used to reference CodeBuild projects for an entity.
+
+The first will retrieve all CodeBuild projects with the matching tags, this is done with the `aws.amazon.com/aws-codebuild-project-tags` annotation:
+
+```yaml
+# Example
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  # ...
+  annotations:
+    aws.amazon.com/aws-codebuild-project-tags: component=myapp
+spec:
+  type: service
+  # ...
+```
+
+The alternative is to reference a specific ECS service by ARN, this is done with the `aws.amazon.com/aws-codebuild-project-arn` annotation:
+
+```yaml
+# Example
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  # ...
+  annotations:
+    aws.amazon.com/aws-codebuild-project-arn: arn:aws:codebuild:us-west-2:1234567890:project/myapp-build
+spec:
+  type: service
+  # ...
+```

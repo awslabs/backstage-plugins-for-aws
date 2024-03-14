@@ -115,3 +115,37 @@ const cicdContent = (
       <EntityAwsCodePipelineExecutionsContent />
     </EntitySwitch.Case>
 ```
+
+## Entity annotations
+
+There are two annotations that can be used to reference CodePipeline resources for an entity.
+
+The first will retrieve all CodePipeline resources with the matching tags, this is done with the `aws.amazon.com/aws-codepipeline-tags` annotation:
+
+```yaml
+# Example
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  # ...
+  annotations:
+    aws.amazon.com/aws-codepipeline-tags: component=myapp
+spec:
+  type: service
+  # ...
+```
+
+The alternative is to reference a specific ECS service by ARN, this is done with the `aws.amazon.com/aws-codepipeline-arn` annotation:
+
+```yaml
+# Example
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  # ...
+  annotations:
+    aws.amazon.com/aws-codepipeline-arn: arn:aws:codepipeline:us-west-2:1234567890:myapp-pipeline
+spec:
+  type: service
+  # ...
+```
