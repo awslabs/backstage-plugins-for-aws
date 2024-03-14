@@ -14,5 +14,6 @@
 export {
   awsCodePipelinePlugin,
   EntityAwsCodePipelineExecutionsContent,
+  EntityAwsCodePipelineCard,
   isAwsCodePipelineAvailable,
 } from './plugin';
