@@ -1,0 +1,47 @@
+name: '🐛 Bug Report'
+description: 'Report a bug'
+title: 'bug: <title>'
+labels: [bug]
+body:
+  - type: textarea
+    id: description
+    validations:
+      required: true
+    attributes:
+      label: '📜 Description'
+      description: 'What is the problem? A clear and concise description of the bug.'
+  - type: textarea
+    id: expected-behavior
+    validations:
+      required: true
+    attributes:
+      label: '👍 Expected behavior'
+      description: 'What did you think should happen?'
+  - type: textarea
+    id: actual-behavior
+    validations:
+      required: true
+    attributes:
+      label: '👎 Actual Behavior with Screenshots'
+      description: 'What actually happened? Add screenshots, if applicable.'
+  - type: textarea
+    id: steps-to-reproduce
+    validations:
+      required: true
+    attributes:
+      label: '👟 Reproduction steps'
+      description: 'Step-by-step instructions how to re-produce the issue'
+  - type: textarea
+    id: context
+    validations:
+      required: false
+    attributes:
+      label: '📃 Content'
+      description: 'Anything else that might be relevant for troubleshooting this bug. Providing context helps us come up with a solution that is most useful in the real world.'
+  - type: textarea
+    id: environment
+    validations:
+      required: false
+    attributes:
+      label: '🖥️ Your Environment'
+      description: 'Provide output of `yarn backstage-cli info`'

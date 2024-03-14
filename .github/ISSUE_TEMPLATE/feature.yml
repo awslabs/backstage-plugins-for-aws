@@ -1,0 +1,24 @@
+name: 🚀 Feature
+description: 'Suggest an idea for this project'
+title: 'feature: <title>'
+labels: [enhancement]
+body:
+  - type: textarea
+    id: feature-description
+    validations:
+      required: true
+    attributes:
+      label: '🔖 Feature description'
+      description: 'A clear and concise description of the feature you are proposing.'
+  - type: textarea
+    id: context
+    validations:
+      required: true
+    attributes:
+      label: '🎤 Context'
+      description: 'Any alternative solutions or features you considered, a more detailed explanation, related issues, links for context, etc.'
+  - type: textarea
+    id: implementation
+    attributes:
+      label: '✌️ Possible Implementation'
+      description: 'Suggest how to implement the addition or change. Please include prototype/workaround/sketch/reference implementation.'
