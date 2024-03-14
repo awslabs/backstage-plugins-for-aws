@@ -1,4 +1,4 @@
-# AWS plugins for Backstage
+# Backstage plugins for AWS
 
 Welcome to the AWS plugins for Backstage project! The goal of this project is to provide granular, composable plugins for [backstage.io](https://backstage.io) that integrate to various AWS services, as well as providing utility functions to make it easier to create custom plugins.
 
