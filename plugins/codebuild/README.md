@@ -111,7 +111,7 @@ import {
 const cicdContent = (
   <EntitySwitch>
     <EntitySwitch.Case if={isAwsCodeBuildAvailable}>
-      <EntityAwsCodeBuildExecutionsContent />
+      <EntityAwsCodeBuildCard />
     </EntitySwitch.Case>
 ```
 
