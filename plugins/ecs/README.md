@@ -2,11 +2,11 @@
 
 This is the Amazon Elastic Container Service plugin for backstage.io.
 
+![Amazon ECS plugin tab](../../docs/images/ecs-tab.png)
+
 It provides:
 
 1. Entity content that displays the status of Amazon ECS services related to that specific entity
-
-(IMAGE)
 
 The plugin consists of the following packages:
 

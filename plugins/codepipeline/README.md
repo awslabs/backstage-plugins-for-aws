@@ -2,11 +2,12 @@
 
 This is the AWS CodePipeline plugin for backstage.io.
 
+![AWS CodePipeline plugin tab](../../docs/images/codepipeline-tab.png)
+
 It provides:
 
-1. Entity content that displays the status of AWS CodePipeline executions related to that specific entity
-
-(IMAGE)
+1. Entity content that displays the AWS CodePipeline executions related to that specific entity
+1. Entity card that displays the status of the AWS CodePipeline stages related to that specific entity
 
 The plugin consists of the following packages:
 

@@ -2,11 +2,11 @@
 
 This is the AWS CodeBuild plugin for backstage.io.
 
+![AWS CodeBuild plugin tab](../../docs/images/codebuild-card.png)
+
 It provides:
 
-1. Entity content that displays the status of AWS CodeBuild executions related to that specific entity
-
-(IMAGE)
+1. Entity card that displays the build history of AWS CodeBuild projects related to that specific entity
 
 The plugin consists of the following packages:
 
