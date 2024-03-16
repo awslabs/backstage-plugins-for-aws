@@ -6,6 +6,8 @@ name: Pull request
 
 jobs:
   test:
+    name: 'Test'
+
     env:
       NODE_OPTIONS: --max-old-space-size=4096
 
@@ -49,6 +51,58 @@ jobs:
       - name: Run test
         run: yarn test
 
+  e2e-test:
+    name: 'E2E Test'
+
+    env:
+      NODE_OPTIONS: --max-old-space-size=4096
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18]
+
+    steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version}}
+
+      - name: Log node version
+        run: node --version
+
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: '0'
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Lint
+        run: yarn lint
+
+      - name: Run prettier
+        run: yarn prettier:check
+
+      - name: Run tsc
+        run: yarn tsc
+
+      - name: Run build
+        run: yarn build:all
+
+      - uses: JarvusInnovations/background-action@v1
+        name: Start application
+        with:
+          run: yarn dev
+          wait-on: http://localhost:7007/settings
+
+      - name: Run e2e tests
+        run: yarn test:e2e
+
   semanticpr:
     name: Semantic Pull Request
 
@@ -60,6 +114,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   pre-commit:
+    name: 'Pre-commit hooks'
+
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
