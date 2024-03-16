@@ -1,6 +1,6 @@
-name: "📕 Documentation Issue"
+name: '📕 Documentation Issue'
 description: Report an issue in the documentation
-title: "docs: title"
+title: 'docs: title'
 labels: [documentation]
 body:
   - type: textarea
