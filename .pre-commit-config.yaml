@@ -1,4 +1,5 @@
 default_stages: [pre-commit, manual]
+exclude: '.yarn'
 repos:
   - repo: https://github.com/compilerla/conventional-pre-commit
     rev: v3.1.0
