@@ -52,7 +52,7 @@ jobs:
         run: yarn test
 
   e2e-test:
-    name: 'e2e Test'
+    name: 'E2E Test'
 
     env:
       NODE_OPTIONS: --max-old-space-size=4096
