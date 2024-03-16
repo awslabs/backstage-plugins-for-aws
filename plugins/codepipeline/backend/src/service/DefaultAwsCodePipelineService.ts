@@ -95,26 +95,26 @@ export class DefaultAwsCodePipelineService implements AwsCodePipelineService {
           commandParams,
         );
 
-        const pipelineExecutions: PipelineExecutionSummary[] = [];
+        const pipelineExecutionSummaries: PipelineExecutionSummary[] = [];
 
         for await (const page of paginator) {
           const executions = page.pipelineExecutionSummaries || [];
 
           if (
-            pipelineExecutions.length + executions.length >
+            pipelineExecutionSummaries.length + executions.length >
             DEFAULT_EXECUTIONS_LIMIT
           ) {
-            pipelineExecutions.push(
+            pipelineExecutionSummaries.push(
               ...executions.slice(
                 0,
-                DEFAULT_EXECUTIONS_LIMIT - pipelineExecutions.length,
+                DEFAULT_EXECUTIONS_LIMIT - pipelineExecutionSummaries.length,
               ),
             );
           } else {
-            pipelineExecutions.push(...executions);
+            pipelineExecutionSummaries.push(...executions);
           }
 
-          if (pipelineExecutions.length === DEFAULT_EXECUTIONS_LIMIT) {
+          if (pipelineExecutionSummaries.length === DEFAULT_EXECUTIONS_LIMIT) {
             break;
           }
         }
@@ -123,7 +123,7 @@ export class DefaultAwsCodePipelineService implements AwsCodePipelineService {
           pipelineName,
           pipelineRegion: region,
           pipelineArn: arn,
-          pipelineExecutions,
+          pipelineExecutions: pipelineExecutionSummaries,
         };
       }),
     );
