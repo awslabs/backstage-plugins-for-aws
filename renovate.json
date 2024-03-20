@@ -1,6 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:recommended"],
+  "extends": ["config:recommended", ":automergeStableNonMajor"],
   "packageRules": [
     {
       "matchPackagePatterns": ["^@backstage/", "^react", "@types/react"],
