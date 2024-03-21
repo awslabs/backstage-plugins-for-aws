@@ -48,21 +48,28 @@ function formatTime(date: Date | undefined): string {
       largest: 1,
     })} ago`;
   }
-
   return '-';
 }
 
 function getTaskId(taskArn: string | undefined): string {
   if (taskArn) {
     const { resource } = parse(taskArn);
-
     const parts = resource.split('/');
-
     if (parts.length === 3) {
       return parts[2];
     }
   }
+  return '-';
+}
 
+function getTaskDefinition(taskDefinitionArn: string | undefined): string {
+  if (taskDefinitionArn) {
+    const { resource } = parse(taskDefinitionArn);
+    const parts = resource.split('/');
+    if (parts.length === 2) {
+      return parts[1];
+    }
+  }
   return '-';
 }
 
@@ -164,8 +171,13 @@ const generatedColumns = () => {
   return [
     {
       title: 'ID',
-      field: 'taskArn',
+      field: 'id',
       render: (row: Partial<Task>) => getTaskId(row.taskArn),
+    },
+    {
+      title: 'Task Definition',
+      field: 'taskDefinition',
+      render: (row: Partial<Task>) => getTaskDefinition(row.taskDefinitionArn),
     },
     {
       title: 'Last Status',
@@ -186,13 +198,8 @@ const generatedColumns = () => {
 };
 
 const ClusterSummary = ({ cluster }: { cluster: ClusterResponse }) => {
-  let runningTasks = 0;
-  let pendingTasks = 0;
-
-  for (const service of cluster.services) {
-    runningTasks += service.service.runningCount!;
-    pendingTasks += service.service.pendingCount!;
-  }
+  let runningTasks = cluster.services.reduce((count, svc) => count + (svc.service.runningCount || 0), 0);
+  let pendingTasks =  cluster.services.reduce((count, svc) => count + (svc.service.pendingCount || 0), 0);
 
   return (
     <Grid
@@ -224,19 +231,17 @@ const ClusterSummary = ({ cluster }: { cluster: ClusterResponse }) => {
         xs={3}
         direction="column"
         justifyContent="flex-start"
-        alignItems="flex-end"
+        alignItems="flex-start"
         spacing={0}
       >
         <Grid item>
           <StatusOK>{runningTasks} running tasks</StatusOK>
         </Grid>
-        <Grid item>
-          {pendingTasks > 0 ? (
+        {pendingTasks > 0 ? (
+          <Grid item>
             <StatusPending>{pendingTasks} tasks pending</StatusPending>
-          ) : (
-            <StatusPending>No pending tasks</StatusPending>
-          )}
-        </Grid>
+          </Grid>
+        ) : null}
       </Grid>
     </Grid>
   );
@@ -272,20 +277,17 @@ const ServiceSummary = ({ service }: { service: Service }) => {
         container
         xs={3}
         direction="column"
-        justifyContent="flex-start"
-        alignItems="flex-end"
+        alignItems="flex-start"
         spacing={0}
       >
         <Grid item>
-          <StatusOK>{service.runningCount} running tasks</StatusOK>
+          <StatusOK>{service.runningCount}/{service.desiredCount} running tasks</StatusOK>
         </Grid>
-        <Grid item>
-          {service.pendingCount! > 0 ? (
+        {service.pendingCount! > 0 ? (
+          <Grid item>
             <StatusPending>{service.pendingCount} tasks pending</StatusPending>
-          ) : (
-            <StatusPending>No pending tasks</StatusPending>
-          )}
-        </Grid>
+          </Grid>
+        ) : null}
       </Grid>
     </Grid>
   );
