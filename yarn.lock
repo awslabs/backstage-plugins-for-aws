@@ -11513,12 +11513,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@spotify/prettier-config@npm:^12.0.0":
-  version: 12.0.0
-  resolution: "@spotify/prettier-config@npm:12.0.0"
+"@spotify/prettier-config@npm:^15.0.0":
+  version: 15.0.0
+  resolution: "@spotify/prettier-config@npm:15.0.0"
   peerDependencies:
     prettier: 2.x
-  checksum: 10c0/c19ea09a0c6937dc08917a5890a01c800450ed8f20f614ec2239e09a5897a7d40eb28e5af70ae58c7f41d56769c0fc516ab0ae672d2fd7585016cd54ad514336
+  checksum: 10c0/d7033f9f3ab255b490084f72928d4df086f6a51bb6f88b0d3678a5a63e46fc58ad025a0a709f96d8ae91b82093d991d54ea6a48b7d3f2c7f3f747c1853b76532
   languageName: node
   linkType: hard
 
@@ -30563,7 +30563,7 @@ __metadata:
     "@backstage/cli": "npm:^0.25.2"
     "@backstage/e2e-test-utils": "npm:^0.1.1"
     "@playwright/test": "npm:^1.32.3"
-    "@spotify/prettier-config": "npm:^12.0.0"
+    "@spotify/prettier-config": "npm:^15.0.0"
     "@types/license-checker": "npm:^25"
     concurrently: "npm:^8.0.0"
     lerna: "npm:^7.3.0"
