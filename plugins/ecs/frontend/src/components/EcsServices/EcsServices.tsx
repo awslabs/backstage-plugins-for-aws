@@ -11,15 +11,19 @@
  * limitations under the License.
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Drawer,
   Grid,
   LinearProgress,
   Paper,
+  Theme,
   Typography,
+  createStyles,
+  makeStyles,
 } from '@material-ui/core';
 import {
   InfoCard,
@@ -37,43 +41,12 @@ import {
   ClusterResponse,
   ServicesResponse,
 } from '@aws/amazon-ecs-plugin-for-backstage-common';
-import humanizeDuration from 'humanize-duration';
-import { parse } from '@aws-sdk/util-arn-parser';
+
 import { Entity } from '@backstage/catalog-model';
 import { useEcsServices } from '../../hooks';
 import { MissingResources } from '@aws/aws-core-plugin-for-backstage-react';
-
-function formatTime(date: Date | undefined): string {
-  if (date) {
-    const difference = new Date().getTime() - new Date(date).getTime();
-    return `${humanizeDuration(difference, {
-      largest: 1,
-    })} ago`;
-  }
-  return '-';
-}
-
-function getTaskId(taskArn: string | undefined): string {
-  if (taskArn) {
-    const { resource } = parse(taskArn);
-    const parts = resource.split('/');
-    if (parts.length === 3) {
-      return parts[2];
-    }
-  }
-  return '-';
-}
-
-function getTaskDefinition(taskDefinitionArn: string | undefined): string {
-  if (taskDefinitionArn) {
-    const { resource } = parse(taskDefinitionArn);
-    const parts = resource.split('/');
-    if (parts.length === 2) {
-      return parts[1];
-    }
-  }
-  return '-';
-}
+import { EcsTaskDetails } from './EcsTask';
+import { formatTime, getTaskDefinition, getTaskId } from '../../shared/utils';
 
 export const TaskStatus = ({ task }: { task: Task }) => {
   switch (task.lastStatus) {
@@ -169,31 +142,40 @@ export const TaskHealthStatus = ({ task }: { task: Task }) => {
   }
 };
 
-const generatedColumns = () => {
+const generatedColumns = (showTaskDetails: (task: Task) => void) => {
   return [
     {
       title: 'ID',
       field: 'id',
-      render: (row: Partial<Task>) => getTaskId(row.taskArn),
+      width: '100',
+      render: (row: Partial<Task>) => (
+        <a style={{ cursor: 'pointer' }} onClick={() => showTaskDetails(row)}>
+          {getTaskId(row.taskArn)}
+        </a>
+      ),
     },
     {
       title: 'Task Definition',
       field: 'taskDefinition',
+      width: '100',
       render: (row: Partial<Task>) => getTaskDefinition(row.taskDefinitionArn),
     },
     {
       title: 'Last Status',
       field: 'lastStatus',
+      width: '100',
       render: (row: Partial<Task>) => <TaskStatus task={row} />,
     },
     {
       title: 'Health Status',
       field: 'healthStatus',
+      width: '100',
       render: (row: Partial<Task>) => <TaskHealthStatus task={row} />,
     },
     {
       title: 'Started At',
       field: 'startedAt',
+      width: '100',
       render: (row: Partial<Task>) => formatTime(row.startedAt),
     },
   ];
@@ -309,12 +291,34 @@ const ServiceSummary = ({ service }: { service: Service }) => {
   );
 };
 
+const useDrawerStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    container: {
+      width: '100%',
+      justifyContent: 'space-between',
+      padding: theme.spacing(2.5),
+    },
+  }),
+);
+
 type EcsServicesContentProps = {
   response: ServicesResponse;
 };
 
 const EcsServicesContent = ({ response }: EcsServicesContentProps) => {
-  const columns = generatedColumns();
+  const drawerClasses = useDrawerStyles();
+
+  const [drawerOpen, toggleDrawer] = useState(false);
+  const [drawerContent, setDrawerContent] = useState(<></>);
+
+  const showTaskDetails = (task: Task) => {
+    setDrawerContent(
+      <EcsTaskDetails task={task} toggleDrawer={toggleDrawer} />,
+    );
+    toggleDrawer(true);
+  };
+
+  const columns = generatedColumns(showTaskDetails);
 
   return (
     <>
@@ -362,6 +366,13 @@ const EcsServicesContent = ({ response }: EcsServicesContentProps) => {
           </Accordion>
         );
       })}
+      <Drawer
+        anchor="right"
+        onClose={() => toggleDrawer(false)}
+        open={drawerOpen}
+      >
+        <div className={drawerClasses.container}>{drawerContent}</div>
+      </Drawer>
     </>
   );
 };
