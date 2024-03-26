@@ -12,3 +12,4 @@
  */
 
 export * from './service/router';
+export { awsCodePiplinePlugin as default } from './plugin';

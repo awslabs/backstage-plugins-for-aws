@@ -20,7 +20,7 @@ import { createRouter } from './service/router';
 import { catalogServiceRef } from '@backstage/plugin-catalog-node/alpha';
 import { DefaultAwsCodeBuildService } from './service/DefaultAwsCodeBuildService';
 
-export const awsCodePiplinePlugin = createBackendPlugin({
+export const awsCodebuildPlugin = createBackendPlugin({
   pluginId: 'aws-codebuild',
   register(env) {
     env.registerInit({
