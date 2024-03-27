@@ -19,3 +19,4 @@
  */
 
 export * from './actions';
+export { awsCoreScaffolderModule as default } from './module';
