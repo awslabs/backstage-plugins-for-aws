@@ -1,0 +1,41 @@
+name: Release
+
+'on':
+  workflow_dispatch:
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Build
+        run: |
+          yarn install
+          yarn tsc
+          yarn build:all
+        env:
+          CI: true
+
+      - name: 'Login to NPM registry'
+        shell: bash
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${{secrets.NPM_AUTH_TOKEN}}" >> .npmrc
+          echo "always-auth = true" >> .npmrc
+
+      - name: Publish
+        run: |
+          yarn lerna publish --no-private
+        env:
+          GH_TOKEN: ${{ github.token }}
