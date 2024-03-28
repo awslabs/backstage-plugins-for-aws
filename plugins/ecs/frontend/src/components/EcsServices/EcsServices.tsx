@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Accordion,
   AccordionDetails,
@@ -45,9 +45,10 @@ import { Entity } from '@backstage/catalog-model';
 import { useEcsServices } from '../../hooks';
 import { EcsTaskDetails } from './EcsTask';
 import { formatTime, getTaskDefinition, getTaskId } from '../../shared/utils';
+import { EcsTaskProvider, TaskContext } from '../EcsTaskProvider/ecsTaskProvider';
 
-export const TaskStatus = ({ task }: { task: Task }) => {
-  switch (task.lastStatus) {
+export const TaskStatus = ({ status }: { status?: string }) => {
+  switch (status) {
     case 'PROVISIONING':
       return (
         <>
@@ -111,8 +112,8 @@ export const TaskStatus = ({ task }: { task: Task }) => {
   }
 };
 
-export const TaskHealthStatus = ({ task }: { task: Task }) => {
-  switch (task.healthStatus) {
+export const TaskHealthStatus = ({ status }: { status?: string }) => {
+  switch (status) {
     case 'HEALTHY':
       return (
         <>
@@ -158,13 +159,13 @@ const generatedColumns = (showTaskDetails: (task: Task) => void) => {
       title: 'Last Status',
       field: 'lastStatus',
       width: '100',
-      render: (row: Partial<Task>) => <TaskStatus task={row} />,
+      render: (row: Partial<Task>) => <TaskStatus status={row.lastStatus} />,
     },
     {
       title: 'Health Status',
       field: 'healthStatus',
       width: '100',
-      render: (row: Partial<Task>) => <TaskHealthStatus task={row} />,
+      render: (row: Partial<Task>) => <TaskHealthStatus status={row.healthStatus} />,
     },
     {
       title: 'Started At',
@@ -288,12 +289,11 @@ const useDrawerStyles = makeStyles((theme: Theme) =>
 
 const EcsServicesWrapper = ({ response }: EcsServicesWrapperProps) => {
   const drawerClasses = useDrawerStyles();
-
+  const { setTask } = useContext(TaskContext);
   const [drawerOpen, toggleDrawer] = useState(false);
-  const [drawerContent, setDrawerContent] = useState(<></>);
 
   const showTaskDetails = (task: Task) => {
-    setDrawerContent(<EcsTaskDetails task={task} toggleDrawer={toggleDrawer} />);
+    setTask(task);
     toggleDrawer(true);
   }
 
@@ -343,7 +343,7 @@ const EcsServicesWrapper = ({ response }: EcsServicesWrapperProps) => {
       })}
       <Drawer anchor="right" onClose={() => toggleDrawer(false)} open={drawerOpen}>
         <div className={drawerClasses.container} >
-          {drawerContent}
+          <EcsTaskDetails toggleDrawer={toggleDrawer} />
         </div>
       </Drawer>
     </>
@@ -365,5 +365,9 @@ export const EcsServices = ({ entity }: EcsServicesProps) => {
     return <LinearProgress />;
   }
 
-  return <EcsServicesWrapper response={response!} />;
+  return (
+    <EcsTaskProvider>
+      <EcsServicesWrapper response={response!} />
+    </EcsTaskProvider>
+  );
 };

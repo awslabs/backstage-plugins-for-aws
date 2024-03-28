@@ -1,9 +1,7 @@
 import { Container } from "@aws-sdk/client-ecs";
 import { Table, TableBody, TableCell, TableRow, Typography } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
-import { MetadataRows } from "./MetadataRows";
-import { getTaskId } from "../../shared/utils";
-
+import React from "react";
+import { TaskHealthStatus, TaskStatus } from "../EcsServices";
 
 type EcsContainerProps = {
     container: Container,
@@ -19,13 +17,13 @@ export const EcsContainer = ({ container }: EcsContainerProps) => {
                         <Typography variant="subtitle2">Status</Typography>
                     </TableCell>
                     <TableCell>
-                        {container.lastStatus}
+                        <TaskStatus status={container.lastStatus} />
                     </TableCell>
                     <TableCell>
                         <Typography variant="subtitle2">Health Status</Typography>
                     </TableCell>
                     <TableCell>
-                        {container.healthStatus}
+                        <TaskHealthStatus status={container.healthStatus} />
                     </TableCell>
                 </TableRow>
                 <TableRow>

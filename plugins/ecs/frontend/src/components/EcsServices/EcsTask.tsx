@@ -1,7 +1,7 @@
 import { Task } from "@aws-sdk/client-ecs";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import React from "react";
+import React, { useContext } from "react";
 import { getTaskDefinition, getTaskId } from "../../shared/utils";
 import IconButton from "@material-ui/core/IconButton";
 import Close from '@material-ui/icons/Close';
@@ -10,11 +10,15 @@ import Card from "@material-ui/core/Card";
 import { EcsAttachment } from "../EcsMetadata/EcsAttachment";
 import { EcsAttributes } from "../EcsMetadata/EcsAttributes";
 import { EcsContainer } from "../EcsMetadata/EcsContainer";
+import { TaskContext } from "../EcsTaskProvider/ecsTaskProvider";
+import { TaskHealthStatus, TaskStatus } from "./EcsServices";
 
 const taskFormatDetails: { [key: string]: (task: Task) => any } = {
     'attachments': (task: Task) => (<Card>{task.attachments?.map((attachment) => <EcsAttachment attachment={attachment} />)}</Card>),
     'attributes': (task: Task) => (<Card><EcsAttributes attributes={task.attributes} /></Card>),
     'containers': (task: Task) => (<>{task.containers?.map((container) => <InfoCard variant="gridItem" title={container.name} subheader={container.image}><EcsContainer container={container} /></InfoCard>)}</>),
+    'lastStatus': (task: Task) => <TaskStatus status={task.lastStatus} />,
+    'healthStatus': (task: Task) => <TaskHealthStatus status={task.healthStatus} />,
 };
 
 const formatTask = (task: Task) => Object.keys(task).reduce((task, property) => ({
@@ -22,7 +26,13 @@ const formatTask = (task: Task) => Object.keys(task).reduce((task, property) => 
     [property as keyof typeof taskFormatDetails]: taskFormatDetails[property] ? taskFormatDetails[property](task) : task[property as keyof Task]
 }), task);
 
-export const EcsTaskDetails = ({ task, toggleDrawer }: { task: Task, toggleDrawer: (open: boolean) => void }) => {
+export const EcsTaskDetails = ({ toggleDrawer }: { toggleDrawer: (open: boolean) => void }) => {
+
+    const { task } = useContext(TaskContext);
+
+    if (!task) {
+        return null;
+    }
 
     return (
         <Grid
