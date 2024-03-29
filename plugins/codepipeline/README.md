@@ -17,8 +17,7 @@ The plugin consists of the following packages:
 
 ## Installing
 
-This guide assumes that you are familiar with the general [Getting Started](../../docs/getting-started.md) documentation
-and have assumes you have an existing Backstage application.
+This guide assumes that you are familiar with the general [Getting Started](../../docs/getting-started.md) documentation and have assumes you have an existing Backstage application.
 
 ### Permissions
 
@@ -40,8 +39,7 @@ The IAM role(s) used by Backstage will require the following permissions:
 }
 ```
 
-Note: This policy does not reflect least privilege and you should further limit the policy to the appropriate AWS
-resources.
+Note: This policy does not reflect least privilege and you should further limit the policy to the appropriate AWS resources.
 
 ### Backend package
 
@@ -106,8 +104,8 @@ async function main() {
 }
 ```
 
-Verify that the backend plugin is running in your Backstage app. You should receive `{"status":"ok"}` when accessing
-this URL:
+Verify that the backend plugin is running in your Backstage app. You should receive `{"status":"ok"}` when accessing this URL:
+
 `https://<your backstage app>/api/aws/codepipeline/health`.
 
 ### Frontend package
@@ -118,8 +116,7 @@ Install the frontend package in your Backstage app:
 yarn workspace app add @aws/aws-codepipeline-plugin-for-backstage
 ```
 
-Edit `packages/app/src/components/catalog/EntityPage.tsx` to add AWS CodePipeline content to the CI/CD tab of the entity
-page:
+Edit `packages/app/src/components/catalog/EntityPage.tsx` to add AWS CodePipeline content to the CI/CD tab of the entity page:
 
 ```typescript
 import {
@@ -130,18 +127,16 @@ import {
 // For example in the CI/CD section
 const cicdContent = (
   <EntitySwitch>
-    <EntitySwitch.Case
-if= {isAwsCodePipelineAvailable} >
-  <EntityAwsCodePipelineExecutionsContent / >
-  </EntitySwitch.Case>
+    <EntitySwitch.Case if= {isAwsCodePipelineAvailable} >
+      <EntityAwsCodePipelineExecutionsContent / >
+    </EntitySwitch.Case>
 ```
 
 ## Entity annotations
 
 There are two annotations that can be used to reference CodePipeline resources for an entity.
 
-The first will retrieve all CodePipeline resources with the matching tags, this is done with
-the `aws.amazon.com/aws-codepipeline-tags` annotation:
+The first will retrieve all CodePipeline resources with the matching tags, this is done with the `aws.amazon.com/aws-codepipeline-tags` annotation:
 
 ```yaml
 # Example
@@ -156,8 +151,7 @@ spec:
   # ...
 ```
 
-The alternative is to reference a specific ECS service by ARN, this is done with
-the `aws.amazon.com/aws-codepipeline-arn` annotation:
+The alternative is to reference a specific ECS service by ARN, this is done with the `aws.amazon.com/aws-codepipeline-arn` annotation:
 
 ```yaml
 # Example

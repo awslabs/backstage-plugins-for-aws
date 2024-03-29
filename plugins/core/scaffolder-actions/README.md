@@ -11,8 +11,7 @@ It provides scaffolder actions to:
 
 ## Installing
 
-This guide assumes that you are familiar with the general [Getting Started](../../docs/getting-started.md) documentation
-and have assumes you have an existing Backstage application.
+This guide assumes that you are familiar with the general [Getting Started](../../docs/getting-started.md) documentation and have assumes you have an existing Backstage application.
 
 Install the backend package in your Backstage app:
 
@@ -88,9 +87,7 @@ Each action is documented below.
 
 This scaffolder action creates AWS resources using the AWS Cloud Control API.
 
-Note: Creating AWS resources using this mechanism is generally discouraged unless for exceptional use-cases. We strongly
-recommend relying on infrastructure-as-code to create AWS resources, and using this action for anything that is strictly
-related to bootstrapping a project.
+Note: Creating AWS resources using this mechanism is generally discouraged unless for exceptional use-cases. We strongly recommend relying on infrastructure-as-code to create AWS resources, and using this action for anything that is strictly related to bootstrapping a project.
 
 #### Permissions
 
@@ -109,8 +106,7 @@ The IAM role(s) used by Backstage will require the following permissions:
 }
 ```
 
-Note: This policy does not reflect least privilege and you should further limit the policy to the appropriate AWS
-resources.
+Note: This policy does not reflect least privilege and you should further limit the policy to the appropriate AWS resources.
 
 #### Usage
 

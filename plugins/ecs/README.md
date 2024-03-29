@@ -16,8 +16,7 @@ The plugin consists of the following packages:
 
 ## Installing
 
-This guide assumes that you are familiar with the general [Getting Started](../../docs/getting-started.md) documentation
-and have assumes you have an existing Backstage application.
+This guide assumes that you are familiar with the general [Getting Started](../../docs/getting-started.md) documentation and have assumes you have an existing Backstage application.
 
 ### Permissions
 
@@ -41,8 +40,7 @@ The IAM role(s) used by Backstage will require the following permissions:
 }
 ```
 
-Note: This policy does not reflect least privilege and you should further limit the policy to the appropriate AWS
-resources.
+Note: This policy does not reflect least privilege and you should further limit the policy to the appropriate AWS resources.
 
 ### Backend package
 
@@ -102,8 +100,8 @@ async function main() {
 }
 ```
 
-Verify that the backend plugin is running in your Backstage app. You should receive `{"status":"ok"}` when accessing
-this URL:
+Verify that the backend plugin is running in your Backstage app. You should receive `{"status":"ok"}` when accessing this URL:
+
 `https://<your backstage app>/api/aws/ecs/health`.
 
 ### Frontend package
@@ -119,20 +117,22 @@ Edit `packages/app/src/components/catalog/EntityPage.tsx` to add an Amazon ECS s
 ```typescript
 import {EntityAmazonEcsServicesContent} from '@aws/amazon-ecs-plugin-for-backstage';
 
-{/* ... */
+{
+  /* ... */
 }
 
 const serviceEntityPage = (
   <EntityLayout>
-    {/* ... */}
-  < EntityLayout.Route
-path = "/ecs"
-title = "Amazon ECS" >
-  <EntityAmazonEcsServicesContent / >
-  </EntityLayout.Route>
+    {
+      /* ... */
+    }
+    < EntityLayout.Route path = "/ecs" title = "Amazon ECS" >
+      <EntityAmazonEcsServicesContent / >
+    </EntityLayout.Route>
   < /EntityLayout>
-{/* ... */
-}
+  {
+    /* ... */
+  }
 )
 ;
 ```
@@ -141,8 +141,7 @@ title = "Amazon ECS" >
 
 There are two annotations that can be used to reference ECS services for an entity.
 
-The first will retrieve all ECS services with the matching tags, this is done with
-the `aws.amazon.com/amazon-ecs-service-tags` annotation:
+The first will retrieve all ECS services with the matching tags, this is done with the `aws.amazon.com/amazon-ecs-service-tags` annotation:
 
 ```yaml
 # Example
@@ -157,8 +156,7 @@ spec:
   # ...
 ```
 
-The alternative is to reference a specific ECS service by ARN, this is done with
-the `aws.amazon.com/amazon-ecs-service-arn` annotation:
+The alternative is to reference a specific ECS service by ARN, this is done with the `aws.amazon.com/amazon-ecs-service-arn` annotation:
 
 ```yaml
 # Example
