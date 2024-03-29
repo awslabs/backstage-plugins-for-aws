@@ -17,8 +17,7 @@ import {
   GetResourceRequestStatusCommand,
 } from '@aws-sdk/client-cloudcontrol';
 import { createAwsCloudControlCreateAction } from './create';
-import { getVoidLogger } from '@backstage/backend-common';
-import { PassThrough } from 'stream';
+import { createMockActionContext } from '@backstage/plugin-scaffolder-node-test-utils';
 import { mockClient } from 'aws-sdk-client-mock';
 import {
   DefaultAwsCredentialsManager,
@@ -58,13 +57,13 @@ describe('testing', () => {
   const action = createAwsCloudControlCreateAction({
     credsManager: DefaultAwsCredentialsManager.fromConfig(config),
   });
-  const mockContext = {
-    workspacePath: '/fake-tmp-dir',
-    logger: getVoidLogger(),
-    logStream: new PassThrough(),
-    output: jest.fn(),
-    createTemporaryDirectory: jest.fn(),
-  };
+
+  const mockContext = createMockActionContext({
+    input: {
+      typeName: 'AWS::ECR::Repository',
+      desiredState: '{"RepositoryName": "testing-thing"}',
+    },
+  });
 
   it('creates a resource', async () => {
     cloudControlMock
@@ -113,8 +112,7 @@ describe('testing', () => {
     await action.handler({
       ...mockContext,
       input: {
-        typeName: 'AWS::ECR::Repository',
-        desiredState: '{"RepositoryName": "testing-thing"}',
+        ...mockContext.input,
         wait: true,
       },
     });

@@ -49,6 +49,20 @@ Install the backend package in your Backstage app:
 yarn workspace backend add @aws/aws-codebuild-plugin-for-backstage-backend
 ```
 
+#### New backend
+
+Add the plugin to the `packages/backend/src/index.ts`:
+
+```typescript
+const backend = createBackend();
+// ...
+backend.add(import('@aws/aws-codebuild-plugin-for-backstage-backend'));
+// ...
+backend.start();
+```
+
+#### Old backend
+
 Create a file `packages/backend/src/plugins/codebuild.ts` with the following content:
 
 ```typescript
@@ -89,6 +103,7 @@ async function main() {
 ```
 
 Verify that the backend plugin is running in your Backstage app. You should receive `{"status":"ok"}` when accessing this URL:
+
 `https://<your backstage app>/api/aws/codebuild/health`.
 
 ### Frontend package
@@ -110,8 +125,8 @@ import {
 // For example in the CI/CD section
 const cicdContent = (
   <EntitySwitch>
-    <EntitySwitch.Case if={isAwsCodeBuildAvailable}>
-      <EntityAwsCodeBuildCard />
+    <EntitySwitch.Case if= {isAwsCodeBuildAvailable} >
+      <EntityAwsCodeBuildCard / >
     </EntitySwitch.Case>
 ```
 

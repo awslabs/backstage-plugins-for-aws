@@ -50,6 +50,20 @@ Install the backend package in your Backstage app:
 yarn workspace backend add @aws/amazon-ecs-plugin-for-backstage-backend
 ```
 
+#### New backend
+
+Add the plugin to the `packages/backend/src/index.ts`:
+
+```typescript
+const backend = createBackend();
+// ...
+backend.add(import('@aws/amazon-ecs-plugin-for-backstage-backend'));
+// ...
+backend.start();
+```
+
+#### Old backend
+
 Create a file `packages/backend/src/plugins/ecs.ts` with the following content:
 
 ```typescript
@@ -87,6 +101,7 @@ async function main() {
 ```
 
 Verify that the backend plugin is running in your Backstage app. You should receive `{"status":"ok"}` when accessing this URL:
+
 `https://<your backstage app>/api/aws/ecs/health`.
 
 ### Frontend package
@@ -100,19 +115,26 @@ yarn workspace app add @aws/amazon-ecs-plugin-for-backstage
 Edit `packages/app/src/components/catalog/EntityPage.tsx` to add an Amazon ECS service tab to the entity page:
 
 ```typescript
-import { EntityAmazonEcsServicesContent } from '@aws/amazon-ecs-plugin-for-backstage';
+import {EntityAmazonEcsServicesContent} from '@aws/amazon-ecs-plugin-for-backstage';
 
-{/* ... */}
+{
+  /* ... */
+}
 
 const serviceEntityPage = (
   <EntityLayout>
-    {/* ... */}
-    <EntityLayout.Route path="/ecs" title="Amazon ECS">
-      <EntityAmazonEcsServicesContent />
+    {
+      /* ... */
+    }
+    < EntityLayout.Route path = "/ecs" title = "Amazon ECS" >
+      <EntityAmazonEcsServicesContent / >
     </EntityLayout.Route>
-  </EntityLayout>
-  {/* ... */}
-);
+  < /EntityLayout>
+  {
+    /* ... */
+  }
+)
+;
 ```
 
 ## Entity annotations

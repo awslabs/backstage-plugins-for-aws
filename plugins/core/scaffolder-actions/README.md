@@ -19,6 +19,20 @@ Install the backend package in your Backstage app:
 yarn workspace backend add @aws/aws-core-plugin-for-backstage-scaffolder-actions
 ```
 
+### New backend
+
+Add the scaffolder module to the `packages/backend/src/index.ts`:
+
+```typescript
+const backend = createBackend();
+// ...
+backend.add(import('@aws/aws-core-plugin-for-backstage-scaffolder-actions'));
+// ...
+backend.start();
+```
+
+### Old backend
+
 Update the file `packages/backend/src/plugins/scaffolder.ts` to add the scaffolder actions needed, for example:
 
 ```typescript
