@@ -38,6 +38,7 @@
     "@backstage/errors": "^1.2.4",
     "@backstage/integration-aws-node": "^0.1.12",
     "@backstage/plugin-scaffolder-node": "^0.4.2",
+    "@backstage/plugin-scaffolder-node-test-utils": "^0.1.2",
     "fs-extra": "^11.2.0",
     "glob": "^10.3.10",
     "zod": "^3.22.4"
