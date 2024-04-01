@@ -1855,7 +1855,7 @@ __metadata:
     "@backstage/plugin-auth-backend-module-guest-provider": "npm:^0.1.2"
     "@backstage/plugin-catalog-node": "npm:^1.11.0"
     "@types/express": "npm:*"
-    "@types/supertest": "npm:^2.0.12"
+    "@types/supertest": "npm:^6.0.0"
     aws-sdk-client-mock: "npm:^4.0.0"
     express: "npm:^4.17.1"
     express-promise-router: "npm:^4.1.0"
@@ -1934,7 +1934,7 @@ __metadata:
     "@backstage/plugin-auth-backend-module-guest-provider": "npm:^0.1.2"
     "@backstage/plugin-catalog-node": "npm:^1.11.0"
     "@types/express": "npm:*"
-    "@types/supertest": "npm:^2.0.12"
+    "@types/supertest": "npm:^6.0.0"
     aws-sdk-client-mock: "npm:^4.0.0"
     express: "npm:^4.17.1"
     express-promise-router: "npm:^4.1.0"
@@ -2012,7 +2012,7 @@ __metadata:
     "@backstage/plugin-auth-backend-module-guest-provider": "npm:^0.1.2"
     "@backstage/plugin-catalog-node": "npm:^1.11.0"
     "@types/express": "npm:*"
-    "@types/supertest": "npm:^2.0.12"
+    "@types/supertest": "npm:^6.0.0"
     aws-sdk-client-mock: "npm:^4.0.0"
     express: "npm:^4.17.1"
     express-promise-router: "npm:^4.1.0"
@@ -13351,23 +13351,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/superagent@npm:*":
-  version: 8.1.4
-  resolution: "@types/superagent@npm:8.1.4"
+"@types/superagent@npm:^8.1.0":
+  version: 8.1.6
+  resolution: "@types/superagent@npm:8.1.6"
   dependencies:
     "@types/cookiejar": "npm:^2.1.5"
     "@types/methods": "npm:^1.1.4"
     "@types/node": "npm:*"
-  checksum: 10c0/8fc9a1846862710dfe5140f58102b6c46923d2dd19b70f405fef7eab142fd5088568f13c389fdc99bc86798ec6225e74f2df85e7d485052b87d5331f0e210da8
+  checksum: 10c0/c954caea1e94636f502af4a4c693be99a92453519bb8f76a61e8798deaca06cd320097d594d983c419f51c279e36a10ae898f67ea544431011a863fa06df5818
   languageName: node
   linkType: hard
 
-"@types/supertest@npm:^2.0.12":
-  version: 2.0.16
-  resolution: "@types/supertest@npm:2.0.16"
+"@types/supertest@npm:^6.0.0":
+  version: 6.0.2
+  resolution: "@types/supertest@npm:6.0.2"
   dependencies:
-    "@types/superagent": "npm:*"
-  checksum: 10c0/e1b4a4d788c19cd92a3f2e6d0979fb0f679c49aefae2011895a4d9c35aa960d43463aca8783a0b3382bbf0b4eb7ceaf8752d7dc80b8f5a9644fa14e1b1bdbc90
+    "@types/methods": "npm:^1.1.4"
+    "@types/superagent": "npm:^8.1.0"
+  checksum: 10c0/44a28f9b35b65800f4c7bcc23748e71c925098aa74ea504d14c98385c36d00de2a4f5aca15d7dc4514bc80533e0af21f985a4ab9f5f317c7266e9e75836aef39
   languageName: node
   linkType: hard
 
