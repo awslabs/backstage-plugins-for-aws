@@ -47,7 +47,7 @@
     "@backstage/cli": "^0.26.2",
     "@backstage/config": "^1.2.0",
     "@types/fs-extra": "^11",
-    "@types/glob": "^7.2.0",
+    "@types/glob": "^8.0.0",
     "aws-sdk-client-mock": "^4.0.0",
     "mock-fs": "^5.2.0"
   },
