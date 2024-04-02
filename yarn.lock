@@ -15148,7 +15148,7 @@ __metadata:
     "@types/luxon": "npm:^2.0.4"
     app: "link:../app"
     better-sqlite3: "npm:^9.0.0"
-    dockerode: "npm:^3.3.1"
+    dockerode: "npm:^4.0.0"
     express: "npm:^4.17.1"
     express-promise-router: "npm:^4.1.0"
     node-gyp: "npm:^9.0.0"
@@ -17969,7 +17969,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dockerode@npm:^3.3.1, dockerode@npm:^3.3.5":
+"dockerode@npm:^3.3.5":
   version: 3.3.5
   resolution: "dockerode@npm:3.3.5"
   dependencies:
