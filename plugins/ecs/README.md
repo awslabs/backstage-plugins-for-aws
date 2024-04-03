@@ -95,14 +95,14 @@ async function main() {
   // ...
   const ecsEnv = useHotMemoize(module, () => createEnv('amazon-ecs'));
   // ...
-  apiRouter.use('/aws-ecs', await ecs(ecsEnv));
+  apiRouter.use('/amazon-ecs', await ecs(ecsEnv));
   // ...
 }
 ```
 
 Verify that the backend plugin is running in your Backstage app. You should receive `{"status":"ok"}` when accessing this URL:
 
-`https://<your backstage app>/api/aws-ecs/health`.
+`https://<your backstage app>/api/amazon-ecs/health`.
 
 ### Frontend package
 
