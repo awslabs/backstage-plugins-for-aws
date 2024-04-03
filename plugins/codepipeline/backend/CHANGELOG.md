@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-codepipeline-plugin-for-backstage-backend@0.2.0...@aws/aws-codepipeline-plugin-for-backstage-backend@0.3.0) (2024-04-03)
+
+
+### Features
+
+* Added auth policy for health check endpoints ([#60](https://github.com/awslabs/backstage-plugins-for-aws/issues/60)) ([b872734](https://github.com/awslabs/backstage-plugins-for-aws/commit/b87273481edbc0e2a300cf24318a1e814dad3216))
+* Use new Backstage auth services for backend plugins ([#59](https://github.com/awslabs/backstage-plugins-for-aws/issues/59)) ([ec89cb4](https://github.com/awslabs/backstage-plugins-for-aws/commit/ec89cb49c808022160a2f515e6a03a44585d2def))
+
+
+
+
+
 # [0.2.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-codepipeline-plugin-for-backstage-backend@0.1.1...@aws/aws-codepipeline-plugin-for-backstage-backend@0.2.0) (2024-03-30)
 
 
