@@ -11,27 +11,26 @@
  * limitations under the License.
  */
 
-import { IdentityApi } from '@backstage/core-plugin-api';
+import { DiscoveryApi, FetchApi } from '@backstage/core-plugin-api';
 
-import { ConfigApi } from '@backstage/core-plugin-api';
-import { AwsCodePipelineApi } from '.';
 import {
   PipelineExecutionsResponse,
   PipelineStateResponse,
 } from '@aws/aws-codepipeline-plugin-for-backstage-common';
 import { AwsApiClient } from '@aws/aws-core-plugin-for-backstage-react';
 import type { CompoundEntityRef } from '@backstage/catalog-model';
+import { AwsCodePipelineApi } from '.';
 
 export class AwsCodePipelineApiClient
   extends AwsApiClient
   implements AwsCodePipelineApi
 {
   public constructor(options: {
-    configApi: ConfigApi;
-    identityApi: IdentityApi;
+    discoveryApi: DiscoveryApi;
+    fetchApi: FetchApi;
   }) {
     super({
-      backendName: 'aws/codepipeline',
+      backendName: 'aws-codepipeline',
       ...options,
     });
   }

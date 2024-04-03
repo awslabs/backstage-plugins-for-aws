@@ -11,24 +11,23 @@
  * limitations under the License.
  */
 
-import { IdentityApi } from '@backstage/core-plugin-api';
+import { DiscoveryApi, FetchApi } from '@backstage/core-plugin-api';
 
-import { ConfigApi } from '@backstage/core-plugin-api';
-import { AwsCodeBuildApi } from '.';
 import { ProjectsResponse } from '@aws/aws-codebuild-plugin-for-backstage-common';
 import { AwsApiClient } from '@aws/aws-core-plugin-for-backstage-react';
 import type { CompoundEntityRef } from '@backstage/catalog-model';
+import { AwsCodeBuildApi } from '.';
 
 export class AwsCodeBuildApiClient
   extends AwsApiClient
   implements AwsCodeBuildApi
 {
   public constructor(options: {
-    configApi: ConfigApi;
-    identityApi: IdentityApi;
+    discoveryApi: DiscoveryApi;
+    fetchApi: FetchApi;
   }) {
     super({
-      backendName: 'aws/codebuild',
+      backendName: 'aws-codebuild',
       ...options,
     });
   }

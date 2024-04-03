@@ -12,14 +12,14 @@
  */
 
 import {
+  createApiFactory,
   createPlugin,
   createRoutableExtension,
-  configApiRef,
-  identityApiRef,
-  createApiFactory,
+  discoveryApiRef,
+  fetchApiRef,
 } from '@backstage/core-plugin-api';
-import { rootRouteRef } from './routes';
 import { AmazonEcsApiClient, amazonEcsApiRef } from './api';
+import { rootRouteRef } from './routes';
 
 export const amazonEcsPlugin = createPlugin({
   id: 'amazon-ecs',
@@ -29,9 +29,9 @@ export const amazonEcsPlugin = createPlugin({
   apis: [
     createApiFactory({
       api: amazonEcsApiRef,
-      deps: { configApi: configApiRef, identityApi: identityApiRef },
-      factory: ({ configApi, identityApi }) =>
-        new AmazonEcsApiClient({ configApi, identityApi }),
+      deps: { discoveryApi: discoveryApiRef, fetchApi: fetchApiRef },
+      factory: ({ discoveryApi, fetchApi }) =>
+        new AmazonEcsApiClient({ discoveryApi, fetchApi }),
     }),
   ],
 });
