@@ -35,6 +35,7 @@ import {
   mockCodeBuildProject,
   mockCodeBuildProjectBuild,
 } from '@aws/aws-codebuild-plugin-for-backstage-common';
+import { mockServices } from '@backstage/backend-test-utils';
 
 function getMockCredentialProvider(): Promise<AwsCredentialProvider> {
   return Promise.resolve({
@@ -94,6 +95,7 @@ describe('DefaultAwsCodeBuildService', () => {
       logger,
       catalogApi: mockCatalog,
       resourceLocator: mockResourceLocator,
+      discovery: mockServices.discovery(),
     });
   }
 
@@ -131,7 +133,7 @@ describe('DefaultAwsCodeBuildService', () => {
         },
       );
 
-      const response = await service.getProjectsByEntity(entityRef);
+      const response = await service.getProjectsByEntity({ entityRef });
 
       expect(response.projects.length).toBe(2);
 
@@ -170,7 +172,7 @@ describe('DefaultAwsCodeBuildService', () => {
       );
 
       await expect(
-        service.getProjectsByEntity(entityRef),
+        service.getProjectsByEntity({ entityRef }),
       ).resolves.toMatchObject({
         projects: [],
       });
@@ -194,7 +196,7 @@ describe('DefaultAwsCodeBuildService', () => {
         },
       );
 
-      const response = await service.getProjectsByEntity(entityRef);
+      const response = await service.getProjectsByEntity({ entityRef });
 
       expect(response.projects.length).toBe(1);
 
@@ -226,7 +228,7 @@ describe('DefaultAwsCodeBuildService', () => {
         },
       );
 
-      const response = await service.getProjectsByEntity(entityRef);
+      const response = await service.getProjectsByEntity({ entityRef });
 
       expect(response.projects.length).toBe(1);
 
@@ -255,9 +257,11 @@ describe('DefaultAwsCodeBuildService', () => {
 
     await expect(
       service.getProjectsByEntity({
-        kind: 'Component',
-        namespace: 'foo',
-        name: 'missing',
+        entityRef: {
+          kind: 'Component',
+          namespace: 'foo',
+          name: 'missing',
+        },
       }),
     ).rejects.toThrow('Annotation not found on entity');
   });
@@ -267,11 +271,13 @@ describe('DefaultAwsCodeBuildService', () => {
 
     await expect(
       service.getProjectsByEntity({
-        kind: 'Component',
-        namespace: 'foo',
-        name: 'missing',
+        entityRef: {
+          kind: 'Component',
+          namespace: 'foo',
+          name: 'missing',
+        },
       }),
-    ).rejects.toThrow('Failed to find entity');
+    ).rejects.toThrow("Couldn't find entity with name: component:foo/missing");
   });
 });
 

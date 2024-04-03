@@ -13,7 +13,11 @@
 
 import { CompoundEntityRef } from '@backstage/catalog-model';
 import { ProjectsResponse } from '@aws/aws-codebuild-plugin-for-backstage-common';
+import { BackstageCredentials } from '@backstage/backend-plugin-api';
 
 export interface AwsCodeBuildService {
-  getProjectsByEntity(entityRef: CompoundEntityRef): Promise<ProjectsResponse>;
+  getProjectsByEntity(options: {
+    entityRef: CompoundEntityRef;
+    credentials?: BackstageCredentials;
+  }): Promise<ProjectsResponse>;
 }

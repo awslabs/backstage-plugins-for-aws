@@ -29,19 +29,36 @@ export const awsCodePiplinePlugin = createBackendPlugin({
         httpRouter: coreServices.httpRouter,
         config: coreServices.rootConfig,
         catalogApi: catalogServiceRef,
+        auth: coreServices.auth,
+        discovery: coreServices.discovery,
+        httpAuth: coreServices.httpAuth,
       },
-      async init({ logger, httpRouter, config, catalogApi }) {
+      async init({
+        logger,
+        httpRouter,
+        config,
+        catalogApi,
+        auth,
+        httpAuth,
+        discovery,
+      }) {
         const winstonLogger = loggerToWinstonLogger(logger);
 
         const awsCodePipelineApi =
           await DefaultAwsCodePipelineService.fromConfig(config, {
             catalogApi,
+            auth,
+            httpAuth,
+            discovery,
             logger: winstonLogger,
           });
         httpRouter.use(
           await createRouter({
             logger: winstonLogger,
             awsCodePipelineApi,
+            discovery,
+            auth,
+            httpAuth,
           }),
         );
       },

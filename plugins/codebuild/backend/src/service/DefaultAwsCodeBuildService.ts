@@ -20,7 +20,10 @@ import {
   getOneOfEntityAnnotations,
 } from '@aws/aws-core-plugin-for-backstage-common';
 import { AwsCredentialsManager } from '@backstage/integration-aws-node';
-import { CompoundEntityRef } from '@backstage/catalog-model';
+import {
+  CompoundEntityRef,
+  stringifyEntityRef,
+} from '@backstage/catalog-model';
 import { AwsCodeBuildService } from './types';
 import { DefaultAwsCredentialsManager } from '@backstage/integration-aws-node';
 import { Config } from '@backstage/config';
@@ -36,10 +39,18 @@ import {
   AWS_CODEBUILD_TAGS_ANNOTATION,
   ProjectsResponse,
 } from '@aws/aws-codebuild-plugin-for-backstage-common';
+import {
+  AuthService,
+  BackstageCredentials,
+  DiscoveryService,
+  HttpAuthService,
+} from '@backstage/backend-plugin-api';
+import { createLegacyAuthAdapters } from '@backstage/backend-common';
 
 export class DefaultAwsCodeBuildService implements AwsCodeBuildService {
   public constructor(
     private readonly logger: Logger,
+    private readonly auth: AuthService,
     private readonly catalogApi: CatalogApi,
     private readonly resourceLocator: AwsResourceLocator,
     private readonly credsManager: AwsCredentialsManager,
@@ -49,11 +60,16 @@ export class DefaultAwsCodeBuildService implements AwsCodeBuildService {
     config: Config,
     options: {
       catalogApi: CatalogApi;
+      discovery: DiscoveryService;
+      auth?: AuthService;
+      httpAuth?: HttpAuthService;
       logger: Logger;
       resourceLocator?: AwsResourceLocator;
     },
   ) {
     const credsManager = DefaultAwsCredentialsManager.fromConfig(config);
+
+    const { auth } = createLegacyAuthAdapters(options);
 
     const resourceLocator =
       options?.resourceLocator ??
@@ -61,18 +77,20 @@ export class DefaultAwsCodeBuildService implements AwsCodeBuildService {
 
     return new DefaultAwsCodeBuildService(
       options.logger,
+      auth,
       options.catalogApi,
       resourceLocator,
       credsManager,
     );
   }
 
-  public async getProjectsByEntity(
-    entityRef: CompoundEntityRef,
-  ): Promise<ProjectsResponse> {
-    this.logger?.debug(`Fetch CodeBuild projects for ${entityRef}`);
+  public async getProjectsByEntity(options: {
+    entityRef: CompoundEntityRef;
+    credentials?: BackstageCredentials;
+  }): Promise<ProjectsResponse> {
+    this.logger?.debug(`Fetch CodeBuild projects for ${options.entityRef}`);
 
-    const arns = await this.getCodeBuildArnsForEntity(entityRef);
+    const arns = await this.getCodeBuildArnsForEntity(options);
 
     const projects = await Promise.all(
       arns.map(async arn => {
@@ -97,7 +115,7 @@ export class DefaultAwsCodeBuildService implements AwsCodeBuildService {
 
         let builds: Build[] = [];
 
-        if (buildIds.ids) {
+        if (buildIds.ids && buildIds.ids.length > 0) {
           const output = await client.send(
             new BatchGetBuildsCommand({
               ids: buildIds.ids.slice(0, 5),
@@ -121,13 +139,25 @@ export class DefaultAwsCodeBuildService implements AwsCodeBuildService {
     };
   }
 
-  private async getCodeBuildArnsForEntity(
-    entityRef: CompoundEntityRef,
-  ): Promise<string[]> {
-    const entity = await this.catalogApi.getEntityByRef(entityRef);
+  private async getCodeBuildArnsForEntity(options: {
+    entityRef: CompoundEntityRef;
+    credentials?: BackstageCredentials;
+  }): Promise<string[]> {
+    const entity = await this.catalogApi.getEntityByRef(
+      options.entityRef,
+      options.credentials &&
+        (await this.auth.getPluginRequestToken({
+          onBehalfOf: options.credentials,
+          targetPluginId: 'catalog',
+        })),
+    );
 
     if (!entity) {
-      throw new Error(`Failed to find entity ${JSON.stringify(entityRef)}`);
+      throw new Error(
+        `Couldn't find entity with name: ${stringifyEntityRef(
+          options.entityRef,
+        )}`,
+      );
     }
 
     const annotation = getOneOfEntityAnnotations(entity, [

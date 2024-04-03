@@ -17,6 +17,7 @@ import request from 'supertest';
 
 import { createRouter } from './router';
 import { AwsCodePipelineService } from './types';
+import { mockServices } from '@backstage/backend-test-utils';
 
 describe('createRouter', () => {
   let app: express.Express;
@@ -29,6 +30,7 @@ describe('createRouter', () => {
     const router = await createRouter({
       logger: getVoidLogger(),
       awsCodePipelineApi: mockService,
+      discovery: mockServices.discovery(),
     });
     app = express().use(router);
   });

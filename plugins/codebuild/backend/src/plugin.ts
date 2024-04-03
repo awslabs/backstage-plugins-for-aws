@@ -29,14 +29,28 @@ export const awsCodebuildPlugin = createBackendPlugin({
         httpRouter: coreServices.httpRouter,
         config: coreServices.rootConfig,
         catalogApi: catalogServiceRef,
+        auth: coreServices.auth,
+        discovery: coreServices.discovery,
+        httpAuth: coreServices.httpAuth,
       },
-      async init({ logger, httpRouter, config, catalogApi }) {
+      async init({
+        logger,
+        httpRouter,
+        config,
+        catalogApi,
+        auth,
+        httpAuth,
+        discovery,
+      }) {
         const winstonLogger = loggerToWinstonLogger(logger);
 
         const awsCodeBuildApi = await DefaultAwsCodeBuildService.fromConfig(
           config,
           {
             catalogApi,
+            auth,
+            httpAuth,
+            discovery,
             logger: winstonLogger,
           },
         );
@@ -44,6 +58,9 @@ export const awsCodebuildPlugin = createBackendPlugin({
           await createRouter({
             logger: winstonLogger,
             awsCodeBuildApi,
+            discovery,
+            auth,
+            httpAuth,
           }),
         );
       },
