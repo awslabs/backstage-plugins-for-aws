@@ -60,6 +60,10 @@ export const amazonEcsPlugin = createBackendPlugin({
             httpAuth,
           }),
         );
+        httpRouter.addAuthPolicy({
+          path: '/health',
+          allow: 'unauthenticated',
+        });
       },
     });
   },

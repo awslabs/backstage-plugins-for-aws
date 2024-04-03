@@ -63,6 +63,10 @@ export const awsCodebuildPlugin = createBackendPlugin({
             httpAuth,
           }),
         );
+        httpRouter.addAuthPolicy({
+          path: '/health',
+          allow: 'unauthenticated',
+        });
       },
     });
   },
