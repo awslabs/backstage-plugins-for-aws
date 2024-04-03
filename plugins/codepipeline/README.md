@@ -99,14 +99,14 @@ async function main() {
     createEnv('aws-codepipeline'),
   );
   // ...
-  apiRouter.use('/aws/codepipeline', await codepipeline(codepipelineEnv));
+  apiRouter.use('/aws-codepipeline', await codepipeline(codepipelineEnv));
   // ...
 }
 ```
 
 Verify that the backend plugin is running in your Backstage app. You should receive `{"status":"ok"}` when accessing this URL:
 
-`https://<your backstage app>/api/aws/codepipeline/health`.
+`https://<your backstage app>/api/aws-codepipeline/health`.
 
 ### Frontend package
 

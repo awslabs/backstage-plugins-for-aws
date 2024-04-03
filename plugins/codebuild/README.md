@@ -97,14 +97,14 @@ async function main() {
   // ...
   const codebuildEnv = useHotMemoize(module, () => createEnv('aws-codebuild'));
   // ...
-  apiRouter.use('/aws/codebuild', await codebuild(codebuildEnv));
+  apiRouter.use('/aws-codebuild', await codebuild(codebuildEnv));
   // ...
 }
 ```
 
 Verify that the backend plugin is running in your Backstage app. You should receive `{"status":"ok"}` when accessing this URL:
 
-`https://<your backstage app>/api/aws/codebuild/health`.
+`https://<your backstage app>/api/aws-codebuild/health`.
 
 ### Frontend package
 
