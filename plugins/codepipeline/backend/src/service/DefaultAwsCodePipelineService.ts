@@ -20,7 +20,10 @@ import {
   getOneOfEntityAnnotations,
 } from '@aws/aws-core-plugin-for-backstage-common';
 import { AwsCredentialsManager } from '@backstage/integration-aws-node';
-import { CompoundEntityRef } from '@backstage/catalog-model';
+import {
+  CompoundEntityRef,
+  stringifyEntityRef,
+} from '@backstage/catalog-model';
 import { AwsCodePipelineService } from './types';
 import { DefaultAwsCredentialsManager } from '@backstage/integration-aws-node';
 import { Config } from '@backstage/config';
@@ -36,12 +39,20 @@ import {
   PipelineExecutionsResponse,
   PipelineStateResponse,
 } from '@aws/aws-codepipeline-plugin-for-backstage-common';
+import {
+  AuthService,
+  BackstageCredentials,
+  DiscoveryService,
+  HttpAuthService,
+} from '@backstage/backend-plugin-api';
+import { createLegacyAuthAdapters } from '@backstage/backend-common';
 
 const DEFAULT_EXECUTIONS_LIMIT = 100;
 
 export class DefaultAwsCodePipelineService implements AwsCodePipelineService {
   public constructor(
     private readonly logger: Logger,
+    private readonly auth: AuthService,
     private readonly catalogApi: CatalogApi,
     private readonly resourceLocator: AwsResourceLocator,
     private readonly credsManager: AwsCredentialsManager,
@@ -51,11 +62,16 @@ export class DefaultAwsCodePipelineService implements AwsCodePipelineService {
     config: Config,
     options: {
       catalogApi: CatalogApi;
+      discovery: DiscoveryService;
+      auth?: AuthService;
+      httpAuth?: HttpAuthService;
       logger: Logger;
       resourceLocator?: AwsResourceLocator;
     },
   ) {
     const credsManager = DefaultAwsCredentialsManager.fromConfig(config);
+
+    const { auth } = createLegacyAuthAdapters(options);
 
     const resourceLocator =
       options?.resourceLocator ??
@@ -63,18 +79,20 @@ export class DefaultAwsCodePipelineService implements AwsCodePipelineService {
 
     return new DefaultAwsCodePipelineService(
       options.logger,
+      auth,
       options.catalogApi,
       resourceLocator,
       credsManager,
     );
   }
 
-  public async getPipelineExecutionsByEntity(
-    entityRef: CompoundEntityRef,
-  ): Promise<PipelineExecutionsResponse> {
-    this.logger?.debug(`Fetch CodePipeline executions for ${entityRef}`);
+  public async getPipelineExecutionsByEntity(options: {
+    entityRef: CompoundEntityRef;
+    credentials?: BackstageCredentials;
+  }): Promise<PipelineExecutionsResponse> {
+    this.logger?.debug(`Fetch CodePipeline state for ${options.entityRef}`);
 
-    const arns = await this.getPipelineArnsForEntity(entityRef);
+    const arns = await this.getPipelineArnsForEntity(options);
 
     const pipelineExecutions = await Promise.all(
       arns.map(async arn => {
@@ -133,12 +151,13 @@ export class DefaultAwsCodePipelineService implements AwsCodePipelineService {
     };
   }
 
-  public async getPipelineStateByEntity(
-    entityRef: CompoundEntityRef,
-  ): Promise<PipelineStateResponse> {
-    this.logger?.debug(`Fetch CodePipeline state for ${entityRef}`);
+  public async getPipelineStateByEntity(options: {
+    entityRef: CompoundEntityRef;
+    credentials?: BackstageCredentials;
+  }): Promise<PipelineStateResponse> {
+    this.logger?.debug(`Fetch CodePipeline state for ${options.entityRef}`);
 
-    const arns = await this.getPipelineArnsForEntity(entityRef);
+    const arns = await this.getPipelineArnsForEntity(options);
 
     const pipelines = await Promise.all(
       arns.map(async arn => {
@@ -167,13 +186,25 @@ export class DefaultAwsCodePipelineService implements AwsCodePipelineService {
     };
   }
 
-  private async getPipelineArnsForEntity(
-    entityRef: CompoundEntityRef,
-  ): Promise<string[]> {
-    const entity = await this.catalogApi.getEntityByRef(entityRef);
+  private async getPipelineArnsForEntity(options: {
+    entityRef: CompoundEntityRef;
+    credentials?: BackstageCredentials;
+  }): Promise<string[]> {
+    const entity = await this.catalogApi.getEntityByRef(
+      options.entityRef,
+      options.credentials &&
+        (await this.auth.getPluginRequestToken({
+          onBehalfOf: options.credentials,
+          targetPluginId: 'catalog',
+        })),
+    );
 
     if (!entity) {
-      throw new Error(`Failed to find entity ${JSON.stringify(entityRef)}`);
+      throw new Error(
+        `Couldn't find entity with name: ${stringifyEntityRef(
+          options.entityRef,
+        )}`,
+      );
     }
 
     const annotation = getOneOfEntityAnnotations(entity, [

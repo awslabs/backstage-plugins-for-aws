@@ -13,7 +13,11 @@
 
 import { CompoundEntityRef } from '@backstage/catalog-model';
 import { ServicesResponse } from '@aws/amazon-ecs-plugin-for-backstage-common';
+import { BackstageCredentials } from '@backstage/backend-plugin-api';
 
 export interface AmazonECSService {
-  getServicesByEntity(entityRef: CompoundEntityRef): Promise<ServicesResponse>;
+  getServicesByEntity(options: {
+    entityRef: CompoundEntityRef;
+    credentials?: BackstageCredentials;
+  }): Promise<ServicesResponse>;
 }

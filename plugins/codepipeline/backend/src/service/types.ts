@@ -16,13 +16,16 @@ import {
   PipelineExecutionsResponse,
   PipelineStateResponse,
 } from '@aws/aws-codepipeline-plugin-for-backstage-common';
+import { BackstageCredentials } from '@backstage/backend-plugin-api';
 
 export interface AwsCodePipelineService {
-  getPipelineExecutionsByEntity(
-    entityRef: CompoundEntityRef,
-  ): Promise<PipelineExecutionsResponse>;
+  getPipelineExecutionsByEntity(options: {
+    entityRef: CompoundEntityRef;
+    credentials?: BackstageCredentials;
+  }): Promise<PipelineExecutionsResponse>;
 
-  getPipelineStateByEntity(
-    entityRef: CompoundEntityRef,
-  ): Promise<PipelineStateResponse>;
+  getPipelineStateByEntity(options: {
+    entityRef: CompoundEntityRef;
+    credentials?: BackstageCredentials;
+  }): Promise<PipelineStateResponse>;
 }

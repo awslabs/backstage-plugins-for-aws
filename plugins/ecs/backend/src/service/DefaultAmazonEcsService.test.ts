@@ -37,6 +37,7 @@ import {
   mockEcsService,
   mockEcsTask,
 } from '@aws/amazon-ecs-plugin-for-backstage-common';
+import { mockServices } from '@backstage/backend-test-utils';
 
 function getMockCredentialProvider(): Promise<AwsCredentialProvider> {
   return Promise.resolve({
@@ -96,6 +97,7 @@ describe('DefaultAmazonEcsService', () => {
       logger,
       catalogApi: mockCatalog,
       resourceLocator: mockResourceLocator,
+      discovery: mockServices.discovery(),
     });
   }
 
@@ -197,7 +199,7 @@ describe('DefaultAmazonEcsService', () => {
         },
       );
 
-      const response = await service.getServicesByEntity(entityRef);
+      const response = await service.getServicesByEntity({ entityRef });
 
       expect(response.clusters.length).toBe(2);
 
@@ -246,7 +248,7 @@ describe('DefaultAmazonEcsService', () => {
       );
 
       await expect(
-        service.getServicesByEntity(entityRef),
+        service.getServicesByEntity({ entityRef }),
       ).resolves.toMatchObject({
         clusters: [],
       });
@@ -306,7 +308,7 @@ describe('DefaultAmazonEcsService', () => {
         },
       );
 
-      const response = await service.getServicesByEntity(entityRef);
+      const response = await service.getServicesByEntity({ entityRef });
 
       expect(response.clusters.length).toBe(1);
 
@@ -340,9 +342,11 @@ describe('DefaultAmazonEcsService', () => {
 
     await expect(
       service.getServicesByEntity({
-        kind: 'Component',
-        namespace: 'foo',
-        name: 'missing',
+        entityRef: {
+          kind: 'Component',
+          namespace: 'foo',
+          name: 'missing',
+        },
       }),
     ).rejects.toThrow('Annotation not found on entity');
   });
@@ -352,10 +356,12 @@ describe('DefaultAmazonEcsService', () => {
 
     await expect(
       service.getServicesByEntity({
-        kind: 'Component',
-        namespace: 'foo',
-        name: 'missing',
+        entityRef: {
+          kind: 'Component',
+          namespace: 'foo',
+          name: 'missing',
+        },
       }),
-    ).rejects.toThrow('Failed to find entity');
+    ).rejects.toThrow("Couldn't find entity with name: component:foo/missing");
   });
 });

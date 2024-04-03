@@ -11,15 +11,26 @@
  * limitations under the License.
  */
 
-import { errorHandler } from '@backstage/backend-common';
+import {
+  createLegacyAuthAdapters,
+  errorHandler,
+} from '@backstage/backend-common';
 import express from 'express';
 import Router from 'express-promise-router';
 import { Logger } from 'winston';
 import { AwsCodePipelineService } from './types';
+import {
+  AuthService,
+  DiscoveryService,
+  HttpAuthService,
+} from '@backstage/backend-plugin-api';
 
 export interface RouterOptions {
   logger: Logger;
   awsCodePipelineApi: AwsCodePipelineService;
+  discovery: DiscoveryService;
+  auth?: AuthService;
+  httpAuth?: HttpAuthService;
 }
 
 export async function createRouter(
@@ -30,15 +41,20 @@ export async function createRouter(
   const router = Router();
   router.use(express.json());
 
+  const { httpAuth } = createLegacyAuthAdapters(options);
+
   router.get(
     '/v1/entity/:namespace/:kind/:name/executions',
     async (request, response) => {
       const { namespace, kind, name } = request.params;
 
       const services = await awsCodePipelineApi.getPipelineExecutionsByEntity({
-        kind,
-        namespace,
-        name,
+        entityRef: {
+          kind,
+          namespace,
+          name,
+        },
+        credentials: await httpAuth.credentials(request),
       });
       response.status(200).json(services);
     },
@@ -50,9 +66,12 @@ export async function createRouter(
       const { namespace, kind, name } = request.params;
 
       const services = await awsCodePipelineApi.getPipelineStateByEntity({
-        kind,
-        namespace,
-        name,
+        entityRef: {
+          kind,
+          namespace,
+          name,
+        },
+        credentials: await httpAuth.credentials(request),
       });
       response.status(200).json(services);
     },

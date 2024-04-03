@@ -35,9 +35,10 @@ export abstract class AwsApiClient {
   }
 
   protected async get<T>(path: string): Promise<T> {
-    const url = new URL(path, await this.getBaseUrl());
+    const baseUrl = await this.getBaseUrl();
+    const url = `${baseUrl}/${path}`;
 
-    const response = await this.fetchApi.fetch(url.toString());
+    const response = await this.fetchApi.fetch(url);
 
     if (!response.ok) {
       throw await ResponseError.fromResponse(response);

@@ -17,6 +17,7 @@ import request from 'supertest';
 
 import { createRouter } from './router';
 import { AmazonECSService } from './types';
+import { mockServices } from '@backstage/backend-test-utils';
 
 describe('createRouter', () => {
   let app: express.Express;
@@ -28,6 +29,7 @@ describe('createRouter', () => {
     const router = await createRouter({
       logger: getVoidLogger(),
       amazonEcsApi: mockService,
+      discovery: mockServices.discovery(),
     });
     app = express().use(router);
   });

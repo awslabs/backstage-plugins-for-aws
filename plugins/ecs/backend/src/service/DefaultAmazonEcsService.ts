@@ -34,14 +34,25 @@ import {
   ServicesResponse,
 } from '@aws/amazon-ecs-plugin-for-backstage-common';
 import { AwsCredentialsManager } from '@backstage/integration-aws-node';
-import { CompoundEntityRef } from '@backstage/catalog-model';
+import {
+  CompoundEntityRef,
+  stringifyEntityRef,
+} from '@backstage/catalog-model';
 import { AmazonECSService } from './types';
 import { DefaultAwsCredentialsManager } from '@backstage/integration-aws-node';
 import { Config } from '@backstage/config';
+import {
+  AuthService,
+  BackstageCredentials,
+  DiscoveryService,
+  HttpAuthService,
+} from '@backstage/backend-plugin-api';
+import { createLegacyAuthAdapters } from '@backstage/backend-common';
 
 export class DefaultAmazonEcsService implements AmazonECSService {
   public constructor(
     private readonly logger: Logger,
+    private readonly auth: AuthService,
     private readonly catalogApi: CatalogApi,
     private readonly resourceLocator: AwsResourceLocator,
     private readonly credsManager: AwsCredentialsManager,
@@ -51,11 +62,16 @@ export class DefaultAmazonEcsService implements AmazonECSService {
     config: Config,
     options: {
       catalogApi: CatalogApi;
+      discovery: DiscoveryService;
+      auth?: AuthService;
+      httpAuth?: HttpAuthService;
       logger: Logger;
       resourceLocator?: AwsResourceLocator;
     },
   ) {
     const credsManager = DefaultAwsCredentialsManager.fromConfig(config);
+
+    const { auth } = createLegacyAuthAdapters(options);
 
     const resourceLocator =
       options?.resourceLocator ??
@@ -63,21 +79,34 @@ export class DefaultAmazonEcsService implements AmazonECSService {
 
     return new DefaultAmazonEcsService(
       options.logger,
+      auth,
       options.catalogApi,
       resourceLocator,
       credsManager,
     );
   }
 
-  public async getServicesByEntity(
-    entityRef: CompoundEntityRef,
-  ): Promise<ServicesResponse> {
-    this.logger?.debug(`Fetch ECS Services for ${entityRef}`);
+  public async getServicesByEntity(options: {
+    entityRef: CompoundEntityRef;
+    credentials?: BackstageCredentials;
+  }): Promise<ServicesResponse> {
+    this.logger?.debug(`Fetch ECS Services for ${options.entityRef}`);
 
-    const entity = await this.catalogApi.getEntityByRef(entityRef);
+    const entity = await this.catalogApi.getEntityByRef(
+      options.entityRef,
+      options.credentials &&
+        (await this.auth.getPluginRequestToken({
+          onBehalfOf: options.credentials,
+          targetPluginId: 'catalog',
+        })),
+    );
 
     if (!entity) {
-      throw new Error(`Failed to find entity ${JSON.stringify(entityRef)}`);
+      throw new Error(
+        `Couldn't find entity with name: ${stringifyEntityRef(
+          options.entityRef,
+        )}`,
+      );
     }
 
     const annotation = getOneOfEntityAnnotations(entity, [
