@@ -12,20 +12,20 @@
  */
 
 import {
-  createPlugin,
-  configApiRef,
-  identityApiRef,
-  createApiFactory,
-  createComponentExtension,
-} from '@backstage/core-plugin-api';
-import { rootRouteRef } from './routes';
-import { AwsCodeBuildApiClient, awsCodeBuildApiRef } from './api';
-import { Entity } from '@backstage/catalog-model';
-import { getOneOfEntityAnnotations } from '@aws/aws-core-plugin-for-backstage-common';
-import {
   AWS_CODEBUILD_ARN_ANNOTATION,
   AWS_CODEBUILD_TAGS_ANNOTATION,
 } from '@aws/aws-codebuild-plugin-for-backstage-common';
+import { getOneOfEntityAnnotations } from '@aws/aws-core-plugin-for-backstage-common';
+import { Entity } from '@backstage/catalog-model';
+import {
+  createApiFactory,
+  createComponentExtension,
+  createPlugin,
+  discoveryApiRef,
+  fetchApiRef,
+} from '@backstage/core-plugin-api';
+import { AwsCodeBuildApiClient, awsCodeBuildApiRef } from './api';
+import { rootRouteRef } from './routes';
 
 export const isAwsCodeBuildAvailable = (entity: Entity) =>
   getOneOfEntityAnnotations(entity, [
@@ -41,9 +41,9 @@ export const awsCodeBuildPlugin = createPlugin({
   apis: [
     createApiFactory({
       api: awsCodeBuildApiRef,
-      deps: { configApi: configApiRef, identityApi: identityApiRef },
-      factory: ({ configApi, identityApi }) =>
-        new AwsCodeBuildApiClient({ configApi, identityApi }),
+      deps: { discoveryApi: discoveryApiRef, fetchApi: fetchApiRef },
+      factory: ({ discoveryApi, fetchApi }) =>
+        new AwsCodeBuildApiClient({ discoveryApi, fetchApi }),
     }),
   ],
 });

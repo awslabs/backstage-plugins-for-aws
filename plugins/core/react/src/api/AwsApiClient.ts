@@ -11,34 +11,33 @@
  * limitations under the License.
  */
 
-import { IdentityApi } from '@backstage/core-plugin-api';
+import { DiscoveryApi, FetchApi } from '@backstage/core-plugin-api';
 
-import { ConfigApi } from '@backstage/core-plugin-api';
 import { ResponseError } from '@backstage/errors';
 
 export abstract class AwsApiClient {
-  private readonly baseUrl: string;
-  private readonly identityApi: IdentityApi;
+  private readonly backendName: string;
+  private readonly discoveryApi: DiscoveryApi;
+  private readonly fetchApi: FetchApi;
 
   public constructor(options: {
     backendName: string;
-    configApi: ConfigApi;
-    identityApi: IdentityApi;
+    discoveryApi: DiscoveryApi;
+    fetchApi: FetchApi;
   }) {
-    this.baseUrl = `${options.configApi.getString('backend.baseUrl')}/api/${
-      options.backendName
-    }/}`;
-    this.identityApi = options.identityApi;
+    this.backendName = options.backendName;
+    this.fetchApi = options.fetchApi;
+    this.discoveryApi = options.discoveryApi;
+  }
+
+  private async getBaseUrl(): Promise<string> {
+    return this.discoveryApi.getBaseUrl(this.backendName);
   }
 
   protected async get<T>(path: string): Promise<T> {
-    const url = new URL(path, this.baseUrl);
+    const url = new URL(path, await this.getBaseUrl());
 
-    const { token: idToken } = await this.identityApi.getCredentials();
-
-    const response = await fetch(url.toString(), {
-      headers: idToken ? { Authorization: `Bearer ${idToken}` } : {},
-    });
+    const response = await this.fetchApi.fetch(url.toString());
 
     if (!response.ok) {
       throw await ResponseError.fromResponse(response);

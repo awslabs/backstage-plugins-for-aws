@@ -12,15 +12,15 @@
  */
 
 import {
-  createPlugin,
-  createRoutableExtension,
-  configApiRef,
-  identityApiRef,
   createApiFactory,
   createComponentExtension,
+  createPlugin,
+  createRoutableExtension,
+  discoveryApiRef,
+  fetchApiRef,
 } from '@backstage/core-plugin-api';
-import { rootRouteRef } from './routes';
 import { AwsCodePipelineApiClient, awsCodePipelineApiRef } from './api';
+import { rootRouteRef } from './routes';
 
 export const awsCodePipelinePlugin = createPlugin({
   id: 'aws-codepipeline',
@@ -30,9 +30,9 @@ export const awsCodePipelinePlugin = createPlugin({
   apis: [
     createApiFactory({
       api: awsCodePipelineApiRef,
-      deps: { configApi: configApiRef, identityApi: identityApiRef },
-      factory: ({ configApi, identityApi }) =>
-        new AwsCodePipelineApiClient({ configApi, identityApi }),
+      deps: { discoveryApi: discoveryApiRef, fetchApi: fetchApiRef },
+      factory: ({ discoveryApi, fetchApi }) =>
+        new AwsCodePipelineApiClient({ discoveryApi, fetchApi }),
     }),
   ],
 });
