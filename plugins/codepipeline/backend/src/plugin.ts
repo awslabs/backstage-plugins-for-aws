@@ -61,6 +61,10 @@ export const awsCodePiplinePlugin = createBackendPlugin({
             httpAuth,
           }),
         );
+        httpRouter.addAuthPolicy({
+          path: '/health',
+          allow: 'unauthenticated',
+        });
       },
     });
   },
