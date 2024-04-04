@@ -29,10 +29,10 @@ The IAM role(s) used by Backstage will require the following permissions:
     {
       "Effect": "Allow",
       "Action": [
-        "ecs:DescribeServicesCommand",
-        "ecs:ListTasksCommand",
-        "ecs:DescribeTasksCommand",
-        "ecs:DescribeClustersCommand"
+        "ecs:DescribeServices",
+        "ecs:ListTasks",
+        "ecs:DescribeTasks",
+        "ecs:DescribeClusters"
       ],
       "Resource": "*"
     }
