@@ -12615,12 +12615,13 @@ __metadata:
   linkType: hard
 
 "@types/dockerode@npm:^3.3.0, @types/dockerode@npm:^3.3.24":
-  version: 3.3.26
-  resolution: "@types/dockerode@npm:3.3.26"
+  version: 3.3.28
+  resolution: "@types/dockerode@npm:3.3.28"
   dependencies:
     "@types/docker-modem": "npm:*"
     "@types/node": "npm:*"
-  checksum: 10c0/6128508349c2ccd1344eb1b77a54eb0a87b8646321e55521d44e5e0dbebadce8d38c66c5e87c11ee029c38e5d265bd74ffe60e788f949825ebd1b0f46b29f1c0
+    "@types/ssh2": "npm:*"
+  checksum: 10c0/ce43da3cd269e11e999366aa9019a067d97dc012d7c460b560dfe75d4ccacc618077f2dfc5f34da2c915d4d86ed883d00d3bb741fd8440ef4ca1136afbc29b9f
   languageName: node
   linkType: hard
 
