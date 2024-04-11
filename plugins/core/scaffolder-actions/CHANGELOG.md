@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.2](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-core-plugin-for-backstage-scaffolder-actions@0.2.1...@aws/aws-core-plugin-for-backstage-scaffolder-actions@0.2.2) (2024-04-11)
+
+
+### Bug Fixes
+
+* S3 cp action should use path as provided ([#73](https://github.com/awslabs/backstage-plugins-for-aws/issues/73)) ([812f6e7](https://github.com/awslabs/backstage-plugins-for-aws/commit/812f6e74cf4d91c0125c08b7edb066190718387c))
+
+
+
+
+
 ## [0.2.1](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-core-plugin-for-backstage-scaffolder-actions@0.2.0...@aws/aws-core-plugin-for-backstage-scaffolder-actions@0.2.1) (2024-04-03)
 
 **Note:** Version bump only for package @aws/aws-core-plugin-for-backstage-scaffolder-actions
