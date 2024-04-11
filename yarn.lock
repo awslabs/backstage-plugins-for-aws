@@ -2119,6 +2119,7 @@ __metadata:
     "@aws-sdk/types": "npm:^3.511.0"
     "@backstage/backend-common": "npm:^0.21.6"
     "@backstage/backend-plugin-api": "npm:^0.6.16"
+    "@backstage/backend-test-utils": "npm:^0.3.6"
     "@backstage/cli": "npm:^0.26.2"
     "@backstage/config": "npm:^1.2.0"
     "@backstage/errors": "npm:^1.2.4"
@@ -2128,9 +2129,9 @@ __metadata:
     "@types/fs-extra": "npm:^11"
     "@types/glob": "npm:^7.2.0"
     aws-sdk-client-mock: "npm:^4.0.0"
+    aws-sdk-client-mock-jest: "npm:^4.0.0"
     fs-extra: "npm:^11.2.0"
     glob: "npm:^10.3.10"
-    mock-fs: "npm:^5.2.0"
     zod: "npm:^3.22.4"
   languageName: unknown
   linkType: soft
@@ -14888,6 +14889,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"aws-sdk-client-mock-jest@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "aws-sdk-client-mock-jest@npm:4.0.0"
+  dependencies:
+    expect: "npm:>28.1.3"
+    tslib: "npm:^2.1.0"
+  peerDependencies:
+    aws-sdk-client-mock: 4.0.0
+  checksum: 10c0/fac0ff3e5d6c6044727cf72ded29db3eb0e40bf92877a1ed83c60dac3b7fb1322cdf8a4775b2475bc661aad847f3b36db331c9f52da1e2e5680b79d1f848f68c
+  languageName: node
+  linkType: hard
+
 "aws-sdk-client-mock@npm:^4.0.0":
   version: 4.0.0
   resolution: "aws-sdk-client-mock@npm:4.0.0"
@@ -19239,7 +19252,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expect@npm:^29.0.0, expect@npm:^29.7.0":
+"expect@npm:>28.1.3, expect@npm:^29.0.0, expect@npm:^29.7.0":
   version: 29.7.0
   resolution: "expect@npm:29.7.0"
   dependencies:
@@ -25455,13 +25468,6 @@ __metadata:
   bin:
     mkdirp: bin/cmd.js
   checksum: 10c0/46ea0f3ffa8bc6a5bc0c7081ffc3907777f0ed6516888d40a518c5111f8366d97d2678911ad1a6882bf592fa9de6c784fea32e1687bb94e1f4944170af48a5cf
-  languageName: node
-  linkType: hard
-
-"mock-fs@npm:^5.2.0":
-  version: 5.2.0
-  resolution: "mock-fs@npm:5.2.0"
-  checksum: 10c0/e917e71295ee9d805c7d9ab0214a66658db0212f35731ba0c75dc1ccbb9964e6787a6d725561f05fcf569c64cf4a1176f5ce438f98b009227520f646f8abf174
   languageName: node
   linkType: hard
 
