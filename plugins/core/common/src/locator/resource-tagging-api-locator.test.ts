@@ -95,4 +95,49 @@ describe('Resource Explorer locator', () => {
       expect(response[0]).toMatch('arn1');
     });
   });
+
+  describe('multiple regions', () => {
+    it('returns ok', async () => {
+      resourceTaggingMock
+        .on(GetResourcesCommand, {
+          ResourceTypeFilters: ['ecs:service'],
+          TagFilters: [
+            {
+              Key: 'component',
+              Values: ['test'],
+            } as TagFilter,
+          ],
+        })
+        .callsFake(async (_, getClient) => {
+          const client = getClient();
+          const region = await client.config.region();
+          return {
+            ResourceTagMappingList: [
+              {
+                ResourceARN: `${region}:arn1`,
+              },
+            ],
+          };
+        });
+
+      const locator = await configureProvider({
+        aws: {
+          locator: {
+            resourceTaggingApi: {
+              regions: ['us-east-1', 'eu-west-2'],
+            },
+          },
+        },
+      });
+
+      const response = await locator.getResourceArns({
+        resourceType: 'AWS::ECS::Service',
+        tagString: 'component=test',
+      });
+
+      expect(response.length).toBe(2);
+      expect(response[0]).toMatch('us-east-1:arn1');
+      expect(response[1]).toMatch('eu-west-2:arn1');
+    });
+  });
 });

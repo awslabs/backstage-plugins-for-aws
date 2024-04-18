@@ -24,8 +24,7 @@ import { convertResourceTypeString, parseResourceLocatorTags } from './utils';
 
 export class AwsResourceTaggingApiLocator implements AwsResourceLocator {
   public constructor(
-    private readonly logger: Logger,
-    private readonly client: ResourceGroupsTaggingAPIClient,
+    private readonly instances: AwsResourceTaggingApiLocatorInstance[],
   ) {}
 
   static async fromConfig(
@@ -34,23 +33,71 @@ export class AwsResourceTaggingApiLocator implements AwsResourceLocator {
       logger: Logger;
     },
   ) {
-    let region: string | undefined;
-    let accountId: string | undefined;
+    let regions: (string | undefined)[] = [undefined];
+    let accounts: (string | undefined)[] = [undefined];
 
     const conf = config.getOptionalConfig('aws.locator.resourceTaggingApi');
 
     if (conf) {
-      accountId = conf.getOptionalString('accountId');
-      region = conf.getOptionalString('region');
+      accounts = conf.getOptionalStringArray('accounts') || [undefined];
+      regions = conf.getOptionalStringArray('regions') || [undefined];
     }
 
     const credsManager = DefaultAwsCredentialsManager.fromConfig(config);
 
+    let instances: AwsResourceTaggingApiLocatorInstance[] = await Promise.all(
+      accounts.flatMap(accountId => {
+        return regions.map(region => {
+          options.logger.debug(`Creating client for ${accountId} - ${region}`);
+          return AwsResourceTaggingApiLocatorInstance.create({
+            credsManager,
+            accountId,
+            region,
+            logger: options.logger,
+          });
+        });
+      }),
+    );
+
+    return new AwsResourceTaggingApiLocator(instances);
+  }
+
+  async getResourceArns({
+    resourceType,
+    tagString,
+  }: {
+    resourceType: string;
+    tagString: string;
+  }): Promise<string[]> {
+    return (
+      await Promise.all(
+        this.instances.map(e => e.getResourceArns({ resourceType, tagString })),
+      )
+    ).flat(1);
+  }
+}
+
+class AwsResourceTaggingApiLocatorInstance {
+  public constructor(
+    private readonly logger: Logger,
+    private readonly client: ResourceGroupsTaggingAPIClient,
+  ) {}
+
+  static async create(options: {
+    credsManager: DefaultAwsCredentialsManager;
+    accountId: string | undefined;
+    region: string | undefined;
+    logger: Logger;
+  }): Promise<AwsResourceTaggingApiLocatorInstance> {
     let credentialProvider: AwsCredentialIdentityProvider;
+
+    let { accountId, region, credsManager } = options;
 
     if (accountId) {
       credentialProvider = (
-        await credsManager.getCredentialProvider({ accountId })
+        await credsManager.getCredentialProvider({
+          accountId: accountId,
+        })
       ).sdkCredentialProvider;
     } else {
       credentialProvider = (await credsManager.getCredentialProvider())
@@ -63,7 +110,7 @@ export class AwsResourceTaggingApiLocator implements AwsResourceLocator {
       credentialDefaultProvider: () => credentialProvider,
     });
 
-    return new AwsResourceTaggingApiLocator(options.logger, client);
+    return new AwsResourceTaggingApiLocatorInstance(options.logger, client);
   }
 
   async getResourceArns({
