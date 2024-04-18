@@ -28,7 +28,7 @@ export class AwsResourceLocatorFactory {
     const conf = config.getOptionalConfig('aws.locator');
 
     if (conf) {
-      const locatorType = conf.get('type');
+      const locatorType = conf.getOptionalString('type');
 
       switch (locatorType) {
         case 'resourceExplorer':
