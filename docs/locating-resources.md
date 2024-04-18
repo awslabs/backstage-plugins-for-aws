@@ -38,6 +38,7 @@ This resource locator is used by default and does not require any configuration.
 ```yaml
 aws:
   locator:
+    type: resourceTaggingApi
     resourceTaggingApi:
       # Add each additional AWS account you wish to search
       accounts:
