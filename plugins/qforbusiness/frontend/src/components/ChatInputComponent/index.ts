@@ -1,0 +1,1 @@
+export { ChatInputComponent } from './ChatInputComponent';

@@ -1,0 +1,192 @@
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.markdownContainer {
+  flex-grow: 1;
+  margin-bottom: 0.5rem;
+  position: relative;
+}
+
+.markdown {
+  position: absolute;
+  left: 0;
+  top: 1rem;
+  right: 0;
+  bottom: 1rem;
+  padding: 1rem 2rem;
+  overflow: auto;
+}
+
+.markdownChat {
+  margin: 0;
+}
+
+.toolbar {
+  align-self: flex-end;
+}
+
+.ChatItem {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 90%;
+  margin-bottom: 2rem;
+}
+
+.ChatItemExpert {
+  flex-direction: row-reverse;
+}
+
+.ChatItemMeta {
+  display: flex;
+  align-items: center;
+  flex: 0 1 auto;
+  margin-right: 1rem;
+  margin-bottom: 0.5rem;
+  width: 2.5rem;
+}
+.ChatItemExpert .ChatItemMeta {
+  margin-right: 0;
+  margin-left: 1rem;
+}
+
+.ChatItemContent {
+  position: relative;
+  flex: 1 0 auto;
+  width: 100%;
+}
+
+.ChatItemAvatar {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+.ChatItemExpert .ChatItemAvatar {
+  margin-right: 0;
+}
+
+.ChatItemAvatarImage {
+  max-width: 100%;
+  border-radius: 100em;
+}
+
+.ChatItemAvatarInitials {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  background: #ccc;
+  color: #444;
+  border-radius: 100em;
+}
+
+.ChatItemTimeStamp {
+  width: 80%;
+  font-size: 0.875rem;
+  color: #666;
+}
+.ChatItemExpert .ChatItemTimeStamp {
+  margin-left: auto;
+}
+
+.ChatItemChatText {
+  position: relative;
+  width: 80%;
+  margin-bottom: 0.5rem;
+  padding: 1rem;
+  background: #007fef;
+  color: #fff;
+  border-radius: 3px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.175);
+  line-height: 1.3;
+}
+.ChatItemChatText:first-child::before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;
+  left: -0.4rem;
+  width: 1rem;
+  height: 1rem;
+  transform: scaleX(0.8) skew(45deg);
+  background: #007fef;
+}
+.ChatItemExpert .ChatItemChatText:first-child::before {
+  right: -0.4rem;
+  left: auto;
+  transform: skew(-40deg);
+  background: #fff;
+  background: #fff;
+  box-shadow: 4px 0 4px -1px rgba(0, 0, 0, 0.1);
+}
+.ChatItemExpert .ChatItemChatText {
+  margin-left: auto;
+  border: 1px solid #dbdbdb;
+  background: white;
+  color: #666;
+}
+
+.ChatItemChatText > div {
+  display: inline;
+}
+
+.ChatInput {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  z-index: 10;
+  width: 48rem;
+  height: 5rem;
+  transform: translateX(-50%);
+  background: #eee;
+}
+
+.ChatInputInput {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 5rem;
+  padding: 1rem 1.5rem;
+  padding-right: 5.25rem;
+  border: 0;
+  border-top: 1px solid #ccc;
+  overflow: hidden;
+  overflow-y: scroll;
+  background: #fff;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+  font-size: 1rem;
+  resize: none;
+}
+
+[contenteditable]:empty:before {
+  content: attr(placeholder);
+  display: block;
+  color: #999;
+}
+
+[contenteditable]:active,
+[contenteditable]:focus {
+  border: 0;
+  border-top: 1px solid #ccc;
+  outline: 0;
+  box-shadow: inherit;
+}
+
+.ChatInputSend {
+  display: block;
+  position: absolute;
+  top: 50%;
+  right: 1.5rem;
+  transform: translateY(-50%);
+  border: none;
+  border-radius: 3px;
+  background: #007fef;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  color: white;
+  cursor: pointer;
+}
