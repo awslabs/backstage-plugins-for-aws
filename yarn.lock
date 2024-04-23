@@ -1963,15 +1963,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@aws/amazon-q-business-plugin-for-backstage-backend@workspace:plugins/qforbusiness/backend":
+"@aws/amazon-qbusiness-plugin-for-backstage-backend@workspace:^, @aws/amazon-qbusiness-plugin-for-backstage-backend@workspace:plugins/qbusiness/backend":
   version: 0.0.0-use.local
-  resolution: "@aws/amazon-q-business-plugin-for-backstage-backend@workspace:plugins/qforbusiness/backend"
+  resolution: "@aws/amazon-qbusiness-plugin-for-backstage-backend@workspace:plugins/qbusiness/backend"
   dependencies:
-    "@aws-sdk/client-ecs": "npm:^3.511.0"
     "@aws-sdk/client-qbusiness": "npm:^3.557.0"
     "@aws-sdk/middleware-sdk-sts": "npm:^3.523.0"
     "@aws-sdk/util-arn-parser": "npm:^3.495.0"
-    "@aws/amazon-q-business-plugin-for-backstage-common": "workspace:^"
+    "@aws/amazon-qbusiness-plugin-for-backstage-common": "workspace:^"
     "@aws/aws-core-plugin-for-backstage-common": "workspace:^"
     "@backstage/backend-common": "npm:^0.21.6"
     "@backstage/backend-defaults": "npm:^0.2.16"
@@ -1998,24 +1997,22 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@aws/amazon-q-business-plugin-for-backstage-common@workspace:^, @aws/amazon-q-business-plugin-for-backstage-common@workspace:plugins/qforbusiness/common":
+"@aws/amazon-qbusiness-plugin-for-backstage-common@workspace:^, @aws/amazon-qbusiness-plugin-for-backstage-common@workspace:plugins/qbusiness/common":
   version: 0.0.0-use.local
-  resolution: "@aws/amazon-q-business-plugin-for-backstage-common@workspace:plugins/qforbusiness/common"
+  resolution: "@aws/amazon-qbusiness-plugin-for-backstage-common@workspace:plugins/qbusiness/common"
   dependencies:
-    "@aws-sdk/client-ecs": "npm:^3.511.0"
     "@aws-sdk/client-qbusiness": "npm:^3.557.0"
     "@backstage/catalog-model": "npm:^1.4.5"
     "@backstage/cli": "npm:^0.26.2"
   languageName: unknown
   linkType: soft
 
-"@aws/amazon-q-business-plugin-for-backstage@workspace:plugins/qforbusiness/frontend":
+"@aws/amazon-qbusiness-plugin-for-backstage@workspace:^, @aws/amazon-qbusiness-plugin-for-backstage@workspace:plugins/qbusiness/frontend":
   version: 0.0.0-use.local
-  resolution: "@aws/amazon-q-business-plugin-for-backstage@workspace:plugins/qforbusiness/frontend"
+  resolution: "@aws/amazon-qbusiness-plugin-for-backstage@workspace:plugins/qbusiness/frontend"
   dependencies:
-    "@aws-sdk/client-ecs": "npm:^3.511.0"
     "@aws-sdk/util-arn-parser": "npm:^3.495.0"
-    "@aws/amazon-q-business-plugin-for-backstage-common": "workspace:^"
+    "@aws/amazon-qbusiness-plugin-for-backstage-common": "workspace:^"
     "@aws/aws-core-plugin-for-backstage-common": "workspace:^"
     "@aws/aws-core-plugin-for-backstage-react": "workspace:^"
     "@backstage/catalog-model": "npm:^1.4.5"
@@ -14483,6 +14480,7 @@ __metadata:
   resolution: "app@workspace:packages/app"
   dependencies:
     "@aws/amazon-ecs-plugin-for-backstage": "workspace:^"
+    "@aws/amazon-qbusiness-plugin-for-backstage": "workspace:^"
     "@aws/aws-codebuild-plugin-for-backstage": "workspace:^"
     "@aws/aws-codepipeline-plugin-for-backstage": "workspace:^"
     "@backstage/app-defaults": "npm:^1.5.3"
@@ -15263,6 +15261,7 @@ __metadata:
   resolution: "backend@workspace:packages/backend"
   dependencies:
     "@aws/amazon-ecs-plugin-for-backstage-backend": "workspace:^"
+    "@aws/amazon-qbusiness-plugin-for-backstage-backend": "workspace:^"
     "@aws/aws-codebuild-plugin-for-backstage-backend": "workspace:^"
     "@aws/aws-codepipeline-plugin-for-backstage-backend": "workspace:^"
     "@aws/aws-core-plugin-for-backstage-scaffolder-actions": "workspace:^"

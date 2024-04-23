@@ -46,4 +46,21 @@ export abstract class AwsApiClient {
 
     return response.json() as Promise<T>;
   }
+
+  protected async post<T>(path: string, payload: any): Promise<T> {
+    const baseUrl = await this.getBaseUrl();
+    const url = `${baseUrl}/${path}`;
+
+    const response = await this.fetchApi.fetch(url, {
+      headers: { 'Content-Type': 'application/json' },
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      throw await ResponseError.fromResponse(response);
+    }
+
+    return response.json() as Promise<T>;
+  }
 }

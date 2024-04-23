@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@aws/amazon-ecs-plugin-for-backstage-backend": "workspace:^",
+    "@aws/amazon-qbusiness-plugin-for-backstage-backend": "workspace:^",
     "@aws/aws-codebuild-plugin-for-backstage-backend": "workspace:^",
     "@aws/aws-codepipeline-plugin-for-backstage-backend": "workspace:^",
     "@aws/aws-core-plugin-for-backstage-scaffolder-actions": "workspace:^",

@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@aws/amazon-ecs-plugin-for-backstage": "workspace:^",
+    "@aws/amazon-qbusiness-plugin-for-backstage": "workspace:^",
     "@aws/aws-codebuild-plugin-for-backstage": "workspace:^",
     "@aws/aws-codepipeline-plugin-for-backstage": "workspace:^",
     "@backstage/app-defaults": "^1.5.3",
