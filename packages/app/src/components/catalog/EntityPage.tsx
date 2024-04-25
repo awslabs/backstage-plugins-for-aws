@@ -52,8 +52,10 @@ import {
 } from '@backstage/catalog-model';
 import {
   EntityAwsCodePipelineExecutionsContent,
+  EntityAwsCodePipelineCard,
   isAwsCodePipelineAvailable,
 } from '@aws/aws-codepipeline-plugin-for-backstage';
+import { EntityAwsCodeBuildCard } from '@aws/aws-codebuild-plugin-for-backstage';
 import { EntityAmazonEcsServicesContent } from '@aws/amazon-ecs-plugin-for-backstage';
 
 import { TechDocsAddons } from '@backstage/plugin-techdocs-react';
@@ -130,6 +132,13 @@ const overviewContent = (
     </Grid>
     <Grid item md={6} xs={12}>
       <EntityCatalogGraphCard variant="gridItem" height={400} />
+    </Grid>
+
+    <Grid item md={6}>
+      <EntityAwsCodePipelineCard />
+    </Grid>
+    <Grid item md={6}>
+      <EntityAwsCodeBuildCard />
     </Grid>
 
     <Grid item md={4} xs={12}>

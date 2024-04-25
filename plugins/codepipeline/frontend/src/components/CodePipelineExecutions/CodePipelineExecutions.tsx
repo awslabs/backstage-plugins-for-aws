@@ -29,6 +29,7 @@ import { PipelineStageStatus } from '../PipelineStageStatus';
 import { formatTime } from '../../util';
 import { Entity } from '@backstage/catalog-model';
 import { usePipelineExecutions } from '../../hooks';
+import { MissingResources } from '@aws/aws-core-plugin-for-backstage-react';
 
 const renderTrigger = (
   row: Partial<PipelineExecutionSummary>,
@@ -143,20 +144,19 @@ const CodePipelineExecutionsTable = ({
   );
 };
 
-type CodePipelineExecutionsWrapperProps = {
+type CodePipelineExecutionsContentProps = {
   response: PipelineExecutionsResponse;
 };
 
-const CodePipelineMultipleExecutionsWrapper = ({
+const CodePipelineMultipleExecutionsContent = ({
   response,
-}: CodePipelineExecutionsWrapperProps) => {
+}: CodePipelineExecutionsContentProps) => {
   const [selected, setSelected] = useState<PipelineExecutions>(
     response.pipelineExecutions[0],
   );
 
   return (
     <>
-      <ContentHeader title="AWS CodePipeline" />
       <Box marginBottom={2}>
         <Select
           value={selected.pipelineArn}
@@ -180,13 +180,20 @@ const CodePipelineMultipleExecutionsWrapper = ({
   );
 };
 
-const CodePipelineExecutionsWrapper = ({
+const CodePipelineExecutionsContent = ({
   response,
-}: CodePipelineExecutionsWrapperProps) => {
+}: CodePipelineExecutionsContentProps) => {
+  if (response?.pipelineExecutions.length === 0) {
+    return (
+      <>
+        <MissingResources />
+      </>
+    );
+  }
+
   if (response.pipelineExecutions.length === 1) {
     return (
       <>
-        <ContentHeader title="AWS CodePipeline" />
         <CodePipelineExecutionsTable
           response={response.pipelineExecutions[0]}
         />
@@ -194,7 +201,18 @@ const CodePipelineExecutionsWrapper = ({
     );
   }
 
-  return <CodePipelineMultipleExecutionsWrapper response={response} />;
+  return <CodePipelineMultipleExecutionsContent response={response} />;
+};
+
+const CodePipelineExecutionsWrapper = ({
+  response,
+}: CodePipelineExecutionsContentProps) => {
+  return (
+    <>
+      <ContentHeader title="AWS CodePipeline" />
+      <CodePipelineExecutionsContent response={response} />
+    </>
+  );
 };
 
 type CodePipelineExecutionsProps = {

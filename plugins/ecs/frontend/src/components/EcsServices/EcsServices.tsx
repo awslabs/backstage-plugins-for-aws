@@ -40,6 +40,7 @@ import humanizeDuration from 'humanize-duration';
 import { parse } from '@aws-sdk/util-arn-parser';
 import { Entity } from '@backstage/catalog-model';
 import { useEcsServices } from '../../hooks';
+import { MissingResources } from '@aws/aws-core-plugin-for-backstage-react';
 
 function formatTime(date: Date | undefined): string {
   if (date) {
@@ -291,16 +292,15 @@ const ServiceSummary = ({ service }: { service: Service }) => {
   );
 };
 
-type EcsServicesWrapperProps = {
+type EcsServicesContentProps = {
   response: ServicesResponse;
 };
 
-const EcsServicesWrapper = ({ response }: EcsServicesWrapperProps) => {
+const EcsServicesContent = ({ response }: EcsServicesContentProps) => {
   const columns = generatedColumns();
 
   return (
     <>
-      <ContentHeader title="Amazon ECS Services" />
       {response.clusters.map(e => {
         return (
           <Accordion key="{e}">
@@ -340,6 +340,21 @@ const EcsServicesWrapper = ({ response }: EcsServicesWrapperProps) => {
           </Accordion>
         );
       })}
+    </>
+  );
+};
+
+const EcsServicesWrapper = ({ response }: EcsServicesContentProps) => {
+  const hasClusters = response.clusters.length > 0;
+
+  return (
+    <>
+      <ContentHeader title="Amazon ECS Services" />
+      {hasClusters ? (
+        <EcsServicesContent response={response} />
+      ) : (
+        <MissingResources />
+      )}
     </>
   );
 };

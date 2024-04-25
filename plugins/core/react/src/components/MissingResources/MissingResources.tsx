@@ -11,5 +11,18 @@
  * limitations under the License.
  */
 
-export * from './TabbedContent';
-export * from './MissingResources';
+import React from 'react';
+import { WarningPanel } from '@backstage/core-components';
+
+export function MissingResources() {
+  return (
+    <WarningPanel
+      title="No matching resources found."
+      message={
+        <>
+          No AWS resources could be found that match the annotations provided.
+        </>
+      }
+    />
+  );
+}
