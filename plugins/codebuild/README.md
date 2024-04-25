@@ -66,10 +66,12 @@ backend.start();
 Create a file `packages/backend/src/plugins/codebuild.ts` with the following content:
 
 ```typescript
-import { createRouter } from '@aws/aws-codebuild-plugin-for-backstage-backend';
-import { PluginEnvironment } from '../types';
-import { DefaultAwsCodeBuildService } from '@aws/aws-codebuild-plugin-for-backstage-backend';
+import {
+  createRouter,
+  DefaultAwsCodeBuildService,
+} from '@aws/aws-codebuild-plugin-for-backstage-backend';
 import { CatalogClient } from '@backstage/catalog-client';
+import { PluginEnvironment } from '../types';
 
 export default async function createPlugin(env: PluginEnvironment) {
   const catalogApi = new CatalogClient({ discoveryApi: env.discovery });
@@ -77,11 +79,13 @@ export default async function createPlugin(env: PluginEnvironment) {
     env.config,
     {
       catalogApi,
+      discovery: env.discovery,
       logger: env.logger,
     },
   );
-  return await createRouter({
+  return createRouter({
     logger: env.logger,
+    discovery: env.discovery,
     awsCodeBuildApi,
   });
 }
