@@ -35,7 +35,7 @@ import {
 import { usePipelineState } from '../../hooks';
 import { isAwsCodePipelineAvailable } from '../../plugin';
 import { TabbedContent } from '@aws/aws-core-plugin-for-backstage-react';
-import { MissingResources } from '@aws/aws-core-plugin-for-backstage-react/src/components/MissingResources';
+import { MissingResources } from '@aws/aws-core-plugin-for-backstage-react';
 
 const PipelineStageTable = ({
   stages,
