@@ -35,6 +35,7 @@ import {
 import { usePipelineState } from '../../hooks';
 import { isAwsCodePipelineAvailable } from '../../plugin';
 import { TabbedContent } from '@aws/aws-core-plugin-for-backstage-react';
+import { MissingResources } from '@aws/aws-core-plugin-for-backstage-react';
 
 const PipelineStageTable = ({
   stages,
@@ -133,6 +134,14 @@ const PipelineStateContent = ({
   const { response, loading, error } = usePipelineState({ entity });
 
   if (response) {
+    if (response?.pipelines.length === 0) {
+      return (
+        <Box m={2}>
+          <MissingResources />
+        </Box>
+      );
+    }
+
     if (response.pipelines.length === 1) {
       return (
         <PipelineWidgetContent

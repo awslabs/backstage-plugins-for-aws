@@ -30,7 +30,10 @@ import {
   ProjectResponse,
 } from '@aws/aws-codebuild-plugin-for-backstage-common';
 import { isAwsCodeBuildAvailable } from '../../plugin';
-import { TabbedContent } from '@aws/aws-core-plugin-for-backstage-react';
+import {
+  MissingResources,
+  TabbedContent,
+} from '@aws/aws-core-plugin-for-backstage-react';
 import { Build } from '@aws-sdk/client-codebuild';
 import { BuildStatus } from '../BuildStatus';
 import { useProjects } from '../../hooks';
@@ -178,6 +181,14 @@ const Project = ({ entity }: { entity: Entity }) => {
   const { response, loading, error } = useProjects({ entity });
 
   if (response) {
+    if (response.projects.length === 0) {
+      return (
+        <Box m={2}>
+          <MissingResources />
+        </Box>
+      );
+    }
+
     if (response.projects.length === 1) {
       return <ProjectWidgetContent project={response.projects[0]} />;
     }
