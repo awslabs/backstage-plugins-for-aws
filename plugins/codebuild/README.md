@@ -121,17 +121,15 @@ yarn workspace app add @aws/aws-codebuild-plugin-for-backstage
 Edit `packages/app/src/components/catalog/EntityPage.tsx` to add the AWS CodeBuild card to the entity page:
 
 ```typescript
-import {
-  EntityAwsCodeBuildExecutionsContent,
-  isAwsCodeBuildAvailable,
-} from '@aws/aws-codebuild-plugin-for-backstage';
+import { EntityAwsCodeBuildCard } from '@aws/aws-codebuild-plugin-for-backstage';
 
-// For example in the CI/CD section
-const cicdContent = (
-  <EntitySwitch>
-    <EntitySwitch.Case if= {isAwsCodeBuildAvailable} >
-      <EntityAwsCodeBuildCard / >
-    </EntitySwitch.Case>
+// For example in the overview section
+const overviewContent = (
+  <Grid container spacing={3} alignItems="stretch">
+  // ...
+    <Grid item md={6}>
+      <EntityAwsCodeBuildCard />
+    </Grid>
 ```
 
 ## Entity annotations
