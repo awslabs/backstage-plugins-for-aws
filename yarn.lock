@@ -15266,7 +15266,7 @@ __metadata:
     dockerode: "npm:^3.3.1"
     express: "npm:^4.17.1"
     express-promise-router: "npm:^4.1.0"
-    node-gyp: "npm:^9.0.0"
+    node-gyp: "npm:^10.0.0"
     pg: "npm:^8.11.3"
     winston: "npm:^3.2.1"
   languageName: unknown
@@ -25967,6 +25967,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"node-gyp@npm:^10.0.0":
+  version: 10.1.0
+  resolution: "node-gyp@npm:10.1.0"
+  dependencies:
+    env-paths: "npm:^2.2.0"
+    exponential-backoff: "npm:^3.1.1"
+    glob: "npm:^10.3.10"
+    graceful-fs: "npm:^4.2.6"
+    make-fetch-happen: "npm:^13.0.0"
+    nopt: "npm:^7.0.0"
+    proc-log: "npm:^3.0.0"
+    semver: "npm:^7.3.5"
+    tar: "npm:^6.1.2"
+    which: "npm:^4.0.0"
+  bin:
+    node-gyp: bin/node-gyp.js
+  checksum: 10c0/9cc821111ca244a01fb7f054db7523ab0a0cd837f665267eb962eb87695d71fb1e681f9e21464cc2fd7c05530dc4c81b810bca1a88f7d7186909b74477491a3c
+  languageName: node
+  linkType: hard
+
 "node-gyp@npm:^9.0.0":
   version: 9.4.1
   resolution: "node-gyp@npm:9.4.1"
@@ -30089,7 +30109,7 @@ __metadata:
     concurrently: "npm:^8.0.0"
     lerna: "npm:^7.3.0"
     license-checker: "npm:^25.0.1"
-    node-gyp: "npm:^9.0.0"
+    node-gyp: "npm:^10.0.0"
     prettier: "npm:^2.3.2"
     typescript: "npm:~5.4.0"
   languageName: unknown
