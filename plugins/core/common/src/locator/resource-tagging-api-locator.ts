@@ -11,21 +11,15 @@
  * limitations under the License.
  */
 
-import {
-  GetResourcesCommand,
-  ResourceGroupsTaggingAPIClient,
-} from '@aws-sdk/client-resource-groups-tagging-api';
 import { Logger } from 'winston';
 import { AwsResourceLocator } from '@aws/aws-core-plugin-for-backstage-common';
-import { AwsCredentialIdentityProvider } from '@aws-sdk/types';
 import { Config } from '@backstage/config';
 import { DefaultAwsCredentialsManager } from '@backstage/integration-aws-node';
-import { convertResourceTypeString, parseResourceLocatorTags } from './utils';
+import { AwsResourceTaggingApiLocatorInstance } from './resource-tagging-api-instance';
 
 export class AwsResourceTaggingApiLocator implements AwsResourceLocator {
   public constructor(
-    private readonly logger: Logger,
-    private readonly client: ResourceGroupsTaggingAPIClient,
+    private readonly instances: AwsResourceTaggingApiLocatorInstance[],
   ) {}
 
   static async fromConfig(
@@ -34,36 +28,33 @@ export class AwsResourceTaggingApiLocator implements AwsResourceLocator {
       logger: Logger;
     },
   ) {
-    let region: string | undefined;
-    let accountId: string | undefined;
+    let regions: (string | undefined)[] = [undefined];
+    let accounts: (string | undefined)[] = [undefined];
 
     const conf = config.getOptionalConfig('aws.locator.resourceTaggingApi');
 
     if (conf) {
-      accountId = conf.getOptionalString('accountId');
-      region = conf.getOptionalString('region');
+      accounts = conf.getOptionalStringArray('accounts') || [undefined];
+      regions = conf.getOptionalStringArray('regions') || [undefined];
     }
 
     const credsManager = DefaultAwsCredentialsManager.fromConfig(config);
 
-    let credentialProvider: AwsCredentialIdentityProvider;
+    const instances: AwsResourceTaggingApiLocatorInstance[] = await Promise.all(
+      accounts.flatMap(accountId => {
+        return regions.map(region => {
+          options.logger.debug(`Creating client for ${accountId} - ${region}`);
+          return AwsResourceTaggingApiLocatorInstance.create({
+            credsManager,
+            accountId,
+            region,
+            logger: options.logger,
+          });
+        });
+      }),
+    );
 
-    if (accountId) {
-      credentialProvider = (
-        await credsManager.getCredentialProvider({ accountId })
-      ).sdkCredentialProvider;
-    } else {
-      credentialProvider = (await credsManager.getCredentialProvider())
-        .sdkCredentialProvider;
-    }
-
-    const client = new ResourceGroupsTaggingAPIClient({
-      region: region,
-      customUserAgent: 'aws-resourcetaggingapi-plugin-for-backstage',
-      credentialDefaultProvider: () => credentialProvider,
-    });
-
-    return new AwsResourceTaggingApiLocator(options.logger, client);
+    return new AwsResourceTaggingApiLocator(instances);
   }
 
   async getResourceArns({
@@ -73,24 +64,10 @@ export class AwsResourceTaggingApiLocator implements AwsResourceLocator {
     resourceType: string;
     tagString: string;
   }): Promise<string[]> {
-    const TagFilters = parseResourceLocatorTags(tagString).map(e => {
-      return {
-        Key: e.key,
-        Values: [e.value],
-      };
-    });
-
-    const convertedResourceType = convertResourceTypeString(resourceType);
-
-    this.logger.debug(`Retrieving resource ARNs for ${convertedResourceType}`);
-
-    const response = await this.client.send(
-      new GetResourcesCommand({
-        ResourceTypeFilters: [convertedResourceType],
-        TagFilters,
-      }),
-    );
-
-    return response.ResourceTagMappingList!.map(e => e.ResourceARN!);
+    return (
+      await Promise.all(
+        this.instances.map(e => e.getResourceArns({ resourceType, tagString })),
+      )
+    ).flat(1);
   }
 }

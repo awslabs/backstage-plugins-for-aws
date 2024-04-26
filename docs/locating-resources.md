@@ -11,11 +11,11 @@ The mechanism documented here is designed to provide this functionality.
 
 There are three resource locator mechanisms available:
 
-| Name                   | Description                               |
-| ---------------------- | ----------------------------------------- |
-| `resource-tagging-api` | Using the AWS Resource Groups Tagging API |
-| `resource-explorer`    | Using the AWS Resource Explorer API       |
-| `aws-config`           | Using the AWS Config service              |
+| Name                 | Description                                         |
+| -------------------- | --------------------------------------------------- |
+| `resourceTaggingApi` | (Default) Using the AWS Resource Groups Tagging API |
+| `resourceExplorer`   | Using the AWS Resource Explorer API                 |
+| `awsConfig`          | Using the AWS Config service                        |
 
 By default plugins will use the [AWS Resource Groups Tagging API](https://docs.aws.amazon.com/resourcegroupstagging/latest/APIReference/overview.html) to locate resource in the same AWS account that Backstage is running. This requires no configuration on the part of the Backstage administrator and will work for simpler setups, for example within a single account.
 
@@ -33,17 +33,19 @@ The section details how to setup and configure the various resource locator mech
 
 ### Resource Tagging API
 
-This resource locator is used by default and does not require any configuration. By default it will query the API using the AWS account based on the IAM credentials provided to Backstage and the default region provided (for example with `AWS_REGION`/`AWS_DEFAULT_REGION`). However, if you wish to extend this to multiple AWS regions/accounts you can provide additional configuration:
+This resource locator is used by default and does not require any configuration. By default it will query the API using the AWS account based on the IAM credentials provided to Backstage and the default region provided (for example with `AWS_REGION`/`AWS_DEFAULT_REGION`).
+
+If you wish to extend this to multiple AWS regions/accounts you can provide additional configuration:
 
 ```yaml
 aws:
   locator:
     resourceTaggingApi:
-      # Add each additional AWS account you wish to search
+      # Add each AWS account you wish to search
       accounts:
-        - 1111111111
-        - 2222222222
-      # Add each additional AWS region you wish to search
+        - '1111111111'
+        - '2222222222'
+      # Add each AWS region you wish to search
       regions:
         - us-east-1
         - eu-west-2
