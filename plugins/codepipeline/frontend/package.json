@@ -1,6 +1,6 @@
 {
   "name": "@aws/aws-codepipeline-plugin-for-backstage",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "repository": {
     "type": "git",
     "url": "github:awslabs/backstage-plugins-for-aws",

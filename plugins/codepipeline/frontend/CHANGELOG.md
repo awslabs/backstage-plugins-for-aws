@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-codepipeline-plugin-for-backstage@0.2.1...@aws/aws-codepipeline-plugin-for-backstage@0.3.0) (2024-04-26)
+
+
+### Features
+
+* Better handling when AWS resources not found ([#90](https://github.com/awslabs/backstage-plugins-for-aws/issues/90)) ([58dbbc6](https://github.com/awslabs/backstage-plugins-for-aws/commit/58dbbc65add71bad25b4f6ad91b15b2bb49a15dd))
+
+
+
+
+
 ## [0.2.1](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-codepipeline-plugin-for-backstage@0.2.0...@aws/aws-codepipeline-plugin-for-backstage@0.2.1) (2024-04-03)
 
 
