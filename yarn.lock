@@ -1864,7 +1864,7 @@ __metadata:
     node-fetch: "npm:^2.6.7"
     supertest: "npm:^6.2.4"
     winston: "npm:^3.2.1"
-    yn: "npm:^4.0.0"
+    yn: "npm:^5.0.0"
   languageName: unknown
   linkType: soft
 
@@ -1944,7 +1944,7 @@ __metadata:
     node-fetch: "npm:^2.6.7"
     supertest: "npm:^6.2.4"
     winston: "npm:^3.2.1"
-    yn: "npm:^4.0.0"
+    yn: "npm:^5.0.0"
   languageName: unknown
   linkType: soft
 
@@ -2023,7 +2023,7 @@ __metadata:
     node-fetch: "npm:^2.6.7"
     supertest: "npm:^6.2.4"
     winston: "npm:^3.2.1"
-    yn: "npm:^4.0.0"
+    yn: "npm:^5.0.0"
   languageName: unknown
   linkType: soft
 
@@ -34247,6 +34247,13 @@ __metadata:
   version: 4.0.0
   resolution: "yn@npm:4.0.0"
   checksum: 10c0/2362e0f86dbea876d60365be56c3938922b096f6306a60f127b23439bd27af23aefb40d062148c47a398770f5a62535c93bb6b3c0281235d5019bb1796ab648e
+  languageName: node
+  linkType: hard
+
+"yn@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "yn@npm:5.0.0"
+  checksum: 10c0/1c745dc492c90ee386094bea21c154d919d2fd327129e268d35419a0631ddae34d2286f446e9e3c71ffaba0eef89b5d13b1e65d2b47f8ee1156cc473faa95fd8
   languageName: node
   linkType: hard
 
