@@ -136,6 +136,20 @@ const cicdContent = (
     </EntitySwitch.Case>
 ```
 
+Edit the same file to add the AWS CodePipeline card to the entity page:
+
+```typescript
+import { EntityAwsCodePipelineCard } from '@aws/aws-codepipeline-plugin-for-backstage';
+
+// For example in the overview section
+const overviewContent = (
+  <Grid container spacing={3} alignItems="stretch">
+  // ...
+    <Grid item md={6}>
+      <EntityAwsCodePipelineCard />
+    </Grid>
+```
+
 ## Entity annotations
 
 There are two annotations that can be used to reference CodePipeline resources for an entity.

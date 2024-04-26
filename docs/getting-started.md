@@ -45,3 +45,7 @@ The minimum recommended permissions for the Backstage IAM role are:
 ## Installing the plugins
 
 You've now covered the minimum pre-requisites to start using the plugins. Proceed to the documentation for the relevant plugin or follow the [tutorial](./tutorial.md) for a step-by-step guide to installing your first plugin.
+
+## Cross-account usage
+
+When using the tag-based annotations to reference AWS resources for entities by default the plugins are configured to use the AWS Resource Groups Tagging API to lookup AWS resources only in the same account as the AWS IAM credentials Backstage is using. If you wish to locate AWS resources across multiple AWS accounts please see the [Locating Resources](./locating-resources.md) documentation.
