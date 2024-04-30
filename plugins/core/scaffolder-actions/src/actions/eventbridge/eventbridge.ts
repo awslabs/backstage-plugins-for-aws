@@ -19,6 +19,7 @@ import {
 import { AwsCredentialsManager } from '@backstage/integration-aws-node';
 import { AwsCredentialIdentityProvider } from '@aws-sdk/types';
 import { z } from 'zod';
+import { AWS_SDK_CUSTOM_USER_AGENT } from '@aws/aws-core-plugin-for-backstage-common';
 
 export const createAwsEventBridgeEventAction = (options: {
   credsManager: AwsCredentialsManager;
@@ -75,7 +76,7 @@ export const createAwsEventBridgeEventAction = (options: {
 
       const client = new EventBridgeClient({
         region,
-        customUserAgent: 'aws-scaffolder-plugin-for-backstage',
+        customUserAgent: AWS_SDK_CUSTOM_USER_AGENT,
         credentialDefaultProvider: () => credentialProvider,
       });
       await client.send(

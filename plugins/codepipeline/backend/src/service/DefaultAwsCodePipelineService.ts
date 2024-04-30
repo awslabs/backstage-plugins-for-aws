@@ -18,6 +18,7 @@ import {
   AwsResourceLocatorFactory,
   AwsResourceLocator,
   getOneOfEntityAnnotations,
+  AWS_SDK_CUSTOM_USER_AGENT,
 } from '@aws/aws-core-plugin-for-backstage-common';
 import { AwsCredentialsManager } from '@backstage/integration-aws-node';
 import {
@@ -240,7 +241,7 @@ export class DefaultAwsCodePipelineService implements AwsCodePipelineService {
 
     return new CodePipelineClient({
       region: region,
-      customUserAgent: 'aws-codepipeline-plugin-for-backstage',
+      customUserAgent: AWS_SDK_CUSTOM_USER_AGENT,
       credentialDefaultProvider: () => credentialProvider.sdkCredentialProvider,
     });
   }

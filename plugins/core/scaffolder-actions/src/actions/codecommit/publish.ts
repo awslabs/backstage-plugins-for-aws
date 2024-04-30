@@ -23,6 +23,7 @@ import { AwsCredentialIdentityProvider } from '@aws-sdk/types';
 import fs from 'fs';
 import path from 'path';
 import { z } from 'zod';
+import { AWS_SDK_CUSTOM_USER_AGENT } from '@aws/aws-core-plugin-for-backstage-common';
 
 export const createAwsCodeCommitPublishAction = (options: {
   credsManager: AwsCredentialsManager;
@@ -124,7 +125,7 @@ export const createAwsCodeCommitPublishAction = (options: {
 
       const client = new CodeCommitClient({
         region,
-        customUserAgent: 'aws-scaffolder-plugin-for-backstage',
+        customUserAgent: AWS_SDK_CUSTOM_USER_AGENT,
         credentialDefaultProvider: () => credentialProvider,
       });
       const response = await client.send(

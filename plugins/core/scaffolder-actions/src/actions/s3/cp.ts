@@ -21,6 +21,7 @@ import fs from 'fs-extra';
 import { z } from 'zod';
 import { resolveSafeChildPath } from '@backstage/backend-common';
 import { glob } from 'glob';
+import { AWS_SDK_CUSTOM_USER_AGENT } from '@aws/aws-core-plugin-for-backstage-common';
 
 export const createAwsS3CpAction = (options: {
   credsManager: AwsCredentialsManager;
@@ -77,7 +78,7 @@ export const createAwsS3CpAction = (options: {
 
       const client = new S3Client({
         region,
-        customUserAgent: 'aws-scaffolder-plugin-for-backstage',
+        customUserAgent: AWS_SDK_CUSTOM_USER_AGENT,
         credentialDefaultProvider: () => credentialProvider,
       });
 

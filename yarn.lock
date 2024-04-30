@@ -2107,6 +2107,7 @@ __metadata:
     "@aws-sdk/client-eventbridge": "npm:^3.511.0"
     "@aws-sdk/client-s3": "npm:^3.511.0"
     "@aws-sdk/types": "npm:^3.511.0"
+    "@aws/aws-core-plugin-for-backstage-common": "workspace:^"
     "@backstage/backend-common": "npm:^0.21.6"
     "@backstage/backend-plugin-api": "npm:^0.6.16"
     "@backstage/backend-test-utils": "npm:^0.3.6"

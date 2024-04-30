@@ -18,7 +18,10 @@ import {
   paginateSelectResourceConfig,
 } from '@aws-sdk/client-config-service';
 import { Logger } from 'winston';
-import { AwsResourceLocator } from '@aws/aws-core-plugin-for-backstage-common';
+import {
+  AWS_SDK_CUSTOM_USER_AGENT,
+  AwsResourceLocator,
+} from '@aws/aws-core-plugin-for-backstage-common';
 import { AwsCredentialIdentityProvider, Paginator } from '@aws-sdk/types';
 import { Config } from '@backstage/config';
 import { DefaultAwsCredentialsManager } from '@backstage/integration-aws-node';
@@ -66,7 +69,7 @@ export class AwsConfigResourceLocator implements AwsResourceLocator {
 
     const client = new ConfigServiceClient({
       region: region,
-      customUserAgent: 'aws-config-plugin-for-backstage',
+      customUserAgent: AWS_SDK_CUSTOM_USER_AGENT,
       credentialDefaultProvider: () => credentialProvider,
     });
 

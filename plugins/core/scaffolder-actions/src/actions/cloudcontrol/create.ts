@@ -21,6 +21,7 @@ import {
 import { AwsCredentialsManager } from '@backstage/integration-aws-node';
 import { AwsCredentialIdentityProvider } from '@aws-sdk/types';
 import { z } from 'zod';
+import { AWS_SDK_CUSTOM_USER_AGENT } from '@aws/aws-core-plugin-for-backstage-common';
 
 export const createAwsCloudControlCreateAction = (options: {
   credsManager: AwsCredentialsManager;
@@ -122,7 +123,7 @@ export const createAwsCloudControlCreateAction = (options: {
 
       const client = new CloudControlClient({
         region,
-        customUserAgent: 'aws-scaffolder-plugin-for-backstage',
+        customUserAgent: AWS_SDK_CUSTOM_USER_AGENT,
         credentialDefaultProvider: () => credentialProvider,
       });
       const response = await client.send(
