@@ -16,7 +16,10 @@ import {
   SearchCommand,
 } from '@aws-sdk/client-resource-explorer-2';
 import { Logger } from 'winston';
-import { AwsResourceLocator } from '@aws/aws-core-plugin-for-backstage-common';
+import {
+  AWS_SDK_CUSTOM_USER_AGENT,
+  AwsResourceLocator,
+} from '@aws/aws-core-plugin-for-backstage-common';
 import { AwsCredentialIdentityProvider } from '@aws-sdk/types';
 import { Config } from '@backstage/config';
 import { DefaultAwsCredentialsManager } from '@backstage/integration-aws-node';
@@ -62,7 +65,7 @@ export class AwsResourceExplorerLocator implements AwsResourceLocator {
 
     const client = new ResourceExplorer2Client({
       region: region,
-      customUserAgent: 'aws-resourceexplorer-plugin-for-backstage',
+      customUserAgent: AWS_SDK_CUSTOM_USER_AGENT,
       credentialDefaultProvider: () => credentialProvider,
     });
 

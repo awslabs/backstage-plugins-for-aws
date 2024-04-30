@@ -11,6 +11,4 @@
  * limitations under the License.
  */
 
-export * from './locator';
-export * from './utils';
-export * from './constants';
+export const AWS_SDK_CUSTOM_USER_AGENT = 'backstage-plugins-for-aws';

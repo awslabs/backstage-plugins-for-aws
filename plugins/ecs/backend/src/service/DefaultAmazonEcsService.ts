@@ -25,6 +25,7 @@ import {
   AwsResourceLocatorFactory,
   AwsResourceLocator,
   getOneOfEntityAnnotations,
+  AWS_SDK_CUSTOM_USER_AGENT,
 } from '@aws/aws-core-plugin-for-backstage-common';
 import {
   AWS_ECS_SERVICE_ARN_ANNOTATION,
@@ -171,7 +172,7 @@ export class DefaultAmazonEcsService implements AmazonECSService {
 
     const client = new ECSClient({
       region: region,
-      customUserAgent: 'aws-ecs-plugin-for-backstage',
+      customUserAgent: AWS_SDK_CUSTOM_USER_AGENT,
       credentialDefaultProvider: () => credentialProvider,
     });
 
