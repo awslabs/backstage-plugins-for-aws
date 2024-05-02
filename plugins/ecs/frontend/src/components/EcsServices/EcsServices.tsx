@@ -323,7 +323,6 @@ const EcsServicesContent = ({ response }: EcsServicesContentProps) => {
                               <Table
                                 options={{
                                   paging: true,
-                                  search: false,
                                   emptyRowsWhenPaging: false,
                                   toolbar: false,
                                 }}
