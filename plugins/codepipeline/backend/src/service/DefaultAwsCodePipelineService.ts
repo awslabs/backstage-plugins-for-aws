@@ -36,6 +36,7 @@ import {
 } from '@aws-sdk/client-codepipeline';
 import {
   AWS_CODEPIPELINE_ARN_ANNOTATION,
+  AWS_CODEPIPELINE_ARN_ANNOTATION_LEGACY,
   AWS_CODEPIPELINE_TAGS_ANNOTATION,
   PipelineExecutionsResponse,
   PipelineStateResponse,
@@ -211,6 +212,7 @@ export class DefaultAwsCodePipelineService implements AwsCodePipelineService {
     const annotation = getOneOfEntityAnnotations(entity, [
       AWS_CODEPIPELINE_ARN_ANNOTATION,
       AWS_CODEPIPELINE_TAGS_ANNOTATION,
+      AWS_CODEPIPELINE_ARN_ANNOTATION_LEGACY,
     ]);
 
     if (!annotation) {

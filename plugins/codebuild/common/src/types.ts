@@ -17,6 +17,8 @@ export const AWS_CODEBUILD_ARN_ANNOTATION =
   'aws.amazon.com/aws-codebuild-project-arn';
 export const AWS_CODEBUILD_TAGS_ANNOTATION =
   'aws.amazon.com/aws-codebuild-project-tags';
+export const AWS_CODEBUILD_ARN_ANNOTATION_LEGACY =
+  'aws.amazon.com/aws-codebuild-project';
 
 export interface ProjectResponse {
   project: Project;
