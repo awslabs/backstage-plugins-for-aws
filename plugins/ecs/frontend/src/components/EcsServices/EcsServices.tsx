@@ -18,10 +18,11 @@ import {
   AccordionSummary,
   Grid,
   LinearProgress,
+  Paper,
   Typography,
 } from '@material-ui/core';
 import {
-  ContentHeader,
+  InfoCard,
   ResponseErrorPanel,
   StatusAborted,
   StatusError,
@@ -303,7 +304,7 @@ const EcsServicesContent = ({ response }: EcsServicesContentProps) => {
     <>
       {response.clusters.map(e => {
         return (
-          <Accordion key="{e}">
+          <Accordion key="{e}" elevation={0}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <ClusterSummary cluster={e} />
             </AccordionSummary>
@@ -312,7 +313,7 @@ const EcsServicesContent = ({ response }: EcsServicesContentProps) => {
                 <Grid item>
                   {e.services.map(s => {
                     return (
-                      <Accordion key="{s}">
+                      <Accordion key="{s}" elevation={0}>
                         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                           <ServiceSummary service={s.service} />
                         </AccordionSummary>
@@ -324,9 +325,15 @@ const EcsServicesContent = ({ response }: EcsServicesContentProps) => {
                                   paging: true,
                                   search: false,
                                   emptyRowsWhenPaging: false,
+                                  toolbar: false,
                                 }}
                                 data={s.tasks}
                                 columns={columns}
+                                components={{
+                                  Container: props => (
+                                    <Paper {...props} elevation={0} />
+                                  ),
+                                }}
                               />
                             </Grid>
                           </Grid>
@@ -349,9 +356,10 @@ const EcsServicesWrapper = ({ response }: EcsServicesContentProps) => {
 
   return (
     <>
-      <ContentHeader title="Amazon ECS Services" />
       {hasClusters ? (
-        <EcsServicesContent response={response} />
+        <InfoCard title="Amazon ECS Services">
+          <EcsServicesContent response={response} />
+        </InfoCard>
       ) : (
         <MissingResources />
       )}
