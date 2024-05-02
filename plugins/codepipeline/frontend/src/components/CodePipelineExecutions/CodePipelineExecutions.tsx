@@ -22,7 +22,6 @@ import {
   Table,
   SubvalueCell,
   ResponseErrorPanel,
-  ContentHeader,
 } from '@backstage/core-components';
 import { PipelineExecutionSummary } from '@aws-sdk/client-codepipeline';
 import { PipelineStageStatus } from '../PipelineStageStatus';
@@ -140,6 +139,7 @@ const CodePipelineExecutionsTable = ({
     <Table
       data={response.pipelineExecutions}
       columns={generatedColumns(response.pipelineName, response.pipelineArn)}
+      title="AWS CodePipeline"
     />
   );
 };
@@ -204,17 +204,6 @@ const CodePipelineExecutionsContent = ({
   return <CodePipelineMultipleExecutionsContent response={response} />;
 };
 
-const CodePipelineExecutionsWrapper = ({
-  response,
-}: CodePipelineExecutionsContentProps) => {
-  return (
-    <>
-      <ContentHeader title="AWS CodePipeline" />
-      <CodePipelineExecutionsContent response={response} />
-    </>
-  );
-};
-
 type CodePipelineExecutionsProps = {
   entity: Entity;
 };
@@ -232,5 +221,5 @@ export const CodePipelineExecutions = ({
     return <LinearProgress />;
   }
 
-  return <CodePipelineExecutionsWrapper response={response!} />;
+  return <CodePipelineExecutionsContent response={response!} />;
 };
