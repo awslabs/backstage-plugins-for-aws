@@ -37,6 +37,7 @@ import {
 } from '@aws-sdk/client-codebuild';
 import {
   AWS_CODEBUILD_ARN_ANNOTATION,
+  AWS_CODEBUILD_ARN_ANNOTATION_LEGACY,
   AWS_CODEBUILD_TAGS_ANNOTATION,
   ProjectsResponse,
 } from '@aws/aws-codebuild-plugin-for-backstage-common';
@@ -164,6 +165,7 @@ export class DefaultAwsCodeBuildService implements AwsCodeBuildService {
     const annotation = getOneOfEntityAnnotations(entity, [
       AWS_CODEBUILD_ARN_ANNOTATION,
       AWS_CODEBUILD_TAGS_ANNOTATION,
+      AWS_CODEBUILD_ARN_ANNOTATION_LEGACY,
     ]);
 
     if (!annotation) {

@@ -31,6 +31,7 @@ import {
 } from '@aws-sdk/client-codebuild';
 import {
   AWS_CODEBUILD_ARN_ANNOTATION,
+  AWS_CODEBUILD_ARN_ANNOTATION_LEGACY,
   AWS_CODEBUILD_TAGS_ANNOTATION,
   mockCodeBuildProject,
   mockCodeBuildProjectBuild,
@@ -222,6 +223,72 @@ describe('DefaultAwsCodeBuildService', () => {
           metadata: {
             annotations: {
               [AWS_CODEBUILD_ARN_ANNOTATION]:
+                'arn:aws:codebuild:us-west-2:1234567890:project/project1',
+            },
+          },
+        },
+      );
+
+      const response = await service.getProjectsByEntity({ entityRef });
+
+      expect(response.projects.length).toBe(1);
+
+      await expect(response).toMatchObject({
+        projects: [
+          {
+            project: project1,
+            builds: project1Builds.slice(0, 5),
+          },
+        ],
+      });
+
+      expect(mockResourceLocator.getResourceArns).toHaveBeenCalledTimes(0);
+    });
+  });
+
+  describe('by arn (legacy)', () => {
+    it('returns ok', async () => {
+      const { project: project1, projectBuilds: project1Builds } =
+        setupCodeBuildProjectMock('project1', 5);
+
+      const service = await configureProvider(
+        {},
+        {
+          metadata: {
+            annotations: {
+              [AWS_CODEBUILD_ARN_ANNOTATION_LEGACY]:
+                'arn:aws:codebuild:us-west-2:1234567890:project/project1',
+            },
+          },
+        },
+      );
+
+      const response = await service.getProjectsByEntity({ entityRef });
+
+      expect(response.projects.length).toBe(1);
+
+      await expect(response).toMatchObject({
+        projects: [
+          {
+            project: project1,
+            builds: project1Builds,
+          },
+        ],
+      });
+
+      expect(mockResourceLocator.getResourceArns).toHaveBeenCalledTimes(0);
+    });
+
+    it('returns max 5 builds', async () => {
+      const { project: project1, projectBuilds: project1Builds } =
+        setupCodeBuildProjectMock('project1', 10);
+
+      const service = await configureProvider(
+        {},
+        {
+          metadata: {
+            annotations: {
+              [AWS_CODEBUILD_ARN_ANNOTATION_LEGACY]:
                 'arn:aws:codebuild:us-west-2:1234567890:project/project1',
             },
           },
