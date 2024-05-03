@@ -12277,8 +12277,8 @@ __metadata:
   linkType: hard
 
 "@testing-library/jest-dom@npm:^6.0.0":
-  version: 6.4.2
-  resolution: "@testing-library/jest-dom@npm:6.4.2"
+  version: 6.4.3
+  resolution: "@testing-library/jest-dom@npm:6.4.3"
   dependencies:
     "@adobe/css-tools": "npm:^4.3.2"
     "@babel/runtime": "npm:^7.9.2"
@@ -12286,7 +12286,7 @@ __metadata:
     chalk: "npm:^3.0.0"
     css.escape: "npm:^1.5.1"
     dom-accessibility-api: "npm:^0.6.3"
-    lodash: "npm:^4.17.15"
+    lodash: "npm:^4.17.21"
     redent: "npm:^3.0.0"
   peerDependencies:
     "@jest/globals": ">= 28"
@@ -12305,7 +12305,7 @@ __metadata:
       optional: true
     vitest:
       optional: true
-  checksum: 10c0/e7eba527b34ce30cde94424d2ec685bdfed51daaafb7df9b68b51aec6052e99a50c8bfe654612dacdf857a1eb81d68cf294fc89de558ee3a992bf7a6019fffcc
+  checksum: 10c0/791a3b7db8b60c2023f38205eebc795fa883887e8c7f819770d46271af7c154313eb30c32957cfd1788288543379110b3aaa5b8b074aa9fd5c7ed9838ef5b582
   languageName: node
   linkType: hard
 
