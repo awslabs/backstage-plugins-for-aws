@@ -13,6 +13,7 @@
 
 import {
   AWS_CODEBUILD_ARN_ANNOTATION,
+  AWS_CODEBUILD_ARN_ANNOTATION_LEGACY,
   AWS_CODEBUILD_TAGS_ANNOTATION,
 } from '@aws/aws-codebuild-plugin-for-backstage-common';
 import { getOneOfEntityAnnotations } from '@aws/aws-core-plugin-for-backstage-common';
@@ -31,6 +32,7 @@ export const isAwsCodeBuildAvailable = (entity: Entity) =>
   getOneOfEntityAnnotations(entity, [
     AWS_CODEBUILD_ARN_ANNOTATION,
     AWS_CODEBUILD_TAGS_ANNOTATION,
+    AWS_CODEBUILD_ARN_ANNOTATION_LEGACY,
   ]) !== undefined;
 
 export const awsCodeBuildPlugin = createPlugin({

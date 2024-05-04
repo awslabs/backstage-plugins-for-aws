@@ -20,6 +20,7 @@ import {
 import { Entity } from '@backstage/catalog-model';
 import {
   AWS_CODEPIPELINE_ARN_ANNOTATION,
+  AWS_CODEPIPELINE_ARN_ANNOTATION_LEGACY,
   AWS_CODEPIPELINE_TAGS_ANNOTATION,
 } from '../types';
 
@@ -171,6 +172,24 @@ export const mockEntityWithArn: Entity = {
     description: 'backstage.io',
     annotations: {
       [AWS_CODEPIPELINE_ARN_ANNOTATION]:
+        'arn:aws:codepipeline:us-west-2:1234567890:pipeline1',
+    },
+  },
+  spec: {
+    lifecycle: 'production',
+    type: 'service',
+    owner: 'user:guest',
+  },
+};
+
+export const mockEntityWithArnLegacy: Entity = {
+  apiVersion: 'backstage.io/v1alpha1',
+  kind: 'Component',
+  metadata: {
+    name: 'backstage',
+    description: 'backstage.io',
+    annotations: {
+      [AWS_CODEPIPELINE_ARN_ANNOTATION_LEGACY]:
         'arn:aws:codepipeline:us-west-2:1234567890:pipeline1',
     },
   },

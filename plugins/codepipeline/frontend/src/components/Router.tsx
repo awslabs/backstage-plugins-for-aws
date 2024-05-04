@@ -21,6 +21,7 @@ import {
 import { getOneOfEntityAnnotations } from '@aws/aws-core-plugin-for-backstage-common';
 import {
   AWS_CODEPIPELINE_ARN_ANNOTATION,
+  AWS_CODEPIPELINE_ARN_ANNOTATION_LEGACY,
   AWS_CODEPIPELINE_TAGS_ANNOTATION,
 } from '@aws/aws-codepipeline-plugin-for-backstage-common';
 import { CodePipelineExecutions } from './CodePipelineExecutions';
@@ -29,6 +30,7 @@ export const isAwsCodePipelineAvailable = (entity: Entity) =>
   getOneOfEntityAnnotations(entity, [
     AWS_CODEPIPELINE_ARN_ANNOTATION,
     AWS_CODEPIPELINE_TAGS_ANNOTATION,
+    AWS_CODEPIPELINE_ARN_ANNOTATION_LEGACY,
   ]) !== undefined;
 
 export const Router = () => {

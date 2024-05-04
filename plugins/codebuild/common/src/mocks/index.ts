@@ -15,6 +15,7 @@ import { Build, Project } from '@aws-sdk/client-codebuild';
 import { Entity } from '@backstage/catalog-model';
 import {
   AWS_CODEBUILD_ARN_ANNOTATION,
+  AWS_CODEBUILD_ARN_ANNOTATION_LEGACY,
   AWS_CODEBUILD_TAGS_ANNOTATION,
 } from '../types';
 
@@ -285,6 +286,24 @@ export const mockEntityWithArn: Entity = {
     description: 'backstage.io',
     annotations: {
       [AWS_CODEBUILD_ARN_ANNOTATION]:
+        'arn:aws:codebuild:us-west-2:1234567890:project/mock',
+    },
+  },
+  spec: {
+    lifecycle: 'production',
+    type: 'service',
+    owner: 'user:guest',
+  },
+};
+
+export const mockEntityWithArnLegacy: Entity = {
+  apiVersion: 'backstage.io/v1alpha1',
+  kind: 'Component',
+  metadata: {
+    name: 'backstage',
+    description: 'backstage.io',
+    annotations: {
+      [AWS_CODEBUILD_ARN_ANNOTATION_LEGACY]:
         'arn:aws:codebuild:us-west-2:1234567890:project/mock',
     },
   },
