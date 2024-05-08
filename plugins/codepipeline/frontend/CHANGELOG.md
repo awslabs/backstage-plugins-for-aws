@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.4.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-codepipeline-plugin-for-backstage@0.3.0...@aws/aws-codepipeline-plugin-for-backstage@0.4.0) (2024-05-08)
+
+
+### Features
+
+* Make CodePipeline and CodeBuild annotations backwards-compatible ([#109](https://github.com/awslabs/backstage-plugins-for-aws/issues/109)) ([a7fccbf](https://github.com/awslabs/backstage-plugins-for-aws/commit/a7fccbff5d52e1a1c3820b57152cb77e6373672d))
+
+
+
+
+
 # [0.3.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-codepipeline-plugin-for-backstage@0.2.1...@aws/aws-codepipeline-plugin-for-backstage@0.3.0) (2024-04-26)
 
 

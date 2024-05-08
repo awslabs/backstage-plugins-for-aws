@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.4.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-codebuild-plugin-for-backstage-backend@0.3.1...@aws/aws-codebuild-plugin-for-backstage-backend@0.4.0) (2024-05-08)
+
+
+### Bug Fixes
+
+* Consistent user agent header for all AWS API calls ([#104](https://github.com/awslabs/backstage-plugins-for-aws/issues/104)) ([3fbd5c7](https://github.com/awslabs/backstage-plugins-for-aws/commit/3fbd5c7fcc9c7095d7eff5fb2bacc77fda9e5a81))
+
+
+### Features
+
+* Make CodePipeline and CodeBuild annotations backwards-compatible ([#109](https://github.com/awslabs/backstage-plugins-for-aws/issues/109)) ([a7fccbf](https://github.com/awslabs/backstage-plugins-for-aws/commit/a7fccbff5d52e1a1c3820b57152cb77e6373672d))
+
+
+
+
+
 ## [0.3.1](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-codebuild-plugin-for-backstage-backend@0.3.0...@aws/aws-codebuild-plugin-for-backstage-backend@0.3.1) (2024-04-26)
 
 **Note:** Version bump only for package @aws/aws-codebuild-plugin-for-backstage-backend

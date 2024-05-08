@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.3](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-core-plugin-for-backstage-scaffolder-actions@0.2.2...@aws/aws-core-plugin-for-backstage-scaffolder-actions@0.2.3) (2024-05-08)
+
+
+### Bug Fixes
+
+* Consistent user agent header for all AWS API calls ([#104](https://github.com/awslabs/backstage-plugins-for-aws/issues/104)) ([3fbd5c7](https://github.com/awslabs/backstage-plugins-for-aws/commit/3fbd5c7fcc9c7095d7eff5fb2bacc77fda9e5a81))
+
+
+
+
+
 ## [0.2.2](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-core-plugin-for-backstage-scaffolder-actions@0.2.1...@aws/aws-core-plugin-for-backstage-scaffolder-actions@0.2.2) (2024-04-11)
 
 

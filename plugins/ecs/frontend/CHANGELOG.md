@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.1](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/amazon-ecs-plugin-for-backstage@0.3.0...@aws/amazon-ecs-plugin-for-backstage@0.3.1) (2024-05-08)
+
+**Note:** Version bump only for package @aws/amazon-ecs-plugin-for-backstage
+
+
+
+
+
 # [0.3.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/amazon-ecs-plugin-for-backstage@0.2.1...@aws/amazon-ecs-plugin-for-backstage@0.3.0) (2024-04-26)
 
 
