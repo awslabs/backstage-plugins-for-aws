@@ -29,6 +29,8 @@ import { formatTime } from '../../util';
 import { Entity } from '@backstage/catalog-model';
 import { usePipelineExecutions } from '../../hooks';
 import { MissingResources } from '@aws/aws-core-plugin-for-backstage-react';
+import { configApiRef, useApi } from '@backstage/core-plugin-api';
+import { parseArn } from '@aws/aws-core-plugin-for-backstage-common';
 
 const renderTrigger = (
   row: Partial<PipelineExecutionSummary>,
@@ -78,7 +80,12 @@ const renderTrigger = (
   return '-';
 };
 
-const generatedColumns = (pipelineName: string, region: string) => {
+const generatedColumns = (
+  pipelineName: string,
+  region: string,
+  accountId: string,
+  ssoSubdomain?: string,
+) => {
   return [
     {
       title: 'Execution',
@@ -86,12 +93,14 @@ const generatedColumns = (pipelineName: string, region: string) => {
 
       render: (row: Partial<PipelineExecutionSummary>) => {
         if (row.pipelineExecutionId) {
+          const url = `https://${region}.console.aws.amazon.com/codesuite/codepipeline/pipelines/${pipelineName}/executions/${row.pipelineExecutionId}/timeline?region=${region}`;
+          const ssoUrl = `https://${ssoSubdomain}.awsapps.com/start/#/console?account_id=${accountId}&destination=${encodeURIComponent(
+            url,
+          )}`;
+
           return (
             <>
-              <Link
-                href={`https://${region}.console.aws.amazon.com/codesuite/codepipeline/pipelines/${pipelineName}/executions/${row.pipelineExecutionId}/timeline?region=${region}`}
-                target="_blank"
-              >
+              <Link href={ssoSubdomain ? ssoUrl : url} target="_blank">
                 {row.pipelineExecutionId}
               </Link>
             </>
@@ -135,10 +144,19 @@ type CodePipelineExecutionsTableProps = {
 const CodePipelineExecutionsTable = ({
   response,
 }: CodePipelineExecutionsTableProps) => {
+  const configApi = useApi(configApiRef);
+  const ssoSubdomain = configApi.getOptionalString('aws.sso.subdomain');
+  const { accountId } = parseArn(response.pipelineArn);
+
   return (
     <Table
       data={response.pipelineExecutions}
-      columns={generatedColumns(response.pipelineName, response.pipelineArn)}
+      columns={generatedColumns(
+        response.pipelineName,
+        response.pipelineRegion,
+        accountId,
+        ssoSubdomain,
+      )}
       title="AWS CodePipeline"
     />
   );

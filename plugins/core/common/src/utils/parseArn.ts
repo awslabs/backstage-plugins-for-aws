@@ -11,5 +11,30 @@
  * limitations under the License.
  */
 
-export * from './getOneOfEntityAnnotations';
-export * from './parseArn';
+const ARN_REGEX =
+  /^arn:([^:\n]*):([^:\n]*):([^:\n]*):([^:\n]*):(([^:\/\n]*)[:\/])?(.*)$/;
+
+export function parseArn(arn: string): {
+  partition: string;
+  service: string;
+  region: string;
+  accountId: string;
+  resourceType?: string;
+  resource: string;
+} {
+  const match = arn.match(ARN_REGEX);
+
+  if (!match) throw new Error(`Invalid ARN: ${arn}`);
+
+  const [, partition, service, region, accountId, , resourceType, resource] =
+    match;
+
+  return {
+    partition,
+    service,
+    region,
+    accountId,
+    resourceType,
+    resource,
+  };
+}
