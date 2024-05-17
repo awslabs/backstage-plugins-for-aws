@@ -30,7 +30,10 @@ import { Entity } from '@backstage/catalog-model';
 import { usePipelineExecutions } from '../../hooks';
 import { MissingResources } from '@aws/aws-core-plugin-for-backstage-react';
 import { configApiRef, useApi } from '@backstage/core-plugin-api';
-import { parseArn } from '@aws/aws-core-plugin-for-backstage-common';
+import {
+  generateShortcutLink,
+  parseArn,
+} from '@aws/aws-core-plugin-for-backstage-common';
 
 const renderTrigger = (
   row: Partial<PipelineExecutionSummary>,
@@ -94,13 +97,17 @@ const generatedColumns = (
       render: (row: Partial<PipelineExecutionSummary>) => {
         if (row.pipelineExecutionId) {
           const projectUrl = `https://${region}.console.aws.amazon.com/codesuite/codepipeline/pipelines/${pipelineName}/executions/${row.pipelineExecutionId}/timeline?region=${region}`;
-          const ssoUrl = `https://${ssoSubdomain}.awsapps.com/start/#/console?account_id=${accountId}&destination=${encodeURIComponent(
-            projectUrl,
-          )}`;
 
           return (
             <>
-              <Link href={ssoSubdomain ? ssoUrl : projectUrl} target="_blank">
+              <Link
+                href={
+                  ssoSubdomain
+                    ? generateShortcutLink(ssoSubdomain, accountId, projectUrl)
+                    : projectUrl
+                }
+                target="_blank"
+              >
                 {row.pipelineExecutionId}
               </Link>
             </>

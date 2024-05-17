@@ -39,6 +39,7 @@ import { BuildStatus } from '../BuildStatus';
 import { useProjects } from '../../hooks';
 import { formatTime, getDurationFromStringDates } from '../../util';
 import { useApi, configApiRef } from '@backstage/core-plugin-api';
+import { generateShortcutLink } from '@aws/aws-core-plugin-for-backstage-common';
 
 const generatedColumns = (
   region: string,
@@ -52,11 +53,16 @@ const generatedColumns = (
       field: 'id',
       render: (row: Partial<Build>) => {
         const projectUrl = `https://${region}.console.aws.amazon.com/codesuite/codebuild/${accountId}/projects/${project}/build/${row.id}/?region=${region}`;
-        const ssoUrl = `https://${ssoSubdomain}.awsapps.com/start/#/console?account_id=${accountId}&destination=${encodeURIComponent(
-          projectUrl,
-        )}`;
+
         return (
-          <Link href={ssoSubdomain ? ssoUrl : projectUrl} target="_blank">
+          <Link
+            href={
+              ssoSubdomain
+                ? generateShortcutLink(ssoSubdomain, accountId, projectUrl)
+                : projectUrl
+            }
+            target="_blank"
+          >
             #{row.buildNumber}
           </Link>
         );
@@ -122,16 +128,24 @@ export const ProjectWidgetContent = ({
   const ssoSubdomain = configApi.getOptionalString('aws.sso.subdomain');
 
   const projectUrl = `https://${project.projectRegion}.console.aws.amazon.com/codesuite/codebuild/${project.projectAccountId}/projects/${project.projectName}/?region=${project.projectRegion}`;
-  const ssoUrl = `https://${ssoSubdomain}.awsapps.com/start/#/console?account_id=${
-    project.projectAccountId
-  }&destination=${encodeURIComponent(projectUrl)}`;
 
   return (
     <div>
       <Box sx={{ m: 2 }}>
         <Grid container>
           <AboutField label="Project Name" gridSizes={{ md: 12 }}>
-            <Link href={ssoSubdomain ? ssoUrl : projectUrl} target="_blank">
+            <Link
+              href={
+                ssoSubdomain
+                  ? generateShortcutLink(
+                      ssoSubdomain,
+                      project.projectAccountId,
+                      projectUrl,
+                    )
+                  : projectUrl
+              }
+              target="_blank"
+            >
               {project.projectName}
             </Link>
           </AboutField>
