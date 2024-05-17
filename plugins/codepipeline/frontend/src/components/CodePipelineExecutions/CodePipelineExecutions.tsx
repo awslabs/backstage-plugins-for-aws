@@ -93,14 +93,14 @@ const generatedColumns = (
 
       render: (row: Partial<PipelineExecutionSummary>) => {
         if (row.pipelineExecutionId) {
-          const url = `https://${region}.console.aws.amazon.com/codesuite/codepipeline/pipelines/${pipelineName}/executions/${row.pipelineExecutionId}/timeline?region=${region}`;
+          const projectUrl = `https://${region}.console.aws.amazon.com/codesuite/codepipeline/pipelines/${pipelineName}/executions/${row.pipelineExecutionId}/timeline?region=${region}`;
           const ssoUrl = `https://${ssoSubdomain}.awsapps.com/start/#/console?account_id=${accountId}&destination=${encodeURIComponent(
-            url,
+            projectUrl,
           )}`;
 
           return (
             <>
-              <Link href={ssoSubdomain ? ssoUrl : url} target="_blank">
+              <Link href={ssoSubdomain ? ssoUrl : projectUrl} target="_blank">
                 {row.pipelineExecutionId}
               </Link>
             </>
