@@ -38,6 +38,7 @@ import { Build } from '@aws-sdk/client-codebuild';
 import { BuildStatus } from '../BuildStatus';
 import { useProjects } from '../../hooks';
 import { formatTime, getDurationFromStringDates } from '../../util';
+import { useApi, configApiRef } from '@backstage/core-plugin-api';
 
 const generatedColumns = (
   region: string,
@@ -115,14 +116,20 @@ export const ProjectWidgetContent = ({
 }: {
   project: ProjectResponse;
 }) => {
+  const configApi = useApi(configApiRef);
+  const ssoSubdomain = configApi.getOptionalString('aws.sso.subdomain');
+
   const projectUrl = `https://${project.projectRegion}.console.aws.amazon.com/codesuite/codebuild/${project.projectAccountId}/projects/${project.projectName}/?region=${project.projectRegion}`;
+  const ssoUrl = `https://${ssoSubdomain}.awsapps.com/start/#/console?account_id=${
+    project.projectAccountId
+  }&destination=${encodeURIComponent(projectUrl)}`;
 
   return (
     <div>
       <Box sx={{ m: 2 }}>
         <Grid container>
           <AboutField label="Project Name" gridSizes={{ md: 12 }}>
-            <Link href={projectUrl} target="_blank">
+            <Link href={ssoSubdomain ? ssoUrl : projectUrl} target="_blank">
               {project.projectName}
             </Link>
           </AboutField>
