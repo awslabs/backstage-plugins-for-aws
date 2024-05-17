@@ -183,3 +183,13 @@ spec:
   type: service
   # ...
 ```
+
+## IAM Identity Center shortcut links
+
+As a user of [IAM Identity Center](https://docs.aws.amazon.com/singlesignon/latest/userguide/what-is.html), you can make use of [shortcut links](https://docs.aws.amazon.com/singlesignon/latest/userguide/createshortcutlink.html) by adding your AWS access portal subdomain to your `app-config.yaml`:
+
+```yaml
+aws:
+  sso:
+    subdomain: d-xxxxxxxxxx
+```
