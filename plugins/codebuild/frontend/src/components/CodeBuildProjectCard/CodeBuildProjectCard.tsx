@@ -44,17 +44,19 @@ const generatedColumns = (
   region: string,
   project: string,
   accountId: string,
+  ssoSubdomain?: string,
 ) => {
   return [
     {
       title: 'Build run',
       field: 'id',
       render: (row: Partial<Build>) => {
+        const projectUrl = `https://${region}.console.aws.amazon.com/codesuite/codebuild/${accountId}/projects/${project}/build/${row.id}/?region=${region}`;
+        const ssoUrl = `https://${ssoSubdomain}.awsapps.com/start/#/console?account_id=${accountId}&destination=${encodeURIComponent(
+          projectUrl,
+        )}`;
         return (
-          <Link
-            href={`https://${region}.console.aws.amazon.com/codesuite/codebuild/${accountId}/projects/${project}/build/${row.id}/?region=${region}`}
-            target="_blank"
-          >
+          <Link href={ssoSubdomain ? ssoUrl : projectUrl} target="_blank">
             #{row.buildNumber}
           </Link>
         );
@@ -162,6 +164,7 @@ export const ProjectWidgetContent = ({
           project.projectRegion,
           project.project.name!,
           project.projectAccountId,
+          ssoSubdomain,
         )}
       />
     </div>
