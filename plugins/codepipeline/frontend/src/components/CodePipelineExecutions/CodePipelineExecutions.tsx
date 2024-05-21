@@ -30,10 +30,8 @@ import { Entity } from '@backstage/catalog-model';
 import { usePipelineExecutions } from '../../hooks';
 import { MissingResources } from '@aws/aws-core-plugin-for-backstage-react';
 import { configApiRef, useApi } from '@backstage/core-plugin-api';
-import {
-  generateShortcutLink,
-  parseArn,
-} from '@aws/aws-core-plugin-for-backstage-common';
+import { generateShortcutLink } from '@aws/aws-core-plugin-for-backstage-common';
+import { parse } from '@aws-sdk/util-arn-parser';
 
 const renderTrigger = (
   row: Partial<PipelineExecutionSummary>,
@@ -153,7 +151,7 @@ const CodePipelineExecutionsTable = ({
 }: CodePipelineExecutionsTableProps) => {
   const configApi = useApi(configApiRef);
   const ssoSubdomain = configApi.getOptionalString('aws.sso.subdomain');
-  const { accountId } = parseArn(response.pipelineArn);
+  const { accountId } = parse(response.pipelineArn);
 
   return (
     <Table

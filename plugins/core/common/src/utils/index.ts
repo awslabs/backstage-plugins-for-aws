@@ -12,5 +12,4 @@
  */
 
 export * from './getOneOfEntityAnnotations';
-export * from './parseArn';
 export * from './generateShortcutLink';
