@@ -72,8 +72,8 @@ export const Root = ({ children }: PropsWithChildren<{}>) => (
         <SidebarItem icon={CreateComponentIcon} to="create" text="Create..." />
         <SidebarItem
           icon={ChatIcon}
-          to="amazon-qbusiness"
-          text="Amazon Q Chat"
+          to="amazon-bedrock-agent"
+          text="Amazon Bedrock Agent"
         />
         {/* End global nav */}
         <SidebarDivider />
