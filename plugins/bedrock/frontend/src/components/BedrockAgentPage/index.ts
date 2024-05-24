@@ -1,0 +1,1 @@
+export { BedrockAgentPage } from './BedrockAgentPage';

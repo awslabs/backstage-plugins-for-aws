@@ -19,6 +19,7 @@ import { Logger } from 'winston';
 import { AwsCredentialIdentityProvider } from '@aws-sdk/types';
 import { DefaultAwsCredentialsManager } from '@backstage/integration-aws-node';
 import { convertResourceTypeString, parseResourceLocatorTags } from './utils';
+import { AWS_SDK_CUSTOM_USER_AGENT } from '../constants';
 
 export class AwsResourceTaggingApiLocatorInstance {
   public constructor(
@@ -49,7 +50,7 @@ export class AwsResourceTaggingApiLocatorInstance {
 
     const client = new ResourceGroupsTaggingAPIClient({
       region: region,
-      customUserAgent: 'aws-resourcetaggingapi-plugin-for-backstage',
+      customUserAgent: AWS_SDK_CUSTOM_USER_AGENT,
       credentialDefaultProvider: () => credentialProvider,
     });
 

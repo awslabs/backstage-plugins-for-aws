@@ -1,0 +1,1 @@
+export { ChatHistoryComponent } from './ChatHistoryComponent';

@@ -16,6 +16,7 @@
     "build-image": "docker build ../.. -f Dockerfile --tag backstage"
   },
   "dependencies": {
+    "@aws/amazon-bedrock-plugin-for-backstage-backend": "workspace:^",
     "@aws/amazon-ecs-plugin-for-backstage-backend": "workspace:^",
     "@aws/aws-codebuild-plugin-for-backstage-backend": "workspace:^",
     "@aws/aws-codepipeline-plugin-for-backstage-backend": "workspace:^",
