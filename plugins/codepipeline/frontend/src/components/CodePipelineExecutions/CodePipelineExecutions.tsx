@@ -138,7 +138,7 @@ const CodePipelineExecutionsTable = ({
   return (
     <Table
       data={response.pipelineExecutions}
-      columns={generatedColumns(response.pipelineName, response.pipelineArn)}
+      columns={generatedColumns(response.pipelineName, response.pipelineRegion)}
       title="AWS CodePipeline"
     />
   );
