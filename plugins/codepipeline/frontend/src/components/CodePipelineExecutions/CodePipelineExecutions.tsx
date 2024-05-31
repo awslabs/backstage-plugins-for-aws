@@ -182,6 +182,7 @@ const CodePipelineMultipleExecutionsContent = ({
     <>
       <Box marginBottom={2}>
         <Select
+          data-testid="select-pipeline"
           value={selected.pipelineArn}
           onChange={e =>
             setSelected(
