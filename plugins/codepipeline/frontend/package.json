@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-codepipeline": "^3.511.0",
+    "@aws-sdk/util-arn-parser": "^3.568.0",
     "@aws/aws-codepipeline-plugin-for-backstage-common": "workspace:^",
     "@aws/aws-core-plugin-for-backstage-common": "workspace:^",
     "@aws/aws-core-plugin-for-backstage-react": "workspace:^",
@@ -61,6 +62,8 @@
     "msw": "^1.0.0"
   },
   "files": [
-    "dist"
-  ]
+    "dist",
+    "config.d.ts"
+  ],
+  "configSchema": "config.d.ts"
 }

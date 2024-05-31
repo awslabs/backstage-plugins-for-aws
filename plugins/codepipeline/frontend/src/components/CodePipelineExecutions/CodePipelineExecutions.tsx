@@ -29,6 +29,9 @@ import { formatTime } from '../../util';
 import { Entity } from '@backstage/catalog-model';
 import { usePipelineExecutions } from '../../hooks';
 import { MissingResources } from '@aws/aws-core-plugin-for-backstage-react';
+import { configApiRef, useApi } from '@backstage/core-plugin-api';
+import { generateShortcutLink } from '@aws/aws-core-plugin-for-backstage-common';
+import { parse } from '@aws-sdk/util-arn-parser';
 
 const renderTrigger = (
   row: Partial<PipelineExecutionSummary>,
@@ -78,7 +81,12 @@ const renderTrigger = (
   return '-';
 };
 
-const generatedColumns = (pipelineName: string, region: string) => {
+const generatedColumns = (
+  pipelineName: string,
+  region: string,
+  accountId: string,
+  ssoSubdomain?: string,
+) => {
   return [
     {
       title: 'Execution',
@@ -86,10 +94,16 @@ const generatedColumns = (pipelineName: string, region: string) => {
 
       render: (row: Partial<PipelineExecutionSummary>) => {
         if (row.pipelineExecutionId) {
+          const projectUrl = `https://${region}.console.aws.amazon.com/codesuite/codepipeline/pipelines/${pipelineName}/executions/${row.pipelineExecutionId}/timeline?region=${region}`;
+
           return (
             <>
               <Link
-                href={`https://${region}.console.aws.amazon.com/codesuite/codepipeline/pipelines/${pipelineName}/executions/${row.pipelineExecutionId}/timeline?region=${region}`}
+                href={
+                  ssoSubdomain
+                    ? generateShortcutLink(ssoSubdomain, accountId, projectUrl)
+                    : projectUrl
+                }
                 target="_blank"
               >
                 {row.pipelineExecutionId}
@@ -135,10 +149,19 @@ type CodePipelineExecutionsTableProps = {
 const CodePipelineExecutionsTable = ({
   response,
 }: CodePipelineExecutionsTableProps) => {
+  const configApi = useApi(configApiRef);
+  const ssoSubdomain = configApi.getOptionalString('aws.sso.subdomain');
+  const { accountId } = parse(response.pipelineArn);
+
   return (
     <Table
       data={response.pipelineExecutions}
-      columns={generatedColumns(response.pipelineName, response.pipelineRegion)}
+      columns={generatedColumns(
+        response.pipelineName,
+        response.pipelineRegion,
+        accountId,
+        ssoSubdomain,
+      )}
       title="AWS CodePipeline"
     />
   );
@@ -159,6 +182,7 @@ const CodePipelineMultipleExecutionsContent = ({
     <>
       <Box marginBottom={2}>
         <Select
+          data-testid="select-pipeline"
           value={selected.pipelineArn}
           onChange={e =>
             setSelected(

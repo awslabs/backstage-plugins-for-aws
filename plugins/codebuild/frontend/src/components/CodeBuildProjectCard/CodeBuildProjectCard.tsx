@@ -38,20 +38,29 @@ import { Build } from '@aws-sdk/client-codebuild';
 import { BuildStatus } from '../BuildStatus';
 import { useProjects } from '../../hooks';
 import { formatTime, getDurationFromStringDates } from '../../util';
+import { useApi, configApiRef } from '@backstage/core-plugin-api';
+import { generateShortcutLink } from '@aws/aws-core-plugin-for-backstage-common';
 
 const generatedColumns = (
   region: string,
   project: string,
   accountId: string,
+  ssoSubdomain?: string,
 ) => {
   return [
     {
       title: 'Build run',
       field: 'id',
       render: (row: Partial<Build>) => {
+        const projectUrl = `https://${region}.console.aws.amazon.com/codesuite/codebuild/${accountId}/projects/${project}/build/${row.id}/?region=${region}`;
+
         return (
           <Link
-            href={`https://${region}.console.aws.amazon.com/codesuite/codebuild/${accountId}/projects/${project}/build/${row.id}/?region=${region}`}
+            href={
+              ssoSubdomain
+                ? generateShortcutLink(ssoSubdomain, accountId, projectUrl)
+                : projectUrl
+            }
             target="_blank"
           >
             #{row.buildNumber}
@@ -115,6 +124,9 @@ export const ProjectWidgetContent = ({
 }: {
   project: ProjectResponse;
 }) => {
+  const configApi = useApi(configApiRef);
+  const ssoSubdomain = configApi.getOptionalString('aws.sso.subdomain');
+
   const projectUrl = `https://${project.projectRegion}.console.aws.amazon.com/codesuite/codebuild/${project.projectAccountId}/projects/${project.projectName}/?region=${project.projectRegion}`;
 
   return (
@@ -122,7 +134,18 @@ export const ProjectWidgetContent = ({
       <Box sx={{ m: 2 }}>
         <Grid container>
           <AboutField label="Project Name" gridSizes={{ md: 12 }}>
-            <Link href={projectUrl} target="_blank">
+            <Link
+              href={
+                ssoSubdomain
+                  ? generateShortcutLink(
+                      ssoSubdomain,
+                      project.projectAccountId,
+                      projectUrl,
+                    )
+                  : projectUrl
+              }
+              target="_blank"
+            >
               {project.projectName}
             </Link>
           </AboutField>
@@ -155,6 +178,7 @@ export const ProjectWidgetContent = ({
           project.projectRegion,
           project.project.name!,
           project.projectAccountId,
+          ssoSubdomain,
         )}
       />
     </div>

@@ -11,5 +11,12 @@
  * limitations under the License.
  */
 
-export * from './getOneOfEntityAnnotations';
-export * from './generateShortcutLink';
+export function generateShortcutLink(
+  ssoSubdomain: string,
+  accountId: string,
+  projectUrl: string,
+): string {
+  return `https://${ssoSubdomain}.awsapps.com/start/#/console?account_id=${accountId}&destination=${encodeURIComponent(
+    projectUrl,
+  )}`;
+}

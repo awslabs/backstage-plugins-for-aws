@@ -1727,7 +1727,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@aws-sdk/util-arn-parser@npm:3.568.0, @aws-sdk/util-arn-parser@npm:^3.310.0, @aws-sdk/util-arn-parser@npm:^3.495.0":
+"@aws-sdk/util-arn-parser@npm:3.568.0, @aws-sdk/util-arn-parser@npm:^3.310.0, @aws-sdk/util-arn-parser@npm:^3.495.0, @aws-sdk/util-arn-parser@npm:^3.568.0":
   version: 3.568.0
   resolution: "@aws-sdk/util-arn-parser@npm:3.568.0"
   dependencies:
@@ -2054,6 +2054,7 @@ __metadata:
   resolution: "@aws/aws-codepipeline-plugin-for-backstage@workspace:plugins/codepipeline/frontend"
   dependencies:
     "@aws-sdk/client-codepipeline": "npm:^3.511.0"
+    "@aws-sdk/util-arn-parser": "npm:^3.568.0"
     "@aws/aws-codepipeline-plugin-for-backstage-common": "workspace:^"
     "@aws/aws-core-plugin-for-backstage-common": "workspace:^"
     "@aws/aws-core-plugin-for-backstage-react": "workspace:^"
