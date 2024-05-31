@@ -18,6 +18,7 @@ import {
   DescribeClustersCommand,
   ListTasksCommand,
   DescribeTasksCommand,
+  Task,
 } from '@aws-sdk/client-ecs';
 import { parse } from '@aws-sdk/util-arn-parser';
 import { CatalogApi } from '@backstage/catalog-client';
@@ -205,16 +206,22 @@ export class DefaultAmazonEcsService implements AmazonECSService {
             }),
           );
 
-          const describeTasksResp = await client.send(
-            new DescribeTasksCommand({
-              cluster,
-              tasks: listTasksResp.taskArns,
-            }),
-          );
+          let tasks: Task[] = [];
+
+          if (listTasksResp.taskArns?.length) {
+            const describeTasksResp = await client.send(
+              new DescribeTasksCommand({
+                cluster,
+                tasks: listTasksResp.taskArns,
+              }),
+            );
+
+            tasks = describeTasksResp.tasks || [];
+          }
 
           serviceResponseObjects.push({
             service: serviceResp,
-            tasks: describeTasksResp.tasks!,
+            tasks,
           });
         }
       }

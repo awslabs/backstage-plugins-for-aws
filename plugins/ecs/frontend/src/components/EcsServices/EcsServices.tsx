@@ -230,7 +230,11 @@ const ClusterSummary = ({ cluster }: { cluster: ClusterResponse }) => {
         spacing={0}
       >
         <Grid item>
-          <StatusOK>{runningTasks} running tasks</StatusOK>
+          {runningTasks > 0 ? (
+            <StatusOK>{runningTasks} running tasks</StatusOK>
+          ) : (
+            <StatusOK>No running tasks</StatusOK>
+          )}
         </Grid>
         <Grid item>
           {pendingTasks > 0 ? (
@@ -279,7 +283,11 @@ const ServiceSummary = ({ service }: { service: Service }) => {
         spacing={0}
       >
         <Grid item>
-          <StatusOK>{service.runningCount} running tasks</StatusOK>
+          {service.runningCount! > 0 ? (
+            <StatusOK>{service.runningCount} running tasks</StatusOK>
+          ) : (
+            <StatusOK>No running tasks</StatusOK>
+          )}
         </Grid>
         <Grid item>
           {service.pendingCount! > 0 ? (
