@@ -328,6 +328,65 @@ describe('DefaultAmazonEcsService', () => {
 
       expect(mockResourceLocator.getResourceArns).toHaveBeenCalledTimes(0);
     });
+
+    it('handles empty tasks', async () => {
+      const cluster1 = mockEcsCluster('cluster1');
+      const service1 = mockEcsService('service1', 'cluster1', 1, 1, 0);
+
+      ecsMock
+        .on(DescribeClustersCommand, {
+          clusters: ['cluster1'],
+        })
+        .resolves({
+          clusters: [cluster1],
+        });
+
+      ecsMock
+        .on(DescribeServicesCommand, {
+          cluster: 'cluster1',
+          // services: ['service1'],
+        })
+        .resolves({
+          services: [service1],
+        });
+
+      ecsMock
+        .on(ListTasksCommand, {
+          cluster: 'cluster1',
+          serviceName: 'service1',
+        })
+        .resolves({
+          taskArns: [],
+        });
+
+      const service = await configureProvider(
+        {},
+        {
+          metadata: {
+            annotations: {
+              [AWS_ECS_SERVICE_ARN_ANNOTATION]:
+                'arn:aws:ecs:us-west-2:1234567890:service/cluster1/service1',
+            },
+          },
+        },
+      );
+
+      const response = await service.getServicesByEntity({ entityRef });
+
+      await expect(response).toMatchObject({
+        clusters: [
+          {
+            cluster: cluster1,
+            services: [
+              {
+                service: service1,
+                tasks: [],
+              },
+            ],
+          },
+        ],
+      });
+    });
   });
 
   it('throws on missing annotation', async () => {
