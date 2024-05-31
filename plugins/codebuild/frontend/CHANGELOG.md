@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.5.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-codebuild-plugin-for-backstage@0.4.0...@aws/aws-codebuild-plugin-for-backstage@0.5.0) (2024-05-31)
+
+
+### Features
+
+* Add support for IAM Identity Center shortcut links ([#129](https://github.com/awslabs/backstage-plugins-for-aws/issues/129)) ([2e54c29](https://github.com/awslabs/backstage-plugins-for-aws/commit/2e54c29fb25b42a3c77f9bec952a7e2c10ef9025))
+
+
+
+
+
 # [0.4.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-codebuild-plugin-for-backstage@0.3.0...@aws/aws-codebuild-plugin-for-backstage@0.4.0) (2024-05-08)
 
 

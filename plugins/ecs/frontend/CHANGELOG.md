@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.2](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/amazon-ecs-plugin-for-backstage@0.3.1...@aws/amazon-ecs-plugin-for-backstage@0.3.2) (2024-05-31)
+
+
+### Bug Fixes
+
+* Handle case where no ECS tasks are returned ([#146](https://github.com/awslabs/backstage-plugins-for-aws/issues/146)) ([b441b78](https://github.com/awslabs/backstage-plugins-for-aws/commit/b441b782822a95dc8bbb937ac943f09f0ceb3b6a))
+
+
+
+
+
 ## [0.3.1](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/amazon-ecs-plugin-for-backstage@0.3.0...@aws/amazon-ecs-plugin-for-backstage@0.3.1) (2024-05-08)
 
 **Note:** Version bump only for package @aws/amazon-ecs-plugin-for-backstage
