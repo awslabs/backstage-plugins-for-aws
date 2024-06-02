@@ -15003,25 +15003,25 @@ __metadata:
   linkType: hard
 
 "aws-sdk-client-mock-jest@npm:^4.0.0":
-  version: 4.0.0
-  resolution: "aws-sdk-client-mock-jest@npm:4.0.0"
+  version: 4.0.1
+  resolution: "aws-sdk-client-mock-jest@npm:4.0.1"
   dependencies:
     expect: "npm:>28.1.3"
     tslib: "npm:^2.1.0"
   peerDependencies:
-    aws-sdk-client-mock: 4.0.0
-  checksum: 10c0/fac0ff3e5d6c6044727cf72ded29db3eb0e40bf92877a1ed83c60dac3b7fb1322cdf8a4775b2475bc661aad847f3b36db331c9f52da1e2e5680b79d1f848f68c
+    aws-sdk-client-mock: 4.0.1
+  checksum: 10c0/9832cc132e3cd33f85b882e646ee63ea10500d59c94340c1425a46bd6ace85d07122070ba7eea5100b6729a8f4f6ab0a4df042b919681a7cbb719f9e5a13d3b1
   languageName: node
   linkType: hard
 
 "aws-sdk-client-mock@npm:^4.0.0":
-  version: 4.0.0
-  resolution: "aws-sdk-client-mock@npm:4.0.0"
+  version: 4.0.1
+  resolution: "aws-sdk-client-mock@npm:4.0.1"
   dependencies:
     "@types/sinon": "npm:^10.0.10"
     sinon: "npm:^16.1.3"
     tslib: "npm:^2.1.0"
-  checksum: 10c0/4ba843b10564f5698e22fecf1a64c4e58b19b01f1444798db8cd6c19293409e63984cbf559ee96f731c49653806562e1e6217f259522c6408983bc1a66c66958
+  checksum: 10c0/e6baaf5bcec75d0e327ca02faef560254f27647d31f8a6bd595d4bff660c00bae61fa0b8825133557e6f87691a8ef1f1ae5c94fb2532340d17520d24f7d162bd
   languageName: node
   linkType: hard
 
