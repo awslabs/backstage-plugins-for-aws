@@ -151,6 +151,8 @@ spec:
   # ...
 ```
 
+Please review the [Locating resources documentation](../../docs/locating-resources.md) to understand any additional configuration required for tag-based lookup.
+
 The alternative is to reference a specific ECS service by ARN, this is done with the `aws.amazon.com/aws-codebuild-project-arn` annotation:
 
 ```yaml
