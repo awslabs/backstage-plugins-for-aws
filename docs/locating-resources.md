@@ -25,7 +25,7 @@ The following are general guidelines, please raise a GitHub issue to discuss spe
 
 - Users with a smaller number of AWS accounts can use the `resourceTaggingApi` locator. It is your judgement at what point this becomes difficult to maintain.
 - If your organization already has AWS Config enabled and an [aggregator](https://docs.aws.amazon.com/config/latest/developerguide/aggregate-data.html) configured then the `awsConfig` locator is the next logical option. Before choosing this option please review the [AWS Config pricing structure](https://aws.amazon.com/config/pricing/).
-- Otherwise you should use the `resourceExplorer` locator.
+- The `resourceExplorer` locator is currently experimental, please see the documentation below.
 
 > Note: The only resource locator which currently supports running without Internet access is `awsConfig`, which will require the appropriate [VPC endpoints](https://docs.aws.amazon.com/config/latest/developerguide/config-VPC-endpoints.html) to be configured.
 
