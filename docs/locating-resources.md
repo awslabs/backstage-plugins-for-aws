@@ -23,9 +23,11 @@ By default plugins will use the [AWS Resource Groups Tagging API](https://docs.a
 
 The following are general guidelines, please raise a GitHub issue to discuss specific use-cases:
 
-- Users with a smaller number of AWS accounts can use the `resource-tagging-api` locator. It is your judgement at what point this becomes difficult to maintain.
-- If your organization already has AWS Config enabled and an [aggregator](https://docs.aws.amazon.com/config/latest/developerguide/aggregate-data.html) configured then the `aws-config` locator is the next logical option. Before choosing this option please review the [AWS Config pricing structure](https://aws.amazon.com/config/pricing/).
-- Otherwise you should use the `resource-explorer` locator.
+- Users with a smaller number of AWS accounts can use the `resourceTaggingApi` locator. It is your judgement at what point this becomes difficult to maintain.
+- If your organization already has AWS Config enabled and an [aggregator](https://docs.aws.amazon.com/config/latest/developerguide/aggregate-data.html) configured then the `awsConfig` locator is the next logical option. Before choosing this option please review the [AWS Config pricing structure](https://aws.amazon.com/config/pricing/).
+- Otherwise you should use the `resourceExplorer` locator.
+
+> Note: The only resource locator which currently supports running without Internet access is `awsConfig`, which will require the appropriate [VPC endpoints](https://docs.aws.amazon.com/config/latest/developerguide/config-VPC-endpoints.html) to be configured.
 
 ## Configuring resource locators
 
@@ -68,7 +70,47 @@ Backstage will attempt to assume an IAM role in each account using the [default 
 }
 ```
 
+### AWS Config
+
+> Note: If you are not already using AWS Config it is important to note that it will incur costs by enabling it. Please review its pricing information before enabling in your AWS organization.
+
+This resource locator uses the AWS Config service which continually monitors and records resource configuration changes to AWS resources.
+
+To use this resource locator across multiple AWS accounts you must [set up an aggregator](https://docs.aws.amazon.com/config/latest/developerguide/aggregate-data.html), which collects data from multiple accounts and regions.
+
+Configure `app-config.yaml`:
+
+```yaml
+aws:
+  locator:
+    type: awsConfig
+    awsConfig:
+      # (Optional) AWS Config API calls will be made to this AWS account
+      accountId: 1111111111
+      # (Optional) AWS Config API calls will be made to this AWS region
+      region: us-west-2
+      # (Required) Name of the AWS Config aggregator that will be queried
+      aggregatorName: dummy
+```
+
+Backstage will require the following IAM permissions in the account where the AWS Config aggregator has been created:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": ["config:SelectAggregateResourceConfig"],
+      "Resource": "<aggregator ARN>"
+    }
+  ]
+}
+```
+
 ### Resource Explorer API
+
+> Note: The Resource Explorer API locator is currently experimental due to its quota limits. If you encounter issues please raise an issue with details.
 
 This resource locator uses the [AWS Resource Explorer API](https://docs.aws.amazon.com/resource-explorer/latest/apireference/Welcome.html) which is a resource search and discovery service.
 
@@ -88,7 +130,3 @@ aws:
 ```
 
 Please review the [quotas for the Resource Explorer service](https://docs.aws.amazon.com/resource-explorer/latest/userguide/quotas.html).
-
-### AWS Config
-
-TODO
