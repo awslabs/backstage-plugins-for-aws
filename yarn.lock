@@ -2324,6 +2324,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@azure/msal-common@npm:14.12.0":
+  version: 14.12.0
+  resolution: "@azure/msal-common@npm:14.12.0"
+  checksum: 10c0/5f88ecac2bcc4b60abbe4243347cafca9dfa19ab75bf532f9b4b77069fd5fe55516608f77ab8d5c5c706eefc5ca77380eebf6a6742b79feb46c328d39c5da213
+  languageName: node
+  linkType: hard
+
 "@azure/msal-common@npm:14.7.1":
   version: 14.7.1
   resolution: "@azure/msal-common@npm:14.7.1"
@@ -2332,13 +2339,13 @@ __metadata:
   linkType: hard
 
 "@azure/msal-node@npm:^2.5.1":
-  version: 2.6.4
-  resolution: "@azure/msal-node@npm:2.6.4"
+  version: 2.9.2
+  resolution: "@azure/msal-node@npm:2.9.2"
   dependencies:
-    "@azure/msal-common": "npm:14.7.1"
+    "@azure/msal-common": "npm:14.12.0"
     jsonwebtoken: "npm:^9.0.0"
     uuid: "npm:^8.3.0"
-  checksum: 10c0/45e88223498cd53163bb23ea92c5368b4101ba78c89da6c684ba0dd7d649733c7145db9ac5a9e964691802b09880c461f4ace0316cb2f357d66c56dde45c9820
+  checksum: 10c0/40b485ea2358ad1445fc6bfed2b82295a128f5304decb5c2e68ad43dbb98d5f76d9d7004e71ff751d8e6936685c36686b599dce12dfe145c2126d1faf69d7580
   languageName: node
   linkType: hard
 
