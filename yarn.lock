@@ -388,8 +388,8 @@ __metadata:
   linkType: hard
 
 "@aws-sdk/client-codebuild@npm:^3.511.0":
-  version: 3.598.0
-  resolution: "@aws-sdk/client-codebuild@npm:3.598.0"
+  version: 3.599.0
+  resolution: "@aws-sdk/client-codebuild@npm:3.599.0"
   dependencies:
     "@aws-crypto/sha256-browser": "npm:5.2.0"
     "@aws-crypto/sha256-js": "npm:5.2.0"
@@ -432,7 +432,7 @@ __metadata:
     "@smithy/util-retry": "npm:^3.0.1"
     "@smithy/util-utf8": "npm:^3.0.0"
     tslib: "npm:^2.6.2"
-  checksum: 10c0/25ad62542ab22de338bdced996361299d8ee54afed645b6a95f56e4adb322c4456d42fe6bc22c024dcc4b39d665148a380c89603f8ebcf17ddf8e84dc24d5d2c
+  checksum: 10c0/e86cad4bcbe542326a250908d552493da0503a1924435811b4839e27353728b4b084f5eed62245d7d741377485faff57d8d7701013a22d2de2789bf4d11cb293
   languageName: node
   linkType: hard
 
