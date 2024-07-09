@@ -1,62 +1,38 @@
-import { Container } from "@aws-sdk/client-ecs";
-import { Table, TableBody, TableCell, TableRow, Typography } from "@material-ui/core";
-import React from "react";
-import { TaskHealthStatus, TaskStatus } from "../EcsServices";
+import { Container } from '@aws-sdk/client-ecs';
+import {
+  OverflowTooltip,
+  StructuredMetadataTable,
+} from '@backstage/core-components';
+import React from 'react';
+import { TaskHealthStatus, TaskStatus } from '../EcsServices';
+import { Box } from '@material-ui/core';
+
+const overflowMaxWidth = '250px';
+
+const formatContainer = (container: Container) => {
+  return {
+    ID: container.containerArn?.split('/')[3] || '-',
+    status: <TaskStatus status={container.lastStatus} />,
+    healthStatus: <TaskHealthStatus status={container.healthStatus} />,
+    CPU: container.cpu ?? '-',
+    memory: container.memoryReservation ?? '-',
+    imageURI: (
+      <Box maxWidth={overflowMaxWidth}>
+        <OverflowTooltip text={container.image} />
+      </Box>
+    ),
+    imageDigest: (
+      <Box maxWidth={overflowMaxWidth}>
+        <OverflowTooltip text={container.imageDigest} />
+      </Box>
+    ),
+  };
+};
 
 type EcsContainerProps = {
-    container: Container,
-}
+  container: Container;
+};
 
 export const EcsContainer = ({ container }: EcsContainerProps) => {
-    console.log(container)
-    return (
-        <Table size="small">
-            <TableBody>
-                <TableRow>
-                    <TableCell>
-                        <Typography variant="subtitle2">Status</Typography>
-                    </TableCell>
-                    <TableCell>
-                        <TaskStatus status={container.lastStatus} />
-                    </TableCell>
-                    <TableCell>
-                        <Typography variant="subtitle2">Health Status</Typography>
-                    </TableCell>
-                    <TableCell>
-                        <TaskHealthStatus status={container.healthStatus} />
-                    </TableCell>
-                </TableRow>
-                <TableRow>
-                    <TableCell>
-                        <Typography variant="subtitle2">CPU</Typography>
-                    </TableCell>
-                    <TableCell>
-                        {container.cpu}
-                    </TableCell>
-                    <TableCell>
-                        <Typography variant="subtitle2">Memory</Typography>
-                    </TableCell>
-                    <TableCell>
-                        {container.memoryReservation}
-                    </TableCell>
-                </TableRow>
-                <TableRow>
-                    <TableCell colSpan={1}>
-                        <Typography variant="subtitle2">Container Id</Typography>
-                    </TableCell>
-                    <TableCell colSpan={3}>
-                        {container.containerArn?.split('/')[3]}
-                    </TableCell>
-                </TableRow>
-                <TableRow>
-                    <TableCell colSpan={1}>
-                        <Typography variant="subtitle2">Image Digest</Typography>
-                    </TableCell>
-                    <TableCell colSpan={3}>
-                        {container.imageDigest}
-                    </TableCell>
-                </TableRow>
-            </TableBody>
-        </Table>
-    )
-}
+  return <StructuredMetadataTable metadata={formatContainer(container)} />;
+};
