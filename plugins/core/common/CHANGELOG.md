@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.1](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-core-plugin-for-backstage-common@0.4.0...@aws/aws-core-plugin-for-backstage-common@0.4.1) (2024-07-09)
+
+
+### Bug Fixes
+
+* AWS Config resource locator query syntax incorrect ([#182](https://github.com/awslabs/backstage-plugins-for-aws/issues/182)) ([300aae4](https://github.com/awslabs/backstage-plugins-for-aws/commit/300aae46caeb27d66e086b56dd97ce02a7e23c12))
+
+
+
+
+
 # [0.4.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-core-plugin-for-backstage-common@0.3.1...@aws/aws-core-plugin-for-backstage-common@0.4.0) (2024-05-31)
 
 

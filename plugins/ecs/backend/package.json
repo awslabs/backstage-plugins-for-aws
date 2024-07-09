@@ -1,6 +1,6 @@
 {
   "name": "@aws/amazon-ecs-plugin-for-backstage-backend",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "repository": {
     "type": "git",
     "url": "github:awslabs/backstage-plugins-for-aws",

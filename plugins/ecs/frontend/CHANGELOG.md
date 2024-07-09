@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.4.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/amazon-ecs-plugin-for-backstage@0.3.2...@aws/amazon-ecs-plugin-for-backstage@0.4.0) (2024-07-09)
+
+
+### Features
+
+* Drill-down for ECS tasks ([#180](https://github.com/awslabs/backstage-plugins-for-aws/issues/180)) ([58676ee](https://github.com/awslabs/backstage-plugins-for-aws/commit/58676ee13b64297972b3fd2facd9dcfb64fa5c13))
+
+
+
+
+
 ## [0.3.2](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/amazon-ecs-plugin-for-backstage@0.3.1...@aws/amazon-ecs-plugin-for-backstage@0.3.2) (2024-05-31)
 
 

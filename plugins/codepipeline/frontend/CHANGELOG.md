@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.1](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-codepipeline-plugin-for-backstage@0.5.0...@aws/aws-codepipeline-plugin-for-backstage@0.5.1) (2024-07-09)
+
+**Note:** Version bump only for package @aws/aws-codepipeline-plugin-for-backstage
+
+
+
+
+
 # [0.5.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-codepipeline-plugin-for-backstage@0.4.0...@aws/aws-codepipeline-plugin-for-backstage@0.5.0) (2024-05-31)
 
 
