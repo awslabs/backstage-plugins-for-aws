@@ -37,39 +37,15 @@ import {
   ClusterResponse,
   ServicesResponse,
 } from '@aws/amazon-ecs-plugin-for-backstage-common';
-import humanizeDuration from 'humanize-duration';
-import { parse } from '@aws-sdk/util-arn-parser';
+
 import { Entity } from '@backstage/catalog-model';
 import { useEcsServices } from '../../hooks';
 import { MissingResources } from '@aws/aws-core-plugin-for-backstage-react';
+import { EcsTaskDrawer } from '../EcsDrawer/EcsTaskDrawer';
+import { formatTime, getTaskDefinition } from '../../util';
 
-function formatTime(date: Date | undefined): string {
-  if (date) {
-    const difference = new Date().getTime() - new Date(date).getTime();
-    return `${humanizeDuration(difference, {
-      largest: 1,
-    })} ago`;
-  }
-
-  return '-';
-}
-
-function getTaskId(taskArn: string | undefined): string {
-  if (taskArn) {
-    const { resource } = parse(taskArn);
-
-    const parts = resource.split('/');
-
-    if (parts.length === 3) {
-      return parts[2];
-    }
-  }
-
-  return '-';
-}
-
-export const TaskStatus = ({ task }: { task: Task }) => {
-  switch (task.lastStatus) {
+export const TaskStatus = ({ status }: { status?: string }) => {
+  switch (status) {
     case 'PROVISIONING':
       return (
         <>
@@ -133,8 +109,8 @@ export const TaskStatus = ({ task }: { task: Task }) => {
   }
 };
 
-export const TaskHealthStatus = ({ task }: { task: Task }) => {
-  switch (task.healthStatus) {
+export const TaskHealthStatus = ({ status }: { status?: string }) => {
+  switch (status) {
     case 'HEALTHY':
       return (
         <>
@@ -166,22 +142,34 @@ const generatedColumns = () => {
   return [
     {
       title: 'ID',
-      field: 'taskArn',
-      render: (row: Partial<Task>) => getTaskId(row.taskArn),
+      field: 'id',
+      width: '100',
+      render: (row: Partial<Task>) => <EcsTaskDrawer task={row} />,
+    },
+    {
+      title: 'Task Definition',
+      field: 'taskDefinition',
+      width: '100',
+      render: (row: Partial<Task>) => getTaskDefinition(row.taskDefinitionArn),
     },
     {
       title: 'Last Status',
       field: 'lastStatus',
-      render: (row: Partial<Task>) => <TaskStatus task={row} />,
+      width: '100',
+      render: (row: Partial<Task>) => <TaskStatus status={row.lastStatus} />,
     },
     {
       title: 'Health Status',
       field: 'healthStatus',
-      render: (row: Partial<Task>) => <TaskHealthStatus task={row} />,
+      width: '100',
+      render: (row: Partial<Task>) => (
+        <TaskHealthStatus status={row.healthStatus} />
+      ),
     },
     {
       title: 'Started At',
       field: 'startedAt',
+      width: '100',
       render: (row: Partial<Task>) => formatTime(row.startedAt),
     },
   ];
@@ -226,7 +214,7 @@ const ClusterSummary = ({ cluster }: { cluster: ClusterResponse }) => {
         xs={3}
         direction="column"
         justifyContent="flex-start"
-        alignItems="flex-end"
+        alignItems="flex-start"
         spacing={0}
       >
         <Grid item>
@@ -266,7 +254,7 @@ const ServiceSummary = ({ service }: { service: Service }) => {
         alignItems="flex-start"
         spacing={0}
       >
-        <Grid item xs>
+        <Grid item xs style={{ width: '100%' }}>
           <Typography variant="body1">{service.serviceName}</Typography>
           <Typography color="textSecondary" variant="subtitle1">
             Service
@@ -278,8 +266,7 @@ const ServiceSummary = ({ service }: { service: Service }) => {
         container
         xs={3}
         direction="column"
-        justifyContent="flex-start"
-        alignItems="flex-end"
+        alignItems="flex-start"
         spacing={0}
       >
         <Grid item>
