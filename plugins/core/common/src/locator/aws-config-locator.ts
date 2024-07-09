@@ -13,6 +13,7 @@
 
 import {
   ConfigServiceClient,
+  InvalidExpressionException,
   SelectAggregateResourceConfigCommandOutput,
   paginateSelectAggregateResourceConfig,
   paginateSelectResourceConfig,
@@ -93,7 +94,8 @@ export class AwsConfigResourceLocator implements AwsResourceLocator {
       .map(e => {
         return `tags.tag='${e.key}=${e.value}'`;
       })
-      .join(' AND ')} resourceType='${resourceType}'`.trim();
+      .concat(`resourceType='${resourceType}'`)
+      .join(' AND ')}`;
 
     const query = `${AwsConfigResourceLocator.AWS_CONFIG_QUERY_TEMPLATE} WHERE ${whereClause}`;
 
@@ -101,37 +103,47 @@ export class AwsConfigResourceLocator implements AwsResourceLocator {
 
     let paginator: Paginator<SelectAggregateResourceConfigCommandOutput>;
 
-    if (this.aggregatorName) {
-      paginator = paginateSelectAggregateResourceConfig(
-        {
-          client: this.client,
-          pageSize: 25,
-        },
-        {
-          Expression: query,
-          ConfigurationAggregatorName: this.aggregatorName,
-        },
-      );
-    } else {
-      paginator = paginateSelectResourceConfig(
-        {
-          client: this.client,
-          pageSize: 25,
-        },
-        {
-          Expression: query,
-        },
-      );
+    try {
+      if (this.aggregatorName) {
+        paginator = paginateSelectAggregateResourceConfig(
+          {
+            client: this.client,
+            pageSize: 25,
+          },
+          {
+            Expression: query,
+            ConfigurationAggregatorName: this.aggregatorName,
+          },
+        );
+      } else {
+        paginator = paginateSelectResourceConfig(
+          {
+            client: this.client,
+            pageSize: 25,
+          },
+          {
+            Expression: query,
+          },
+        );
+      }
+    } catch (e) {
+      if (e instanceof InvalidExpressionException) {
+        this.logger.error(`Invalid AWS Config query: ${query}`);
+      }
+
+      throw e;
     }
 
     let arns: string[] = [];
 
     for await (const page of paginator) {
-      arns = arns.concat(
-        page.Results!.map(e => {
-          return JSON.parse(e).arn as string;
-        }),
-      );
+      if (page.Results) {
+        arns = arns.concat(
+          page.Results.map(e => {
+            return JSON.parse(e).arn as string;
+          }),
+        );
+      }
     }
 
     return arns;
