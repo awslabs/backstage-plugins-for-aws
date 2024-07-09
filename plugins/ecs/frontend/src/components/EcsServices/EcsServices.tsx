@@ -11,19 +11,15 @@
  * limitations under the License.
  */
 
-import React, { useContext, useState } from 'react';
+import React from 'react';
 import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  Drawer,
   Grid,
   LinearProgress,
   Paper,
-  Theme,
   Typography,
-  createStyles,
-  makeStyles,
 } from '@material-ui/core';
 import {
   InfoCard,
@@ -45,12 +41,8 @@ import {
 import { Entity } from '@backstage/catalog-model';
 import { useEcsServices } from '../../hooks';
 import { MissingResources } from '@aws/aws-core-plugin-for-backstage-react';
-import { EcsTaskDetails } from './EcsTask';
-import { formatTime, getTaskDefinition, getTaskId } from '../../shared/utils';
-import {
-  EcsTaskProvider,
-  TaskContext,
-} from '../EcsTaskProvider/ecsTaskProvider';
+import { EcsTaskDrawer } from '../EcsDrawer/EcsTaskDrawer';
+import { formatTime, getTaskDefinition } from '../../util';
 
 export const TaskStatus = ({ status }: { status?: string }) => {
   switch (status) {
@@ -146,17 +138,13 @@ export const TaskHealthStatus = ({ status }: { status?: string }) => {
   }
 };
 
-const generatedColumns = (showTaskDetails: (task: Task) => void) => {
+const generatedColumns = () => {
   return [
     {
       title: 'ID',
       field: 'id',
       width: '100',
-      render: (row: Partial<Task>) => (
-        <a style={{ cursor: 'pointer' }} onClick={() => showTaskDetails(row)}>
-          {getTaskId(row.taskArn)}
-        </a>
-      ),
+      render: (row: Partial<Task>) => <EcsTaskDrawer task={row} />,
     },
     {
       title: 'Task Definition',
@@ -188,14 +176,13 @@ const generatedColumns = (showTaskDetails: (task: Task) => void) => {
 };
 
 const ClusterSummary = ({ cluster }: { cluster: ClusterResponse }) => {
-  let runningTasks = cluster.services.reduce(
-    (count, svc) => count + (svc.service.runningCount || 0),
-    0,
-  );
-  let pendingTasks = cluster.services.reduce(
-    (count, svc) => count + (svc.service.pendingCount || 0),
-    0,
-  );
+  let runningTasks = 0;
+  let pendingTasks = 0;
+
+  for (const service of cluster.services) {
+    runningTasks += service.service.runningCount!;
+    pendingTasks += service.service.pendingCount!;
+  }
 
   return (
     <Grid
@@ -237,11 +224,13 @@ const ClusterSummary = ({ cluster }: { cluster: ClusterResponse }) => {
             <StatusOK>No running tasks</StatusOK>
           )}
         </Grid>
-        {pendingTasks > 0 ? (
-          <Grid item>
+        <Grid item>
+          {pendingTasks > 0 ? (
             <StatusPending>{pendingTasks} tasks pending</StatusPending>
-          </Grid>
-        ) : null}
+          ) : (
+            <StatusPending>No pending tasks</StatusPending>
+          )}
+        </Grid>
       </Grid>
     </Grid>
   );
@@ -265,7 +254,7 @@ const ServiceSummary = ({ service }: { service: Service }) => {
         alignItems="flex-start"
         spacing={0}
       >
-        <Grid item xs>
+        <Grid item xs style={{ width: '100%' }}>
           <Typography variant="body1">{service.serviceName}</Typography>
           <Typography color="textSecondary" variant="subtitle1">
             Service
@@ -287,41 +276,24 @@ const ServiceSummary = ({ service }: { service: Service }) => {
             <StatusOK>No running tasks</StatusOK>
           )}
         </Grid>
-        {service.pendingCount! > 0 ? (
-          <Grid item>
+        <Grid item>
+          {service.pendingCount! > 0 ? (
             <StatusPending>{service.pendingCount} tasks pending</StatusPending>
-          </Grid>
-        ) : null}
+          ) : (
+            <StatusPending>No pending tasks</StatusPending>
+          )}
+        </Grid>
       </Grid>
     </Grid>
   );
 };
-
-const useDrawerStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    container: {
-      width: '100%',
-      justifyContent: 'space-between',
-      padding: theme.spacing(2.5),
-    },
-  }),
-);
 
 type EcsServicesContentProps = {
   response: ServicesResponse;
 };
 
 const EcsServicesContent = ({ response }: EcsServicesContentProps) => {
-  const drawerClasses = useDrawerStyles();
-  const { setTask } = useContext(TaskContext);
-  const [drawerOpen, toggleDrawer] = useState(false);
-
-  const showTaskDetails = (task: Task) => {
-    setTask(task);
-    toggleDrawer(true);
-  };
-
-  const columns = generatedColumns(showTaskDetails);
+  const columns = generatedColumns();
 
   return (
     <>
@@ -369,15 +341,6 @@ const EcsServicesContent = ({ response }: EcsServicesContentProps) => {
           </Accordion>
         );
       })}
-      <Drawer
-        anchor="right"
-        onClose={() => toggleDrawer(false)}
-        open={drawerOpen}
-      >
-        <div className={drawerClasses.container}>
-          <EcsTaskDetails toggleDrawer={toggleDrawer} />
-        </div>
-      </Drawer>
     </>
   );
 };
@@ -413,9 +376,5 @@ export const EcsServices = ({ entity }: EcsServicesProps) => {
     return <LinearProgress />;
   }
 
-  return (
-    <EcsTaskProvider>
-      <EcsServicesWrapper response={response!} />
-    </EcsTaskProvider>
-  );
+  return <EcsServicesWrapper response={response!} />;
 };
