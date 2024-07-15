@@ -18,4 +18,6 @@ backend.add(import('@aws/aws-codebuild-plugin-for-backstage-backend'));
 backend.add(import('@aws/aws-codepipeline-plugin-for-backstage-backend'));
 backend.add(import('@aws/aws-core-plugin-for-backstage-scaffolder-actions'));
 
+backend.add(import('@aws/cost-insights-plugin-for-backstage-backend'));
+
 backend.start();

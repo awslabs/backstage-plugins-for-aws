@@ -37,9 +37,12 @@ import { AppRouter, FlatRoutes } from '@backstage/core-app-api';
 import { CatalogGraphPage } from '@backstage/plugin-catalog-graph';
 import { RequirePermission } from '@backstage/plugin-permission-react';
 import { catalogEntityCreatePermission } from '@backstage/plugin-catalog-common/alpha';
+import { CostInsightsPage } from '@backstage-community/plugin-cost-insights';
+import { costInsightsAwsPlugin } from '@aws/cost-insights-plugin-for-backstage';
 
 const app = createApp({
   apis,
+  plugins: [costInsightsAwsPlugin],
   components: {
     SignInPage: props => {
       return (
@@ -109,6 +112,7 @@ const routes = (
     </Route>
     <Route path="/settings" element={<UserSettingsPage />} />
     <Route path="/catalog-graph" element={<CatalogGraphPage />} />
+    <Route path="/cost-insights" element={<CostInsightsPage />} />
   </FlatRoutes>
 );
 
