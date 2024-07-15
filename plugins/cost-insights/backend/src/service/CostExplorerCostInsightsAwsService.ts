@@ -327,7 +327,7 @@ export class CostExplorerCostInsightsAwsService
       throw new Error(`Failed to parse repeating interval ${parts[0]}`);
     }
 
-    const repeat = parseInt(match[1]);
+    const repeat = parseInt(match[1], 10);
 
     const duration = LuxonDuration.fromISO(parts[1]).mapUnits(x => x * repeat);
 
