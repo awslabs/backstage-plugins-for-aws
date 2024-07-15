@@ -108,6 +108,15 @@ const serviceEntityPage = (
 );
 ```
 
+### Configuration
+
+Cost Insights requires minimal configuration in order to run. Add this to `app-config.yaml`:
+
+```yaml
+costInsights:
+  engineerCost: 200000
+```
+
 ## Entity annotations
 
 The plugin uses entity annotations to determine what queries to make for a given entity. The `aws.amazon.com/cost-insights-tags` annotation can be added to any catalog entity to filter costs based on [AWS cost allocation tags](https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/cost-alloc-tags.html) applied to the respective AWS resources.
