@@ -20,6 +20,7 @@
     "@aws/aws-codebuild-plugin-for-backstage-backend": "workspace:^",
     "@aws/aws-codepipeline-plugin-for-backstage-backend": "workspace:^",
     "@aws/aws-core-plugin-for-backstage-scaffolder-actions": "workspace:^",
+    "@aws/cost-insights-plugin-for-backstage-backend": "workspace:^",
     "@backstage/backend-common": "^0.21.6",
     "@backstage/backend-defaults": "^0.2.16",
     "@backstage/backend-tasks": "^0.5.21",
