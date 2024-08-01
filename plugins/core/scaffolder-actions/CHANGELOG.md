@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.6](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-core-plugin-for-backstage-scaffolder-actions@0.2.5...@aws/aws-core-plugin-for-backstage-scaffolder-actions@0.2.6) (2024-08-01)
+
+
+### Bug Fixes
+
+* **deps:** update dependency glob to v11 ([#179](https://github.com/awslabs/backstage-plugins-for-aws/issues/179)) ([22b268c](https://github.com/awslabs/backstage-plugins-for-aws/commit/22b268c9383bd0ffbcdf31bcba6ef46260847b7f))
+
+
+
+
+
 ## [0.2.5](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-core-plugin-for-backstage-scaffolder-actions@0.2.4...@aws/aws-core-plugin-for-backstage-scaffolder-actions@0.2.5) (2024-07-09)
 
 **Note:** Version bump only for package @aws/aws-core-plugin-for-backstage-scaffolder-actions
