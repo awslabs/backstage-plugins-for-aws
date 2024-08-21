@@ -29,13 +29,13 @@
     "postpack": "backstage-cli package postpack"
   },
   "devDependencies": {
-    "@backstage/cli": "^0.26.2"
+    "@backstage/cli": "^0.27.0"
   },
   "files": [
     "dist"
   ],
   "dependencies": {
     "@aws-sdk/client-ecs": "^3.511.0",
-    "@backstage/catalog-model": "^1.4.5"
+    "@backstage/catalog-model": "^1.6.0"
   }
 }

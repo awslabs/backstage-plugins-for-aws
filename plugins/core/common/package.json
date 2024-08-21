@@ -29,8 +29,8 @@
     "postpack": "backstage-cli package postpack"
   },
   "devDependencies": {
-    "@backstage/backend-common": "^0.21.6",
-    "@backstage/cli": "^0.26.2",
+    "@backstage/backend-common": "^0.24.0",
+    "@backstage/cli": "^0.27.0",
     "aws-sdk-client-mock": "^4.0.0"
   },
   "files": [
@@ -41,7 +41,7 @@
     "@aws-sdk/client-resource-explorer-2": "^3.511.0",
     "@aws-sdk/client-resource-groups-tagging-api": "^3.511.0",
     "@aws-sdk/types": "^3.511.0",
-    "@backstage/catalog-model": "^1.4.5",
+    "@backstage/catalog-model": "^1.6.0",
     "@backstage/config": "^1.2.0",
     "@backstage/integration-aws-node": "^0.1.12",
     "winston": "^3.11.0"
