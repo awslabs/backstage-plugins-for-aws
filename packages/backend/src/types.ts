@@ -1,25 +1,23 @@
-import { Logger } from 'winston';
 import { Config } from '@backstage/config';
-import {
-  PluginCacheManager,
-  PluginDatabaseManager,
-  PluginEndpointDiscovery,
-  TokenManager,
-  UrlReader,
-} from '@backstage/backend-common';
-import { PluginTaskScheduler } from '@backstage/backend-tasks';
 import { PermissionEvaluator } from '@backstage/plugin-permission-common';
 import { IdentityApi } from '@backstage/plugin-auth-node';
+import {
+  CacheService,
+  DatabaseService,
+  DiscoveryService,
+  LoggerService,
+  SchedulerService,
+  UrlReaderService,
+} from '@backstage/backend-plugin-api';
 
 export type PluginEnvironment = {
-  logger: Logger;
-  database: PluginDatabaseManager;
-  cache: PluginCacheManager;
+  logger: LoggerService;
+  database: DatabaseService;
+  cache: CacheService;
   config: Config;
-  reader: UrlReader;
-  discovery: PluginEndpointDiscovery;
-  tokenManager: TokenManager;
-  scheduler: PluginTaskScheduler;
+  reader: UrlReaderService;
+  discovery: DiscoveryService;
+  scheduler: SchedulerService;
   permissions: PermissionEvaluator;
   identity: IdentityApi;
 };
