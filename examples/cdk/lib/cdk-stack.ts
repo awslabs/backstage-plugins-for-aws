@@ -99,7 +99,7 @@ export class BackstageSampleStack extends cdk.Stack {
     });
 
     const project = new codebuild.PipelineProject(this, 'Build', {
-      projectName: 'example-website-pipeline',
+      projectName: 'example-website-build',
       environment: {
         buildImage: codebuild.LinuxBuildImage.STANDARD_7_0,
         privileged: true,
@@ -171,6 +171,7 @@ export class BackstageSampleStack extends cdk.Stack {
     });
 
     const pipeline = new codepipeline.Pipeline(this, 'Pipeline', {
+      pipelineName: 'example-website-pipeline',
       stages: [
         {
           stageName: 'source',
