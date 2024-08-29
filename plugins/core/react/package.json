@@ -16,7 +16,8 @@
     "types": "dist/index.d.ts"
   },
   "backstage": {
-    "role": "web-library"
+    "role": "web-library",
+    "pluginId": null
   },
   "sideEffects": false,
   "scripts": {

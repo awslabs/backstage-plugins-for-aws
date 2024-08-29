@@ -15,7 +15,13 @@
     "types": "dist/index.d.ts"
   },
   "backstage": {
-    "role": "frontend-plugin"
+    "role": "frontend-plugin",
+    "pluginId": "cost-insights-aws",
+    "pluginPackages": [
+      "@aws/cost-insights-plugin-for-backstage",
+      "@aws/cost-insights-plugin-for-backstage-backend",
+      "@aws/cost-insights-plugin-for-backstage-common"
+    ]
   },
   "sideEffects": false,
   "scripts": {

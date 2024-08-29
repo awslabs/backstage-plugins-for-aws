@@ -15,7 +15,13 @@
     "types": "dist/index.d.ts"
   },
   "backstage": {
-    "role": "frontend-plugin"
+    "role": "frontend-plugin",
+    "pluginId": "aws-codepipeline",
+    "pluginPackages": [
+      "@aws/aws-codepipeline-plugin-for-backstage",
+      "@aws/aws-codepipeline-plugin-for-backstage-backend",
+      "@aws/aws-codepipeline-plugin-for-backstage-common"
+    ]
   },
   "sideEffects": false,
   "scripts": {

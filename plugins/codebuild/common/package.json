@@ -17,7 +17,13 @@
     "types": "dist/index.d.ts"
   },
   "backstage": {
-    "role": "common-library"
+    "role": "common-library",
+    "pluginId": "aws-codebuild",
+    "pluginPackages": [
+      "@aws/aws-codebuild-plugin-for-backstage",
+      "@aws/aws-codebuild-plugin-for-backstage-backend",
+      "@aws/aws-codebuild-plugin-for-backstage-common"
+    ]
   },
   "sideEffects": false,
   "scripts": {

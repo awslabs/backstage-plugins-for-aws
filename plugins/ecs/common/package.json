@@ -17,7 +17,13 @@
     "types": "dist/index.d.ts"
   },
   "backstage": {
-    "role": "common-library"
+    "role": "common-library",
+    "pluginId": "amazon-ecs",
+    "pluginPackages": [
+      "@aws/amazon-ecs-plugin-for-backstage",
+      "@aws/amazon-ecs-plugin-for-backstage-backend",
+      "@aws/amazon-ecs-plugin-for-backstage-common"
+    ]
   },
   "sideEffects": false,
   "scripts": {
