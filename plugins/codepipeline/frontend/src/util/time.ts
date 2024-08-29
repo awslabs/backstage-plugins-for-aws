@@ -18,6 +18,7 @@ export function formatTime(date: Date | undefined): string {
     const difference = new Date().getTime() - new Date(date).getTime();
     return humanizeDuration(difference, {
       largest: 1,
+      round: true,
     });
   }
 
