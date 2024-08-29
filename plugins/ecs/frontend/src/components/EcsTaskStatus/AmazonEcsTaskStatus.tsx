@@ -13,24 +13,32 @@
 
 import React from 'react';
 import {
-  StatusRunning,
-  StatusOK,
   StatusAborted,
-  StatusError,
+  StatusOK,
+  StatusPending,
+  StatusRunning,
 } from '@backstage/core-components';
 
-export const AmazonEcsServiceStatus = ({
-  status,
-}: {
-  status: string | undefined;
-}) => {
+export const TaskStatus = ({ status }: { status?: string }) => {
   switch (status) {
-    case 'ACTIVE':
-      return <StatusOK>Active</StatusOK>;
-    case 'INACTIVE':
-      return <StatusError>Inactive</StatusError>;
-    case 'DRAINING':
-      return <StatusRunning>Inactive</StatusRunning>;
+    case 'PROVISIONING':
+      return <StatusPending>Provisioning</StatusPending>;
+    case 'PENDING':
+      return <StatusPending>Pending</StatusPending>;
+    case 'ACTIVATING':
+      return <StatusRunning>Activating</StatusRunning>;
+    case 'RUNNING':
+      return <StatusOK>Running</StatusOK>;
+    case 'DEACTIVATING':
+      return <StatusPending>Deactivating</StatusPending>;
+    case 'STOPPING':
+      return <StatusPending>Stopping</StatusPending>;
+    case 'DEPROVISIONING':
+      return <StatusPending>Deprovisioning</StatusPending>;
+    case 'STOPPED':
+      return <StatusAborted>Stopped</StatusAborted>;
+    case 'DELETED':
+      return <StatusAborted>Deleted</StatusAborted>;
     default:
       return <StatusAborted>Unknown</StatusAborted>;
   }

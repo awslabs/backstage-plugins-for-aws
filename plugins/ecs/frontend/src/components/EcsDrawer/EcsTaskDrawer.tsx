@@ -22,10 +22,10 @@ import {
   stringOrDefault,
 } from '../../util';
 import { StructuredMetadataTable } from '@backstage/core-components';
-import { TaskStatus } from '../EcsServices/EcsServices';
 import { Box } from '@material-ui/core';
 import { EcsContainer } from '../EcsServices/EcsContainer';
 import { EcsDrawer } from './EcsDrawer';
+import { TaskStatus } from '../EcsTaskStatus';
 
 const formatTaskOverview = (task: Task) => {
   return {

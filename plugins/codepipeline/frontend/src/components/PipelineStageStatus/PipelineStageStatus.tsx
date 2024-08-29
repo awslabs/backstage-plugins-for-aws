@@ -27,46 +27,18 @@ export const PipelineStageStatus = ({
 }) => {
   switch (status) {
     case StageExecutionStatus.InProgress:
-      return (
-        <>
-          <StatusRunning /> In progress
-        </>
-      );
+      return <StatusRunning>In progress</StatusRunning>;
     case StageExecutionStatus.Failed:
-      return (
-        <>
-          <StatusError /> Failed
-        </>
-      );
+      return <StatusError>Failed</StatusError>;
     case StageExecutionStatus.Cancelled:
-      return (
-        <>
-          <StatusAborted /> Cancelled
-        </>
-      );
+      return <StatusAborted>Cancelled</StatusAborted>;
     case StageExecutionStatus.Stopped:
-      return (
-        <>
-          <StatusAborted /> Stopped
-        </>
-      );
+      return <StatusAborted>Stopped</StatusAborted>;
     case StageExecutionStatus.Stopping:
-      return (
-        <>
-          <StatusAborted /> Stopping
-        </>
-      );
+      return <StatusAborted>Stopping</StatusAborted>;
     case StageExecutionStatus.Succeeded:
-      return (
-        <>
-          <StatusOK /> Succeeded
-        </>
-      );
+      return <StatusOK>Succeeded</StatusOK>;
     default:
-      return (
-        <>
-          <StatusAborted /> Unknown
-        </>
-      );
+      return <StatusAborted>Unknown</StatusAborted>;
   }
 };

@@ -11,27 +11,4 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import {
-  StatusRunning,
-  StatusOK,
-  StatusAborted,
-  StatusError,
-} from '@backstage/core-components';
-
-export const AmazonEcsServiceStatus = ({
-  status,
-}: {
-  status: string | undefined;
-}) => {
-  switch (status) {
-    case 'ACTIVE':
-      return <StatusOK>Active</StatusOK>;
-    case 'INACTIVE':
-      return <StatusError>Inactive</StatusError>;
-    case 'DRAINING':
-      return <StatusRunning>Inactive</StatusRunning>;
-    default:
-      return <StatusAborted>Unknown</StatusAborted>;
-  }
-};
+export * from './AmazonEcsTaskStatus';

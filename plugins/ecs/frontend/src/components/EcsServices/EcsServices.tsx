@@ -24,11 +24,8 @@ import {
 import {
   InfoCard,
   ResponseErrorPanel,
-  StatusAborted,
-  StatusError,
   StatusOK,
   StatusPending,
-  StatusRunning,
   Table,
 } from '@backstage/core-components';
 import { Service, Task } from '@aws-sdk/client-ecs';
@@ -43,100 +40,8 @@ import { useEcsServices } from '../../hooks';
 import { MissingResources } from '@aws/aws-core-plugin-for-backstage-react';
 import { EcsTaskDrawer } from '../EcsDrawer/EcsTaskDrawer';
 import { formatTime, getTaskDefinition } from '../../util';
-
-export const TaskStatus = ({ status }: { status?: string }) => {
-  switch (status) {
-    case 'PROVISIONING':
-      return (
-        <>
-          <StatusPending /> Provisioning
-        </>
-      );
-    case 'PENDING':
-      return (
-        <>
-          <StatusPending /> Pending
-        </>
-      );
-    case 'ACTIVATING':
-      return (
-        <>
-          <StatusRunning /> Activating
-        </>
-      );
-    case 'RUNNING':
-      return (
-        <>
-          <StatusOK /> Running
-        </>
-      );
-    case 'DEACTIVATING':
-      return (
-        <>
-          <StatusPending /> Deactivating
-        </>
-      );
-    case 'STOPPING':
-      return (
-        <>
-          <StatusPending /> Stopping
-        </>
-      );
-    case 'DEPROVISIONING':
-      return (
-        <>
-          <StatusPending /> Deprovisioning
-        </>
-      );
-    case 'STOPPED':
-      return (
-        <>
-          <StatusAborted /> Stopped
-        </>
-      );
-    case 'DELETED':
-      return (
-        <>
-          <StatusAborted /> Deleted
-        </>
-      );
-    default:
-      return (
-        <>
-          <StatusAborted /> Unknown
-        </>
-      );
-  }
-};
-
-export const TaskHealthStatus = ({ status }: { status?: string }) => {
-  switch (status) {
-    case 'HEALTHY':
-      return (
-        <>
-          <StatusOK /> Healthy
-        </>
-      );
-    case 'UNHEALTHY':
-      return (
-        <>
-          <StatusError /> Unhealthy
-        </>
-      );
-    case 'UNKNOWN':
-      return (
-        <>
-          <StatusAborted /> Unknown
-        </>
-      );
-    default:
-      return (
-        <>
-          <StatusAborted /> Unknown
-        </>
-      );
-  }
-};
+import { TaskStatus } from '../EcsTaskStatus';
+import { TaskHealthStatus } from '../EcsTaskHealthStatus';
 
 const generatedColumns = () => {
   return [

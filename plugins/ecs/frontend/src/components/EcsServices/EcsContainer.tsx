@@ -17,9 +17,10 @@ import {
   StructuredMetadataTable,
 } from '@backstage/core-components';
 import React from 'react';
-import { TaskHealthStatus, TaskStatus } from '.';
 import { Box } from '@material-ui/core';
 import { stringOrDefault } from '../../util';
+import { TaskStatus } from '../EcsTaskStatus';
+import { TaskHealthStatus } from '../EcsTaskHealthStatus';
 
 const overflowMaxWidth = '250px';
 

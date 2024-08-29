@@ -23,46 +23,18 @@ import { StatusType } from '@aws-sdk/client-codebuild';
 export const BuildStatus = ({ status }: { status: string | undefined }) => {
   switch (status) {
     case StatusType.IN_PROGRESS:
-      return (
-        <>
-          <StatusRunning /> In progress
-        </>
-      );
+      return <StatusRunning>In progress</StatusRunning>;
     case StatusType.FAULT:
-      return (
-        <>
-          <StatusError /> Fault
-        </>
-      );
+      return <StatusError>Fault</StatusError>;
     case StatusType.TIMED_OUT:
-      return (
-        <>
-          <StatusError /> Timed out
-        </>
-      );
+      return <StatusError>Timed out</StatusError>;
     case StatusType.FAILED:
-      return (
-        <>
-          <StatusError /> Failed
-        </>
-      );
+      return <StatusError>Failed</StatusError>;
     case StatusType.SUCCEEDED:
-      return (
-        <>
-          <StatusOK /> Succeeded
-        </>
-      );
+      return <StatusOK>Succeeded</StatusOK>;
     case StatusType.STOPPED:
-      return (
-        <>
-          <StatusAborted /> Stopped
-        </>
-      );
+      return <StatusAborted>Stopped</StatusAborted>;
     default:
-      return (
-        <>
-          <StatusAborted /> Unknown
-        </>
-      );
+      return <StatusAborted>Unknown</StatusAborted>;
   }
 };

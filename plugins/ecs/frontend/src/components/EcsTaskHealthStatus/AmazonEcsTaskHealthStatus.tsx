@@ -13,24 +13,19 @@
 
 import React from 'react';
 import {
-  StatusRunning,
-  StatusOK,
   StatusAborted,
+  StatusOK,
   StatusError,
 } from '@backstage/core-components';
 
-export const AmazonEcsServiceStatus = ({
-  status,
-}: {
-  status: string | undefined;
-}) => {
+export const TaskHealthStatus = ({ status }: { status?: string }) => {
   switch (status) {
-    case 'ACTIVE':
-      return <StatusOK>Active</StatusOK>;
-    case 'INACTIVE':
-      return <StatusError>Inactive</StatusError>;
-    case 'DRAINING':
-      return <StatusRunning>Inactive</StatusRunning>;
+    case 'HEALTHY':
+      return <StatusOK>Healthy</StatusOK>;
+    case 'UNHEALTHY':
+      return <StatusError>Unhealthy</StatusError>;
+    case 'UNKNOWN':
+      return <StatusAborted>Unknown</StatusAborted>;
     default:
       return <StatusAborted>Unknown</StatusAborted>;
   }
