@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.8](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-core-plugin-for-backstage-scaffolder-actions@0.2.7...@aws/aws-core-plugin-for-backstage-scaffolder-actions@0.2.8) (2024-08-29)
+
+
+### Bug Fixes
+
+* Added package metadata for publishing ([c674b9f](https://github.com/awslabs/backstage-plugins-for-aws/commit/c674b9fee77bd91567615f8adc4c1688da93ee3f))
+
+
+
+
+
 ## [0.2.7](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-core-plugin-for-backstage-scaffolder-actions@0.2.6...@aws/aws-core-plugin-for-backstage-scaffolder-actions@0.2.7) (2024-08-29)
 
 **Note:** Version bump only for package @aws/aws-core-plugin-for-backstage-scaffolder-actions
