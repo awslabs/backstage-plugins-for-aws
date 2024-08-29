@@ -13,10 +13,7 @@
 
 import { Config } from '@backstage/config';
 import { Logger } from 'winston';
-import {
-  AwsResourceLocator,
-  AwsResourceTaggingApiLocator,
-} from '@aws/aws-core-plugin-for-backstage-common';
+import { AwsResourceLocator, AwsResourceTaggingApiLocator } from '.';
 import { AwsResourceExplorerLocator } from './resource-explorer-locator';
 import { AwsConfigResourceLocator } from './aws-config-locator';
 
