@@ -24,7 +24,7 @@ import { ConfigReader } from '@backstage/config';
 import { mockClient } from 'aws-sdk-client-mock';
 import { getVoidLogger } from '@backstage/backend-common';
 import { DefaultAmazonEcsService } from './DefaultAmazonEcsService';
-import { AwsResourceLocator } from '@aws/aws-core-plugin-for-backstage-common';
+import { AwsResourceLocator } from '@aws/aws-core-plugin-for-backstage-node';
 import {
   DefaultAwsCredentialsManager,
   AwsCredentialProvider,

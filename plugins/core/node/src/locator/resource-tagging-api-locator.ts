@@ -12,7 +12,7 @@
  */
 
 import { Logger } from 'winston';
-import { AwsResourceLocator } from '@aws/aws-core-plugin-for-backstage-common';
+import { AwsResourceLocator } from '.';
 import { Config } from '@backstage/config';
 import { DefaultAwsCredentialsManager } from '@backstage/integration-aws-node';
 import { AwsResourceTaggingApiLocatorInstance } from './resource-tagging-api-instance';

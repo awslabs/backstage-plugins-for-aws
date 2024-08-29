@@ -38,6 +38,7 @@
     "@aws-sdk/util-arn-parser": "^3.495.0",
     "@aws/aws-codebuild-plugin-for-backstage-common": "workspace:^",
     "@aws/aws-core-plugin-for-backstage-common": "workspace:^",
+    "@aws/aws-core-plugin-for-backstage-node": "workspace:^",
     "@backstage/backend-common": "^0.24.0",
     "@backstage/backend-plugin-api": "^0.8.0",
     "@backstage/catalog-client": "^1.6.6",

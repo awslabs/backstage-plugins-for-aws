@@ -25,6 +25,8 @@ import { CatalogApi } from '@backstage/catalog-client';
 import {
   AwsResourceLocatorFactory,
   AwsResourceLocator,
+} from '@aws/aws-core-plugin-for-backstage-node';
+import {
   getOneOfEntityAnnotations,
   AWS_SDK_CUSTOM_USER_AGENT,
 } from '@aws/aws-core-plugin-for-backstage-common';

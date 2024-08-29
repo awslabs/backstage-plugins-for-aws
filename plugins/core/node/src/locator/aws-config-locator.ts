@@ -19,14 +19,12 @@ import {
   paginateSelectResourceConfig,
 } from '@aws-sdk/client-config-service';
 import { Logger } from 'winston';
-import {
-  AWS_SDK_CUSTOM_USER_AGENT,
-  AwsResourceLocator,
-} from '@aws/aws-core-plugin-for-backstage-common';
+import { AWS_SDK_CUSTOM_USER_AGENT } from '@aws/aws-core-plugin-for-backstage-common';
 import { AwsCredentialIdentityProvider, Paginator } from '@aws-sdk/types';
 import { Config } from '@backstage/config';
 import { DefaultAwsCredentialsManager } from '@backstage/integration-aws-node';
 import { convertResourceTypeString, parseResourceLocatorTags } from './utils';
+import { AwsResourceLocator } from '.';
 
 export class AwsConfigResourceLocator implements AwsResourceLocator {
   static readonly AWS_CONFIG_QUERY_TEMPLATE = 'SELECT arn';

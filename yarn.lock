@@ -2245,6 +2245,7 @@ __metadata:
     "@aws-sdk/util-arn-parser": "npm:^3.495.0"
     "@aws/amazon-ecs-plugin-for-backstage-common": "workspace:^"
     "@aws/aws-core-plugin-for-backstage-common": "workspace:^"
+    "@aws/aws-core-plugin-for-backstage-node": "workspace:^"
     "@backstage/backend-common": "npm:^0.24.0"
     "@backstage/backend-defaults": "npm:^0.4.3"
     "@backstage/backend-plugin-api": "npm:^0.8.0"
@@ -2325,6 +2326,7 @@ __metadata:
     "@aws-sdk/util-arn-parser": "npm:^3.495.0"
     "@aws/aws-codebuild-plugin-for-backstage-common": "workspace:^"
     "@aws/aws-core-plugin-for-backstage-common": "workspace:^"
+    "@aws/aws-core-plugin-for-backstage-node": "workspace:^"
     "@backstage/backend-common": "npm:^0.24.0"
     "@backstage/backend-defaults": "npm:^0.4.3"
     "@backstage/backend-plugin-api": "npm:^0.8.0"
@@ -2404,6 +2406,7 @@ __metadata:
     "@aws-sdk/util-arn-parser": "npm:^3.495.0"
     "@aws/aws-codepipeline-plugin-for-backstage-common": "workspace:^"
     "@aws/aws-core-plugin-for-backstage-common": "workspace:^"
+    "@aws/aws-core-plugin-for-backstage-node": "workspace:^"
     "@backstage/backend-common": "npm:^0.24.0"
     "@backstage/backend-defaults": "npm:^0.4.3"
     "@backstage/backend-plugin-api": "npm:^0.8.0"
@@ -2479,12 +2482,21 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@aws/aws-core-plugin-for-backstage-common@workspace:plugins/core/common"
   dependencies:
+    "@backstage/catalog-model": "npm:^1.6.0"
+    "@backstage/config": "npm:^1.2.0"
+  languageName: unknown
+  linkType: soft
+
+"@aws/aws-core-plugin-for-backstage-node@workspace:^, @aws/aws-core-plugin-for-backstage-node@workspace:plugins/core/node":
+  version: 0.0.0-use.local
+  resolution: "@aws/aws-core-plugin-for-backstage-node@workspace:plugins/core/node"
+  dependencies:
     "@aws-sdk/client-config-service": "npm:^3.511.0"
     "@aws-sdk/client-resource-explorer-2": "npm:^3.511.0"
     "@aws-sdk/client-resource-groups-tagging-api": "npm:^3.511.0"
     "@aws-sdk/types": "npm:^3.511.0"
+    "@aws/aws-core-plugin-for-backstage-common": "workspace:^"
     "@backstage/backend-common": "npm:^0.24.0"
-    "@backstage/catalog-model": "npm:^1.6.0"
     "@backstage/cli": "npm:^0.27.0"
     "@backstage/config": "npm:^1.2.0"
     "@backstage/integration-aws-node": "npm:^0.1.12"
