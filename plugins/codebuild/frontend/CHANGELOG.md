@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.2](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-codebuild-plugin-for-backstage@0.5.1...@aws/aws-codebuild-plugin-for-backstage@0.5.2) (2024-08-29)
+
+
+### Bug Fixes
+
+* Round humanized time durations ([e1ea488](https://github.com/awslabs/backstage-plugins-for-aws/commit/e1ea488ab11cc689b513b64a291b8543967fb960))
+* Various status indicators should render properly ([6c1e7fb](https://github.com/awslabs/backstage-plugins-for-aws/commit/6c1e7fb3e78d92cd8d3c5390eed5438e353a8b23))
+
+
+
+
+
 ## [0.5.1](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-codebuild-plugin-for-backstage@0.5.0...@aws/aws-codebuild-plugin-for-backstage@0.5.1) (2024-07-09)
 
 **Note:** Version bump only for package @aws/aws-codebuild-plugin-for-backstage

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.1](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/amazon-ecs-plugin-for-backstage@0.4.0...@aws/amazon-ecs-plugin-for-backstage@0.4.1) (2024-08-29)
+
+
+### Bug Fixes
+
+* Various status indicators should render properly ([6c1e7fb](https://github.com/awslabs/backstage-plugins-for-aws/commit/6c1e7fb3e78d92cd8d3c5390eed5438e353a8b23))
+
+
+
+
+
 # [0.4.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/amazon-ecs-plugin-for-backstage@0.3.2...@aws/amazon-ecs-plugin-for-backstage@0.4.0) (2024-07-09)
 
 
