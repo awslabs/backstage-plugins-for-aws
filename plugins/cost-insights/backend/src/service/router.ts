@@ -17,19 +17,19 @@ import {
 } from '@backstage/backend-common';
 import express from 'express';
 import Router from 'express-promise-router';
-import { Logger } from 'winston';
 import { CostInsightsAwsService } from './types';
 import {
   AuthService,
   CacheService,
   DiscoveryService,
   HttpAuthService,
+  LoggerService,
 } from '@backstage/backend-plugin-api';
 import { CostInsightsCache } from '../cache';
 import { CostInsightsAwsConfig } from '../config';
 
 export interface RouterOptions {
-  logger: Logger;
+  logger: LoggerService;
   costInsightsAwsService: CostInsightsAwsService;
   discovery: DiscoveryService;
   auth?: AuthService;

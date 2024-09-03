@@ -12,15 +12,14 @@
  */
 
 import { assertError } from '@backstage/errors';
-import { Logger } from 'winston';
-import { CacheService } from '@backstage/backend-plugin-api';
+import { CacheService, LoggerService } from '@backstage/backend-plugin-api';
 import { CostInsightsAwsConfig } from '../config';
 
 const KEY_PREFIX = 'cost-insights:';
 
 export class CostInsightsCache {
   protected readonly cache: CacheService;
-  protected readonly logger: Logger;
+  protected readonly logger: LoggerService;
   protected readonly readTimeout: number;
 
   private constructor({
@@ -29,7 +28,7 @@ export class CostInsightsCache {
     readTimeout,
   }: {
     cache: CacheService;
-    logger: Logger;
+    logger: LoggerService;
     readTimeout: number;
   }) {
     this.cache = cache;
@@ -39,7 +38,7 @@ export class CostInsightsCache {
 
   static fromConfig(
     config: CostInsightsAwsConfig,
-    { cache, logger }: { cache: CacheService; logger: Logger },
+    { cache, logger }: { cache: CacheService; logger: LoggerService },
   ) {
     return new CostInsightsCache({
       cache: cache.withOptions({ defaultTtl: config.cache.defaultTtl }),
@@ -65,7 +64,7 @@ export class CostInsightsCache {
     } catch (e) {
       assertError(e);
       this.logger.warn(`Error getting cache entry ${path}: ${e.message}`);
-      this.logger.debug(e.stack);
+      this.logger.debug(e.stack || '-');
       return undefined;
     }
   }

@@ -11,16 +11,13 @@
  * limitations under the License.
  */
 
-import { loggerToWinstonLogger } from '@backstage/backend-common';
 import {
   createBackendPlugin,
   coreServices,
 } from '@backstage/backend-plugin-api';
-import { createRouter } from './service/router';
+import { costInsightsAwsServiceRef, createRouter } from './service/router';
 import { catalogServiceRef } from '@backstage/plugin-catalog-node/alpha';
-import { CostExplorerCostInsightsAwsService } from './service';
 import { readCostInsightsAwsConfig } from './config';
-import { DefaultAwsCredentialsManager } from '@backstage/integration-aws-node';
 
 export const costInsightsAwsPlugin = createBackendPlugin({
   pluginId: 'cost-insights-aws',
@@ -35,33 +32,23 @@ export const costInsightsAwsPlugin = createBackendPlugin({
         discovery: coreServices.discovery,
         httpAuth: coreServices.httpAuth,
         cache: coreServices.cache,
+        costInsightsAwsService: costInsightsAwsServiceRef,
       },
       async init({
         logger,
         httpRouter,
         config,
-        catalogApi,
         auth,
         httpAuth,
         discovery,
         cache,
+        costInsightsAwsService,
       }) {
-        const winstonLogger = loggerToWinstonLogger(logger);
-
         const pluginConfig = readCostInsightsAwsConfig(config);
 
-        const costInsightsAwsService =
-          await CostExplorerCostInsightsAwsService.fromConfig(pluginConfig, {
-            catalogApi,
-            auth,
-            httpAuth,
-            discovery,
-            logger: winstonLogger,
-            credentialsManager: DefaultAwsCredentialsManager.fromConfig(config),
-          });
         httpRouter.use(
           await createRouter({
-            logger: winstonLogger,
+            logger,
             costInsightsAwsService,
             discovery,
             auth,

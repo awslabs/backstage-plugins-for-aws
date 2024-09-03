@@ -16,6 +16,7 @@ metadata:
     aws.amazon.com/aws-codepipeline-tags: component=example-website
     aws.amazon.com/aws-codebuild-project-tags: component=example-website
     aws.amazon.com/amazon-ecs-service-tags: component=example-website
+    aws.amazon.com/cost-insights-tags: component=example-website
 spec:
   type: website
   lifecycle: experimental
