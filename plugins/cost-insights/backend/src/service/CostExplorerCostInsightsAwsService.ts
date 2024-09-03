@@ -11,7 +11,6 @@
  * limitations under the License.
  */
 
-import { Logger } from 'winston';
 import {
   CostExplorerClient,
   Expression,
@@ -40,24 +39,33 @@ import {
   stringifyEntityRef,
 } from '@backstage/catalog-model';
 import { CostInsightsAwsService } from './types';
-import { AwsCredentialsManager } from '@backstage/integration-aws-node';
+import {
+  AwsCredentialsManager,
+  DefaultAwsCredentialsManager,
+} from '@backstage/integration-aws-node';
 import {
   AuthService,
   BackstageCredentials,
+  coreServices,
+  createServiceFactory,
+  createServiceRef,
   DiscoveryService,
   HttpAuthService,
+  LoggerService,
 } from '@backstage/backend-plugin-api';
 import { createLegacyAuthAdapters } from '@backstage/backend-common';
 import { AwsCredentialIdentityProvider } from '@aws-sdk/types';
 import regression, { DataPoint } from 'regression';
 import { CostInsightsAwsConfig } from '../config';
 import { DateTime, Duration as LuxonDuration } from 'luxon';
+import { catalogServiceRef } from '@backstage/plugin-catalog-node/alpha';
+import { readCostInsightsAwsConfig } from '../config';
 
 export class CostExplorerCostInsightsAwsService
   implements CostInsightsAwsService
 {
   public constructor(
-    private readonly logger: Logger,
+    private readonly logger: LoggerService,
     private readonly auth: AuthService,
     private readonly catalogApi: CatalogApi,
     private readonly costExplorerClient: CostExplorerClient,
@@ -71,7 +79,7 @@ export class CostExplorerCostInsightsAwsService
       discovery: DiscoveryService;
       auth?: AuthService;
       httpAuth?: HttpAuthService;
-      logger: Logger;
+      logger: LoggerService;
       credentialsManager: AwsCredentialsManager;
     },
   ) {
@@ -370,3 +378,45 @@ export class CostExplorerCostInsightsAwsService
     };
   }
 }
+
+export const costInsightsAwsServiceRef =
+  createServiceRef<CostInsightsAwsService>({
+    id: 'cost-insights-aws.api',
+    defaultFactory: async service =>
+      createServiceFactory({
+        service,
+        deps: {
+          logger: coreServices.logger,
+          config: coreServices.rootConfig,
+          catalogApi: catalogServiceRef,
+          auth: coreServices.auth,
+          discovery: coreServices.discovery,
+          httpAuth: coreServices.httpAuth,
+        },
+        async factory({
+          logger,
+          config,
+          catalogApi,
+          auth,
+          httpAuth,
+          discovery,
+        }) {
+          const pluginConfig = readCostInsightsAwsConfig(config);
+
+          const impl = await CostExplorerCostInsightsAwsService.fromConfig(
+            pluginConfig,
+            {
+              catalogApi,
+              auth,
+              httpAuth,
+              discovery,
+              logger,
+              credentialsManager:
+                DefaultAwsCredentialsManager.fromConfig(config),
+            },
+          );
+
+          return impl;
+        },
+      }),
+  });

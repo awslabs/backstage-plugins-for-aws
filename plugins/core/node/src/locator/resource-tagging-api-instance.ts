@@ -15,15 +15,15 @@ import {
   GetResourcesCommand,
   ResourceGroupsTaggingAPIClient,
 } from '@aws-sdk/client-resource-groups-tagging-api';
-import { Logger } from 'winston';
 import { AwsCredentialIdentityProvider } from '@aws-sdk/types';
 import { DefaultAwsCredentialsManager } from '@backstage/integration-aws-node';
 import { convertResourceTypeString, parseResourceLocatorTags } from './utils';
 import { AWS_SDK_CUSTOM_USER_AGENT } from '@aws/aws-core-plugin-for-backstage-common';
+import { LoggerService } from '@backstage/backend-plugin-api';
 
 export class AwsResourceTaggingApiLocatorInstance {
   public constructor(
-    private readonly logger: Logger,
+    private readonly logger: LoggerService,
     private readonly client: ResourceGroupsTaggingAPIClient,
   ) {}
 
@@ -31,7 +31,7 @@ export class AwsResourceTaggingApiLocatorInstance {
     credsManager: DefaultAwsCredentialsManager;
     accountId: string | undefined;
     region: string | undefined;
-    logger: Logger;
+    logger: LoggerService;
   }): Promise<AwsResourceTaggingApiLocatorInstance> {
     let credentialProvider: AwsCredentialIdentityProvider;
 

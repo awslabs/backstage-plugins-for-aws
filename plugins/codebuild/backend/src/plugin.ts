@@ -11,14 +11,13 @@
  * limitations under the License.
  */
 
-import { loggerToWinstonLogger } from '@backstage/backend-common';
 import {
   createBackendPlugin,
   coreServices,
 } from '@backstage/backend-plugin-api';
 import { createRouter } from './service/router';
 import { catalogServiceRef } from '@backstage/plugin-catalog-node/alpha';
-import { DefaultAwsCodeBuildService } from './service/DefaultAwsCodeBuildService';
+import { awsCodeBuildServiceRef } from './service/DefaultAwsCodeBuildService';
 
 export const awsCodebuildPlugin = createBackendPlugin({
   pluginId: 'aws-codebuild',
@@ -32,31 +31,19 @@ export const awsCodebuildPlugin = createBackendPlugin({
         auth: coreServices.auth,
         discovery: coreServices.discovery,
         httpAuth: coreServices.httpAuth,
+        awsCodeBuildApi: awsCodeBuildServiceRef,
       },
       async init({
         logger,
         httpRouter,
-        config,
-        catalogApi,
         auth,
         httpAuth,
         discovery,
+        awsCodeBuildApi,
       }) {
-        const winstonLogger = loggerToWinstonLogger(logger);
-
-        const awsCodeBuildApi = await DefaultAwsCodeBuildService.fromConfig(
-          config,
-          {
-            catalogApi,
-            auth,
-            httpAuth,
-            discovery,
-            logger: winstonLogger,
-          },
-        );
         httpRouter.use(
           await createRouter({
-            logger: winstonLogger,
+            logger,
             awsCodeBuildApi,
             discovery,
             auth,

@@ -11,14 +11,12 @@
  * limitations under the License.
  */
 
-import { loggerToWinstonLogger } from '@backstage/backend-common';
 import {
   createBackendPlugin,
   coreServices,
 } from '@backstage/backend-plugin-api';
-import { createRouter } from './service/router';
+import { amazonEcsServiceRef, createRouter } from './service/router';
 import { catalogServiceRef } from '@backstage/plugin-catalog-node/alpha';
-import { DefaultAmazonEcsService } from './service';
 
 export const amazonEcsPlugin = createBackendPlugin({
   pluginId: 'amazon-ecs',
@@ -32,28 +30,19 @@ export const amazonEcsPlugin = createBackendPlugin({
         auth: coreServices.auth,
         discovery: coreServices.discovery,
         httpAuth: coreServices.httpAuth,
+        amazonEcsApi: amazonEcsServiceRef,
       },
       async init({
         logger,
         httpRouter,
-        config,
-        catalogApi,
         auth,
         httpAuth,
         discovery,
+        amazonEcsApi,
       }) {
-        const winstonLogger = loggerToWinstonLogger(logger);
-
-        const amazonEcsApi = await DefaultAmazonEcsService.fromConfig(config, {
-          catalogApi,
-          auth,
-          httpAuth,
-          discovery,
-          logger: winstonLogger,
-        });
         httpRouter.use(
           await createRouter({
-            logger: winstonLogger,
+            logger,
             amazonEcsApi,
             discovery,
             auth,

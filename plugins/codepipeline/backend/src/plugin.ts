@@ -11,14 +11,13 @@
  * limitations under the License.
  */
 
-import { loggerToWinstonLogger } from '@backstage/backend-common';
 import {
   createBackendPlugin,
   coreServices,
 } from '@backstage/backend-plugin-api';
 import { createRouter } from './service/router';
 import { catalogServiceRef } from '@backstage/plugin-catalog-node/alpha';
-import { DefaultAwsCodePipelineService } from './service/DefaultAwsCodePipelineService';
+import { awsCodePipelineServiceRef } from './service/DefaultAwsCodePipelineService';
 
 export const awsCodePiplinePlugin = createBackendPlugin({
   pluginId: 'aws-codepipeline',
@@ -32,29 +31,19 @@ export const awsCodePiplinePlugin = createBackendPlugin({
         auth: coreServices.auth,
         discovery: coreServices.discovery,
         httpAuth: coreServices.httpAuth,
+        awsCodePipelineApi: awsCodePipelineServiceRef,
       },
       async init({
         logger,
         httpRouter,
-        config,
-        catalogApi,
         auth,
         httpAuth,
         discovery,
+        awsCodePipelineApi,
       }) {
-        const winstonLogger = loggerToWinstonLogger(logger);
-
-        const awsCodePipelineApi =
-          await DefaultAwsCodePipelineService.fromConfig(config, {
-            catalogApi,
-            auth,
-            httpAuth,
-            discovery,
-            logger: winstonLogger,
-          });
         httpRouter.use(
           await createRouter({
-            logger: winstonLogger,
+            logger,
             awsCodePipelineApi,
             discovery,
             auth,

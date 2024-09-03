@@ -18,19 +18,19 @@ import {
   paginateSelectAggregateResourceConfig,
   paginateSelectResourceConfig,
 } from '@aws-sdk/client-config-service';
-import { Logger } from 'winston';
 import { AWS_SDK_CUSTOM_USER_AGENT } from '@aws/aws-core-plugin-for-backstage-common';
 import { AwsCredentialIdentityProvider, Paginator } from '@aws-sdk/types';
 import { Config } from '@backstage/config';
 import { DefaultAwsCredentialsManager } from '@backstage/integration-aws-node';
 import { convertResourceTypeString, parseResourceLocatorTags } from './utils';
 import { AwsResourceLocator } from '.';
+import { LoggerService } from '@backstage/backend-plugin-api';
 
 export class AwsConfigResourceLocator implements AwsResourceLocator {
   static readonly AWS_CONFIG_QUERY_TEMPLATE = 'SELECT arn';
 
   public constructor(
-    private readonly logger: Logger,
+    private readonly logger: LoggerService,
     private readonly client: ConfigServiceClient,
     private readonly aggregatorName: string | undefined,
   ) {}
@@ -38,7 +38,7 @@ export class AwsConfigResourceLocator implements AwsResourceLocator {
   static async fromConfig(
     config: Config,
     options: {
-      logger: Logger;
+      logger: LoggerService;
     },
   ) {
     let region: string | undefined;

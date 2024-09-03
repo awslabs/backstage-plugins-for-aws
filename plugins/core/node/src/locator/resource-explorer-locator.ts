@@ -15,17 +15,17 @@ import {
   ResourceExplorer2Client,
   SearchCommand,
 } from '@aws-sdk/client-resource-explorer-2';
-import { Logger } from 'winston';
 import { AWS_SDK_CUSTOM_USER_AGENT } from '@aws/aws-core-plugin-for-backstage-common';
 import { AwsCredentialIdentityProvider } from '@aws-sdk/types';
 import { Config } from '@backstage/config';
 import { DefaultAwsCredentialsManager } from '@backstage/integration-aws-node';
 import { convertResourceTypeString, parseResourceLocatorTags } from './utils';
 import { AwsResourceLocator } from '.';
+import { LoggerService } from '@backstage/backend-plugin-api';
 
 export class AwsResourceExplorerLocator implements AwsResourceLocator {
   public constructor(
-    private readonly logger: Logger,
+    private readonly logger: LoggerService,
     private readonly client: ResourceExplorer2Client,
     private readonly viewArn: string | undefined,
   ) {}
@@ -33,7 +33,7 @@ export class AwsResourceExplorerLocator implements AwsResourceLocator {
   static async fromConfig(
     config: Config,
     options: {
-      logger: Logger;
+      logger: LoggerService;
     },
   ) {
     let region: string | undefined;

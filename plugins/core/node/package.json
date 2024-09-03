@@ -34,6 +34,7 @@
     "@aws-sdk/client-resource-groups-tagging-api": "^3.511.0",
     "@aws-sdk/types": "^3.511.0",
     "@aws/aws-core-plugin-for-backstage-common": "workspace:^",
+    "@backstage/backend-plugin-api": "^0.8.1",
     "@backstage/config": "^1.2.0",
     "@backstage/integration-aws-node": "^0.1.12",
     "winston": "^3.11.0"

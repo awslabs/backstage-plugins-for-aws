@@ -17,16 +17,16 @@ import {
 } from '@backstage/backend-common';
 import express from 'express';
 import Router from 'express-promise-router';
-import { Logger } from 'winston';
 import { AwsCodePipelineService } from './types';
 import {
   AuthService,
   DiscoveryService,
   HttpAuthService,
+  LoggerService,
 } from '@backstage/backend-plugin-api';
 
 export interface RouterOptions {
-  logger: Logger;
+  logger: LoggerService;
   awsCodePipelineApi: AwsCodePipelineService;
   discovery: DiscoveryService;
   auth?: AuthService;

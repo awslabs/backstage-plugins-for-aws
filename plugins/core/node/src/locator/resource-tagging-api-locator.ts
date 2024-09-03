@@ -11,11 +11,11 @@
  * limitations under the License.
  */
 
-import { Logger } from 'winston';
 import { AwsResourceLocator } from '.';
 import { Config } from '@backstage/config';
 import { DefaultAwsCredentialsManager } from '@backstage/integration-aws-node';
 import { AwsResourceTaggingApiLocatorInstance } from './resource-tagging-api-instance';
+import { LoggerService } from '@backstage/backend-plugin-api';
 
 export class AwsResourceTaggingApiLocator implements AwsResourceLocator {
   public constructor(
@@ -25,7 +25,7 @@ export class AwsResourceTaggingApiLocator implements AwsResourceLocator {
   static async fromConfig(
     config: Config,
     options: {
-      logger: Logger;
+      logger: LoggerService;
     },
   ) {
     let regions: (string | undefined)[] = [undefined];
