@@ -487,8 +487,8 @@ __metadata:
   linkType: hard
 
 "@aws-sdk/client-codepipeline@npm:^3.511.0":
-  version: 3.645.0
-  resolution: "@aws-sdk/client-codepipeline@npm:3.645.0"
+  version: 3.646.0
+  resolution: "@aws-sdk/client-codepipeline@npm:3.646.0"
   dependencies:
     "@aws-crypto/sha256-browser": "npm:5.2.0"
     "@aws-crypto/sha256-js": "npm:5.2.0"
@@ -532,7 +532,7 @@ __metadata:
     "@smithy/util-utf8": "npm:^3.0.0"
     tslib: "npm:^2.6.2"
     uuid: "npm:^9.0.1"
-  checksum: 10c0/f9ce868aee6b71ca1635b017957a045dd6f2023949572316698d62be9a1675153ec2546db0989e2a84afdd190d6ebfc8977f7059a6ad493d11b933919dec67b0
+  checksum: 10c0/5b00de6c9894fe4e090479586c504ec1b67d7fa8c9b94ca9a49fe36797918c15eb6ea1a2396f365ce53bbaace96bb61dd680701360663a69de1065778c536425
   languageName: node
   linkType: hard
 
