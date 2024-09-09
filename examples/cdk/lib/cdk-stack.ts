@@ -2,6 +2,7 @@ import * as cdk from 'aws-cdk-lib';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as s3deploy from 'aws-cdk-lib/aws-s3-deployment';
+import * as s3assets from 'aws-cdk-lib/aws-s3-assets';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
 import * as ecs_patterns from 'aws-cdk-lib/aws-ecs-patterns';
@@ -155,16 +156,20 @@ export class BackstageSampleStack extends cdk.Stack {
       autoDeleteObjects: true,
     });
 
-    new s3deploy.BucketDeployment(this, 'DeployWebsite', {
-      sources: [s3deploy.Source.asset(path.join(__dirname, 'website'))],
+    const bundle = new s3assets.Asset(this, 'Bundle', {
+      path: path.join(__dirname, 'website'),
+    });
+
+    new s3deploy.BucketDeployment(this, 'CopySource', {
+      sources: [s3deploy.Source.asset('cdk.out/' + bundle.assetPath)],
       destinationBucket: bucket,
-      destinationKeyPrefix: 'website',
+      extract: false,
     });
 
     const sourceAction = new codepipeline_actions.S3SourceAction({
       actionName: 'Source',
       bucket: bucket,
-      bucketKey: 'website/website.zip',
+      bucketKey: bundle.s3ObjectKey,
       output: sourceOutput,
     });
 
