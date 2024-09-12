@@ -1,4 +1,4 @@
-# AWC scaffolder actions plugin for Backstage
+# AWS scaffolder actions plugin for Backstage
 
 This is the AWS scaffolder actions plugin for backstage.io.
 
