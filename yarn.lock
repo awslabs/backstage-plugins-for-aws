@@ -883,8 +883,8 @@ __metadata:
   linkType: hard
 
 "@aws-sdk/client-s3@npm:^3.350.0, @aws-sdk/client-s3@npm:^3.511.0":
-  version: 3.650.0
-  resolution: "@aws-sdk/client-s3@npm:3.650.0"
+  version: 3.651.0
+  resolution: "@aws-sdk/client-s3@npm:3.651.0"
   dependencies:
     "@aws-crypto/sha1-browser": "npm:5.2.0"
     "@aws-crypto/sha256-browser": "npm:5.2.0"
@@ -895,7 +895,7 @@ __metadata:
     "@aws-sdk/credential-provider-node": "npm:3.650.0"
     "@aws-sdk/middleware-bucket-endpoint": "npm:3.649.0"
     "@aws-sdk/middleware-expect-continue": "npm:3.649.0"
-    "@aws-sdk/middleware-flexible-checksums": "npm:3.649.0"
+    "@aws-sdk/middleware-flexible-checksums": "npm:3.651.0"
     "@aws-sdk/middleware-host-header": "npm:3.649.0"
     "@aws-sdk/middleware-location-constraint": "npm:3.649.0"
     "@aws-sdk/middleware-logger": "npm:3.649.0"
@@ -944,7 +944,7 @@ __metadata:
     "@smithy/util-utf8": "npm:^3.0.0"
     "@smithy/util-waiter": "npm:^3.1.3"
     tslib: "npm:^2.6.2"
-  checksum: 10c0/f139a1a6bf8bada21e9c02a59dec1e97d2a9213bb1809e53aa253f9c7d8bad36afdb0237fdfb2451b3f2434f6e4e8be9fe4e0f3baaa8de29ef0c84e516068bb5
+  checksum: 10c0/cd14d6e33da2efd22d7f1bf5ef152d6e2fecde0cb2b883ecca4583582b9640eb37986c893a496fd9c81173c64fc1a3e3cb7ce6eb38ad95163bca79a68e7eb59e
   languageName: node
   linkType: hard
 
@@ -1569,19 +1569,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@aws-sdk/middleware-flexible-checksums@npm:3.649.0":
-  version: 3.649.0
-  resolution: "@aws-sdk/middleware-flexible-checksums@npm:3.649.0"
+"@aws-sdk/middleware-flexible-checksums@npm:3.651.0":
+  version: 3.651.0
+  resolution: "@aws-sdk/middleware-flexible-checksums@npm:3.651.0"
   dependencies:
     "@aws-crypto/crc32": "npm:5.2.0"
     "@aws-crypto/crc32c": "npm:5.2.0"
     "@aws-sdk/types": "npm:3.649.0"
     "@smithy/is-array-buffer": "npm:^3.0.0"
+    "@smithy/node-config-provider": "npm:^3.1.5"
     "@smithy/protocol-http": "npm:^4.1.1"
     "@smithy/types": "npm:^3.4.0"
     "@smithy/util-utf8": "npm:^3.0.0"
     tslib: "npm:^2.6.2"
-  checksum: 10c0/d2e92edce12cae1d4b0a8929430cd4bc902efb579caeaabc25dbb48b76faca56572a15e88ac3dcb36a6b14f3e94f4f44e749fb622066a0f316f8673eb893b288
+  checksum: 10c0/735019a71bcc40178443972f70c66718c591a2f52cebce5dd6639701eb3124a469130e4fbc2716343fe4e0962ba10964ff49d0f8eb797d4729d8e86efc3ea27a
   languageName: node
   linkType: hard
 
