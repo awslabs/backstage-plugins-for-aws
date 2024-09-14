@@ -1,14 +1,17 @@
 import * as cdk from 'aws-cdk-lib';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as s3deploy from 'aws-cdk-lib/aws-s3-deployment';
+import * as s3assets from 'aws-cdk-lib/aws-s3-assets';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
 import * as ecs_patterns from 'aws-cdk-lib/aws-ecs-patterns';
 import * as ecr from 'aws-cdk-lib/aws-ecr';
 import * as codebuild from 'aws-cdk-lib/aws-codebuild';
-import * as codecommit from 'aws-cdk-lib/aws-codecommit';
 import * as codepipeline from 'aws-cdk-lib/aws-codepipeline';
 import * as codepipeline_actions from 'aws-cdk-lib/aws-codepipeline-actions';
 import { Construct } from 'constructs';
+import * as path from 'path';
 
 export class BackstageSampleStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -94,10 +97,6 @@ export class BackstageSampleStack extends cdk.Stack {
       );
     cdk.Tags.of(fargateService).add('component', 'example-website');
 
-    const repo = new codecommit.Repository(this, 'Repo', {
-      repositoryName: 'example-website-repository',
-    });
-
     const project = new codebuild.PipelineProject(this, 'Build', {
       projectName: 'example-website-build',
       environment: {
@@ -147,11 +146,28 @@ export class BackstageSampleStack extends cdk.Stack {
 
     const sourceOutput = new codepipeline.Artifact();
     const buildOutput = new codepipeline.Artifact();
-    const sourceAction = new codepipeline_actions.CodeCommitSourceAction({
+
+    const bucketName = `example-website-bucket-${this.account}-${this.region}`;
+
+    const bucket = new s3.Bucket(this, 'SourceBucket', {
+      bucketName: bucketName,
+      versioned: true,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: true,
+    });
+
+    const bucketDeployment = new s3deploy.BucketDeployment(this, 'CopySource', {
+      sources: [s3deploy.Source.asset(path.join(__dirname, 'website'))],
+      destinationBucket: bucket,
+      extract: false,
+      prune: false,
+    });
+
+    const sourceAction = new codepipeline_actions.S3SourceAction({
       actionName: 'Source',
-      repository: repo,
+      bucket: bucket,
+      bucketKey: cdk.Fn.select(0, bucketDeployment.objectKeys),
       output: sourceOutput,
-      trigger: codepipeline_actions.CodeCommitTrigger.POLL,
     });
 
     const buildAction = new codepipeline_actions.CodeBuildAction({
