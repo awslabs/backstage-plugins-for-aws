@@ -166,7 +166,7 @@ export class BackstageSampleStack extends cdk.Stack {
     const sourceAction = new codepipeline_actions.S3SourceAction({
       actionName: 'Source',
       bucket: bucket,
-      bucketKey: cdk.Fn.select(0,bucketDeployment.objectKeys),
+      bucketKey: cdk.Fn.select(0, bucketDeployment.objectKeys),
       output: sourceOutput,
     });
 
