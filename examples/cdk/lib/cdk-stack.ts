@@ -156,20 +156,17 @@ export class BackstageSampleStack extends cdk.Stack {
       autoDeleteObjects: true,
     });
 
-    const bundle = new s3assets.Asset(this, 'Bundle', {
-      path: path.join(__dirname, 'website'),
-    });
-
-    new s3deploy.BucketDeployment(this, 'CopySource', {
-      sources: [s3deploy.Source.asset('cdk.out/' + bundle.assetPath)],
+    const bucketDeployment = new s3deploy.BucketDeployment(this, 'CopySource', {
+      sources: [s3deploy.Source.asset(path.join(__dirname, 'website'))],
       destinationBucket: bucket,
       extract: false,
+      prune: false,
     });
 
     const sourceAction = new codepipeline_actions.S3SourceAction({
       actionName: 'Source',
       bucket: bucket,
-      bucketKey: bundle.s3ObjectKey,
+      bucketKey: cdk.Fn.select(0,bucketDeployment.objectKeys),
       output: sourceOutput,
     });
 
