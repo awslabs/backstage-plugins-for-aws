@@ -35,9 +35,15 @@ export class BackstageSampleStack extends cdk.Stack {
       maxAzs: 3,
     });
 
-    const cluster = new ecs.Cluster(this, 'Cluster', {
+    // Create two ECS clusters: staging and production
+    const stagingCluster = new ecs.Cluster(this, 'StagingCluster', {
       vpc: vpc,
-      clusterName: 'example-website-cluster',
+      clusterName: 'staging-cluster',
+    });
+
+    const prodCluster = new ecs.Cluster(this, 'ProdCluster', {
+      vpc: vpc,
+      clusterName: 'prod-cluster',
     });
 
     const logging = new ecs.AwsLogDriver({
@@ -81,13 +87,14 @@ export class BackstageSampleStack extends cdk.Stack {
       protocol: ecs.Protocol.TCP,
     });
 
-    const fargateService =
+    // Create Fargate services in both clusters
+    const stagingService =
       new ecs_patterns.ApplicationLoadBalancedFargateService(
         this,
-        'ecs-service',
+        'StagingService',
         {
-          serviceName: 'example-website-service',
-          cluster: cluster,
+          serviceName: 'staging-website-service',
+          cluster: stagingCluster,
           taskDefinition: taskDef,
           publicLoadBalancer: true,
           desiredCount: 1,
@@ -95,7 +102,26 @@ export class BackstageSampleStack extends cdk.Stack {
           assignPublicIp: true,
         },
       );
-    cdk.Tags.of(fargateService).add('component', 'example-website');
+
+    const prodService = new ecs_patterns.ApplicationLoadBalancedFargateService(
+      this,
+      'ProdService',
+      {
+        serviceName: 'prod-website-service',
+        cluster: prodCluster,
+        taskDefinition: taskDef,
+        publicLoadBalancer: true,
+        desiredCount: 1,
+        listenerPort: 80,
+        assignPublicIp: true,
+      },
+    );
+
+    cdk.Tags.of(stagingService).add('component', 'example-website');
+    cdk.Tags.of(stagingService).add('environment', 'staging');
+
+    cdk.Tags.of(prodService).add('component', 'example-website');
+    cdk.Tags.of(prodService).add('environment', 'prod');
 
     const project = new codebuild.PipelineProject(this, 'Build', {
       projectName: 'example-website-build',
@@ -105,7 +131,7 @@ export class BackstageSampleStack extends cdk.Stack {
       },
       environmentVariables: {
         cluster_name: {
-          value: `${cluster.clusterName}`,
+          value: `${stagingCluster.clusterName}`,
         },
         ecr_repo_uri: {
           value: `${ecrRepo.repositoryUri}`,
@@ -177,9 +203,20 @@ export class BackstageSampleStack extends cdk.Stack {
       outputs: [buildOutput],
     });
 
-    const deployAction = new codepipeline_actions.EcsDeployAction({
-      actionName: 'deployAction',
-      service: fargateService.service,
+    // Deploy to staging service
+    const deployToStagingAction = new codepipeline_actions.EcsDeployAction({
+      actionName: 'DeployToStaging',
+      service: stagingService.service,
+      imageFile: new codepipeline.ArtifactPath(
+        buildOutput,
+        `imagedefinitions.json`,
+      ),
+    });
+
+    // Deploy to production service
+    const deployToProdAction = new codepipeline_actions.EcsDeployAction({
+      actionName: 'DeployToProd',
+      service: prodService.service,
       imageFile: new codepipeline.ArtifactPath(
         buildOutput,
         `imagedefinitions.json`,
@@ -199,7 +236,7 @@ export class BackstageSampleStack extends cdk.Stack {
         },
         {
           stageName: 'deploy-to-ecs',
-          actions: [deployAction],
+          actions: [deployToStagingAction, deployToProdAction],
         },
       ],
     });
@@ -215,7 +252,10 @@ export class BackstageSampleStack extends cdk.Stack {
           'ecr:batchgetimage',
           'ecr:getdownloadurlforlayer',
         ],
-        resources: [`${cluster.clusterArn}`],
+        resources: [
+          `${stagingCluster.clusterArn}`,
+          `${prodCluster.clusterArn}`,
+        ],
       }),
     );
   }
