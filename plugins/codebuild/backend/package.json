@@ -1,6 +1,6 @@
 {
   "name": "@aws/aws-codebuild-plugin-for-backstage-backend",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "repository": {
     "type": "git",
     "url": "github:awslabs/backstage-plugins-for-aws",

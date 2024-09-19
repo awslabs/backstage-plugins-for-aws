@@ -1,7 +1,7 @@
 {
   "name": "@aws/aws-core-plugin-for-backstage-node",
   "description": "Node library for the AWS plugins for Backstage",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "repository": {
     "type": "git",
     "url": "github:awslabs/backstage-plugins-for-aws",
