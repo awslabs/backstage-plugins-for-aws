@@ -207,8 +207,6 @@ export class AwsConfigInfrastructureProvider
       kind: 'Resource',
       metadata: {
         annotations: {
-          [ANNOTATION_LOCATION]: this.getProviderName(),
-          [ANNOTATION_ORIGIN_LOCATION]: this.getProviderName(),
           'aws.amazon.com/arn': resource.arn,
           'aws.amazon.com/resource-type': resource.resourceType,
           'aws.amazon.com/resource-id': resource.resourceId,
@@ -229,6 +227,10 @@ export class AwsConfigInfrastructureProvider
     const transformResult = await this.fieldsTransform(resource);
 
     const final = merge(resourceResult, transformResult);
+
+    final.metadata.annotations![ANNOTATION_LOCATION] = this.getProviderName();
+    final.metadata.annotations![ANNOTATION_ORIGIN_LOCATION] =
+      this.getProviderName();
 
     try {
       const isValid = await resourceEntityV1alpha1Validator.check(final);

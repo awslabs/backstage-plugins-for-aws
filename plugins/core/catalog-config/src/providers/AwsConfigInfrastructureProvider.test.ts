@@ -222,6 +222,10 @@ describe('AwsConfigInfrastructureProvider', () => {
         filters: { resourceTypes: ['AWS::ECS::Cluster'] },
         transform: {
           fields: {
+            name: {
+              expression:
+                "$join([$resource.resourceName, $resource.accountId], '-')",
+            },
             spec: {
               owner: { tag: 'owner' },
               system: { value: 'some-system' },
@@ -241,6 +245,7 @@ describe('AwsConfigInfrastructureProvider', () => {
           owner: 'team1',
           component: 'app1',
           system: 'some-system',
+          metadataName: 'test1-111',
         }),
         createResource({
           name: 'test2',
@@ -250,6 +255,7 @@ describe('AwsConfigInfrastructureProvider', () => {
           providerId: 'default',
           type: 'ecs-service',
           system: 'some-system',
+          metadataName: 'test2-222',
         }),
       ],
       "SELECT resourceId, resourceName, resourceType, awsRegion, accountId, arn, tags, configuration WHERE resourceType IN ('AWS::ECS::Cluster')",
@@ -267,6 +273,7 @@ function createResource({
   owner = 'unknown',
   component,
   system,
+  metadataName,
 }: {
   name: string;
   accountId: string;
@@ -277,6 +284,7 @@ function createResource({
   owner?: string;
   component?: string;
   system?: string;
+  metadataName?: string;
 }) {
   const arn = `arn:aws:xxx:${region}:${accountId}:/${name}`;
   const location = `aws-config-provider:${providerId}`;
@@ -295,7 +303,7 @@ function createResource({
           'backstage.io/managed-by-location': location,
           'backstage.io/managed-by-origin-location': location,
         },
-        name,
+        name: metadataName ?? name,
         description: `AWS Config Resource ${resourceType} ${name}`,
       },
       spec: {

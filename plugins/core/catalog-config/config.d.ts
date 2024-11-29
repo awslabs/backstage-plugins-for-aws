@@ -21,156 +21,67 @@ export interface Config {
     providers?: {
       /**
        * AwsConfigInfrastructureProvider configuration
-       *
-       * Uses "default" as default id for the single config variant.
        */
-      awsConfig?:
-        | {
+      awsConfig?: {
+        [name: string]: {
+          /**
+           * (Optional) AWS Config aggregator name to use
+           * If not set, an aggregator will not be used
+           * @see https://docs.aws.amazon.com/config/latest/developerguide/aggregate-data.html
+           */
+          aggregator?: string;
+          /**
+           * (Optional) AWS Region.
+           * If not set, AWS_REGION environment variable or aws config file will be used.
+           * @see https://docs.aws.amazon.com/sdk-for-javascript/v3/developer-guide/setting-region.html
+           */
+          region?: string;
+          /**
+           * (Optional) AWS Account id.
+           * If not set, main account is used.
+           * @see https://github.com/backstage/backstage/blob/master/packages/integration-aws-node/README.md
+           */
+          accountId?: string;
+          /**
+           * (Required) Filters to apply in AWS Config query
+           */
+          filters: {
             /**
-             * (Optional) AWS Config aggregator name to use
-             * If not set, an aggregator will not be used
-             * @see https://docs.aws.amazon.com/config/latest/developerguide/aggregate-data.html
+             * (Optional) Filter AWS Config resources using these tags
+             * If not set, no tag filters will be applied
              */
-            aggregator?: string;
+            tagFilters?: {
+              /**
+               * (Required) Key of the tag to filter on
+               */
+              key: string;
+              /**
+               * (Optional) Value of the tag to filter on
+               * If not set, only the key of the tag fill be used
+               */
+              value?: string;
+            }[];
             /**
-             * (Optional) AWS Region.
-             * If not set, AWS_REGION environment variable or aws config file will be used.
-             * @see https://docs.aws.amazon.com/sdk-for-javascript/v3/developer-guide/setting-region.html
+             * (Required) List of AWS Config resource types to retrieve
+             * @see https://docs.aws.amazon.com/config/latest/developerguide/resource-config-reference.html
              */
-            region?: string;
+            resourceTypes: string[];
+          };
+          /**
+           * (Optional) Transforms that will be applied to the emitted entity
+           * If not set, no transforms will be applied
+           */
+          transform?: {
             /**
-             * (Optional) AWS Account id.
-             * If not set, main account is used.
-             * @see https://github.com/backstage/backstage/blob/master/packages/integration-aws-node/README.md
+             * (Optional) Transforms for the spec field of the entity
+             * If not set, no transforms will be applied to the spec field
              */
-            accountId?: string;
-            /**
-             * (Required) Filters to apply in AWS Config query
-             */
-            filters: {
+            spec?: {
               /**
-               * (Optional) Filter AWS Config resources using these tags
-               * If not set, no tag filters will be applied
+               * (Optional) Transforms for the spec.owner field of the entity
+               * If not set, no transforms will be applied to the spec.owner field
                */
-              tagFilters?: {
-                /**
-                 * (Required) Key of the tag to filter on
-                 */
-                key: string;
-                /**
-                 * (Optional) Value of the tag to filter on
-                 * If not set, only the key of the tag fill be used
-                 */
-                value?: string;
-              }[];
-              /**
-               * (Required) List of AWS Config resource types to retrieve
-               * @see https://docs.aws.amazon.com/config/latest/developerguide/resource-config-reference.html
-               */
-              resourceTypes: string[];
-            };
-            /**
-             * (Optional) Transforms that will be applied to the emitted entity
-             * If not set, no transforms will be applied
-             */
-            transform?: {
-              /**
-               * (Optional) Transforms for the spec field of the entity
-               * If not set, no transforms will be applied to the spec field
-               */
-              spec?: {
-                /**
-                 * (Optional) Transforms for the spec.owner field of the entity
-                 * If not set, no transforms will be applied to the spec.owner field
-                 */
-                owner?: {
-                  /**
-                   * (Optional) Propagates the value of this tag to the field
-                   * If not set, no tag will be propagated
-                   */
-                  tag?: string;
-                  /**
-                   * (Optional) Sets the value of the field to this value
-                   * If not set, no value will be set
-                   */
-                  value?: string;
-                  /**
-                   * (Optional) Sets the value of the field based on the given JSONata expression
-                   * If not set, no value will be set
-                   */
-                  expression?: string;
-                };
-                /**
-                 * (Optional) Transforms for the spec.system field of the entity
-                 * If not set, no transforms will be applied to the spec.owner field
-                 */
-                system?: {
-                  /**
-                   * (Optional) Propagates the value of this tag to the field
-                   * If not set, no tag will be propagated
-                   */
-                  tag?: string;
-                  /**
-                   * (Optional) Sets the value of the field to this value
-                   * If not set, no value will be set
-                   */
-                  value?: string;
-                  /**
-                   * (Optional) Sets the value of the field based on the given JSONata expression
-                   * If not set, no value will be set
-                   */
-                  expression?: string;
-                };
-                /**
-                 * (Optional) Transforms the entity to add a dependencyOf on a component
-                 * If not set, no transforms will be applied to create the dependencyOf
-                 */
-                component?: {
-                  /**
-                   * (Optional) Propagates the value of this tag to the field
-                   * If not set, no tag will be propagated
-                   */
-                  tag?: string;
-                  /**
-                   * (Optional) Sets the value of the field to this value
-                   * If not set, no value will be set
-                   */
-                  value?: string;
-                  /**
-                   * (Optional) Sets the value of the field based on the given JSONata expression
-                   * If not set, no value will be set
-                   */
-                  expression?: string;
-                };
-              };
-              /**
-               * (Optional) Transform the entity to add annotations
-               * If not set, no annotations will be added
-               */
-              annotations?: {
-                [name: string]: {
-                  /**
-                   * (Optional) Propagates the value of this tag to the field
-                   * If not set, no tag will be propagated
-                   */
-                  tag?: string;
-                  /**
-                   * (Optional) Sets the value of the field to this value
-                   * If not set, no value will be set
-                   */
-                  value?: string;
-                  /**
-                   * (Optional) Sets the value of the field based on the given JSONata expression
-                   * If not set, no value will be set
-                   */
-                  expression?: string;
-                };
-              };
-              /**
-               * (Optional) Transform the entity to set the metadata.name field
-               * If not set, the resourceName field on the Config resource will be used
-               */
-              name?: {
+              owner?: {
                 /**
                  * (Optional) Propagates the value of this tag to the field
                  * If not set, no tag will be propagated
@@ -181,202 +92,125 @@ export interface Config {
                  * If not set, no value will be set
                  */
                 value?: string;
+              };
+              /**
+               * (Optional) Transforms for the spec.system field of the entity
+               * If not set, no transforms will be applied to the spec.owner field
+               */
+              system?: {
                 /**
-                 * (Optional) Sets the value of the field based on the given JSONata expression
+                 * (Optional) Propagates the value of this tag to the field
+                 * If not set, no tag will be propagated
+                 */
+                tag?: string;
+                /**
+                 * (Optional) Sets the value of the field to this value
                  * If not set, no value will be set
                  */
-                expression?: string;
+                value?: string;
+              };
+              /**
+               * (Optional) Transforms the entity to add a dependencyOf on a component
+               * If not set, no transforms will be applied to create the dependencyOf
+               */
+              component?: {
+                /**
+                 * (Optional) Propagates the value of this tag to the field
+                 * If not set, no tag will be propagated
+                 */
+                tag?: string;
+                /**
+                 * (Optional) Sets the value of the field to this value
+                 * If not set, no value will be set
+                 */
+                value?: string;
+              };
+              /**
+               * (Optional) Transforms for the spec.type field of the entity
+               * If not set, no transforms will be applied to the spec.type field
+               */
+              system?: {
+                /**
+                 * (Optional) Propagates the value of this tag to the field
+                 * If not set, no tag will be propagated
+                 */
+                tag?: string;
+                /**
+                 * (Optional) Sets the value of the field to this value
+                 * If not set, no value will be set
+                 */
+                value?: string;
               };
             };
             /**
-             * (Optional) Configure ingestion behavior
-             * If not set, default configuration will be used
+             * (Optional) Transforms for the metadata.annotations field of the entity
+             * If not set, no transforms will be applied to the metadata.annotations field
              */
-            options?: {
-              /**
-               * (Optional) Sets the page size of results from AWS Config
-               * If not set, page size will be 25
-               */
-              pageSize?: number;
-              /**
-               * (Optional) Configure incremental ingestion behavior
-               * If not set, default configuration will be used
-               */
-              incremental?: {
+            annotations?: {
+              [name: string]: {
                 /**
-                 * (Optional) Length of each burst of entity ingestion
-                 * If not set, burst length will be 3 seconds
+                 * (Optional) Propagates the value of this tag to the field
+                 * If not set, no tag will be propagated
                  */
-                burstLength?: HumanDuration;
+                tag?: string;
                 /**
-                 * (Optional) Time to wait between each burst
-                 * If not set, burst interval will be 3 seconds
+                 * (Optional) Sets the value of the field to this value
+                 * If not set, no value will be set
                  */
-                burstInterval?: HumanDuration;
-                /**
-                 * (Optional) Time to wait between ingestion run
-                 * If not set, rest length will be 1 day
-                 */
-                restLength?: HumanDuration;
+                value?: string;
               };
             };
-          }
-        | {
-            [name: string]: {
+            /**
+             * (Optional) Transforms for the metadata.name field of the entity
+             * If not set, no transforms will be applied to the metadata.name field
+             */
+            name?: {
               /**
-               * (Optional) AWS Config aggregator name to use
-               * If not set, an aggregator will not be used
-               * @see https://docs.aws.amazon.com/config/latest/developerguide/aggregate-data.html
+               * (Optional) Propagates the value of this tag to the field
+               * If not set, no tag will be propagated
                */
-              aggregator?: string;
+              tag?: string;
               /**
-               * (Optional) AWS Region.
-               * If not set, AWS_REGION environment variable or aws config file will be used.
-               * @see https://docs.aws.amazon.com/sdk-for-javascript/v3/developer-guide/setting-region.html
+               * (Optional) Sets the value of the field to this value
+               * If not set, no value will be set
                */
-              region?: string;
-              /**
-               * (Optional) AWS Account id.
-               * If not set, main account is used.
-               * @see https://github.com/backstage/backstage/blob/master/packages/integration-aws-node/README.md
-               */
-              accountId?: string;
-              /**
-               * (Required) Filters to apply in AWS Config query
-               */
-              filters: {
-                /**
-                 * (Optional) Filter AWS Config resources using these tags
-                 * If not set, no tag filters will be applied
-                 */
-                tagFilters?: {
-                  /**
-                   * (Required) Key of the tag to filter on
-                   */
-                  key: string;
-                  /**
-                   * (Optional) Value of the tag to filter on
-                   * If not set, only the key of the tag fill be used
-                   */
-                  value?: string;
-                }[];
-                /**
-                 * (Required) List of AWS Config resource types to retrieve
-                 * @see https://docs.aws.amazon.com/config/latest/developerguide/resource-config-reference.html
-                 */
-                resourceTypes: string[];
-              };
-              /**
-               * (Optional) Transforms that will be applied to the emitted entity
-               * If not set, no transforms will be applied
-               */
-              transform?: {
-                /**
-                 * (Optional) Transforms for the spec field of the entity
-                 * If not set, no transforms will be applied to the spec field
-                 */
-                spec?: {
-                  /**
-                   * (Optional) Transforms for the spec.owner field of the entity
-                   * If not set, no transforms will be applied to the spec.owner field
-                   */
-                  owner?: {
-                    /**
-                     * (Optional) Propagates the value of this tag to the field
-                     * If not set, no tag will be propagated
-                     */
-                    tag?: string;
-                    /**
-                     * (Optional) Sets the value of the field to this value
-                     * If not set, no value will be set
-                     */
-                    value?: string;
-                  };
-                  /**
-                   * (Optional) Transforms for the spec.system field of the entity
-                   * If not set, no transforms will be applied to the spec.owner field
-                   */
-                  system?: {
-                    /**
-                     * (Optional) Propagates the value of this tag to the field
-                     * If not set, no tag will be propagated
-                     */
-                    tag?: string;
-                    /**
-                     * (Optional) Sets the value of the field to this value
-                     * If not set, no value will be set
-                     */
-                    value?: string;
-                  };
-                  /**
-                   * (Optional) Transforms the entity to add a dependencyOf on a component
-                   * If not set, no transforms will be applied to create the dependencyOf
-                   */
-                  component?: {
-                    /**
-                     * (Optional) Propagates the value of this tag to the field
-                     * If not set, no tag will be propagated
-                     */
-                    tag?: string;
-                    /**
-                     * (Optional) Sets the value of the field to this value
-                     * If not set, no value will be set
-                     */
-                    value?: string;
-                  };
-                };
-                /**
-                 * (Optional) List of AWS Config resource types to retrieve
-                 */
-                annotations?: {
-                  [name: string]: {
-                    /**
-                     * (Optional) Propagates the value of this tag to the field
-                     * If not set, no tag will be propagated
-                     */
-                    tag?: string;
-                    /**
-                     * (Optional) Sets the value of the field to this value
-                     * If not set, no value will be set
-                     */
-                    value?: string;
-                  };
-                };
-              };
-              /**
-               * (Optional) Configure ingestion behavior
-               * If not set, default configuration will be used
-               */
-              options?: {
-                /**
-                 * (Optional) Sets the page size of results from AWS Config
-                 * If not set, page size will be 100
-                 */
-                pageSize?: number;
-                /**
-                 * (Optional) Configure incremental ingestion behavior
-                 * If not set, default configuration will be used
-                 */
-                incremental?: {
-                  /**
-                   * (Optional) Length of each burst of entity ingestion
-                   * If not set, burst length will be 3 seconds
-                   */
-                  burstLength?: HumanDuration;
-                  /**
-                   * (Optional) Time to wait between each burst
-                   * If not set, burst interval will be 3 seconds
-                   */
-                  burstInterval?: HumanDuration;
-                  /**
-                   * (Optional) Time to wait between ingestion run
-                   * If not set, rest length will be 1 day
-                   */
-                  restLength?: HumanDuration;
-                };
-              };
+              value?: string;
             };
           };
+          /**
+           * (Optional) Configure ingestion behavior
+           * If not set, default configuration will be used
+           */
+          options?: {
+            /**
+             * (Optional) Sets the page size of results from AWS Config
+             * If not set, page size will be 100
+             */
+            pageSize?: number;
+            /**
+             * (Optional) Configure incremental ingestion behavior
+             * If not set, default configuration will be used
+             */
+            incremental?: {
+              /**
+               * (Optional) Length of each burst of entity ingestion
+               * If not set, burst length will be 3 seconds
+               */
+              burstLength?: HumanDuration;
+              /**
+               * (Optional) Time to wait between each burst
+               * If not set, burst interval will be 3 seconds
+               */
+              burstInterval?: HumanDuration;
+              /**
+               * (Optional) Time to wait between ingestion run
+               * If not set, rest length will be 1 day
+               */
+              restLength?: HumanDuration;
+            };
+          };
+        };
+      };
     };
   };
 }

@@ -55,6 +55,8 @@ providers:
           - AWS::S3::Bucket
       transform: # [OPTIONAL] Apply transformations to the emitted entity
         fields: # Modify specific fields
+          name: # Customize the name field generated (see note below)
+            expression: $join([$resource.resourceName, $resource.accountId], '-')
           annotations: # Add to metadata.annotations
             accountId:
               expression: $resource.accountId # Add an annotation with the AWS account ID using JSONata expression
@@ -72,28 +74,25 @@ providers:
 
 An entity created by the above configuration would look like this:
 
-```json
-{
-  apiVersion: 'backstage.io/v1alpha1',
-  kind: 'Resource',
-  metadata: {
-    annotations: {
-      'aws.amazon.com/arn': 'arn:aws:ecs:us-west-2:1234567890:service/my-cluster/my-app',
-      'aws.amazon.com/name': name,
-      'aws.amazon.com/region': 'us-west-2',
-      'aws.amazon.com/resource-id': 'arn:aws:ecs:us-west-2:1234567890:service/my-cluster/my-app',
-      'aws.amazon.com/resource-type': 'AWS::ECS::Service'
-    },
-    name,
-    description: `AWS Config Resource AWS::ECS::Service my-app`,
-  },
-  spec: {
-    owner: 'my-team',
-    type: 'ecs-service',
-    system: 'my-system',
-  },
-}
+```yaml
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  annotations:
+    aws.amazon.com/arn: arn:aws:ecs:us-west-2:1234567890:service/my-cluster/my-app
+    aws.amazon.com/name: my-app
+    aws.amazon.com/region: us-west-2
+    aws.amazon.com/resource-id: arn:aws:ecs:us-west-2:1234567890:service/my-cluster/my-app
+    aws.amazon.com/resource-type: AWS::ECS::Service
+  name: my-app
+  description: AWS Config Resource AWS::ECS::Service my-app
+spec:
+  owner: my-team
+  type: ecs-service
+  system: my-system
 ```
+
+> NOTE: The `metadata.name` field must be unique across your Backstage instance, otherwise entities will over-write each other. If your AWS resources naming is already unique then you have no actions to take. If you have AWS resources that potentially have conflicting names then you will need to use the `transform.fields.name` configuration value to transform the `metadata.name` field to something unique for each entity.
 
 ## Considerations
 

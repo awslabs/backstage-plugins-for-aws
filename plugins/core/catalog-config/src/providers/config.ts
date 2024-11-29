@@ -32,6 +32,7 @@ export function readAwsInfrastructureConfigs(
   const providerConfigs = config.getOptionalConfig(
     'catalog.providers.awsConfig',
   );
+
   if (!providerConfigs) {
     return configs;
   }
@@ -49,9 +50,7 @@ function readAwsInfrastructureConfig(
   id: string,
   config: Config,
 ): AwsInfrastructureConfig {
-  const transform = config.has('transform')
-    ? readTransformDefinitionFromConfig(config.getConfig('transform'))
-    : undefined;
+  const transform = readTransformDefinitionFromConfig(config);
 
   const filters = readFiltersFromConfig(config.getConfig('filters'));
 
@@ -114,9 +113,7 @@ function readAwsInfrastructureIncrementalOptionsConfig(
 }
 
 function readFiltersFromConfig(config: Config): FilterDefinition {
-  const tagFilters = config.has('tags')
-    ? readTagFiltersFromConfig(config.getConfigArray('tags'))
-    : undefined;
+  const tagFilters = readTagFiltersFromConfig(config);
 
   const resourceTypes = config.getStringArray('resourceTypes');
 
@@ -126,8 +123,14 @@ function readFiltersFromConfig(config: Config): FilterDefinition {
   };
 }
 
-function readTagFiltersFromConfig(config: Config[]): TagFilterDefinition[] {
-  return config.map(c => {
+function readTagFiltersFromConfig(config: Config): TagFilterDefinition[] {
+  if (!config.has('tags')) {
+    return [];
+  }
+
+  const tagFiltersConfig = config.getConfigArray('tags');
+
+  return tagFiltersConfig.map(c => {
     return {
       key: c.getString('key'),
       value: c.getOptionalString('value'),
@@ -137,10 +140,14 @@ function readTagFiltersFromConfig(config: Config[]): TagFilterDefinition[] {
 
 function readTransformDefinitionFromConfig(
   config: Config,
-): TransformDefinition {
-  const fields = config.has('fields')
-    ? readFieldsTransformDefinitionFromConfig(config.getConfig('fields'))
-    : undefined;
+): TransformDefinition | undefined {
+  if (!config.has('transform')) {
+    return undefined;
+  }
+
+  const transformsConfig = config.getConfig('transform');
+
+  const fields = readFieldsTransformDefinitionFromConfig(transformsConfig);
 
   return {
     fields,
@@ -149,17 +156,21 @@ function readTransformDefinitionFromConfig(
 
 function readFieldsTransformDefinitionFromConfig(
   config: Config,
-): FieldsTransformDefinition {
-  const spec = config.has('spec')
-    ? readFieldsSpecTransformDefinitionFromConfig(config.getConfig('spec'))
-    : undefined;
+): FieldsTransformDefinition | undefined {
+  if (!config.has('fields')) {
+    return undefined;
+  }
 
-  const name = readFieldTransformDefinitionFromConfig(config, 'name');
+  const fieldsConfig = config.getConfig('fields');
+
+  const spec = readFieldsSpecTransformDefinitionFromConfig(fieldsConfig);
+
+  const name = readFieldTransformDefinitionFromConfig(fieldsConfig, 'name');
 
   const annotations = new Map<string, FieldTransformDefinition>();
 
-  if (config.has('annotations')) {
-    const annotationsConfig = config.getConfig('annotations');
+  if (fieldsConfig.has('annotations')) {
+    const annotationsConfig = fieldsConfig.getConfig('annotations');
 
     annotationsConfig.keys().forEach(key => {
       annotations.set(
@@ -178,11 +189,18 @@ function readFieldsTransformDefinitionFromConfig(
 
 function readFieldsSpecTransformDefinitionFromConfig(
   config: Config,
-): FieldsSpecTransformDefinition {
+): FieldsSpecTransformDefinition | undefined {
+  if (!config.has('spec')) {
+    return undefined;
+  }
+
+  const specConfig = config.getConfig('spec');
+
   return {
-    owner: readFieldTransformDefinitionFromConfig(config, 'owner'),
-    component: readFieldTransformDefinitionFromConfig(config, 'component'),
-    system: readFieldTransformDefinitionFromConfig(config, 'system'),
+    owner: readFieldTransformDefinitionFromConfig(specConfig, 'owner'),
+    component: readFieldTransformDefinitionFromConfig(specConfig, 'component'),
+    system: readFieldTransformDefinitionFromConfig(specConfig, 'system'),
+    type: readFieldTransformDefinitionFromConfig(specConfig, 'type'),
   };
 }
 

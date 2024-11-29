@@ -59,6 +59,7 @@ export interface FieldsSpecTransformDefinition {
   owner?: FieldTransformDefinition;
   system?: FieldTransformDefinition;
   component?: FieldTransformDefinition;
+  type?: FieldTransformDefinition;
 }
 
 export interface FieldTransformDefinition {
