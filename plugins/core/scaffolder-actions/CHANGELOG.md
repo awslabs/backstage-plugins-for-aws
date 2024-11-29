@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-core-plugin-for-backstage-scaffolder-actions@0.2.10...@aws/aws-core-plugin-for-backstage-scaffolder-actions@0.3.0) (2024-11-29)
+
+
+### Features
+
+* Upgrade to Backstage 1.33 ([#285](https://github.com/awslabs/backstage-plugins-for-aws/issues/285)) ([441593f](https://github.com/awslabs/backstage-plugins-for-aws/commit/441593f59486af9e2330b935b1e92dc80a509555))
+
+
+
+
+
 ## [0.2.10](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-core-plugin-for-backstage-scaffolder-actions@0.2.9...@aws/aws-core-plugin-for-backstage-scaffolder-actions@0.2.10) (2024-09-19)
 
 **Note:** Version bump only for package @aws/aws-core-plugin-for-backstage-scaffolder-actions
