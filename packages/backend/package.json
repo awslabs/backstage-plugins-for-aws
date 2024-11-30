@@ -21,6 +21,7 @@
     "@aws/aws-codepipeline-plugin-for-backstage-backend": "workspace:^",
     "@aws/aws-core-plugin-for-backstage-scaffolder-actions": "workspace:^",
     "@aws/cost-insights-plugin-for-backstage-backend": "workspace:^",
+    "@aws/ecr-plugin-for-backstage-backend": "workspace:^",
     "@backstage/backend-defaults": "^0.5.3",
     "@backstage/backend-plugin-api": "^1.0.2",
     "@backstage/catalog-client": "^1.8.0",

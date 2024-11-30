@@ -18,6 +18,7 @@
     "@aws/aws-codebuild-plugin-for-backstage": "workspace:^",
     "@aws/aws-codepipeline-plugin-for-backstage": "workspace:^",
     "@aws/cost-insights-plugin-for-backstage": "workspace:^",
+    "@aws/ecr-plugin-for-backstage": "workspace:^",
     "@backstage-community/plugin-cost-insights": "^0.12.25",
     "@backstage-community/plugin-github-actions": "^0.6.16",
     "@backstage-community/plugin-tech-radar": "^0.7.4",

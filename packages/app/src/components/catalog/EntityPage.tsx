@@ -57,6 +57,11 @@ import {
 } from '@aws/aws-codepipeline-plugin-for-backstage';
 import { EntityAwsCodeBuildCard } from '@aws/aws-codebuild-plugin-for-backstage';
 import { EntityAmazonEcsServicesContent } from '@aws/amazon-ecs-plugin-for-backstage';
+import {
+  isAwsEcrScanResultsAvailable,
+  EntityEcrScanResultsContent,
+} from '@aws/ecr-plugin-for-backstage';
+
 
 import { TechDocsAddons } from '@backstage/plugin-techdocs-react';
 import { ReportIssue } from '@backstage/plugin-techdocs-module-addons-contrib';
@@ -214,6 +219,10 @@ const websiteEntityPage = (
 
     <EntityLayout.Route path="/costs" title="Cost Insights">
       <EntityCostInsightsContent />
+    </EntityLayout.Route>
+
+    <EntityLayout.Route path="/ecr-scan" title="Image Scan" if={isAwsEcrScanResultsAvailable}>
+      <EntityEcrScanResultsContent />
     </EntityLayout.Route>
 
     <EntityLayout.Route path="/dependencies" title="Dependencies">
