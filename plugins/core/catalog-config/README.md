@@ -5,6 +5,7 @@ This is the AWS Config catalog plugin for backstage.io which is designed to inge
 Features:
 
 1. Automatically add AWS resources from AWS Config
+1. Uses incremental ingestion to efficiently ingest
 
 _Note:_ It is possible to easily configure this entity provider in a way that ingests a large amount of entities in to the Backstage catalog. Please review the [Considerations](#considerations) section below.
 
@@ -15,7 +16,7 @@ This guide assumes that you are familiar with the general [Getting Started](../.
 Install the backend package in your Backstage app:
 
 ```shell
-yarn workspace backend add @aws/aws-config-catalog-module-for-backstage
+yarn workspace backend add @backstage/plugin-catalog-backend-module-incremental-ingestion @aws/aws-config-catalog-module-for-backstage
 ```
 
 Add the scaffolder module to the `packages/backend/src/index.ts`:
@@ -23,6 +24,9 @@ Add the scaffolder module to the `packages/backend/src/index.ts`:
 ```typescript
 const backend = createBackend();
 // ...
+backend.add(
+  import('@backstage/plugin-catalog-backend-module-incremental-ingestion'),
+);
 backend.add(import('@aws/aws-config-catalog-module-for-backstage'));
 // ...
 backend.start();
