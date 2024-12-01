@@ -9,6 +9,8 @@ Features:
 
 _Note:_ It is possible to easily configure this entity provider in a way that ingests a large amount of entities in to the Backstage catalog. Please review the [Considerations](#considerations) section below.
 
+_Note:_ If you are not already using AWS Config it is important to note that you will incur costs by enabling it. Please review its pricing information before enabling in your AWS organization.
+
 ## Installing
 
 This guide assumes that you are familiar with the general [Getting Started](../../docs/getting-started.md) documentation and have assumes you have an existing Backstage application.
