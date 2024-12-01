@@ -8,13 +8,14 @@ To understand how to start using these plugins in your Backstage environment ple
 
 For detailed documentation regarding each plugin please see below:
 
-| Plugin                | Documentation                                       | Description                                                                       |
-| --------------------- | --------------------------------------------------- | --------------------------------------------------------------------------------- |
-| Scaffolder actions    | [Link](./plugins/core/scaffolder-actions/README.md) | Custom scaffolder actions related to AWS services.                                |
-| Amazon ECS            | [Link](./plugins/ecs/README.md)                     | Shows information related to Amazon Elastic Container Service services and tasks. |
-| AWS CodePipeline      | [Link](./plugins/codepipeline/README.md)            | Show the status of AWS CodePipeline pipelines on the entity page.                 |
-| AWS CodeBuild         | [Link](./plugins/codebuild/README.md)               | Show the status of AWS CodeBuild projects on the entity page.                     |
-| Cost Insights for AWS | [Link](./plugins/cost-insights/README.md)           | An implementation of the Cost Insights plugin that provides AWS cost information  |
+| Plugin                    | Documentation                                       | Description                                                                                    |
+| ------------------------- | --------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| Scaffolder actions        | [Link](./plugins/core/scaffolder-actions/README.md) | Custom scaffolder actions related to AWS services.                                             |
+| Amazon ECS                | [Link](./plugins/ecs/README.md)                     | Shows information related to Amazon Elastic Container Service services and tasks.              |
+| AWS CodePipeline          | [Link](./plugins/codepipeline/README.md)            | Show the status of AWS CodePipeline pipelines on the entity page.                              |
+| AWS CodeBuild             | [Link](./plugins/codebuild/README.md)               | Show the status of AWS CodeBuild projects on the entity page.                                  |
+| AWS Config catalog module | [Link](./plugins/core/catalog-config/README.md)     | Module that implements an entity provider to ingest AWS resources in to the Backstage catalog. |
+| Cost Insights for AWS     | [Link](./plugins/cost-insights/README.md)           | An implementation of the Cost Insights plugin that provides AWS cost information               |
 
 ## Security
 
