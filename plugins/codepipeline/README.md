@@ -49,8 +49,6 @@ Install the backend package in your Backstage app:
 yarn workspace backend add @aws/aws-codepipeline-plugin-for-backstage-backend
 ```
 
-#### New backend
-
 Add the plugin to the `packages/backend/src/index.ts`:
 
 ```typescript
@@ -59,53 +57,6 @@ const backend = createBackend();
 backend.add(import('@aws/aws-codepipeline-plugin-for-backstage-backend'));
 // ...
 backend.start();
-```
-
-#### Old backend
-
-Create a file `packages/backend/src/plugins/codepipeline.ts` with the following content:
-
-```typescript
-import {
-  createRouter,
-  DefaultAwsCodePipelineService,
-} from '@aws/aws-codepipeline-plugin-for-backstage-backend';
-import { CatalogClient } from '@backstage/catalog-client';
-import { PluginEnvironment } from '../types';
-
-export default async function createPlugin(env: PluginEnvironment) {
-  const catalogApi = new CatalogClient({ discoveryApi: env.discovery });
-  const awsCodePipelineApi = await DefaultAwsCodePipelineService.fromConfig(
-    env.config,
-    {
-      catalogApi,
-      discovery: env.discovery,
-      logger: env.logger,
-    },
-  );
-  return createRouter({
-    logger: env.logger,
-    discovery: env.discovery,
-    awsCodePipelineApi,
-  });
-}
-```
-
-Edit `packages/backend/src/index.ts` to register the backend plugin:
-
-```typescript
-// ..
-import codepipeline from './plugins/codepipeline';
-
-async function main() {
-  // ...
-  const codepipelineEnv = useHotMemoize(module, () =>
-    createEnv('aws-codepipeline'),
-  );
-  // ...
-  apiRouter.use('/aws-codepipeline', await codepipeline(codepipelineEnv));
-  // ...
-}
 ```
 
 Verify that the backend plugin is running in your Backstage app. You should receive `{"status":"ok"}` when accessing this URL:

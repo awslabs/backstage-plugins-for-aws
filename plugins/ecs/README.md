@@ -50,8 +50,6 @@ Install the backend package in your Backstage app:
 yarn workspace backend add @aws/amazon-ecs-plugin-for-backstage-backend
 ```
 
-#### New backend
-
 Add the plugin to the `packages/backend/src/index.ts`:
 
 ```typescript
@@ -60,48 +58,6 @@ const backend = createBackend();
 backend.add(import('@aws/amazon-ecs-plugin-for-backstage-backend'));
 // ...
 backend.start();
-```
-
-#### Old backend
-
-Create a file `packages/backend/src/plugins/ecs.ts` with the following content:
-
-```typescript
-import {
-  createRouter,
-  DefaultAmazonEcsService,
-} from '@aws/amazon-ecs-plugin-for-backstage-backend';
-import { CatalogClient } from '@backstage/catalog-client';
-import { PluginEnvironment } from '../types';
-
-export default async function createPlugin(env: PluginEnvironment) {
-  const catalogApi = new CatalogClient({ discoveryApi: env.discovery });
-  const amazonEcsApi = await DefaultAmazonEcsService.fromConfig(env.config, {
-    catalogApi,
-    discovery: env.discovery,
-    logger: env.logger,
-  });
-  return createRouter({
-    logger: env.logger,
-    discovery: env.discovery,
-    amazonEcsApi,
-  });
-}
-```
-
-Edit `packages/backend/src/index.ts` to register the backend plugin:
-
-```typescript
-// ..
-import ecs from './plugins/ecs';
-
-async function main() {
-  // ...
-  const ecsEnv = useHotMemoize(module, () => createEnv('amazon-ecs'));
-  // ...
-  apiRouter.use('/amazon-ecs', await ecs(ecsEnv));
-  // ...
-}
 ```
 
 Verify that the backend plugin is running in your Backstage app. You should receive `{"status":"ok"}` when accessing this URL:
