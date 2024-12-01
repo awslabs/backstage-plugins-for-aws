@@ -49,8 +49,6 @@ Install the backend package in your Backstage app:
 yarn workspace backend add @aws/aws-codebuild-plugin-for-backstage-backend
 ```
 
-#### New backend
-
 Add the plugin to the `packages/backend/src/index.ts`:
 
 ```typescript
@@ -59,51 +57,6 @@ const backend = createBackend();
 backend.add(import('@aws/aws-codebuild-plugin-for-backstage-backend'));
 // ...
 backend.start();
-```
-
-#### Old backend
-
-Create a file `packages/backend/src/plugins/codebuild.ts` with the following content:
-
-```typescript
-import {
-  createRouter,
-  DefaultAwsCodeBuildService,
-} from '@aws/aws-codebuild-plugin-for-backstage-backend';
-import { CatalogClient } from '@backstage/catalog-client';
-import { PluginEnvironment } from '../types';
-
-export default async function createPlugin(env: PluginEnvironment) {
-  const catalogApi = new CatalogClient({ discoveryApi: env.discovery });
-  const awsCodeBuildApi = await DefaultAwsCodeBuildService.fromConfig(
-    env.config,
-    {
-      catalogApi,
-      discovery: env.discovery,
-      logger: env.logger,
-    },
-  );
-  return createRouter({
-    logger: env.logger,
-    discovery: env.discovery,
-    awsCodeBuildApi,
-  });
-}
-```
-
-Edit `packages/backend/src/index.ts` to register the backend plugin:
-
-```typescript
-// ..
-import codebuild from './plugins/codebuild';
-
-async function main() {
-  // ...
-  const codebuildEnv = useHotMemoize(module, () => createEnv('aws-codebuild'));
-  // ...
-  apiRouter.use('/aws-codebuild', await codebuild(codebuildEnv));
-  // ...
-}
 ```
 
 Verify that the backend plugin is running in your Backstage app. You should receive `{"status":"ok"}` when accessing this URL:
