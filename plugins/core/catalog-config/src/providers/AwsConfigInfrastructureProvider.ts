@@ -310,6 +310,14 @@ export class AwsConfigInfrastructureProvider
 
         const spec: JsonObject = {};
 
+        if (specConfig.type) {
+          spec.type = await this.fieldTransform(
+            tagMap,
+            specConfig.type,
+            resource,
+          );
+        }
+
         if (specConfig.owner) {
           spec.owner = await this.fieldTransform(
             tagMap,
