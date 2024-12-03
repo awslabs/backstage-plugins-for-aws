@@ -33036,8 +33036,8 @@ __metadata:
   linkType: hard
 
 "recharts@npm:^2.12.7, recharts@npm:^2.5.0":
-  version: 2.13.3
-  resolution: "recharts@npm:2.13.3"
+  version: 2.14.0
+  resolution: "recharts@npm:2.14.0"
   dependencies:
     clsx: "npm:^2.0.0"
     eventemitter3: "npm:^4.0.1"
@@ -33050,7 +33050,7 @@ __metadata:
   peerDependencies:
     react: ^16.0.0 || ^17.0.0 || ^18.0.0
     react-dom: ^16.0.0 || ^17.0.0 || ^18.0.0
-  checksum: 10c0/67c516cd142da0e5968cf9b723c1bc08c2324ff4c41952d623dfce06e8c13751e1ef885b2e39aaeb5e32595566c8d91633328850adee70ad53bc8685adff456d
+  checksum: 10c0/8cb577424854da6a4a7340e92fa5f298607a4ec743340234213ec931475ac42ea07ad6fa6223b93b6242a284be84ff2e4dbb691294f9d3d4519a9f02d47429df
   languageName: node
   linkType: hard
 
