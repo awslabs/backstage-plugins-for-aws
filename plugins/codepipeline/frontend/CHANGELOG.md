@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.6.1](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-codepipeline-plugin-for-backstage@0.6.0...@aws/aws-codepipeline-plugin-for-backstage@0.6.1) (2024-12-03)
+
+
+### Bug Fixes
+
+* Better handle parsing CodePipeline revision ([#305](https://github.com/awslabs/backstage-plugins-for-aws/issues/305)) ([c759daa](https://github.com/awslabs/backstage-plugins-for-aws/commit/c759daad28b80487f263de5e0a1896aab6262bd4))
+
+
+
+
+
 # [0.6.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-codepipeline-plugin-for-backstage@0.5.4...@aws/aws-codepipeline-plugin-for-backstage@0.6.0) (2024-11-29)
 
 

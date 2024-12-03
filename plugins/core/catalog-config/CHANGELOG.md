@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.2](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-config-catalog-module-for-backstage@0.1.1...@aws/aws-config-catalog-module-for-backstage@0.1.2) (2024-12-03)
+
+**Note:** Version bump only for package @aws/aws-config-catalog-module-for-backstage
+
+
+
+
+
 ## [0.1.1](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-config-catalog-module-for-backstage@0.1.0...@aws/aws-config-catalog-module-for-backstage@0.1.1) (2024-12-01)
 
 
