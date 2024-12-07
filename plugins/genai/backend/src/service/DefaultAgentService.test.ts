@@ -107,7 +107,6 @@ describe('DefaultAgentService', () => {
       expect(agentMock.generate).toHaveBeenCalledWith(
         prompt,
         expect.any(String),
-        true,
         { kind: 'user', name: 'guest', namespace: 'default' },
         { credentials },
       );

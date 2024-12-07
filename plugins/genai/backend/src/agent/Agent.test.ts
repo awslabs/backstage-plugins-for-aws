@@ -229,7 +229,7 @@ describe('Agent', () => {
   describe('sync', () => {
     it('should call agentType.sync with correct parameters', async () => {
       const mockAgentType = {
-        sync: jest.fn().mockResolvedValue({}),
+        generate: jest.fn().mockResolvedValue({}),
       };
       const agent = new Agent(
         'TestAgent',
@@ -247,7 +247,7 @@ describe('Agent', () => {
 
       await agent.generate(userMessage, sessionId, userEntityRef, options);
 
-      expect(mockAgentType.sync).toHaveBeenCalledWith(
+      expect(mockAgentType.generate).toHaveBeenCalledWith(
         userMessage,
         sessionId,
         userEntityRef,
@@ -257,7 +257,7 @@ describe('Agent', () => {
 
     it('should handle errors from agentType.sync', async () => {
       const mockAgentType = {
-        sync: jest.fn().mockRejectedValue(new Error('Sync error')),
+        generate: jest.fn().mockRejectedValue(new Error('Sync error')),
       };
       const agent = new Agent(
         'TestAgent',
