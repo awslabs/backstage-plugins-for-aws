@@ -15,6 +15,7 @@ For detailed documentation regarding each plugin please see below:
 | AWS CodePipeline          | [Link](./plugins/codepipeline/README.md)            | Show the status of AWS CodePipeline pipelines on the entity page.                              |
 | AWS CodeBuild             | [Link](./plugins/codebuild/README.md)               | Show the status of AWS CodeBuild projects on the entity page.                                  |
 | AWS Config catalog module | [Link](./plugins/core/catalog-config/README.md)     | Module that implements an entity provider to ingest AWS resources in to the Backstage catalog. |
+| Generative AI             | [Link](./plugins/genai/README.md)                   | Build assistants powered by Generative AI                                                      |
 | Cost Insights for AWS     | [Link](./plugins/cost-insights/README.md)           | An implementation of the Cost Insights plugin that provides AWS cost information               |
 
 ## Security
