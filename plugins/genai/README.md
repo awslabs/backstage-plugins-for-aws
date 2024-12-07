@@ -128,7 +128,7 @@ genai:
     - name: general # This matches the URL in the frontend
       description: General chat assistant
       prompt: >
-        You are an expert in platform engineering and answer questions in a succinct and easy to understand manner. 
+        You are an expert in platform engineering and answer questions in a succinct and easy to understand manner.
 
         Answers should always be well-structured and use well-formed Markdown.
 
