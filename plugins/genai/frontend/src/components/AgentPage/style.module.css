@@ -1,0 +1,16 @@
+.wide {
+  width: 20rem;
+}
+
+.flex {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+}
+
+.grow {
+  flex-grow: 1;
+  min-height: max-content;
+  max-height: 100%;
+  margin-bottom: 1rem;
+}

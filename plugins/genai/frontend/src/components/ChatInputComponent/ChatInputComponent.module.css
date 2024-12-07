@@ -1,0 +1,14 @@
+.ChatInputLayout {
+  display: flex;
+  flex-direction: row;
+}
+
+.ChatInputLayout .ChatInputContainer {
+  flex: 1;
+}
+
+.ChatInputLayout .ChatInputButtons {
+  margin-left: 2rem;
+  display: flex;
+  align-items: center;
+}
