@@ -21,6 +21,7 @@ import {
 import { CatalogApi } from '@backstage/catalog-client';
 import {
   AWS_SDK_CUSTOM_USER_AGENT,
+  getOneOfEntityAnnotations,
 } from '@aws/aws-core-plugin-for-backstage-common';
 import { 
   AwsEcrListImagesRequest,
@@ -47,6 +48,9 @@ import { createLegacyAuthAdapters } from '@backstage/backend-common';
 import { AwsCredentialIdentityProvider } from '@aws-sdk/types';
 import { EcrConfig, readEcrConfig } from '../config';
 import { catalogServiceRef } from '@backstage/plugin-catalog-node/alpha';
+import { stringifyEntityRef } from '@backstage/catalog-model';
+
+export const ECR_ARN_ANNOTATION = 'aws.amazon.com/aws-ecr-repository-arn';
 
 export class EcrAwsService
   implements EcrScanAwsService
@@ -104,10 +108,30 @@ export class EcrAwsService
   async listEcrImages(
     req: AwsEcrListImagesRequest,
   ): Promise<AwsEcrListImagesResponse> {
+    const entity = await this.catalogApi.getEntityByRef(
+      req.entityRef,
+      req.credentials &&
+        (await this.auth.getPluginRequestToken({
+          onBehalfOf: req.credentials,
+          targetPluginId: 'catalog',
+        })),
+    );
+
+    if (!entity) {
+      throw new Error(
+        `Couldn't find entity with name: ${stringifyEntityRef(
+          req.entityRef,
+        )}`,
+      );
+    }
+
+    const arnAnnotation = getOneOfEntityAnnotations(entity, [
+      ECR_ARN_ANNOTATION,
+    ]);
 
     const images = await this.ecrClient.send(
       new DescribeImagesCommand({
-        repositoryName: req.componentKey,
+        repositoryName: this.extractRepoName(arnAnnotation?.value as string),
         maxResults: 1000,
       }),
     );
@@ -120,20 +144,48 @@ export class EcrAwsService
   async listScanResults(
     req: AwsEcrListScanResultsRequest,
   ):  Promise<AwsEcrListScanResultsResponse> {
+    const entity = await this.catalogApi.getEntityByRef(
+      req.entityRef,
+      req.credentials &&
+        (await this.auth.getPluginRequestToken({
+          onBehalfOf: req.credentials,
+          targetPluginId: 'catalog',
+        })),
+    );
+
+    if (!entity) {
+      throw new Error(
+        `Couldn't find entity with name: ${stringifyEntityRef(
+          req.entityRef,
+        )}`,
+      );
+    }
+
+    const arnAnnotation = getOneOfEntityAnnotations(entity, [
+      ECR_ARN_ANNOTATION,
+    ]);
     const results = await this.ecrClient.send(
       new DescribeImageScanFindingsCommand({
         imageId: {
           imageDigest: req.imageDigest,
           imageTag: req.imageTag,
         },
-        repositoryName: req.componentKey,
+        repositoryName: this.extractRepoName(arnAnnotation?.value as string),
         maxResults: 1000,
       }),
     );
-
     return {
       results: results.imageScanFindings as ImageScanFindings
     }
+  }
+
+  extractRepoName(ecrArn: string): string {
+    // Match the part after the last slash '/' in the arn
+    const match = ecrArn.match(/(?:\.amazonaws\.com\/)(.*)$/);
+    if (match) {
+      return match[1]; // This will return repository name
+    }
+    return ''; // If no match is found
   }
 
 }

@@ -13,3 +13,4 @@
 
 export * from './service/router';
 export { ecrAwsPlugin as default } from './plugin';
+export * from "./service/types";

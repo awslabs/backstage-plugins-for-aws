@@ -1,4 +1,4 @@
-import { Entity } from '@backstage/catalog-model';
+import { Entity, getCompoundEntityRef } from '@backstage/catalog-model';
 import {  useApi } from '@backstage/core-plugin-api';
 import { useAsync } from 'react-use';
 import { awsEcrScanApiRef } from '../api';
@@ -14,7 +14,7 @@ export const useImageScanResults = (
 
   const { value, loading, error } = useAsync(() => {
     return api.listScanResults({
-      componentKey: componentKey,
+      entityRef: getCompoundEntityRef(entity),
       imageTag: imageTag,
     });
   }, [componentKey]);

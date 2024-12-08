@@ -1,4 +1,4 @@
-import { Entity } from '@backstage/catalog-model';
+import { Entity, getCompoundEntityRef } from '@backstage/catalog-model';
 import {  useApi } from '@backstage/core-plugin-api';
 import { ImageDetail } from '@aws-sdk/client-ecr';
 import { useAsync } from 'react-use';
@@ -13,7 +13,7 @@ export const useImages = (
 
   const { value, loading, error } = useAsync(() => {
     return api.listEcrImages({
-      componentKey: componentKey
+      entityRef: getCompoundEntityRef(entity),
     });
   }, [componentKey]);
 

@@ -4,13 +4,10 @@ import {
 } from "@backstage/core-components";
 import * as React from 'react';
 import { ImageScanFinding } from "@aws-sdk/client-ecr"
-import { Entity } from "@backstage/catalog-model";
+import { Entity, getCompoundEntityRef } from "@backstage/catalog-model";
 import { useApi } from "@backstage/core-plugin-api";
 import { awsEcrScanApiRef } from "../../api";
 import { Typography } from "@material-ui/core";
-import { ECR_ANNOTATION } from "../../plugin";
-
-
 
 export const ResultsTable = (props: {imageTag: string, entity: Entity}) => {
   const [results, setResults] = React.useState<any>()
@@ -34,10 +31,8 @@ export const ResultsTable = (props: {imageTag: string, entity: Entity}) => {
 
   React.useEffect(() => {
     async function getRes() {
-      const componentKey = props.entity.metadata?.annotations?.[ECR_ANNOTATION] as string;
-
       const scanResults = await api.listScanResults({
-        componentKey: componentKey,
+        entityRef: getCompoundEntityRef(props.entity),
         imageTag: props.imageTag,
       });
 
@@ -54,7 +49,7 @@ export const ResultsTable = (props: {imageTag: string, entity: Entity}) => {
         setResults(res)
       })
     }
-  }, [api, props.entity.metadata?.annotations, props.imageTag])
+  }, [api, props.entity, props.imageTag])
 
   return !!results?.results ? (
     <>

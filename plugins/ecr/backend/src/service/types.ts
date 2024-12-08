@@ -16,10 +16,13 @@ import {
   ImageDetail,
   ImageScanFindings,
 } from "@aws-sdk/client-ecr"
+import { BackstageCredentials } from "@backstage/backend-plugin-api/index";
+import { CompoundEntityRef } from '@backstage/catalog-model';
 
 /** @public */
 export type AwsEcrListImagesRequest = {
-  componentKey: string;
+  entityRef: CompoundEntityRef;
+  credentials?: BackstageCredentials;
 };
 
 /** @public */
@@ -28,7 +31,8 @@ export type AwsEcrListImagesResponse = {
 };
 
 export type AwsEcrListScanResultsRequest = {
-  componentKey: string;
+  entityRef: CompoundEntityRef;
+  credentials?: BackstageCredentials;
   imageTag?: string;
   imageDigest?: string;
 };

@@ -82,13 +82,18 @@ export async function createRouter(
     });
   }
 
-  router.get('/v1/images', async (req, res) => {
+  router.get('/v1/entity/:namespace/:kind/:name/images', async (req, res) => {
     try {
-      const componentKey = req.query.componentKey as string;
-      logger.info(`Grabbing Images for ${componentKey}`)
+      const { namespace, kind, name } = req.params;
+      logger.debug(`Grabbing Images for ${namespace}:${kind}:${name}`)
       const images = await ecrAwsService.listEcrImages(
         {
-          componentKey,
+          entityRef: {
+            namespace,
+            kind,
+            name,
+          },
+          credentials: await httpAuth.credentials(req),
         })
         res.json(images);
       } catch (error) {
@@ -99,14 +104,19 @@ export async function createRouter(
       }
   })
 
-  router.get('/v1/images/results', async (req, res) => {
+  router.get('/v1/entity/:namespace/:kind/:name/results', async (req, res) => {
     try {
-      const componentKey = req.query.componentKey as string;
       const imageTag = req.query?.imageTag as string;
-      logger.info(`Grabbing Scan Results for ${componentKey}:${imageTag}`)
+      const { namespace, kind, name } = req.params;
+      logger.debug(`Grabbing Scan Results for ${namespace}:${kind}:${name}:${imageTag}`)
       const scanResults = await ecrAwsService.listScanResults(
         {
-          componentKey,
+          entityRef: {
+            namespace,
+            kind,
+            name,
+          },
+          credentials: await httpAuth.credentials(req),
           imageTag,
         })
         res.json(scanResults);

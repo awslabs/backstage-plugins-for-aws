@@ -2,10 +2,9 @@
 import React, { useState } from 'react';
 import { Content, GaugeCard } from "@backstage/core-components"
 import { Grid } from "@material-ui/core";
-import { Entity } from "@backstage/catalog-model";
+import { Entity, getCompoundEntityRef } from "@backstage/catalog-model";
 import { useApi } from "@backstage/core-plugin-api";
 import { awsEcrScanApiRef } from "../../api";
-import { ECR_ANNOTATION } from "../../plugin";
 
 export const PieChart = (props: { entity: Entity, imageTag: string }) => {
   const api = useApi(awsEcrScanApiRef);
@@ -14,10 +13,8 @@ export const PieChart = (props: { entity: Entity, imageTag: string }) => {
 
   React.useEffect(() => {
     async function getRes() {
-      const componentKey = props.entity.metadata?.annotations?.[ECR_ANNOTATION] as string;
-
       const scanResults = await api.listScanResults({
-          componentKey: componentKey,
+          entityRef: getCompoundEntityRef(props.entity),
           imageTag: props.imageTag,
         });
 
@@ -27,7 +24,7 @@ export const PieChart = (props: { entity: Entity, imageTag: string }) => {
     if (props.imageTag !== "") {
       getRes().then(res => setResults(res))
     }
-  }, [api, props.entity.metadata?.annotations, props.imageTag])
+  }, [api, props.entity, props.imageTag])
 
   const data: {severity: string, count: number}[] = []
   let total = 0
