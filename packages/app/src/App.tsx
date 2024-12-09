@@ -39,6 +39,7 @@ import { RequirePermission } from '@backstage/plugin-permission-react';
 import { catalogEntityCreatePermission } from '@backstage/plugin-catalog-common/alpha';
 import { CostInsightsPage } from '@backstage-community/plugin-cost-insights';
 import { costInsightsAwsPlugin } from '@aws/cost-insights-plugin-for-backstage';
+import { AgentChatPage } from '@aws/genai-plugin-for-backstage';
 
 const app = createApp({
   apis,
@@ -113,6 +114,7 @@ const routes = (
     <Route path="/settings" element={<UserSettingsPage />} />
     <Route path="/catalog-graph" element={<CatalogGraphPage />} />
     <Route path="/cost-insights" element={<CostInsightsPage />} />
+    <Route path="/assistant/:agentName" element={<AgentChatPage />} />
   </FlatRoutes>
 );
 

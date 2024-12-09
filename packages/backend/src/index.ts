@@ -20,4 +20,7 @@ backend.add(import('@aws/aws-core-plugin-for-backstage-scaffolder-actions'));
 
 backend.add(import('@aws/cost-insights-plugin-for-backstage-backend'));
 
+backend.add(import('@aws/genai-plugin-for-backstage-backend'));
+backend.add(import('@aws/genai-plugin-langgraph-agent-for-backstage'));
+
 backend.start();
