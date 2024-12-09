@@ -11,6 +11,8 @@ Features:
 - Modular approach to providing agent implementations
 - Provide "tools" to agents through Backstage extensions
 
+[See here](https://www.youtube.com/watch?v=DCXzCrIDOAs) for the BackstageCon NA 2024 session where this idea is presented.
+
 ## Before you begin
 
 Considerations before you explore this plugin:
