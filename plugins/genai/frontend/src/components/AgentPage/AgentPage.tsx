@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-import { useApi } from '@backstage/core-plugin-api';
+import { configApiRef, useApi } from '@backstage/core-plugin-api';
 import { Page, Header, Content, InfoCard } from '@backstage/core-components';
 import React, { useCallback, useState } from 'react';
 import { ChatHistoryComponent } from '../ChatHistoryComponent';
@@ -20,11 +20,32 @@ import { ChatMessage } from '../types';
 import { agentApiRef } from '../../api';
 import { match } from 'ts-pattern';
 
-import style from './style.module.css';
 import { useParams } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core';
 
-export const AgentPage = () => {
+const useStyles = makeStyles({
+  flex: {
+    display: 'flex',
+    height: '100%',
+    flexDirection: 'column',
+  },
+
+  grow: {
+    flexGrow: 1,
+    minHeight: 'max-content',
+    maxHeight: '100%',
+    marginBottom: '1rem',
+  },
+});
+
+export const AgentPage = ({ title = 'Chat Assistant' }: { title?: string }) => {
+  const classes = useStyles();
+
   const agentApi = useApi(agentApiRef);
+  const config = useApi(configApiRef);
+
+  const showInformation =
+    config.getOptionalBoolean('genai.chat.showInformation') ?? false;
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [sessionId, setSessionId] = useState<string | undefined>(undefined);
@@ -107,15 +128,16 @@ export const AgentPage = () => {
 
   return (
     <Page themeId="tool">
-      <Header title="Chat Assistant" />
+      <Header title={title} />
       <Content>
-        <div className={style.flex}>
+        <div className={classes.flex}>
           <ChatHistoryComponent
             messages={messages}
-            className={style.grow}
+            className={classes.grow}
             isStreaming={isLoading}
+            showInformation={showInformation}
           />
-          <InfoCard className={style.fixed}>
+          <InfoCard>
             <ChatInputComponent
               onMessage={onUserMessage}
               disabled={isLoading}

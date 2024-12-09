@@ -25,7 +25,7 @@ export function readAgentsConfig(rootConfig: Config): AgentConfig[] {
     return [];
   }
 
-  const agentsConfig = genaiConfig.getOptionalConfigArray('agents');
+  const agentsConfig = genaiConfig.getOptionalConfig('agents');
 
   if (!agentsConfig) {
     return [];
@@ -33,20 +33,23 @@ export function readAgentsConfig(rootConfig: Config): AgentConfig[] {
 
   const result: AgentConfig[] = [];
 
-  for (const config of agentsConfig) {
-    result.push(readAgentConfig(config));
+  for (const agentName of agentsConfig.keys()) {
+    result.push(readAgentConfig(agentName, agentsConfig.getConfig(agentName)));
   }
 
   return result;
 }
 
-export function readAgentConfig(config: Config): AgentConfig {
+export function readAgentConfig(
+  agentName: string,
+  config: Config,
+): AgentConfig {
   return {
-    name: config.getString('name'),
+    name: agentName,
     description: config.getString('description'),
     prompt: config.getString('prompt'),
     type: config.getOptionalString('type'),
     tools: config.getOptionalStringArray('tools') || [],
-    params: config.getConfig('params'),
+    config,
   };
 }

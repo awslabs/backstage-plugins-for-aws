@@ -25,6 +25,7 @@
       "@aws/genai-plugin-for-backstage"
     ]
   },
+  "configSchema": "config.d.ts",
   "sideEffects": false,
   "scripts": {
     "start": "backstage-cli package start",
@@ -59,6 +60,7 @@
     "msw": "^1.0.0"
   },
   "files": [
-    "dist"
+    "dist",
+    "config.d.ts"
   ]
 }

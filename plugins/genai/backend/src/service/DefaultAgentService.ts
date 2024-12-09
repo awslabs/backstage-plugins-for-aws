@@ -85,7 +85,9 @@ export class DefaultAgentService implements AgentService {
         agentConfig,
         agentTypeFactory,
         options.toolkit,
-        options.logger,
+        options.logger.child({
+          agent: agentConfig.name,
+        }),
       );
 
       agents.set(agent.getName(), agent);

@@ -27,7 +27,6 @@ genai:
       baseUrl: http://localhost:3001 # (Required) LangFuse URL
       publicKey: pk-aaa # (Required) Public key
       secretKey: sk-bbb # (Required) Secret key
-      flushAt: 1 # (Optional) Flush interval (testing only)
 ```
 
 ### Per-agent
@@ -37,20 +36,21 @@ Per-agent configuration only applies to the agent for which it corresponds. The 
 ```yaml
 genai:
   agents:
-    - name: [...]
+    general:
       description: [...]
       prompt: [...]
-      params:
-        provider: bedrock # (Required) Model provider, valid values are 'bedrock' and 'openai'
+      langgraph:
         messagesMaxTokens: 100000 # (Required) Prune message history to maximum of this number of tokens
         temperature: 0 # (Optional) Model temperature
         maxTokens: 4000 # (Optional) Maximum output tokens
-        topP: 0.9
+        topP: 0.9 # (Optional) Model topP
+        # Only include the subsequent section for your model provider
         # Bedrock only
-        modelId: 'anthropic.claude-3-5-sonnet-20241022-v2:0' # (Required) Bedrock model ID
-        region: us-west-2 # (Required) Bedrock AWS region
-        accountId: 1234567890 # (Optional) Bedrock AWS account ID
+        bedrock:
+          modelId: 'anthropic.claude-3-5-sonnet-20241022-v2:0' # (Required) Bedrock model ID
+          region: us-west-2 # (Required) Bedrock AWS region
         # OpenAI only
-        apiKey: ${OPENAI_API_KEY} # (Required) OpenAI model name
-        modelName: 'gpt-3.5-turbo-instruct' # (Optional) OpenAI model name
+        openai:
+          apiKey: ${OPENAI_API_KEY} # (Required) OpenAI model name
+          modelName: 'gpt-3.5-turbo-instruct' # (Optional) OpenAI model name
 ```

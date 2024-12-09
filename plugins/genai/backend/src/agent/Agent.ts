@@ -33,6 +33,7 @@ export class Agent {
     private readonly name: string,
     private readonly description: string,
     private readonly agentType: AgentType,
+    private readonly logger: LoggerService,
   ) {}
 
   static async fromConfig(
@@ -61,7 +62,12 @@ export class Agent {
 
     const agentType = await agentTypeFactory.create(agentConfig, tools);
 
-    return new Agent(agentConfig.name, agentConfig.description, agentType);
+    return new Agent(
+      agentConfig.name,
+      agentConfig.description,
+      agentType,
+      logger,
+    );
   }
 
   public getName() {
@@ -86,6 +92,7 @@ export class Agent {
       sessionId,
       newSession,
       userEntityRef,
+      this.logger,
       options,
     );
   }
@@ -99,6 +106,12 @@ export class Agent {
       credentials?: BackstageCredentials;
     },
   ): Promise<GenerateResponse> {
-    return this.agentType.generate(prompt, sessionId, userEntityRef, options);
+    return this.agentType.generate(
+      prompt,
+      sessionId,
+      userEntityRef,
+      this.logger,
+      options,
+    );
   }
 }

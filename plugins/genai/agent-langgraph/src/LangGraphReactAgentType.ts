@@ -34,10 +34,9 @@ import { ResponseTransformStream, tiktokenCounter } from './util';
 import { BaseChatModel } from '@langchain/core/language_models/chat_models';
 import {
   LangGraphAgentLangFuseConfig,
+  LangGraphAgentConfig,
   readLangGraphAgentConfig,
-  readLangGraphAgentBedrockConfig,
   readSharedLangGraphAgentConfig,
-  readLangGraphAgentOpenAIConfig,
 } from './config';
 import { AgentConfig, AgentType } from '@aws/genai-plugin-for-backstage-node';
 import {
@@ -51,7 +50,6 @@ export class LangGraphReactAgentType implements AgentType {
   private readonly langfuseConfig?: LangGraphAgentLangFuseConfig;
 
   public constructor(
-    private readonly logger: LoggerService,
     private readonly llm: BaseChatModel,
     private readonly tools: ToolInterface[],
     private readonly agent: CompiledStateGraph<
@@ -76,31 +74,26 @@ export class LangGraphReactAgentType implements AgentType {
   ) {
     const prompt = agentConfig.prompt;
 
-    const params = agentConfig.params;
-
-    if (!params) {
-      throw new Error('Params are required by langgraph-react agent type');
-    }
-
     const sharedLangGraphConfig = readSharedLangGraphAgentConfig(rootConfig);
 
-    const agentParams = readLangGraphAgentConfig(params);
+    const agentLangGraphConfig = readLangGraphAgentConfig(agentConfig.config);
 
     let agentModel: BaseChatModel;
 
-    switch (agentParams.provider) {
-      case 'bedrock':
-        agentModel = LangGraphReactAgentType.createBedrockModel(params);
-        break;
-      case 'openai':
-        agentModel = LangGraphReactAgentType.createOpenAIModel(params);
-        break;
-      default:
-        throw new Error('You must specify a model');
+    if (agentLangGraphConfig.bedrock) {
+      agentModel =
+        LangGraphReactAgentType.createBedrockModel(agentLangGraphConfig);
+    } else if (agentLangGraphConfig.openai) {
+      agentModel =
+        LangGraphReactAgentType.createOpenAIModel(agentLangGraphConfig);
+    } else {
+      throw new Error('No agent model configured');
     }
 
     logger.info(
-      `Instantiating langgraph-react agent ${agentConfig.name} using model '${agentParams.provider}'`,
+      `Instantiating langgraph-react agent ${
+        agentConfig.name
+      } using model '${agentModel.getName()}'`,
     );
 
     const agentCheckpointer = new MemorySaver();
@@ -108,10 +101,10 @@ export class LangGraphReactAgentType implements AgentType {
       llm: agentModel,
       tools,
       checkpointSaver: agentCheckpointer,
-      messageModifier: agentParams.messagesMaxTokens
+      messageModifier: agentLangGraphConfig.messagesMaxTokens
         ? async e => {
             return await trimMessages(e, {
-              maxTokens: agentParams.messagesMaxTokens!,
+              maxTokens: agentLangGraphConfig.messagesMaxTokens,
               strategy: 'last',
               tokenCounter: tiktokenCounter,
               includeSystem: true,
@@ -121,35 +114,35 @@ export class LangGraphReactAgentType implements AgentType {
         : undefined,
     });
 
-    return new LangGraphReactAgentType(logger, agentModel, tools, agent, {
+    return new LangGraphReactAgentType(agentModel, tools, agent, {
       prompt,
       langfuseConfig: sharedLangGraphConfig?.langfuse,
     });
   }
 
-  private static createBedrockModel(config: Config) {
-    const providerConfig = readLangGraphAgentBedrockConfig(config);
+  private static createBedrockModel(config: LangGraphAgentConfig) {
+    const { modelId, region } = config.bedrock!;
 
     return new ChatBedrockConverse({
-      model: providerConfig.modelId,
-      region: providerConfig.region,
+      model: modelId,
+      region: region,
       streaming: true,
-      temperature: providerConfig.temperature,
-      maxTokens: providerConfig.maxTokens,
-      topP: providerConfig.topP,
+      temperature: config.temperature,
+      maxTokens: config.maxTokens,
+      topP: config.topP,
     });
   }
 
-  private static createOpenAIModel(config: Config) {
-    const providerConfig = readLangGraphAgentOpenAIConfig(config);
+  private static createOpenAIModel(config: LangGraphAgentConfig) {
+    const { modelName, apiKey } = config.openai!;
 
     return new ChatOpenAI({
-      apiKey: providerConfig.apiKey,
+      apiKey: apiKey,
       streaming: true,
-      modelName: providerConfig.modelName,
-      temperature: providerConfig.temperature,
-      maxTokens: providerConfig.maxTokens,
-      topP: providerConfig.topP,
+      modelName: modelName,
+      temperature: config.temperature,
+      maxTokens: config.maxTokens,
+      topP: config.topP,
     });
   }
 
@@ -177,6 +170,7 @@ export class LangGraphReactAgentType implements AgentType {
     sessionId: string,
     newSession: boolean,
     userEntityRef: CompoundEntityRef,
+    _: LoggerService,
     options: {
       credentials?: BackstageCredentials;
     },
@@ -217,6 +211,7 @@ export class LangGraphReactAgentType implements AgentType {
     prompt: string,
     sessionId: string,
     userEntityRef: CompoundEntityRef,
+    logger: LoggerService,
     options: {
       credentials?: BackstageCredentials;
     },
@@ -256,7 +251,7 @@ export class LangGraphReactAgentType implements AgentType {
 
       output = outputMessage.content;
     } else {
-      this.logger.error(`No output messages found for session ${sessionId}`);
+      logger.error(`No output messages found for session ${sessionId}`);
       throw new Error(`No output messages found for session ${sessionId}`);
     }
 

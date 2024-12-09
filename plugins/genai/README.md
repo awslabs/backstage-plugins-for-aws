@@ -59,7 +59,7 @@ backend.start();
 
 Verify that the backend plugin is running in your Backstage app. You should receive `{"status":"ok"}` when accessing this URL:
 
-`https://<your backstage app>/api/aws-genai/health`.
+`http://<your backstage app>/api/aws-genai/health`.
 
 ### Frontend package
 
@@ -81,7 +81,7 @@ import { AgentChatPage } from '@aws/genai-plugin-for-backstage';
 const routes = (
   <FlatRoutes>
     /* ... */
-    <Route path="/assistant" element={<AgentChatPage />} />
+    <Route path="/assistant/:agentName" element={<AgentChatPage />} />
   </FlatRoutes>
 );
 ```
@@ -125,7 +125,7 @@ Add this to your Backstage configuration file (for example `app-config.yaml`):
 ```yaml
 genai:
   agents:
-    - name: general # This matches the URL in the frontend
+    general: # This matches the URL in the frontend
       description: General chat assistant
       prompt: >
         You are an expert in platform engineering and answer questions in a succinct and easy to understand manner.
@@ -133,14 +133,14 @@ genai:
         Answers should always be well-structured and use well-formed Markdown.
 
         The current user is {username} and you can provide that information if asked.
-      params:
+      langgraph:
         messagesMaxTokens: 150000 # Set based on context of chosen model, prune message history based on number of tokens
         # Use appropriate snippet for your model provider
-        model: bedrock
-        modelId: 'anthropic.claude-3-5-sonnet-20241022-v2:0'
-        region: us-west-2
-        # model: openai
-        # apiKey: ${OPENAI_API_KEY}
+        bedrock:
+          modelId: 'anthropic.claude-3-5-sonnet-20241022-v2:0'
+          region: us-west-2
+        # openai:
+        #   apiKey: ${OPENAI_API_KEY}
 ```
 
 See the [LangGraph agent documentation](./agent-langgraph/) for the full configuration reference.
@@ -164,10 +164,10 @@ Update the previous agent definition to add the `tools` field:
 ```yaml
 genai:
   agents:
-    - name: [...]
+    general:
       description: [...]
       prompt: [...]
-      params: [...]
+      langgraph: [...]
       tool:
         - backstageCatalogSearch
         - backstageEntity

@@ -23,22 +23,20 @@ export interface LangGraphAgentLangFuseConfig {
 }
 
 export interface LangGraphAgentConfig {
-  provider: string;
   messagesMaxTokens: number;
+  maxTokens?: number;
+  temperature?: number;
+  topP?: number;
+  bedrock?: LangGraphAgentBedrockConfig;
+  openai?: LangGraphAgentOpenAIConfig;
 }
 
 export interface LangGraphAgentBedrockConfig {
   region: string;
   modelId: string;
-  maxTokens?: number;
-  temperature?: number;
-  topP?: number;
 }
 
 export interface LangGraphAgentOpenAIConfig {
   apiKey: string;
   modelName?: string;
-  maxTokens?: number;
-  temperature?: number;
-  topP?: number;
 }

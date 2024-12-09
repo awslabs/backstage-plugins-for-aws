@@ -45,33 +45,47 @@ export function readSharedLangGraphAgentConfig(
   };
 }
 
-export function readLangGraphAgentConfig(config: Config): LangGraphAgentConfig {
+export function readLangGraphAgentConfig(
+  agentConfig: Config,
+): LangGraphAgentConfig {
+  const config = agentConfig.getConfig('langgraph');
+
   return {
     messagesMaxTokens: config.getNumber('messagesMaxTokens'),
-    provider: config.getString('provider'),
+    maxTokens: config.getOptionalNumber('maxTokens'),
+    temperature: config.getOptionalNumber('temperature'),
+    topP: config.getOptionalNumber('topP'),
+    bedrock: readLangGraphAgentBedrockConfig(config),
+    openai: readLangGraphAgentOpenAIConfig(config),
   };
 }
 
 export function readLangGraphAgentBedrockConfig(
-  config: Config,
-): LangGraphAgentBedrockConfig {
+  agentConfig: Config,
+): LangGraphAgentBedrockConfig | undefined {
+  if (!agentConfig.has('bedrock')) {
+    return undefined;
+  }
+
+  const config = agentConfig.getConfig('bedrock');
+
   return {
     modelId: config.getString('modelId'),
     region: config.getString('region'),
-    maxTokens: config.getOptionalNumber('maxTokens'),
-    temperature: config.getOptionalNumber('temperature'),
-    topP: config.getOptionalNumber('topP'),
   };
 }
 
 export function readLangGraphAgentOpenAIConfig(
-  config: Config,
-): LangGraphAgentOpenAIConfig {
+  agentConfig: Config,
+): LangGraphAgentOpenAIConfig | undefined {
+  if (!agentConfig.has('openai')) {
+    return undefined;
+  }
+
+  const config = agentConfig.getConfig('openai');
+
   return {
     apiKey: config.getString('apiKey'),
     modelName: config.getOptionalString('modelName'),
-    maxTokens: config.getOptionalNumber('maxTokens'),
-    temperature: config.getOptionalNumber('temperature'),
-    topP: config.getOptionalNumber('topP'),
   };
 }

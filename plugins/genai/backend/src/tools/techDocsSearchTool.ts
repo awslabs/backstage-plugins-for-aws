@@ -25,7 +25,7 @@ export function createBackstageTechDocsSearchTool(
 ) {
   return new DynamicStructuredTool({
     get name() {
-      return 'backstageTechdocsSearch';
+      return 'backstageTechDocsSearch';
     },
     description:
       'Searches the Backstage TechDocs internal documentation for the organization.',

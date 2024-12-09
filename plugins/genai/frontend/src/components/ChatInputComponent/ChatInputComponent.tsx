@@ -12,8 +12,24 @@
  */
 
 import React, { useEffect, useRef, useState } from 'react';
-import { Button, TextField } from '@material-ui/core';
-import style from './ChatInputComponent.module.css';
+import { Button, makeStyles, TextField } from '@material-ui/core';
+
+const useStyles = makeStyles({
+  ChatInputLayout: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
+
+  ChatInputContainer: {
+    flex: 1,
+  },
+
+  ChatInputButtons: {
+    marginLeft: '2rem',
+    display: 'flex',
+    alignItems: 'center',
+  },
+});
 
 interface ChatInputComponentProps {
   onMessage?: (message: string) => void;
@@ -26,6 +42,8 @@ export const ChatInputComponent = ({
   disabled,
   onClear,
 }: ChatInputComponentProps) => {
+  const classes = useStyles();
+
   const inputRef = useRef<HTMLDivElement>(null);
   const [message, setMessage] = useState<string>('');
 
@@ -48,8 +66,8 @@ export const ChatInputComponent = ({
   };
 
   return (
-    <div className={style.ChatInputLayout}>
-      <div className={style.ChatInputContainer}>
+    <div className={classes.ChatInputLayout}>
+      <div className={classes.ChatInputContainer}>
         <TextField
           id="outlined-multiline-flexible"
           label="Type a message"
@@ -69,7 +87,7 @@ export const ChatInputComponent = ({
           ref={inputRef}
         />
       </div>
-      <div className={style.ChatInputButtons}>
+      <div className={classes.ChatInputButtons}>
         <Button variant="outlined" onClick={onClear} disabled={disabled}>
           Clear Chat
         </Button>

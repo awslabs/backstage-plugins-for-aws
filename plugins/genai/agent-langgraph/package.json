@@ -16,6 +16,7 @@
     "pluginId": "aws-genai",
     "pluginPackage": "@aws/genai-plugin-for-backstage-backend"
   },
+  "configSchema": "config.d.ts",
   "scripts": {
     "start": "backstage-cli package start",
     "build": "backstage-cli package build",
@@ -42,6 +43,7 @@
     "@backstage/cli": "^0.26.5"
   },
   "files": [
-    "dist"
+    "dist",
+    "config.d.ts"
   ]
 }

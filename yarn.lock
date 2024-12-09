@@ -2582,7 +2582,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@aws/genai-plugin-for-backstage-backend@workspace:plugins/genai/backend":
+"@aws/genai-plugin-for-backstage-backend@workspace:^, @aws/genai-plugin-for-backstage-backend@workspace:plugins/genai/backend":
   version: 0.0.0-use.local
   resolution: "@aws/genai-plugin-for-backstage-backend@workspace:plugins/genai/backend"
   dependencies:
@@ -2638,7 +2638,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@aws/genai-plugin-for-backstage@workspace:plugins/genai/frontend":
+"@aws/genai-plugin-for-backstage@workspace:^, @aws/genai-plugin-for-backstage@workspace:plugins/genai/frontend":
   version: 0.0.0-use.local
   resolution: "@aws/genai-plugin-for-backstage@workspace:plugins/genai/frontend"
   dependencies:
@@ -2663,7 +2663,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@aws/genai-plugin-langgraph-agent-for-backstage@workspace:plugins/genai/agent-langgraph":
+"@aws/genai-plugin-langgraph-agent-for-backstage@workspace:^, @aws/genai-plugin-langgraph-agent-for-backstage@workspace:plugins/genai/agent-langgraph":
   version: 0.0.0-use.local
   resolution: "@aws/genai-plugin-langgraph-agent-for-backstage@workspace:plugins/genai/agent-langgraph"
   dependencies:
@@ -19033,6 +19033,7 @@ __metadata:
     "@aws/aws-codebuild-plugin-for-backstage": "workspace:^"
     "@aws/aws-codepipeline-plugin-for-backstage": "workspace:^"
     "@aws/cost-insights-plugin-for-backstage": "workspace:^"
+    "@aws/genai-plugin-for-backstage": "workspace:^"
     "@backstage-community/plugin-cost-insights": "npm:^0.12.25"
     "@backstage-community/plugin-github-actions": "npm:^0.6.16"
     "@backstage-community/plugin-tech-radar": "npm:^0.7.4"
@@ -19906,6 +19907,8 @@ __metadata:
     "@aws/aws-codepipeline-plugin-for-backstage-backend": "workspace:^"
     "@aws/aws-core-plugin-for-backstage-scaffolder-actions": "workspace:^"
     "@aws/cost-insights-plugin-for-backstage-backend": "workspace:^"
+    "@aws/genai-plugin-for-backstage-backend": "workspace:^"
+    "@aws/genai-plugin-langgraph-agent-for-backstage": "workspace:^"
     "@backstage/backend-defaults": "npm:^0.5.3"
     "@backstage/backend-plugin-api": "npm:^1.0.2"
     "@backstage/catalog-client": "npm:^1.8.0"

@@ -19,13 +19,20 @@ import {
 import { Toolkit } from '../tools/Toolkit';
 import { CompoundEntityRef } from '@backstage/catalog-model';
 import { mockServices } from '@backstage/backend-test-utils';
+import { ConfigReader } from '@backstage/config';
 
 const mockLogger = mockServices.logger.mock();
+const mockConfig = new ConfigReader({});
 
 describe('Agent', () => {
   describe('constructor', () => {
     it('should create an Agent instance', () => {
-      const agent = new Agent('TestAgent', 'Test Description', {} as any);
+      const agent = new Agent(
+        'TestAgent',
+        'Test Description',
+        {} as any,
+        mockLogger,
+      );
       expect(agent).toBeInstanceOf(Agent);
       expect(agent.getName()).toBe('TestAgent');
       expect(agent.getDescription()).toBe('Test Description');
@@ -39,6 +46,7 @@ describe('Agent', () => {
         prompt: 'test',
         description: 'Test Description',
         tools: ['tool1', 'tool2'],
+        config: mockConfig,
       };
       const mockAgentTypeFactory = {
         create: jest.fn().mockResolvedValue({}),
@@ -67,6 +75,7 @@ describe('Agent', () => {
         prompt: 'test',
         description: 'Agent with no tools',
         tools: [],
+        config: mockConfig,
       };
       const mockAgentTypeFactory = {
         create: jest.fn().mockResolvedValue({}),
@@ -95,6 +104,7 @@ describe('Agent', () => {
         prompt: 'test',
         description: 'Test Description',
         tools: ['unknownTool'],
+        config: mockConfig,
       };
       const mockAgentTypeFactory = {} as AgentTypeFactory;
       const mockToolkit = {
@@ -114,14 +124,24 @@ describe('Agent', () => {
 
   describe('getName', () => {
     it('should return the agent name', () => {
-      const agent = new Agent('TestAgent', 'Test Description', {} as any);
+      const agent = new Agent(
+        'TestAgent',
+        'Test Description',
+        {} as any,
+        mockLogger,
+      );
       expect(agent.getName()).toBe('TestAgent');
     });
   });
 
   describe('getDescription', () => {
     it('should return the agent description', () => {
-      const agent = new Agent('TestAgent', 'Test Description', {} as any);
+      const agent = new Agent(
+        'TestAgent',
+        'Test Description',
+        {} as any,
+        mockLogger,
+      );
       expect(agent.getDescription()).toBe('Test Description');
     });
   });
@@ -135,6 +155,7 @@ describe('Agent', () => {
         'TestAgent',
         'Test Description',
         mockAgentType as any,
+        mockLogger,
       );
       const userMessage = 'Hello';
       const sessionId = 'session123';
@@ -159,6 +180,7 @@ describe('Agent', () => {
         sessionId,
         newSession,
         userEntityRef,
+        mockLogger,
         options,
       );
     });
@@ -171,6 +193,7 @@ describe('Agent', () => {
         'TestAgent',
         'Test Description',
         mockAgentType as any,
+        mockLogger,
       );
 
       const result = await agent.stream(
@@ -192,6 +215,7 @@ describe('Agent', () => {
         'TestAgent',
         'Test Description',
         mockAgentType as any,
+        mockLogger,
       );
       const userEntityRef: CompoundEntityRef = {
         kind: 'User',
@@ -206,6 +230,7 @@ describe('Agent', () => {
         'session123',
         false,
         userEntityRef,
+        mockLogger,
         {},
       );
     });
@@ -218,6 +243,7 @@ describe('Agent', () => {
         'TestAgent',
         'Test Description',
         mockAgentType as any,
+        mockLogger,
       );
 
       await expect(
@@ -235,6 +261,7 @@ describe('Agent', () => {
         'TestAgent',
         'Test Description',
         mockAgentType as any,
+        mockLogger,
       );
       const userMessage = 'Hello';
       const sessionId = 'session123';
@@ -251,6 +278,7 @@ describe('Agent', () => {
         userMessage,
         sessionId,
         userEntityRef,
+        mockLogger,
         options,
       );
     });
@@ -263,6 +291,7 @@ describe('Agent', () => {
         'TestAgent',
         'Test Description',
         mockAgentType as any,
+        mockLogger,
       );
 
       await expect(

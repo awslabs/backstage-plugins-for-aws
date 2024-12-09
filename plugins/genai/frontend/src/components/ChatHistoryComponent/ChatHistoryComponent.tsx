@@ -14,7 +14,6 @@
 import { EmptyState, MarkdownContent } from '@backstage/core-components';
 import React, { useEffect, useRef } from 'react';
 
-import style from './ChatHistoryComponent.module.css';
 import { ChatMessage, ToolRecord } from '../types';
 import { Avatar } from '@material-ui/core';
 import Person from '@material-ui/icons/Person';
@@ -22,23 +21,123 @@ import School from '@material-ui/icons/School';
 import Info from '@material-ui/icons/Info';
 import Error from '@material-ui/icons/Error';
 import { ToolsModal } from './ToolsModal';
+import { makeStyles } from '@material-ui/core';
+
+const useStyles = makeStyles({
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+
+  markdownContainer: {
+    flexGrow: 1,
+    position: 'relative',
+  },
+
+  markdown: {
+    position: 'absolute',
+    left: 0,
+    top: '1rem',
+    right: 0,
+    bottom: '1rem',
+    padding: '0 2rem',
+    overflow: 'auto',
+  },
+
+  ChatItem: {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    width: '100%',
+    marginBottom: '1rem',
+    fontSize: '16px',
+    background: '#f8f8fa',
+    color: '#4c4d53',
+    borderRadius: '7px',
+    padding: '10px',
+  },
+
+  ChatItemExpert: {
+    background: '#fff',
+
+    '& $ChatItemChatText': {
+      background: '#fff',
+    },
+
+    '& $ChatItemAvatarIcon': {
+      backgroundColor: '#f59d12',
+    },
+  },
+
+  ChatItemCustomer: {},
+
+  ChatItemMeta: {
+    display: 'flex',
+    alignItems: 'center',
+    flex: '0 1 auto',
+    marginRight: '1rem',
+    marginBottom: '0.5rem',
+    width: '2.5rem',
+  },
+
+  ChatItemContent: {
+    position: 'relative',
+    flex: '1 0 auto',
+    width: '100%',
+  },
+
+  ChatItemToolIcon: {
+    marginTop: '20px',
+    cursor: 'pointer',
+  },
+
+  ChatItemAvatarContainer: {
+    marginTop: '10px',
+    marginBottom: '10px',
+    width: '100px',
+    height: 'auto',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  ChatItemAvatarIcon: {},
+
+  ChatItemChatText: {
+    position: 'relative',
+    width: '100%',
+    lineHeight: '1.3',
+    marginTop: '5px',
+  },
+
+  ChatItemError: {
+    background: '#fcf2f2',
+    color: '#5b2e2e',
+
+    '& $ChatItemAvatarIcon': {
+      backgroundColor: '#5b2e2e',
+    },
+  },
+});
 
 export interface ChatHistoryComponentProps {
   messages?: ChatMessage[];
   isStreaming?: boolean;
   className?: string;
+  showInformation: boolean;
 }
 
-function getMessageExtraClass(message: ChatMessage): string {
+function getMessageExtraClass(message: ChatMessage, classes: any): string {
   if (message.type === 'user') {
-    return style.ChatItemCustomer;
+    return classes.ChatItemCustomer;
   }
 
   if (message.type === 'error') {
-    return style.ChatItemError;
+    return classes.ChatItemError;
   }
 
-  return style.ChatItemExpert;
+  return classes.ChatItemExpert;
 }
 
 function getMessageIcon(message: ChatMessage) {
@@ -56,7 +155,10 @@ function getMessageIcon(message: ChatMessage) {
 export const ChatHistoryComponent = ({
   messages,
   className,
+  showInformation,
 }: ChatHistoryComponentProps) => {
+  const classes = useStyles();
+
   const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -78,9 +180,9 @@ export const ChatHistoryComponent = ({
   };
 
   return (
-    <div className={`${className} ${style.container}`}>
-      <div className={style.markdownContainer}>
-        <div className={style.markdown} ref={contentRef}>
+    <div className={`${className} ${classes.container}`}>
+      <div className={classes.markdownContainer}>
+        <div className={classes.markdown} ref={contentRef}>
           {messages!.length === 0 && (
             <EmptyState
               missing="data"
@@ -93,27 +195,29 @@ export const ChatHistoryComponent = ({
             messages?.map((message, index) => (
               <div
                 key={index}
-                className={`${style.ChatItem} ${getMessageExtraClass(message)}`}
+                className={`${classes.ChatItem} ${getMessageExtraClass(
+                  message,
+                  classes,
+                )}`}
               >
-                <div className={`${style.ChatItemAvatarContainer}`}>
+                <div className={`${classes.ChatItemAvatarContainer}`}>
                   <div>
-                    <Avatar className={style.ChatItemAvatarIcon}>
+                    <Avatar className={classes.ChatItemAvatarIcon}>
                       {getMessageIcon(message)}
                     </Avatar>
                   </div>
-                  {message.tools.length > 0 && (
+                  {message.tools.length > 0 && showInformation && (
                     <Info
-                      className={style.ChatItemToolIcon}
+                      className={classes.ChatItemToolIcon}
                       onClick={() => handleOpen(message)}
                     />
                   )}
                 </div>
-                <div className={`${style.ChatItemChatText}`}>
+                <div className={`${classes.ChatItemChatText}`}>
                   <MarkdownContent
                     content={
                       message.payload.length === 0 ? '...' : message.payload
                     }
-                    className={style.markdownChat}
                     dialect="gfm"
                   />
                 </div>

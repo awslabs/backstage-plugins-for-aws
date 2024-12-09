@@ -11,14 +11,17 @@
  * limitations under the License.
  */
 
-import { BackstageCredentials } from '@backstage/backend-plugin-api';
-import { Config } from '@backstage/config';
+import {
+  BackstageCredentials,
+  LoggerService,
+} from '@backstage/backend-plugin-api';
 import { CompoundEntityRef } from '@backstage/catalog-model';
 import { ToolInterface } from '@langchain/core/tools';
 import {
   ChatEvent,
   GenerateResponse,
 } from '@aws/genai-plugin-for-backstage-common';
+import { Config } from '@backstage/config';
 
 export interface AgentType {
   stream(
@@ -26,6 +29,7 @@ export interface AgentType {
     sessionId: string,
     newSession: boolean,
     userEntityRef: CompoundEntityRef,
+    logger: LoggerService,
     options: {
       credentials?: BackstageCredentials;
     },
@@ -35,6 +39,7 @@ export interface AgentType {
     prompt: string,
     sessionId: string,
     userEntityRef: CompoundEntityRef,
+    logger: LoggerService,
     options: {
       credentials?: BackstageCredentials;
     },
@@ -53,5 +58,5 @@ export interface AgentConfig {
   prompt: string;
   type?: string;
   tools: string[];
-  params?: Config;
+  config: Config;
 }
