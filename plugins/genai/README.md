@@ -2,6 +2,8 @@
 
 This experimental Backstage plugin helps build generative AI assistants in a manner that can leverage the broader Backstage plugin ecosystem. It relies on "tool use" to provide LLMs with access to existing Backstage backend plugins so that the models can access data via Backstage such as the catalog, TechDocs, CI/CD, Kubernetes resources etc.
 
+![Screenshot](./docs/images/hero.png)
+
 Features:
 
 - Simple conversational chat interface
