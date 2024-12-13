@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.3](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-config-catalog-module-for-backstage@0.1.2...@aws/aws-config-catalog-module-for-backstage@0.1.3) (2024-12-13)
+
+
+### Bug Fixes
+
+* Allow periods and slashes in transform field names ([#314](https://github.com/awslabs/backstage-plugins-for-aws/issues/314)) ([cbdaa3c](https://github.com/awslabs/backstage-plugins-for-aws/commit/cbdaa3c545d8d69db13f7cd3fdc540c33e20322b))
+
+
+
+
+
 ## [0.1.2](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-config-catalog-module-for-backstage@0.1.1...@aws/aws-config-catalog-module-for-backstage@0.1.2) (2024-12-03)
 
 **Note:** Version bump only for package @aws/aws-config-catalog-module-for-backstage
