@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.5](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-config-catalog-module-for-backstage@0.1.4...@aws/aws-config-catalog-module-for-backstage@0.1.5) (2024-12-13)
+
+
+### Bug Fixes
+
+* Fixed transform fields and type in config schema ([b8ecd78](https://github.com/awslabs/backstage-plugins-for-aws/commit/b8ecd7820f5183313c08b1e36e8720c52883642b))
+
+
+
+
+
 ## [0.1.4](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-config-catalog-module-for-backstage@0.1.3...@aws/aws-config-catalog-module-for-backstage@0.1.4) (2024-12-13)
 
 
