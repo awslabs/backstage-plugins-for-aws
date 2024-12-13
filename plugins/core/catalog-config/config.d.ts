@@ -50,7 +50,7 @@ export interface Config {
              * (Optional) Filter AWS Config resources using these tags
              * If not set, no tag filters will be applied
              */
-            tagFilters?: {
+            tags?: {
               /**
                * (Required) Key of the tag to filter on
                */
@@ -92,6 +92,11 @@ export interface Config {
                  * If not set, no value will be set
                  */
                 value?: string;
+                /**
+                 * (Optional) Sets the value of the field to the result of this JSONata expression
+                 * If not set, no value will be set
+                 */
+                expression?: string;
               };
               /**
                * (Optional) Transforms for the spec.system field of the entity
@@ -108,6 +113,11 @@ export interface Config {
                  * If not set, no value will be set
                  */
                 value?: string;
+                /**
+                 * (Optional) Sets the value of the field to the result of this JSONata expression
+                 * If not set, no value will be set
+                 */
+                expression?: string;
               };
               /**
                * (Optional) Transforms the entity to add a dependencyOf on a component
@@ -124,6 +134,11 @@ export interface Config {
                  * If not set, no value will be set
                  */
                 value?: string;
+                /**
+                 * (Optional) Sets the value of the field to the result of this JSONata expression
+                 * If not set, no value will be set
+                 */
+                expression?: string;
               };
               /**
                * (Optional) Transforms for the spec.type field of the entity
@@ -140,6 +155,11 @@ export interface Config {
                  * If not set, no value will be set
                  */
                 value?: string;
+                /**
+                 * (Optional) Sets the value of the field to the result of this JSONata expression
+                 * If not set, no value will be set
+                 */
+                expression?: string;
               };
             };
             /**
@@ -158,6 +178,11 @@ export interface Config {
                  * If not set, no value will be set
                  */
                 value?: string;
+                /**
+                 * (Optional) Sets the value of the field to the result of this JSONata expression
+                 * If not set, no value will be set
+                 */
+                expression?: string;
               };
             };
             /**
@@ -175,6 +200,11 @@ export interface Config {
                * If not set, no value will be set
                */
               value?: string;
+              /**
+               * (Optional) Sets the value of the field to the result of this JSONata expression
+               * If not set, no value will be set
+               */
+              expression?: string;
             };
           };
           /**
