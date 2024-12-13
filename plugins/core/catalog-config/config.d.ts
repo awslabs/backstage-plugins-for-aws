@@ -73,15 +73,128 @@ export interface Config {
            */
           transform?: {
             /**
-             * (Optional) Transforms for the spec field of the entity
-             * If not set, no transforms will be applied to the spec field
+             * (Optional) Transforms that will be applied to specific fields of the emitted entity
+             * If not set, no field-level transforms will be applied
              */
-            spec?: {
+            fields?: {
               /**
-               * (Optional) Transforms for the spec.owner field of the entity
-               * If not set, no transforms will be applied to the spec.owner field
+               * (Optional) Transforms for the spec field of the entity
+               * If not set, no transforms will be applied to the spec field
                */
-              owner?: {
+              spec?: {
+                /**
+                 * (Optional) Transforms for the spec.owner field of the entity
+                 * If not set, no transforms will be applied to the spec.owner field
+                 */
+                owner?: {
+                  /**
+                   * (Optional) Propagates the value of this tag to the field
+                   * If not set, no tag will be propagated
+                   */
+                  tag?: string;
+                  /**
+                   * (Optional) Sets the value of the field to this value
+                   * If not set, no value will be set
+                   */
+                  value?: string;
+                  /**
+                   * (Optional) Sets the value of the field to the result of this JSONata expression
+                   * If not set, no value will be set
+                   */
+                  expression?: string;
+                };
+                /**
+                 * (Optional) Transforms for the spec.system field of the entity
+                 * If not set, no transforms will be applied to the spec.owner field
+                 */
+                system?: {
+                  /**
+                   * (Optional) Propagates the value of this tag to the field
+                   * If not set, no tag will be propagated
+                   */
+                  tag?: string;
+                  /**
+                   * (Optional) Sets the value of the field to this value
+                   * If not set, no value will be set
+                   */
+                  value?: string;
+                  /**
+                   * (Optional) Sets the value of the field to the result of this JSONata expression
+                   * If not set, no value will be set
+                   */
+                  expression?: string;
+                };
+                /**
+                 * (Optional) Transforms the entity to add a dependencyOf on a component
+                 * If not set, no transforms will be applied to create the dependencyOf
+                 */
+                component?: {
+                  /**
+                   * (Optional) Propagates the value of this tag to the field
+                   * If not set, no tag will be propagated
+                   */
+                  tag?: string;
+                  /**
+                   * (Optional) Sets the value of the field to this value
+                   * If not set, no value will be set
+                   */
+                  value?: string;
+                  /**
+                   * (Optional) Sets the value of the field to the result of this JSONata expression
+                   * If not set, no value will be set
+                   */
+                  expression?: string;
+                };
+                /**
+                 * (Optional) Transforms for the spec.type field of the entity
+                 * If not set, no transforms will be applied to the spec.type field
+                 */
+                type?: {
+                  /**
+                   * (Optional) Propagates the value of this tag to the field
+                   * If not set, no tag will be propagated
+                   */
+                  tag?: string;
+                  /**
+                   * (Optional) Sets the value of the field to this value
+                   * If not set, no value will be set
+                   */
+                  value?: string;
+                  /**
+                   * (Optional) Sets the value of the field to the result of this JSONata expression
+                   * If not set, no value will be set
+                   */
+                  expression?: string;
+                };
+              };
+              /**
+               * (Optional) Transforms for the metadata.annotations field of the entity
+               * If not set, no transforms will be applied to the metadata.annotations field
+               */
+              annotations?: {
+                [name: string]: {
+                  /**
+                   * (Optional) Propagates the value of this tag to the field
+                   * If not set, no tag will be propagated
+                   */
+                  tag?: string;
+                  /**
+                   * (Optional) Sets the value of the field to this value
+                   * If not set, no value will be set
+                   */
+                  value?: string;
+                  /**
+                   * (Optional) Sets the value of the field to the result of this JSONata expression
+                   * If not set, no value will be set
+                   */
+                  expression?: string;
+                };
+              };
+              /**
+               * (Optional) Transforms for the metadata.name field of the entity
+               * If not set, no transforms will be applied to the metadata.name field
+               */
+              name?: {
                 /**
                  * (Optional) Propagates the value of this tag to the field
                  * If not set, no tag will be propagated
@@ -98,113 +211,6 @@ export interface Config {
                  */
                 expression?: string;
               };
-              /**
-               * (Optional) Transforms for the spec.system field of the entity
-               * If not set, no transforms will be applied to the spec.owner field
-               */
-              system?: {
-                /**
-                 * (Optional) Propagates the value of this tag to the field
-                 * If not set, no tag will be propagated
-                 */
-                tag?: string;
-                /**
-                 * (Optional) Sets the value of the field to this value
-                 * If not set, no value will be set
-                 */
-                value?: string;
-                /**
-                 * (Optional) Sets the value of the field to the result of this JSONata expression
-                 * If not set, no value will be set
-                 */
-                expression?: string;
-              };
-              /**
-               * (Optional) Transforms the entity to add a dependencyOf on a component
-               * If not set, no transforms will be applied to create the dependencyOf
-               */
-              component?: {
-                /**
-                 * (Optional) Propagates the value of this tag to the field
-                 * If not set, no tag will be propagated
-                 */
-                tag?: string;
-                /**
-                 * (Optional) Sets the value of the field to this value
-                 * If not set, no value will be set
-                 */
-                value?: string;
-                /**
-                 * (Optional) Sets the value of the field to the result of this JSONata expression
-                 * If not set, no value will be set
-                 */
-                expression?: string;
-              };
-              /**
-               * (Optional) Transforms for the spec.type field of the entity
-               * If not set, no transforms will be applied to the spec.type field
-               */
-              system?: {
-                /**
-                 * (Optional) Propagates the value of this tag to the field
-                 * If not set, no tag will be propagated
-                 */
-                tag?: string;
-                /**
-                 * (Optional) Sets the value of the field to this value
-                 * If not set, no value will be set
-                 */
-                value?: string;
-                /**
-                 * (Optional) Sets the value of the field to the result of this JSONata expression
-                 * If not set, no value will be set
-                 */
-                expression?: string;
-              };
-            };
-            /**
-             * (Optional) Transforms for the metadata.annotations field of the entity
-             * If not set, no transforms will be applied to the metadata.annotations field
-             */
-            annotations?: {
-              [name: string]: {
-                /**
-                 * (Optional) Propagates the value of this tag to the field
-                 * If not set, no tag will be propagated
-                 */
-                tag?: string;
-                /**
-                 * (Optional) Sets the value of the field to this value
-                 * If not set, no value will be set
-                 */
-                value?: string;
-                /**
-                 * (Optional) Sets the value of the field to the result of this JSONata expression
-                 * If not set, no value will be set
-                 */
-                expression?: string;
-              };
-            };
-            /**
-             * (Optional) Transforms for the metadata.name field of the entity
-             * If not set, no transforms will be applied to the metadata.name field
-             */
-            name?: {
-              /**
-               * (Optional) Propagates the value of this tag to the field
-               * If not set, no tag will be propagated
-               */
-              tag?: string;
-              /**
-               * (Optional) Sets the value of the field to this value
-               * If not set, no value will be set
-               */
-              value?: string;
-              /**
-               * (Optional) Sets the value of the field to the result of this JSONata expression
-               * If not set, no value will be set
-               */
-              expression?: string;
             };
           };
           /**
