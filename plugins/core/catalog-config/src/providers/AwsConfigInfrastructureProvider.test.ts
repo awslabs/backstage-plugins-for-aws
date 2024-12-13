@@ -226,6 +226,11 @@ describe('AwsConfigInfrastructureProvider', () => {
               expression:
                 "$join([$resource.resourceName, $resource.accountId], '-')",
             },
+            annotations: {
+              'aws.amazon.com/account-id': {
+                expression: '$resource.accountId',
+              },
+            },
             spec: {
               owner: { tag: 'owner' },
               system: { value: 'some-system' },
