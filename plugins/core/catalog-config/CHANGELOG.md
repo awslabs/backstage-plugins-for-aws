@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.4](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-config-catalog-module-for-backstage@0.1.3...@aws/aws-config-catalog-module-for-backstage@0.1.4) (2024-12-13)
+
+
+### Bug Fixes
+
+* Correct tag filter name, add expression fields in config schema ([c1d7438](https://github.com/awslabs/backstage-plugins-for-aws/commit/c1d7438e5334d95383629be816a25c75fffd51c1))
+
+
+
+
+
 ## [0.1.3](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-config-catalog-module-for-backstage@0.1.2...@aws/aws-config-catalog-module-for-backstage@0.1.3) (2024-12-13)
 
 
