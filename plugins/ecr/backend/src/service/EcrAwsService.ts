@@ -171,7 +171,7 @@ export class EcrAwsService
           imageTag: req.imageTag,
         },
         repositoryName: this.extractRepoName(arnAnnotation?.value as string),
-        maxResults: 1000,
+        maxResults: this.config.ecr.maxScanFindings,
       }),
     );
     return {

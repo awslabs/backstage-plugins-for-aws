@@ -36,6 +36,8 @@ function readEcrAwsConfig(
   return {
     accountId: config?.getOptionalString('accountId'),
     region: config?.getOptionalString('region'),
+    maxImages: config?.getOptionalNumber('maxImages'),
+    maxScanFindings: config?.getOptionalNumber('maxScanFindings'),
   };
 }
 

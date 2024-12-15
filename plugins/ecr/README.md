@@ -103,6 +103,8 @@ aws:
   ecr:
     accountId: '1111111111' # (Optional) Use the specified AWS account ID
     region: 'us-west-2' # (Optional) Use the specified AWS region
+    maxImages: 1000 # (Optional) The maximum amount of images grabbed for a repository.
+    maxScanFindings: 1000 # (Optional) The maximum amount of scan findings grabbed for an individual image.
     cache:
       enable: true # (Optional) Control is caching is enabled, defaults to true
       defaultTtl: 1000 # (Optional) How long responses are cached for in milliseconds, defaults to 1 day
