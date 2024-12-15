@@ -15,7 +15,7 @@ import { assertError } from '@backstage/errors';
 import { CacheService, LoggerService } from '@backstage/backend-plugin-api';
 import { EcrConfig } from '../config';
 
-const KEY_PREFIX = 'cost-insights:';
+const KEY_PREFIX = 'aws-ecr-provider:';
 
 export class EcrCache {
   protected readonly cache: CacheService;

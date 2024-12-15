@@ -78,20 +78,9 @@ Then add the following components:
   </EntityLayout.Route>
 ```
 
-### Configuration
-
-Cost Insights requires minimal configuration in order to run. Add this to `app-config.yaml`:
-
-```yaml
-costInsights:
-  engineerCost: 200000
-```
-
 ## Entity annotations
 
-The plugin uses entity annotations to determine what queries to make for a given entity. The `aws.amazon.com/aws-ecr-repository-name` annotation can be added to any catalog entity to attach an ECR Repository to the entity.
-
-It is the users responsibility to ensure all AWS resources are tagged appropriately and that cost allocation tags have been enabled appropriately.
+The plugin uses entity annotations to determine what queries to make for a given entity. The `aws.amazon.com/aws-ecr-repository-arn` annotation can be added to any catalog entity to attach an ECR Repository to the entity.
 
 ```yaml
 apiVersion: backstage.io/v1alpha1
@@ -99,7 +88,7 @@ kind: Component
 metadata:
   # ...
   annotations:
-    aws.amazon.com/aws-ecr-repository-name: my-service
+    aws.amazon.com/aws-ecr-repository-arn: 1234567890.dkr.ecr.us-east-1.amazonaws.com/example-website
 spec:
   type: service
   # ...

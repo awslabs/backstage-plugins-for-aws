@@ -190,7 +190,7 @@ export class EcrAwsService
 
 }
 
-export const costInsightsAwsServiceRef =
+export const ecrAwsServiceRef =
   createServiceRef<EcrScanAwsService>({
     id: 'ecr-aws.api',
     defaultFactory: async service =>

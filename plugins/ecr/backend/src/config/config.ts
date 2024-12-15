@@ -24,7 +24,7 @@ export function readEcrConfig(
   const root = config.getOptionalConfig('aws.ecr');
 
   return {
-    ecr: readEcrAwsConfig(config),
+    ecr: readEcrAwsConfig(root),
     cache: readEcrAwsConfigCache(root),
   };
 }
@@ -32,11 +32,10 @@ export function readEcrConfig(
 function readEcrAwsConfig(
   config: Config | undefined,
 ): EcrAwsConfig {
-  const root = config?.getOptionalConfig('aws.ecr');
 
   return {
-    accountId: root?.getOptionalString('accountId'),
-    region: root?.getOptionalString('region'),
+    accountId: config?.getOptionalString('accountId'),
+    region: config?.getOptionalString('region'),
   };
 }
 

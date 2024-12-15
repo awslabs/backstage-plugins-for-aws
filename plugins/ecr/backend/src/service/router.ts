@@ -61,7 +61,7 @@ export async function createRouter(
     router.use((req, res, next) => {
       const cacheKey = req.originalUrl;
 
-      console.log(`Cache key ${cacheKey}`);
+      logger.debug(`Cache key ${cacheKey}`);
 
       if (cacheClient) {
         cacheClient.get(cacheKey).then(e => {
