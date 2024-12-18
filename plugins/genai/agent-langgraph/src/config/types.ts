@@ -39,4 +39,5 @@ export interface LangGraphAgentBedrockConfig {
 export interface LangGraphAgentOpenAIConfig {
   apiKey: string;
   modelName?: string;
+  baseUrl?: string;
 }
