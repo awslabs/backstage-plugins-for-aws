@@ -51,7 +51,7 @@ genai:
           region: us-west-2 # (Required) Bedrock AWS region
         # OpenAI only
         openai:
-          baseUrl: ${OPENAI_API_BASE_URL}
           apiKey: ${OPENAI_API_KEY} # (Required) OpenAI model name
           modelName: 'gpt-3.5-turbo-instruct' # (Optional) OpenAI model name
+          baseUrl: ${OPENAI_API_BASE_URL} # (Optional) URL for OpenAI API endpoint
 ```
