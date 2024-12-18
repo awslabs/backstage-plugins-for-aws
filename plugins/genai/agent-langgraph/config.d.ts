@@ -59,6 +59,10 @@ export interface Config {
              * (Optional) Name of the OpenAI model to use
              */
             modelName?: string;
+            /**
+             * (Optional) Base URL of the OpenAI API
+             */
+            baseUrl?: string;
           };
         };
       };

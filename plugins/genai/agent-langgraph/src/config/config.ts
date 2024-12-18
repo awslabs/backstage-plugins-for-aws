@@ -87,5 +87,6 @@ export function readLangGraphAgentOpenAIConfig(
   return {
     apiKey: config.getString('apiKey'),
     modelName: config.getOptionalString('modelName'),
+    baseUrl: config.getOptionalString('baseUrl'),
   };
 }
