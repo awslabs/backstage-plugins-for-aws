@@ -8571,6 +8571,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@cfworker/json-schema@npm:^4.0.2":
+  version: 4.0.3
+  resolution: "@cfworker/json-schema@npm:4.0.3"
+  checksum: 10c0/f8a748d12d709272c2533f7ceefc4931ae3710b9cbc1bc125f4f885e7a8674fac0ee8113f5d9379f66710bccf3c212cc552890cb9647736f908e72c330024890
+  languageName: node
+  linkType: hard
+
 "@changesets/types@npm:^4.0.1":
   version: 4.1.0
   resolution: "@changesets/types@npm:4.1.0"
@@ -10787,9 +10794,10 @@ __metadata:
   linkType: hard
 
 "@langchain/core@npm:^0.3.18":
-  version: 0.3.22
-  resolution: "@langchain/core@npm:0.3.22"
+  version: 0.3.26
+  resolution: "@langchain/core@npm:0.3.26"
   dependencies:
+    "@cfworker/json-schema": "npm:^4.0.2"
     ansi-styles: "npm:^5.0.0"
     camelcase: "npm:6"
     decamelize: "npm:1.2.0"
@@ -10801,7 +10809,7 @@ __metadata:
     uuid: "npm:^10.0.0"
     zod: "npm:^3.22.4"
     zod-to-json-schema: "npm:^3.22.3"
-  checksum: 10c0/99050e331a71a568476195b458c1980f5a3361bc286e6031497aaa7075444ac1e319be51d34822f06c7fba22c0bb230c63e3dbab918e21f9ddeb90cc82b11e0e
+  checksum: 10c0/9f2621d8461e57c233d2f9ab3a59afaf55e7ac0f8eea527343910c3f2cd0ab63944326b152e2d77692b0efaf65fb57c6d235371ce8cb98ac142547ac119e5b73
   languageName: node
   linkType: hard
 
