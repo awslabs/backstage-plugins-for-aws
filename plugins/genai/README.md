@@ -161,7 +161,7 @@ Access the application in your browser and select the "Chat Assistant" option in
 
 We can provide tools/functions that can be called by agents to retrieve context or perform actions. Tools can be added to the agent using a Backstage extension point and packaged as NPM packages.
 
-There are several tools built in to the plugin related to core Backstage functionality. The `backstageCatalogSearch`, `backstageEntity` and `backstageTechdocsSearch` tools to give the model basic access to the Backstage catalog and TechDocs documentation.
+There are several tools built in to the plugin related to core Backstage functionality. The `backstageCatalogSearch`, `backstageEntity` and `backstageTechDocsSearch` tools to give the model basic access to the Backstage catalog and TechDocs documentation.
 
 Update the previous agent definition to add the `tools` field:
 
@@ -172,10 +172,10 @@ genai:
       description: [...]
       prompt: [...]
       langgraph: [...]
-      tool:
+      tools:
         - backstageCatalogSearch
         - backstageEntity
-        - backstageTechdocsSearch
+        - backstageTechDocsSearch
 ```
 
 Restart Backstage to reload the configuration and try asking the chat assistant a question related to information in the your Backstage catalog, for example "Summarize <component name> from the Backstage catalog".

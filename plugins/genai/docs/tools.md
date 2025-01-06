@@ -8,7 +8,7 @@ The term "tool use" or "function calling" describes a mechanism where an LLM is 
 | ---------- | ------------------------- | -------------------------------------------------------------------- |
 | (built-in) | `backstageCatalogSearch`  | Search the Backstage catalog using the Search API                    |
 |            | `backstageEntity`         | Retrieve information about a specific entity through the Catalog API |
-|            | `backstageTechdocsSearch` | Search TechDocs documentation using the Search API                   |
+|            | `backstageTechDocsSearch` | Search TechDocs documentation using the Search API                   |
 
 ## Creating tools
 
