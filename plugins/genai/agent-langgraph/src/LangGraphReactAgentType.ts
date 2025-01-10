@@ -84,8 +84,10 @@ export class LangGraphReactAgentType implements AgentType {
       agentModel =
         LangGraphReactAgentType.createBedrockModel(agentLangGraphConfig);
     } else if (agentLangGraphConfig.openai) {
-      agentModel =
-        LangGraphReactAgentType.createOpenAIModel(agentLangGraphConfig);
+      agentModel = LangGraphReactAgentType.createOpenAIModel(
+        agentLangGraphConfig,
+        logger,
+      );
     } else {
       throw new Error('No agent model configured');
     }
@@ -133,10 +135,22 @@ export class LangGraphReactAgentType implements AgentType {
     });
   }
 
-  private static createOpenAIModel(config: LangGraphAgentConfig) {
+  private static createOpenAIModel(
+    config: LangGraphAgentConfig,
+    logger: LoggerService,
+  ) {
     const { modelName, apiKey } = config.openai!;
 
+    const baseUrl = config.openai?.baseUrl ?? 'https://api.openai.com/v1';
+
+    logger.info(
+      `Instantiating ChatOpenAI model '${modelName}' using baseUrl '${baseUrl}'`,
+    );
+
     return new ChatOpenAI({
+      configuration: {
+        baseURL: baseUrl,
+      },
       apiKey: apiKey,
       streaming: true,
       modelName: modelName,
