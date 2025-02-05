@@ -12,6 +12,6 @@
  */
 
 import { createDevApp } from '@backstage/dev-utils';
-import { costInsightsAwsPlugin } from '../src/plugin';
+import { amazonEcrPlugin } from '../src/plugin';
 
-createDevApp().registerPlugin(costInsightsAwsPlugin).render();
+createDevApp().registerPlugin(amazonEcrPlugin).render();

@@ -11,8 +11,4 @@
  * limitations under the License.
  */
 
-export {
-  amazonEcrPlugin,
-  EntityAmazonEcrImagesContent,
-  isAmazonEcrAvailable,
-} from './plugin';
+export { EcrScanResult } from './EcrScanResult';

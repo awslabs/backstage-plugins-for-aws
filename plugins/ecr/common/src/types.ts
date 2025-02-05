@@ -11,8 +11,22 @@
  * limitations under the License.
  */
 
-export {
-  amazonEcrPlugin,
-  EntityAmazonEcrImagesContent,
-  isAmazonEcrAvailable,
-} from './plugin';
+import { ImageDetail, ImageScanFindings } from '@aws-sdk/client-ecr';
+
+export const AMAZON_ECR_ARN_ANNOTATION = 'aws.amazon.com/amazon-ecr-arn';
+export const AMAZON_ECR_TAGS_ANNOTATION = 'aws.amazon.com/amazon-ecr-tags';
+
+export interface ImageRepository {
+  images: Array<ImageDetail>;
+  repositoryName: string;
+  repositoryArn: string;
+  repositoryRegion: string;
+}
+
+export interface EcrImagesResponse {
+  repositories: Array<ImageRepository>;
+}
+
+export interface EcrImageScanFindingsResponse {
+  findings: ImageScanFindings;
+}

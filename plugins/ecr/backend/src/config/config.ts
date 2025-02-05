@@ -12,43 +12,15 @@
  */
 
 import { Config } from '@backstage/config';
-import {
-  EcrAwsConfig,
-  EcrConfig,
-  EcrAwsConfigCache,
-} from './types';
+import { EcrConfig } from './types';
 
-export function readEcrConfig(
-  config: Config,
-): EcrConfig {
-  const root = config.getOptionalConfig('aws.ecr');
+const DEFAULT_IMAGES_LIMIT = 100;
+const DEFAULT_FINDINGS_LIMIT = 100;
 
+export function readEcrConfig(config: Config): EcrConfig {
   return {
-    ecr: readEcrAwsConfig(root),
-    cache: readEcrAwsConfigCache(root),
-  };
-}
-
-function readEcrAwsConfig(
-  config: Config | undefined,
-): EcrAwsConfig {
-
-  return {
-    accountId: config?.getOptionalString('accountId'),
-    region: config?.getOptionalString('region'),
-    maxImages: config?.getOptionalNumber('maxImages'),
-    maxScanFindings: config?.getOptionalNumber('maxScanFindings'),
-  };
-}
-
-function readEcrAwsConfigCache(
-  config: Config | undefined,
-): EcrAwsConfigCache {
-  const root = config?.getOptionalConfig('cache');
-
-  return {
-    enable: root?.getOptionalBoolean('enable') || true,
-    defaultTtl: root?.getOptionalNumber('defaultTtl') || 86400000,
-    readTimeout: root?.getOptionalNumber('readTimeout') || 1000,
+    maxImages: config.getOptionalNumber('maxImages') || DEFAULT_IMAGES_LIMIT,
+    maxScanFindings:
+      config.getOptionalNumber('maxScanFindings') || DEFAULT_FINDINGS_LIMIT,
   };
 }

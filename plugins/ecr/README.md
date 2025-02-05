@@ -1,8 +1,13 @@
-# ECR AWS plugin for Backstage
+# Amazon Elastic Container Registry plugin for Backstage
 
-This plugin is meant to allow you to view ECR Scan Results for a specific entity within your Backstage UI. 
+This is the Amazon Elastic Container Registry (ECR) plugin for backstage.io.
 
-This requires that where you run Backstage has AWS Credentials that has IAM Permissions to describe images and get ECR scan findings (through enviornment variables, IRSA, etc;).
+![Amazon Elastic Container Registry plugin tab](../../docs/images/ecr-tab.png)
+
+It provides:
+
+1. Entity content that displays the Amazon Elastic Container Registry repositories related to that specific entity
+2. Ability to see scan findings for individual images
 
 The plugin consists of the following packages:
 
@@ -24,10 +29,7 @@ The IAM role(s) used by Backstage will require the following permissions:
   "Statement": [
     {
       "Effect": "Allow",
-      "Action": [
-        "ecr:DescribeImages",
-        "ecr:DescribeImageScanFindings"
-      ],
+      "Action": ["ecr:DescribeImages", "ecr:DescribeImageScanFindings"],
       "Resource": "*"
     }
   ]
@@ -41,7 +43,7 @@ Note: This policy does not reflect least privilege and you should further limit 
 Install the backend package in your Backstage app:
 
 ```shell
-yarn workspace backend add @aws/ecr-plugin-for-backstage-backend
+yarn workspace backend add @aws/amazon-ecr-plugin-for-backstage-backend
 ```
 
 Add the plugin to the `packages/backend/src/index.ts`:
@@ -49,7 +51,7 @@ Add the plugin to the `packages/backend/src/index.ts`:
 ```typescript
 const backend = createBackend();
 // ...
-backend.add(import('@aws/ecr-plugin-for-backstage-backend'));
+backend.add(import('@aws/amazon-ecr-plugin-for-backstage-backend'));
 // ...
 backend.start();
 ```
@@ -59,36 +61,57 @@ backend.start();
 Install the frontend packages in your Backstage app:
 
 ```shell
-yarn workspace app add @aws/ecr-plugin-for-backstage
+yarn workspace app add @aws/amazon-ecr-plugin-for-backstage
 ```
+
 Edit the `packages/app/src/components/catalog/EntityPage.tsx` and add the imports
 
 ```typescript jsx
 import {
-  EntityEcrScanResultsContent, 
-  isAwsEcrScanResultsAvailable 
-} from 'plugin-aws-ecr-scan';
+  isAmazonEcrAvailable,
+  EntityAmazonEcrImagesContent,
+} from '@aws/amazon-ecr-plugin-for-backstage';
 ```
 
 Then add the following components:
 
 ```typescript jsx
-  <EntityLayout.Route path="/ecr-scan" title="Image Scan" if={isAwsEcrScanResultsAvailable}>
-    <EntityEcrScanResultsContent />
-  </EntityLayout.Route>
+<EntityLayout.Route path="/ecr" title="Amazon ECR" if={isAmazonEcrAvailable}>
+  <EntityAmazonEcrImagesContent />
+</EntityLayout.Route>
 ```
 
 ## Entity annotations
 
-The plugin uses entity annotations to determine what queries to make for a given entity. The `aws.amazon.com/aws-ecr-repository-arn` annotation can be added to any catalog entity to attach an ECR Repository to the entity.
+There are two annotations that can be used to reference ECR repositories for an entity.
+
+The first will retrieve all ECR repositories with the matching tags, this is done with the `aws.amazon.com/amazon-ecr-tags` annotation:
 
 ```yaml
+# Example
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   # ...
   annotations:
-    aws.amazon.com/aws-ecr-repository-arn: 1234567890.dkr.ecr.us-east-1.amazonaws.com/example-website
+    aws.amazon.com/amazon-ecr-tags: component=myapp
+spec:
+  type: service
+  # ...
+```
+
+Please review the [Locating resources documentation](../../docs/locating-resources.md) to understand any additional configuration required for tag-based lookup.
+
+The alternative is to reference a specific ECR repository by ARN, this is done with the `aws.amazon.com/amazon-ecr-arn` annotation:
+
+```yaml
+# Example
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  # ...
+  annotations:
+    aws.amazon.com/amazon-ecr-arn: arn:aws:ecr:us-west-2:1234567890:repository/myapp-repository
 spec:
   type: service
   # ...
@@ -101,16 +124,16 @@ There are configuration options available to control the behavior of the plugin.
 ```yaml
 aws:
   ecr:
-    accountId: '1111111111' # (Optional) Use the specified AWS account ID
-    region: 'us-west-2' # (Optional) Use the specified AWS region
-    maxImages: 1000 # (Optional) The maximum amount of images grabbed for a repository.
-    maxScanFindings: 1000 # (Optional) The maximum amount of scan findings grabbed for an individual image.
-    cache:
-      enable: true # (Optional) Control is caching is enabled, defaults to true
-      defaultTtl: 1000 # (Optional) How long responses are cached for in milliseconds, defaults to 1 day
-      readTime: 1000 # (Optional) Read timeout when operating with cache in milliseconds, defaults to 1000 ms
+    maxImages: 100 # (Optional) The maximum amount of images retrieved from a repository
+    maxScanFindings: 100 # (Optional) The maximum amount of scan findings retrieved from an image
 ```
 
-### Caching
+## IAM Identity Center shortcut links
 
-By default the responses from the backend plugin are cached for 1 day in order to improve performance to the user for querying the ECR API. The cache TTL can be configured to a different value or alternatively it can be disabled entirely if needed.
+As a user of [IAM Identity Center](https://docs.aws.amazon.com/singlesignon/latest/userguide/what-is.html), you can make use of [shortcut links](https://docs.aws.amazon.com/singlesignon/latest/userguide/createshortcutlink.html) by adding your AWS access portal subdomain to your `app-config.yaml`:
+
+```yaml
+aws:
+  sso:
+    subdomain: d-xxxxxxxxxx
+```

@@ -15,46 +15,26 @@ import {
   createBackendPlugin,
   coreServices,
 } from '@backstage/backend-plugin-api';
-import { createRouter, ecrAwsServiceRef } from './service/router';
-import { catalogServiceRef } from '@backstage/plugin-catalog-node/alpha';
-import { readEcrConfig } from './config';
+import { createRouter, amazonEcrServiceRef } from './service/router';
 
 export const ecrAwsPlugin = createBackendPlugin({
-  pluginId: 'ecr-aws',
+  pluginId: 'amazon-ecr',
   register(env) {
     env.registerInit({
       deps: {
         logger: coreServices.logger,
         httpRouter: coreServices.httpRouter,
-        config: coreServices.rootConfig,
-        catalogApi: catalogServiceRef,
-        auth: coreServices.auth,
         discovery: coreServices.discovery,
         httpAuth: coreServices.httpAuth,
-        cache: coreServices.cache,
-        ecrAwsService: ecrAwsServiceRef,
+        ecrAwsService: amazonEcrServiceRef,
       },
-      async init({
-        logger,
-        httpRouter,
-        config,
-        auth,
-        httpAuth,
-        discovery,
-        cache,
-        ecrAwsService,
-      }) {
-        const pluginConfig = readEcrConfig(config);
-
+      async init({ logger, httpRouter, httpAuth, discovery, ecrAwsService }) {
         httpRouter.use(
           await createRouter({
             logger,
             ecrAwsService,
             discovery,
-            auth,
             httpAuth,
-            cache,
-            config: pluginConfig,
           }),
         );
         httpRouter.addAuthPolicy({

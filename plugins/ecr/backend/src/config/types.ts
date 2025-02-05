@@ -12,19 +12,6 @@
  */
 
 export type EcrConfig = {
-  cache: EcrAwsConfigCache;
-  ecr: EcrAwsConfig;
-};
-
-export type EcrAwsConfigCache = {
-  enable: boolean;
-  defaultTtl: number;
-  readTimeout: number;
-};
-
-export type EcrAwsConfig = {
-  accountId: string | undefined;
-  region: string | undefined;
-  maxImages: number | undefined;
-  maxScanFindings: number | undefined;
+  maxImages: number;
+  maxScanFindings: number;
 };

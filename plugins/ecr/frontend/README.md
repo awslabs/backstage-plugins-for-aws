@@ -1,3 +1,3 @@
-# ECR AWS plugin for Backstage - Frontend
+# Amazon Elastic Container Registry plugin for Backstage - Frontend
 
-This a frontend plugin package for Backstage related to ECR for AWS. For more information see the [documentation](../README.md).
+This a frontend plugin package for Backstage related to Amazon Elastic Container Registry. For more information see the [documentation](../README.md).

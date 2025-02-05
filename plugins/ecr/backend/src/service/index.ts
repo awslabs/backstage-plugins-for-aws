@@ -11,5 +11,5 @@
  * limitations under the License.
  */
 
-export { EcrAwsService } from './EcrAwsService';
+export { DefaultAmazonEcrService } from './DefaultAmazonEcrService';
 export * from './types';

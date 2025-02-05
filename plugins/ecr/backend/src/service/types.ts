@@ -11,42 +11,28 @@
  * limitations under the License.
  */
 
-
 import {
-  ImageDetail,
-  ImageScanFindings,
-} from "@aws-sdk/client-ecr"
-import { BackstageCredentials } from "@backstage/backend-plugin-api/index";
+  EcrImageScanFindingsResponse,
+  EcrImagesResponse,
+} from '@aws/amazon-ecr-plugin-for-backstage-common';
+import { BackstageCredentials } from '@backstage/backend-plugin-api/index';
 import { CompoundEntityRef } from '@backstage/catalog-model';
 
 /** @public */
-export type AwsEcrListImagesRequest = {
-  entityRef: CompoundEntityRef;
-  credentials?: BackstageCredentials;
-};
-
-/** @public */
-export type AwsEcrListImagesResponse = {
-  items: ImageDetail[];
-};
-
-export type AwsEcrListScanResultsRequest = {
-  entityRef: CompoundEntityRef;
-  credentials?: BackstageCredentials;
-  imageTag?: string;
-  imageDigest?: string;
-};
-
-export type AwsEcrListScanResultsResponse = {
-  results: ImageScanFindings
-};
-
-/** @public */
-export interface EcrScanAwsService {
-  listEcrImages(
-    req: AwsEcrListImagesRequest,
-  ): Promise<AwsEcrListImagesResponse>;
-  listScanResults(
-    req: AwsEcrListScanResultsRequest,
-  ): Promise<AwsEcrListScanResultsResponse>;
+export interface AmazonEcrService {
+  listEcrImages(options: {
+    entityRef: CompoundEntityRef;
+    credentials?: BackstageCredentials;
+  }): Promise<EcrImagesResponse>;
+  listScanResults({
+    entityRef,
+    credentials,
+    arn,
+    digest,
+  }: {
+    entityRef: CompoundEntityRef;
+    credentials?: BackstageCredentials;
+    arn: string;
+    digest: string;
+  }): Promise<EcrImageScanFindingsResponse>;
 }

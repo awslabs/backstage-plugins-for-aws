@@ -22,6 +22,7 @@ export class BackstageSampleStack extends cdk.Stack {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       repositoryName: 'example-website-images',
     });
+    cdk.Tags.of(ecrRepo).add('component', 'example-website');
 
     const vpc = new ec2.Vpc(this, 'Vpc', {
       subnetConfiguration: [

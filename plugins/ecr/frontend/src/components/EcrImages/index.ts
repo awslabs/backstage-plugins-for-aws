@@ -11,4 +11,4 @@
  * limitations under the License.
  */
 
-export * from './ECRCache';
+export { EcrImages } from './EcrImages';

@@ -18,7 +18,7 @@ metadata:
     aws.amazon.com/aws-codebuild-project-tags: component=example-website
     aws.amazon.com/amazon-ecs-service-tags: component=example-website
     aws.amazon.com/cost-insights-tags: component=example-website
-    aws.amazon.com/aws-ecr-repository-arn: 1234567890.dkr.ecr.us-east-1.amazonaws.com/example-website
+    aws.amazon.com/amazon-ecr-tags: component=example-website
 spec:
   type: website
   lifecycle: experimental
