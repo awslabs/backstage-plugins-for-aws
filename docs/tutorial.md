@@ -36,7 +36,7 @@ To get started, we'll deploy a sample AWS CDK project included in the repository
 
 Instructions
 
-1. Navigate to the CDK Project Directory
+1. Navigate to the CDK directory
 
    Begin by navigating to the directory containing the CDK project:
 
@@ -65,6 +65,14 @@ Instructions
    Ensure your AWS credentials are configured properly before running the command.
 
    Deployment may take a few minutes. Once completed, your AWS resources will be ready for use.
+
+4. Navigate back to project root directory
+
+   Finally return to the project root directory for the rest of the tutorial:
+
+   ```
+   cd ../..
+   ```
 
 ## Run the Backstage app locally
 
@@ -133,7 +141,7 @@ Navigate back to the CDK directory and destroy the deployed stack:
 
 ```
 cd examples/cdk
-cdk destroy
+yarn cdk destroy
 ```
 
 Confirm the prompt to delete all resources.
