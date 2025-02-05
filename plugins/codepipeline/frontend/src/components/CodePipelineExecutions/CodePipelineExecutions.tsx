@@ -36,7 +36,7 @@ import { parse } from '@aws-sdk/util-arn-parser';
 const renderTrigger = (
   row: Partial<PipelineExecutionSummary>,
 ): React.ReactNode => {
-  if (row.sourceRevisions === undefined) {
+  if (!row.sourceRevisions) {
     return (
       <Typography variant="body2" noWrap>
         -
@@ -50,21 +50,12 @@ const renderTrigger = (
     const sourceRevision = row.sourceRevisions[0];
 
     if (sourceRevision.revisionSummary) {
-      switch (sourceRevision.actionName) {
-        case 'SourceAction':
-          commitMessage = sourceRevision.revisionSummary || '';
-          break;
-        case 'Source':
-          commitMessage = sourceRevision.revisionSummary || '';
-          break;
-        case 'Checkout': {
-          const summary = JSON.parse(sourceRevision.revisionSummary || '{}');
+      try {
+        const summary = JSON.parse(sourceRevision.revisionSummary || '{}');
 
-          commitMessage = summary.CommitMessage;
-          break;
-        }
-        default:
-          break;
+        commitMessage = summary.CommitMessage;
+      } catch (e: any) {
+        commitMessage = sourceRevision.revisionSummary;
       }
     }
 

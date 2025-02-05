@@ -226,10 +226,16 @@ describe('AwsConfigInfrastructureProvider', () => {
               expression:
                 "$join([$resource.resourceName, $resource.accountId], '-')",
             },
+            annotations: {
+              'aws.amazon.com/account-id': {
+                expression: '$resource.accountId',
+              },
+            },
             spec: {
               owner: { tag: 'owner' },
               system: { value: 'some-system' },
               component: { tag: 'component' },
+              type: { value: 'ecs-service-custom' },
             },
           },
         },
@@ -241,11 +247,14 @@ describe('AwsConfigInfrastructureProvider', () => {
           region: 'us-west-2',
           resourceType: 'AWS::ECS::Service',
           providerId: 'default',
-          type: 'ecs-service',
+          type: 'ecs-service-custom',
           owner: 'team1',
           component: 'app1',
           system: 'some-system',
           metadataName: 'test1-111',
+          annotations: {
+            'aws.amazon.com/account-id': '111',
+          },
         }),
         createResource({
           name: 'test2',
@@ -253,9 +262,12 @@ describe('AwsConfigInfrastructureProvider', () => {
           region: 'us-west-2',
           resourceType: 'AWS::ECS::Service',
           providerId: 'default',
-          type: 'ecs-service',
+          type: 'ecs-service-custom',
           system: 'some-system',
           metadataName: 'test2-222',
+          annotations: {
+            'aws.amazon.com/account-id': '222',
+          },
         }),
       ],
       "SELECT resourceId, resourceName, resourceType, awsRegion, accountId, arn, tags, configuration WHERE resourceType IN ('AWS::ECS::Cluster')",
@@ -274,6 +286,7 @@ function createResource({
   component,
   system,
   metadataName,
+  annotations = {},
 }: {
   name: string;
   accountId: string;
@@ -285,6 +298,7 @@ function createResource({
   component?: string;
   system?: string;
   metadataName?: string;
+  annotations?: any;
 }) {
   const arn = `arn:aws:xxx:${region}:${accountId}:/${name}`;
   const location = `aws-config-provider:${providerId}`;
@@ -302,6 +316,7 @@ function createResource({
           'aws.amazon.com/resource-type': resourceType,
           'backstage.io/managed-by-location': location,
           'backstage.io/managed-by-origin-location': location,
+          ...annotations,
         },
         name: metadataName ?? name,
         description: `AWS Config Resource ${resourceType} ${name}`,

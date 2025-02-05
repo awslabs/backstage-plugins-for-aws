@@ -23,6 +23,7 @@ import {
   TransformDefinition,
 } from './types';
 import { IncrementalEntityProviderOptions } from '@backstage/plugin-catalog-backend-module-incremental-ingestion';
+import { JsonObject, JsonValue } from '@backstage/types/index';
 
 export function readAwsInfrastructureConfigs(
   config: Config,
@@ -165,7 +166,10 @@ function readFieldsTransformDefinitionFromConfig(
 
   const spec = readFieldsSpecTransformDefinitionFromConfig(fieldsConfig);
 
-  const name = readFieldTransformDefinitionFromConfig(fieldsConfig, 'name');
+  const name = readFieldTransformDefinitionFromConfig(
+    config.get('fields'),
+    'name',
+  );
 
   const annotations = new Map<string, FieldTransformDefinition>();
 
@@ -175,7 +179,10 @@ function readFieldsTransformDefinitionFromConfig(
     annotationsConfig.keys().forEach(key => {
       annotations.set(
         key,
-        readFieldTransformDefinitionFromConfig(annotationsConfig, key)!,
+        readFieldTransformDefinitionFromConfig(
+          fieldsConfig.get('annotations'),
+          key,
+        )!,
       );
     });
   }
@@ -194,29 +201,43 @@ function readFieldsSpecTransformDefinitionFromConfig(
     return undefined;
   }
 
-  const specConfig = config.getConfig('spec');
+  // Quick check that field is valid
+  config.getConfig('spec');
+  const specObject = config.get('spec');
 
   return {
-    owner: readFieldTransformDefinitionFromConfig(specConfig, 'owner'),
-    component: readFieldTransformDefinitionFromConfig(specConfig, 'component'),
-    system: readFieldTransformDefinitionFromConfig(specConfig, 'system'),
-    type: readFieldTransformDefinitionFromConfig(specConfig, 'type'),
+    owner: readFieldTransformDefinitionFromConfig(specObject, 'owner'),
+    component: readFieldTransformDefinitionFromConfig(specObject, 'component'),
+    system: readFieldTransformDefinitionFromConfig(specObject, 'system'),
+    type: readFieldTransformDefinitionFromConfig(specObject, 'type'),
   };
 }
 
 function readFieldTransformDefinitionFromConfig(
-  config: Config,
+  configValue: JsonValue,
   name: string,
 ): FieldTransformDefinition | undefined {
-  if (config.has(name)) {
-    const fieldConfig = config.getConfig(name);
-
-    return {
-      tag: fieldConfig.getOptionalString('tag'),
-      value: fieldConfig.getOptionalString('value'),
-      expression: fieldConfig.getOptionalString('expression'),
-    };
+  if (!isObject(configValue)) {
+    throw new Error(`Field must be an object`);
   }
 
-  return undefined;
+  if (!(name in configValue)) {
+    return undefined;
+  }
+
+  const fieldObject = configValue[name] as JsonObject;
+
+  if (!isObject(fieldObject)) {
+    throw new Error(`Field ${name} must be an object`);
+  }
+
+  return {
+    tag: fieldObject.tag as string,
+    value: fieldObject.value as string,
+    expression: fieldObject.expression as string,
+  };
+}
+
+function isObject(value: JsonValue | undefined): value is JsonObject {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
 }

@@ -9,6 +9,8 @@ Features:
 
 _Note:_ It is possible to easily configure this entity provider in a way that ingests a large amount of entities in to the Backstage catalog. Please review the [Considerations](#considerations) section below.
 
+_Note:_ If you are not already using AWS Config it is important to note that you will incur costs by enabling it. Please review its pricing information before enabling in your AWS organization.
+
 ## Installing
 
 This guide assumes that you are familiar with the general [Getting Started](../../docs/getting-started.md) documentation and have assumes you have an existing Backstage application.
@@ -135,3 +137,47 @@ transform:
 ```
 
 The expression must return a `string`.
+
+## Use cases
+
+This section contains some examples of specific use-cases beyond simple resource ingestion.
+
+### EKS catalog cluster locator
+
+The Backstage [catalog Kubernetes cluster locator](https://backstage.io/docs/features/kubernetes/configuration#catalog) sources information on Kubernetes clusters from the Backstage catalog to power the Kubernetes plugin. This is a more flexible mechanism than configuring clusters in the Backstage configuration.
+
+This entity provider can be used to generate `Resource` entities that are compatible with this plugin by using field transforms:
+
+```yaml
+providers:
+  awsConfig:
+    eksClusters:
+      filters:
+        tags: [...]
+        resourceTypes:
+          - AWS::EKS::Cluster
+      transform:
+        fields:
+          annotations:
+            'amazonaws.com/account-id':
+              expression: $resource.accountId
+            'amazonaws.com/arn':
+              expression: $resource.arn
+            'kubernetes.io/api-server':
+              expression: $resource.configuration.Endpoint
+            'kubernetes.io/api-server-certificate-authority':
+              expression: $resource.configuration.CertificateAuthorityData
+            'kubernetes.io/x-k8s-aws-id':
+              expression: $resource.resourceName
+            'kubernetes.io/auth-provider':
+              value: aws
+          spec:
+            owner:
+              tag: owner
+            component:
+              tag: component
+            type:
+              value: kubernetes-cluster
+```
+
+Filter the clusters appropriately using tags.

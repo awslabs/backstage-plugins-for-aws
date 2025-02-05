@@ -19,8 +19,6 @@ Install the backend package in your Backstage app:
 yarn workspace backend add @aws/aws-core-plugin-for-backstage-scaffolder-actions
 ```
 
-### New backend
-
 Add the scaffolder module to the `packages/backend/src/index.ts`:
 
 ```typescript
@@ -29,54 +27,6 @@ const backend = createBackend();
 backend.add(import('@aws/aws-core-plugin-for-backstage-scaffolder-actions'));
 // ...
 backend.start();
-```
-
-### Old backend
-
-Update the file `packages/backend/src/plugins/scaffolder.ts` to add the scaffolder actions needed, for example:
-
-```typescript
-import { CatalogClient } from '@backstage/catalog-client';
-import { createRouter } from '@backstage/plugin-scaffolder-backend';
-import { Router } from 'express';
-import type { PluginEnvironment } from '../types';
-import { createBuiltinActions } from '@backstage/plugin-scaffolder-backend';
-import { ScmIntegrations } from '@backstage/integration';
-import { createAwsCloudControlCreateAction } from '@aws/aws-core-plugin-for-backstage-scaffolder-actions';
-
-export default async function createPlugin(
-  env: PluginEnvironment,
-): Promise<Router> {
-  const catalogClient = new CatalogClient({
-    discoveryApi: env.discovery,
-  });
-
-  const integrations = ScmIntegrations.fromConfig(env.config);
-
-  const builtInActions = createBuiltinActions({
-    integrations,
-    catalogClient,
-    config: env.config,
-    reader: env.reader,
-  });
-
-  const actions = [
-    ...builtInActions,
-    // Add the new scaffolder action along side other custom actions
-    createAwsCloudControlCreateAction(),
-  ];
-
-  return await createRouter({
-    actions,
-    logger: env.logger,
-    config: env.config,
-    database: env.database,
-    reader: env.reader,
-    catalogClient,
-    identity: env.identity,
-    permissions: env.permissions,
-  });
-}
 ```
 
 ## Actions

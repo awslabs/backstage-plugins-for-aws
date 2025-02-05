@@ -21,4 +21,7 @@ backend.add(import('@aws/amazon-ecr-plugin-for-backstage-backend'));
 
 backend.add(import('@aws/cost-insights-plugin-for-backstage-backend'));
 
+backend.add(import('@aws/genai-plugin-for-backstage-backend'));
+backend.add(import('@aws/genai-plugin-langgraph-agent-for-backstage'));
+
 backend.start();
