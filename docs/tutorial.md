@@ -20,7 +20,6 @@ Before getting started, ensure you have:
 
 - An AWS account
 - Node.js (version 20 or later)
-- CDK CLI installed
 
 ## Clone this repository
 
@@ -58,10 +57,10 @@ Instructions
    Deploy the sample AWS resources defined in the CDK stack:
 
    ```
-   cdk deploy
+   yarn cdk deploy
    ```
 
-   This will provision the AWS resources needed for your project, such as ECS clusters and services.
+   This will provision sample AWS resources for your project that will show in the Backstage catalog, such as ECS clusters and services.
 
    Ensure your AWS credentials are configured properly before running the command.
 
@@ -112,13 +111,19 @@ These annotations link the entity to ECS services created by the CDK project, en
 
 ## Explore the Plugins
 
-CI/CD Tab: See build and deployment information.
+The Backstage application in this repository comes with several plugins pre-installed and configured. Lets take a look at some of these plugins and their features.
+
+In the `CI/CD` tab you can see that we've integrated Backstage with AWS CodePipeline. 
 
 ![Codepipeline tab](./images/codepipeline-tab.png)
 
-ECS Tab: View the status of ECS services associated with the entity.
+This tab shows the recent pipeline executions of the CodePipeline associated with our application, allowing you to easily get a summary of recent activity.
+
+Since this sample application is running on Amazon ECS, you can open the `Amazon ECS` tab to see information about the ECS clusters and services related to this workload.
 
 ![ECS tab](./images/ecs-tab.png)
+
+This view provides you with an aggregate view of the ECS services for this application and the clusters in which they're running, even when these are spread across multiple AWS regions or accounts. You can see the status of the running tasks, and information such as the container image being used, the amount of CPU and memory requested and other details.
 
 ## Cleanup
 
