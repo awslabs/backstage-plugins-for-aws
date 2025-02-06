@@ -1,6 +1,6 @@
 {
   "name": "@aws/amazon-ecr-plugin-for-backstage-backend",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "repository": {
     "type": "git",
     "url": "github:awslabs/backstage-plugins-for-aws",
