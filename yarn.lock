@@ -798,6 +798,56 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@aws-sdk/client-ecr@npm:^3.568.0":
+  version: 3.699.0
+  resolution: "@aws-sdk/client-ecr@npm:3.699.0"
+  dependencies:
+    "@aws-crypto/sha256-browser": "npm:5.2.0"
+    "@aws-crypto/sha256-js": "npm:5.2.0"
+    "@aws-sdk/client-sso-oidc": "npm:3.699.0"
+    "@aws-sdk/client-sts": "npm:3.699.0"
+    "@aws-sdk/core": "npm:3.696.0"
+    "@aws-sdk/credential-provider-node": "npm:3.699.0"
+    "@aws-sdk/middleware-host-header": "npm:3.696.0"
+    "@aws-sdk/middleware-logger": "npm:3.696.0"
+    "@aws-sdk/middleware-recursion-detection": "npm:3.696.0"
+    "@aws-sdk/middleware-user-agent": "npm:3.696.0"
+    "@aws-sdk/region-config-resolver": "npm:3.696.0"
+    "@aws-sdk/types": "npm:3.696.0"
+    "@aws-sdk/util-endpoints": "npm:3.696.0"
+    "@aws-sdk/util-user-agent-browser": "npm:3.696.0"
+    "@aws-sdk/util-user-agent-node": "npm:3.696.0"
+    "@smithy/config-resolver": "npm:^3.0.12"
+    "@smithy/core": "npm:^2.5.3"
+    "@smithy/fetch-http-handler": "npm:^4.1.1"
+    "@smithy/hash-node": "npm:^3.0.10"
+    "@smithy/invalid-dependency": "npm:^3.0.10"
+    "@smithy/middleware-content-length": "npm:^3.0.12"
+    "@smithy/middleware-endpoint": "npm:^3.2.3"
+    "@smithy/middleware-retry": "npm:^3.0.27"
+    "@smithy/middleware-serde": "npm:^3.0.10"
+    "@smithy/middleware-stack": "npm:^3.0.10"
+    "@smithy/node-config-provider": "npm:^3.1.11"
+    "@smithy/node-http-handler": "npm:^3.3.1"
+    "@smithy/protocol-http": "npm:^4.1.7"
+    "@smithy/smithy-client": "npm:^3.4.4"
+    "@smithy/types": "npm:^3.7.1"
+    "@smithy/url-parser": "npm:^3.0.10"
+    "@smithy/util-base64": "npm:^3.0.0"
+    "@smithy/util-body-length-browser": "npm:^3.0.0"
+    "@smithy/util-body-length-node": "npm:^3.0.0"
+    "@smithy/util-defaults-mode-browser": "npm:^3.0.27"
+    "@smithy/util-defaults-mode-node": "npm:^3.0.27"
+    "@smithy/util-endpoints": "npm:^2.1.6"
+    "@smithy/util-middleware": "npm:^3.0.10"
+    "@smithy/util-retry": "npm:^3.0.10"
+    "@smithy/util-utf8": "npm:^3.0.0"
+    "@smithy/util-waiter": "npm:^3.1.9"
+    tslib: "npm:^2.6.2"
+  checksum: 10c0/2baa287019d591231528c870a144ab76b53efe408285e03509c80a3910692a3a360922de65a8988dbcac57e55fbd4462bf127eab4e0d8cfda917c42702dfa8a8
+  languageName: node
+  linkType: hard
+
 "@aws-sdk/client-ecs@npm:^3.511.0":
   version: 3.703.0
   resolution: "@aws-sdk/client-ecs@npm:3.703.0"
@@ -2145,6 +2195,99 @@ __metadata:
   checksum: 10c0/7a628df60d55bbee0dafd1920b37e071c9c663ef8b3ef8e601a528185f0503d6b4da50350f636b1f09851f60314e12b28d16fa1239f40a6fb4866e9f6f829778
   languageName: node
   linkType: hard
+
+"@aws/amazon-ecr-plugin-for-backstage-backend@workspace:^, @aws/amazon-ecr-plugin-for-backstage-backend@workspace:plugins/ecr/backend":
+  version: 0.0.0-use.local
+  resolution: "@aws/amazon-ecr-plugin-for-backstage-backend@workspace:plugins/ecr/backend"
+  dependencies:
+    "@aws-sdk/client-ecr": "npm:^3.568.0"
+    "@aws-sdk/middleware-sdk-sts": "npm:^3.523.0"
+    "@aws-sdk/types": "npm:^3.609.0"
+    "@aws-sdk/util-arn-parser": "npm:^3.495.0"
+    "@aws/amazon-ecr-plugin-for-backstage-common": "workspace:^"
+    "@aws/aws-core-plugin-for-backstage-common": "workspace:^"
+    "@aws/aws-core-plugin-for-backstage-node": "workspace:^"
+    "@backstage/backend-common": "npm:^0.25.0"
+    "@backstage/backend-defaults": "npm:^0.5.3"
+    "@backstage/backend-plugin-api": "npm:^1.0.2"
+    "@backstage/backend-test-utils": "npm:^1.1.0"
+    "@backstage/catalog-client": "npm:^1.8.0"
+    "@backstage/catalog-model": "npm:^1.7.1"
+    "@backstage/cli": "npm:^0.29.2"
+    "@backstage/config": "npm:^1.3.0"
+    "@backstage/errors": "npm:^1.2.5"
+    "@backstage/integration-aws-node": "npm:^0.1.13"
+    "@backstage/plugin-auth-backend": "npm:^0.24.0"
+    "@backstage/plugin-auth-backend-module-guest-provider": "npm:^0.2.2"
+    "@backstage/plugin-catalog-node": "npm:^1.14.0"
+    "@types/express": "npm:*"
+    "@types/luxon": "npm:^3"
+    "@types/regression": "npm:^2"
+    "@types/supertest": "npm:^2.0.12"
+    aws-sdk-client-mock: "npm:^4.0.0"
+    express: "npm:^4.17.1"
+    express-promise-router: "npm:^4.1.0"
+    luxon: "npm:^3.4.4"
+    msw: "npm:^1.0.0"
+    node-fetch: "npm:^2.6.7"
+    regression: "npm:^2.0.1"
+    supertest: "npm:^6.2.4"
+    winston: "npm:^3.2.1"
+    yn: "npm:^4.0.0"
+  languageName: unknown
+  linkType: soft
+
+"@aws/amazon-ecr-plugin-for-backstage-common@workspace:^, @aws/amazon-ecr-plugin-for-backstage-common@workspace:plugins/ecr/common":
+  version: 0.0.0-use.local
+  resolution: "@aws/amazon-ecr-plugin-for-backstage-common@workspace:plugins/ecr/common"
+  dependencies:
+    "@aws-sdk/client-ecr": "npm:^3.568.0"
+    "@backstage/catalog-model": "npm:^1.7.1"
+    "@backstage/cli": "npm:^0.29.2"
+  languageName: unknown
+  linkType: soft
+
+"@aws/amazon-ecr-plugin-for-backstage@workspace:^, @aws/amazon-ecr-plugin-for-backstage@workspace:plugins/ecr/frontend":
+  version: 0.0.0-use.local
+  resolution: "@aws/amazon-ecr-plugin-for-backstage@workspace:plugins/ecr/frontend"
+  dependencies:
+    "@aws-sdk/client-ecr": "npm:^3.568.0"
+    "@aws-sdk/util-arn-parser": "npm:^3.495.0"
+    "@aws/amazon-ecr-plugin-for-backstage-backend": "workspace:^"
+    "@aws/amazon-ecr-plugin-for-backstage-common": "workspace:^"
+    "@aws/aws-core-plugin-for-backstage-common": "workspace:^"
+    "@aws/aws-core-plugin-for-backstage-react": "workspace:^"
+    "@backstage/catalog-model": "npm:^1.7.1"
+    "@backstage/cli": "npm:^0.29.2"
+    "@backstage/core-app-api": "npm:^1.15.2"
+    "@backstage/core-components": "npm:^0.16.1"
+    "@backstage/core-plugin-api": "npm:^1.10.1"
+    "@backstage/dev-utils": "npm:^1.1.4"
+    "@backstage/errors": "npm:^1.2.5"
+    "@backstage/plugin-catalog-react": "npm:^1.14.2"
+    "@backstage/test-utils": "npm:^1.7.2"
+    "@backstage/theme": "npm:^0.6.2"
+    "@material-ui/core": "npm:^4.12.2"
+    "@material-ui/icons": "npm:^4.9.1"
+    "@material-ui/lab": "npm:4.0.0-alpha.61"
+    "@testing-library/dom": "npm:^9.0.0"
+    "@testing-library/jest-dom": "npm:^6.0.0"
+    "@testing-library/react": "npm:^14.0.0"
+    "@testing-library/user-event": "npm:^14.0.0"
+    "@types/dateformat": "npm:^5"
+    "@types/humanize-duration": "npm:^3"
+    dateformat: "npm:^5.0.3"
+    humanize-duration: "npm:^3.31.0"
+    msw: "npm:^1.0.0"
+    pretty-bytes: "npm:^6.1.1"
+    react-use: "npm:^17.2.4"
+    recharts: "npm:^2.12.7"
+  peerDependencies:
+    react: ^16.13.1 || ^17.0.0 || ^18.0.0
+    react-dom: ^16.13.1 || ^17.0.0 || ^18.0.0
+    react-router-dom: 6.0.0-beta.0 || ^6.3.0
+  languageName: unknown
+  linkType: soft
 
 "@aws/amazon-ecs-plugin-for-backstage-backend@workspace:^, @aws/amazon-ecs-plugin-for-backstage-backend@workspace:plugins/ecs/backend":
   version: 0.0.0-use.local
@@ -19029,6 +19172,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "app@workspace:packages/app"
   dependencies:
+    "@aws/amazon-ecr-plugin-for-backstage": "workspace:^"
     "@aws/amazon-ecs-plugin-for-backstage": "workspace:^"
     "@aws/aws-codebuild-plugin-for-backstage": "workspace:^"
     "@aws/aws-codepipeline-plugin-for-backstage": "workspace:^"
@@ -19902,6 +20046,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "backend@workspace:packages/backend"
   dependencies:
+    "@aws/amazon-ecr-plugin-for-backstage-backend": "workspace:^"
     "@aws/amazon-ecs-plugin-for-backstage-backend": "workspace:^"
     "@aws/aws-codebuild-plugin-for-backstage-backend": "workspace:^"
     "@aws/aws-codepipeline-plugin-for-backstage-backend": "workspace:^"
@@ -34721,6 +34866,13 @@ __metadata:
   bin:
     prettier: bin-prettier.js
   checksum: 10c0/463ea8f9a0946cd5b828d8cf27bd8b567345cf02f56562d5ecde198b91f47a76b7ac9eae0facd247ace70e927143af6135e8cf411986b8cb8478784a4d6d724a
+  languageName: node
+  linkType: hard
+
+"pretty-bytes@npm:^6.1.1":
+  version: 6.1.1
+  resolution: "pretty-bytes@npm:6.1.1"
+  checksum: 10c0/c7a660b933355f3b4587ad3f001c266a8dd6afd17db9f89ebc50812354bb142df4b9600396ba5999bdb1f9717300387dc311df91895c5f0f2a1780e22495b5f8
   languageName: node
   linkType: hard
 

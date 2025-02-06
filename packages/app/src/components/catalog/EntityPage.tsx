@@ -57,6 +57,10 @@ import {
 } from '@aws/aws-codepipeline-plugin-for-backstage';
 import { EntityAwsCodeBuildCard } from '@aws/aws-codebuild-plugin-for-backstage';
 import { EntityAmazonEcsServicesContent } from '@aws/amazon-ecs-plugin-for-backstage';
+import {
+  isAmazonEcrAvailable,
+  EntityAmazonEcrImagesContent,
+} from '@aws/amazon-ecr-plugin-for-backstage';
 
 import { TechDocsAddons } from '@backstage/plugin-techdocs-react';
 import { ReportIssue } from '@backstage/plugin-techdocs-module-addons-contrib';
@@ -214,6 +218,14 @@ const websiteEntityPage = (
 
     <EntityLayout.Route path="/costs" title="Cost Insights">
       <EntityCostInsightsContent />
+    </EntityLayout.Route>
+
+    <EntityLayout.Route
+      path="/ecr"
+      title="Amazon ECR"
+      if={isAmazonEcrAvailable}
+    >
+      <EntityAmazonEcrImagesContent />
     </EntityLayout.Route>
 
     <EntityLayout.Route path="/dependencies" title="Dependencies">

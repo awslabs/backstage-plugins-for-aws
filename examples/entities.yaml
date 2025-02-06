@@ -12,11 +12,13 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: example-website
+  namespace: default
   annotations:
     aws.amazon.com/aws-codepipeline-tags: component=example-website
     aws.amazon.com/aws-codebuild-project-tags: component=example-website
     aws.amazon.com/amazon-ecs-service-tags: component=example-website
     aws.amazon.com/cost-insights-tags: component=example-website
+    aws.amazon.com/amazon-ecr-tags: component=example-website
 spec:
   type: website
   lifecycle: experimental
