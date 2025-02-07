@@ -247,7 +247,7 @@ export class CostExplorerCostInsightsAwsService
 
     const aggregation = response.ResultsByTime!.map(result => {
       return {
-        date: result.TimePeriod!.Start!.replaceAll('-', '/'),
+        date: result.TimePeriod!.Start!,
         amount: parseFloat(result.Total!.UnblendedCost.Amount!),
       };
     });
@@ -283,7 +283,7 @@ export class CostExplorerCostInsightsAwsService
 
     for (let i = 0; i < response.ResultsByTime!.length; i++) {
       const result = response.ResultsByTime![i];
-      const resultDate = result.TimePeriod!.Start!.replaceAll('-', '/');
+      const resultDate = result.TimePeriod!.Start!;
 
       for (let j = 0; j < result.Groups!.length; j++) {
         const groupResult = result.Groups![j];
