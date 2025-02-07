@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.1](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/cost-insights-plugin-for-backstage-backend@0.3.0...@aws/cost-insights-plugin-for-backstage-backend@0.3.1) (2025-02-07)
+
+
+### Bug Fixes
+
+* Use correct date format for costs ([#329](https://github.com/awslabs/backstage-plugins-for-aws/issues/329)) ([8857663](https://github.com/awslabs/backstage-plugins-for-aws/commit/8857663f418075886f9356aed652d4f987c1b79c))
+
+
+
+
+
 # [0.3.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/cost-insights-plugin-for-backstage-backend@0.2.0...@aws/cost-insights-plugin-for-backstage-backend@0.3.0) (2024-11-29)
 
 
