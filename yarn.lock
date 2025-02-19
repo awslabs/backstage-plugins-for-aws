@@ -17031,9 +17031,9 @@ __metadata:
   linkType: hard
 
 "@types/dateformat@npm:^5":
-  version: 5.0.2
-  resolution: "@types/dateformat@npm:5.0.2"
-  checksum: 10c0/3808f5c7f0e26eec59bb23f6a1eb165a238fa7bb8fff448f69c980cc4e6e5f1a3f6542550f2f736bbeaec6f5747727f148203d610b83c8f86d6cc50a1cc1a0fb
+  version: 5.0.3
+  resolution: "@types/dateformat@npm:5.0.3"
+  checksum: 10c0/828452c096b0b6901a64ce1f3a47fb96755f2451a2605b59fb271407526c62020d171aab6946f9268ca5a4d63db7952c32595bf30b49ed54b218414ec6a02261
   languageName: node
   linkType: hard
 
