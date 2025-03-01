@@ -150,33 +150,27 @@ export class CostExplorerCostInsightsAwsService
 
     let filter: Expression;
 
-    if (annotation.name === COST_INSIGHTS_AWS_TAGS_ANNOTATION) {
-      const tagFilters = annotation.value.split(',').map(e => {
-        const parts = e.split('=');
+		const filterType = annotation.name === COST_INSIGHTS_AWS_TAGS_ANNOTATION ? 'Tags' : 'CostCategories'
 
-        return {
-          Tags: {
-            Key: parts[0],
-            Values: [parts[1]],
-          },
-        };
-      });
+    const filters = annotation.value.split(',').map(e => {
+      const parts = e.split('=');
 
-      if (tagFilters.length > 1) {
-        filter = {
-          And: tagFilters,
-        };
-      } else {
-        filter = tagFilters[0];
-      }
-    } else {
-      filter = {
-        CostCategories: {
-          Key: 'TAG',
-          Values: annotation.value.split(','),
+      return {
+        [filterType]: {
+          Key: parts[0],
+          Values: [parts[1]],
         },
       };
+    });
+
+    if (filters.length > 1) {
+      filter = {
+        And: filters,
+      };
+    } else {
+      filter = filters[0];
     }
+    
 
     const { startDate, endDate } = this.parseInterval(options.intervals);
 
