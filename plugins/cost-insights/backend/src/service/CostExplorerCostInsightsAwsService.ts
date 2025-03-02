@@ -150,7 +150,10 @@ export class CostExplorerCostInsightsAwsService
 
     let filter: Expression;
 
-    const filterType = annotation.name === COST_INSIGHTS_AWS_TAGS_ANNOTATION ? 'Tags' : 'CostCategories'
+    const filterType =
+      annotation.name === COST_INSIGHTS_AWS_TAGS_ANNOTATION
+        ? 'Tags'
+        : 'CostCategories';
 
     const filters = annotation.value.split(',').map(e => {
       const parts = e.split('=');
@@ -170,7 +173,6 @@ export class CostExplorerCostInsightsAwsService
     } else {
       filter = filters[0];
     }
-    
 
     const { startDate, endDate } = this.parseInterval(options.intervals);
 
