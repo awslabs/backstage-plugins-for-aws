@@ -156,7 +156,7 @@ kind: Component
 metadata:
   # ...
   annotations:
-    aws.amazon.com/cost-insights-cost-categories: myapp-category
+    aws.amazon.com/cost-insights-cost-categories: myapp-category=myapp
 spec:
   type: service
   # ...
