@@ -188,7 +188,7 @@ export class DefaultAmazonEcrService implements AmazonEcrService {
       credentials,
     });
 
-    if (arns.indexOf(arn) > 0) {
+    if (arns.indexOf(arn) < 0) {
       throw new Error('Repository ARN not found for entity');
     }
 
