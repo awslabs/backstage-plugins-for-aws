@@ -173,7 +173,8 @@ aws:
   costInsights:
     costExplorer:
       accountId: '1111111111' # (Optional) Use the specified AWS account ID
-      region: 'us-west-2' # (Optional) Use the specified AWS region
+      region: us-west-2 # (Optional) Use the specified AWS region
+      costMetric: UnblendedCost # (Optional) The metric to use for costs (UnblendedCost, AmortizedCost etc.), defaults to UnblendedCost
     cache:
       enable: true # (Optional) Control is caching is enabled, defaults to true
       defaultTtl: 1000 # (Optional) How long responses are cached for in milliseconds, defaults to 1 day
