@@ -34,7 +34,17 @@ export type CostInsightsAwsConfigGroup = {
   type: string;
 };
 
+export enum CostInsightsAwsConfigCostExplorerMetricEnum {
+  AmortizedCost = 'AmortizedCost',
+  BlendedCost = 'BlendedCost',
+  NetAmortizedCost = 'NetAmortizedCost',
+  NetUnblendedCost = 'NetUnblendedCost',
+  NormalizedUsageAmount = 'NormalizedUsageAmount',
+  UnblendedCost = 'UnblendedCost',
+}
+
 export type CostInsightsAwsConfigCostExplorer = {
   accountId: string | undefined;
   region: string | undefined;
+  costMetric: CostInsightsAwsConfigCostExplorerMetricEnum | CostInsightsAwsConfigCostExplorerMetric.UnblendedCost;
 };

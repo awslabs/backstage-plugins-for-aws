@@ -85,7 +85,7 @@ export class CostExplorerCostInsightsAwsService
   ) {
     const { auth } = createLegacyAuthAdapters(options);
 
-    const { region, accountId } = config.costExplorer;
+    const { region, accountId, costMetric } = config.costExplorer;
 
     const { credentialsManager } = options;
 
@@ -179,6 +179,7 @@ export class CostExplorerCostInsightsAwsService
     const root = await this.getAggregations(
       entity.metadata.name,
       filter,
+      this.config.costExplorer.costMetric,
       startDate,
       endDate,
     );
@@ -193,6 +194,7 @@ export class CostExplorerCostInsightsAwsService
           promises.push(
             this.getGroupedAggregations(
               filter,
+              this.config.costExplorer.costMetric,
               [
                 {
                   Type: group.type as GroupDefinitionType,
@@ -226,6 +228,7 @@ export class CostExplorerCostInsightsAwsService
   private async getAggregations(
     id: string,
     filter: Expression | undefined,
+    costMetric: string,
     startDate: Date,
     endDate: Date,
   ): Promise<Cost> {
@@ -236,7 +239,7 @@ export class CostExplorerCostInsightsAwsService
           End: this.formatDate(startDate),
         },
         Granularity: Granularity.DAILY,
-        Metrics: ['UnblendedCost'],
+        Metrics: [ costMetric ],
         Filter: filter,
       }),
     );
@@ -244,7 +247,7 @@ export class CostExplorerCostInsightsAwsService
     const aggregation = response.ResultsByTime!.map(result => {
       return {
         date: result.TimePeriod!.Start!,
-        amount: parseFloat(result.Total!.UnblendedCost.Amount!),
+        amount: parseFloat(result.Total![costMetric].Amount!),
       };
     });
 
@@ -258,6 +261,7 @@ export class CostExplorerCostInsightsAwsService
 
   private async getGroupedAggregations(
     filter: Expression | undefined,
+    costMetric: string,
     groupBy: GroupDefinition[] | undefined,
     startDate: Date,
     endDate: Date,
@@ -269,7 +273,7 @@ export class CostExplorerCostInsightsAwsService
           End: this.formatDate(startDate),
         },
         Granularity: Granularity.DAILY,
-        Metrics: ['UnblendedCost'],
+        Metrics: [costMetric],
         Filter: filter,
         GroupBy: groupBy,
       }),
@@ -292,7 +296,7 @@ export class CostExplorerCostInsightsAwsService
 
         aggregations[key].push({
           date: resultDate,
-          amount: parseFloat(groupResult.Metrics!.UnblendedCost.Amount!),
+          amount: parseFloat(groupResult.Metrics![costMetric].Amount!),
         });
       }
     }
