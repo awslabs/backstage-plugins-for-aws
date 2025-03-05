@@ -39,8 +39,16 @@ function readCostInsightsAwsConfigCostExplorer(
 
   const metric = root?.getOptionalString('costMetric') || 'UnblendedCost';
 
-  if (!Object.values(CostInsightsAwsConfigCostExplorerMetricEnum).includes(metric as CostInsightsAwsConfigCostExplorerMetricEnum)) {
-    throw new Error(`Invalid config value for  aws.costExplorer.costMetric. Accepted values are: ${Object.values(CostInsightsAwsConfigCostExplorerMetricEnum).join(', ')}`);
+  if (
+    !Object.values(CostInsightsAwsConfigCostExplorerMetricEnum).includes(
+      metric as CostInsightsAwsConfigCostExplorerMetricEnum,
+    )
+  ) {
+    throw new Error(
+      `Invalid config value for  aws.costExplorer.costMetric. Accepted values are: ${Object.values(
+        CostInsightsAwsConfigCostExplorerMetricEnum,
+      ).join(', ')}`,
+    );
   }
 
   return {

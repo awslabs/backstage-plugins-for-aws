@@ -46,5 +46,7 @@ export enum CostInsightsAwsConfigCostExplorerMetricEnum {
 export type CostInsightsAwsConfigCostExplorer = {
   accountId: string | undefined;
   region: string | undefined;
-  costMetric: CostInsightsAwsConfigCostExplorerMetricEnum | CostInsightsAwsConfigCostExplorerMetric.UnblendedCost;
+  costMetric:
+    | CostInsightsAwsConfigCostExplorerMetricEnum
+    | CostInsightsAwsConfigCostExplorerMetric.UnblendedCost;
 };

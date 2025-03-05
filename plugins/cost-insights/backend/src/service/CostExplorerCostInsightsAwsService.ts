@@ -239,7 +239,7 @@ export class CostExplorerCostInsightsAwsService
           End: this.formatDate(startDate),
         },
         Granularity: Granularity.DAILY,
-        Metrics: [ costMetric ],
+        Metrics: [costMetric],
         Filter: filter,
       }),
     );
