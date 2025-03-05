@@ -175,11 +175,12 @@ export class CostExplorerCostInsightsAwsService
     }
 
     const { startDate, endDate } = this.parseInterval(options.intervals);
+    const costMetric = this.config.costExplorer.costMetric;
 
     const root = await this.getAggregations(
       entity.metadata.name,
       filter,
-      this.config.costExplorer.costMetric,
+      costMetric,
       startDate,
       endDate,
     );
@@ -194,7 +195,7 @@ export class CostExplorerCostInsightsAwsService
           promises.push(
             this.getGroupedAggregations(
               filter,
-              this.config.costExplorer.costMetric,
+              costMetric,
               [
                 {
                   Type: group.type as GroupDefinitionType,
