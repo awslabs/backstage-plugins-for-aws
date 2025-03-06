@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.1](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/amazon-ecr-plugin-for-backstage-backend@0.1.0...@aws/amazon-ecr-plugin-for-backstage-backend@0.1.1) (2025-03-06)
+
+
+### Bug Fixes
+
+* **ecr:** prevent scan findings query from failing with multiple arns ([#337](https://github.com/awslabs/backstage-plugins-for-aws/issues/337)) ([b3688f9](https://github.com/awslabs/backstage-plugins-for-aws/commit/b3688f96be2c8068e4822458f61908d67b9bf340))
+
+
+
+
+
 # 0.1.0 (2025-02-06)
 
 
