@@ -15,7 +15,7 @@ import { EmptyState, MarkdownContent } from '@backstage/core-components';
 import React, { useEffect, useRef } from 'react';
 
 import { ChatMessage, ToolRecord } from '../types';
-import { Avatar } from '@material-ui/core';
+import { Avatar, Link, Typography } from '@material-ui/core';
 import Person from '@material-ui/icons/Person';
 import School from '@material-ui/icons/School';
 import Info from '@material-ui/icons/Info';
@@ -119,6 +119,34 @@ const useStyles = makeStyles({
       backgroundColor: '#5b2e2e',
     },
   },
+
+  documentReferences: {
+    marginTop: '15px',
+    padding: '10px',
+    backgroundColor: '#f0f0f0',
+    borderRadius: '4px',
+  },
+
+  referenceItem: {
+    display: 'flex',
+    alignItems: 'center',
+    marginBottom: '8px',
+  },
+
+  referenceIcon: {
+    marginRight: '8px',
+    fontSize: '16px',
+  },
+
+  referenceLink: {
+    fontWeight: 'bold',
+  },
+
+  referenceDescription: {
+    fontSize: '0.85rem',
+    color: '#666',
+    marginLeft: '8px',
+  },
 });
 
 export interface ChatHistoryComponentProps {
@@ -150,6 +178,43 @@ function getMessageIcon(message: ChatMessage) {
   }
 
   return <School />;
+}
+
+function DocumentReferences({ tools }: { tools: ToolRecord[] }) {
+  const classes = useStyles();
+
+  if (!tools || tools.length === 0) return null;
+
+  // Filter only link type tools that likely represent documents
+  const documentLinks = tools.filter(tool => tool.type === 'link');
+
+  if (documentLinks.length === 0) return null;
+
+  return (
+    <div className={classes.documentReferences}>
+      <Typography variant="subtitle2" gutterBottom>
+        References:
+      </Typography>
+      {documentLinks.map((tool, idx) => (
+        <div key={idx} className={classes.referenceItem}>
+          <span className={classes.referenceIcon}>📄</span>
+          <Link
+            href={tool.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={classes.referenceLink}
+          >
+            {tool.name}
+          </Link>
+          {tool.description && (
+            <span className={classes.referenceDescription}>
+              ({tool.description})
+            </span>
+          )}
+        </div>
+      ))}
+    </div>
+  );
 }
 
 export const ChatHistoryComponent = ({
@@ -220,6 +285,9 @@ export const ChatHistoryComponent = ({
                     }
                     dialect="gfm"
                   />
+                  {message.tools.length > 0 && (
+                    <DocumentReferences tools={message.tools} />
+                  )}
                 </div>
               </div>
             ))}

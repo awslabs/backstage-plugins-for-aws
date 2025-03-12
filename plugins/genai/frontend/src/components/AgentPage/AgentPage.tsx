@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /**
  * Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License").
@@ -72,48 +73,72 @@ export const AgentPage = ({ title = 'Chat Assistant' }: { title?: string }) => {
       ]);
       setIsLoading(true);
 
-      for await (const chunk of agentApi.chatSync({
-        userMessage,
-        sessionId,
-        agentName,
-      })) {
-        match(chunk)
-          .with({ type: 'ChunkEvent' }, e => {
-            setMessages(oldMessages => {
-              const lastMessage = oldMessages[oldMessages.length - 1];
-              lastMessage.payload = lastMessage.payload.concat(e.token);
+      try {
+        const response = await fetch(
+          'http://localhost:7007/api/proxy/question_answer',
+          {
+            method: 'POST',
+            headers: {
+              accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              team_ref: agentName,
+              collection: 'techdocs_collection',
+              question: userMessage,
+              session_id: sessionId || 'd1b389f3-31a0-494f-b619-2e14768064f6',
+            }),
+          },
+        );
 
-              return [...oldMessages.slice(0, -1), lastMessage];
-            });
-          })
-          .with({ type: 'ResponseEvent' }, e => {
-            setSessionId(e.sessionId);
-          })
-          .with({ type: 'ToolEvent' }, e => {
-            setMessages(oldMessages => {
-              const lastMessage = oldMessages[oldMessages.length - 1];
-              lastMessage.tools.push(e);
+        if (!response.ok) {
+          throw new Error(`API request failed with status ${response.status}`);
+        }
 
-              return [...oldMessages.slice(0, -1), lastMessage];
-            });
-          })
-          .with({ type: 'ErrorEvent' }, e => {
-            setMessages(oldMessages => {
-              const lastMessage = oldMessages[oldMessages.length - 1];
-              lastMessage.payload = lastMessage.payload.concat(
-                `Error: ${e.message}`,
-              );
-              lastMessage.type = 'error';
+        const data = await response.json();
+        console.log('API response:', data);
 
-              return [...oldMessages.slice(0, -1), lastMessage];
-            });
-          })
-          .exhaustive();
+        // Atualiza a mensagem do agente com a resposta
+        setMessages(oldMessages => {
+          const lastMessage = oldMessages[oldMessages.length - 1];
+
+          // Usa o campo answer da resposta
+          lastMessage.payload = data.answer || 'No response received';
+
+          // Adiciona referências de documentos se existirem
+          if (data.documents && data.documents.length > 0) {
+            lastMessage.tools = data.documents.map((doc: any) => ({
+              name: doc.metadata?.document?.name || 'Reference',
+              url: doc.metadata?.document?.url || '',
+              type: 'link',
+              description: doc.metadata?.entity_owner || '',
+            }));
+          }
+
+          return [...oldMessages.slice(0, -1), lastMessage];
+        });
+
+        // Atualiza o sessionId se estiver na resposta
+        if (data.session_id) {
+          setSessionId(data.session_id);
+        }
+      } catch (error) {
+        // Tratamento de erro
+        setMessages(oldMessages => {
+          const lastMessage = oldMessages[oldMessages.length - 1];
+          console.error('Error processing request:', error);
+          lastMessage.payload = `Error: ${
+            error instanceof Error ? error.message : 'Unknown error occurred'
+          }`;
+          lastMessage.type = 'error';
+
+          return [...oldMessages.slice(0, -1), lastMessage];
+        });
+      } finally {
+        setIsLoading(false);
       }
-
-      setIsLoading(false);
     },
-    [agentApi, sessionId, agentName],
+    [agentName, sessionId],
   );
 
   const onClear = () => {
@@ -135,7 +160,7 @@ export const AgentPage = ({ title = 'Chat Assistant' }: { title?: string }) => {
             messages={messages}
             className={classes.grow}
             isStreaming={isLoading}
-            showInformation={showInformation}
+            showInformation
           />
           <InfoCard>
             <ChatInputComponent

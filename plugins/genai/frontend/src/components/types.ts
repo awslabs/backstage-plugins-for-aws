@@ -18,6 +18,9 @@ export interface ChatMessage {
 }
 
 export interface ToolRecord {
+  type: string;
+  url: string | undefined;
+  description: any;
   name: string;
   input: string;
 }

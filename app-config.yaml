@@ -24,13 +24,33 @@ backend:
   cors:
     origin: http://localhost:3000
     methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
-    credentials: true
+    credentials: false
   # This is for local development only, it is not recommended to use this in production
   # The production database configuration is stored in app-config.production.yaml
   database:
     client: better-sqlite3
     connection: ':memory:'
   # workingDirectory: /tmp # Use this to configure a working directory for the scaffolder, defaults to the OS temp-dir
+  auth:
+    dangerouslyDisableDefaultAuthPolicy: true
+
+genai:
+  agents:
+    general:
+      description: General chat assistant
+      prompt: >
+        You are an expert in platform engineering and answer questions in a succinct and easy to understand manner.
+        Answers should always be well-structured and use well-formed Markdown.
+        The current user is {username} and you can provide that information if asked.
+      langgraph:
+        messagesMaxTokens: 150000 # Set based on context of chosen model, prune message history based on number of tokens
+        # Use appropriate snippet for your model provider
+        openai:
+          apiKey: ""
+      tools:
+        - backstageCatalogSearch
+        - backstageEntity
+        - backstageTechDocsSearch
 
 integrations:
   github:
@@ -46,10 +66,12 @@ integrations:
 proxy:
 ### Example for how to add a proxy endpoint for the frontend.
 ### A typical reason to do this is to handle HTTPS and CORS for internal services.
-# endpoints:
-#   '/test':
-#     target: 'https://example.com'
-#     changeOrigin: true
+  endpoints:
+   '/question_answer':
+    target: 'https://backstage-ai-knowledge.api.prod/question_answer'
+    changeOrigin: true
+    credentials: dangerously-allow-unauthenticated
+    # Opcional - remover o prefixo question-answer na requisição final
 
 # Reference documentation http://backstage.io/docs/features/techdocs/configuration
 # Note: After experimenting with basic setup, use CI/CD to generate docs
@@ -81,6 +103,9 @@ catalog:
     # Local example data, file locations are relative to the backend process, typically `packages/backend`
     - type: file
       target: ../../examples/entities.yaml
+
+    - type: file
+      target: ../../examples/generated-components.yaml
 
     # Local example template
     - type: file

@@ -70,7 +70,7 @@ export const ChatInputComponent = ({
       <div className={classes.ChatInputContainer}>
         <TextField
           id="outlined-multiline-flexible"
-          label="Type a message"
+          label="TO TESTANDO - Type a message"
           helperText="Hold <shift> when pressing <enter> for multiline"
           multiline
           variant="standard"

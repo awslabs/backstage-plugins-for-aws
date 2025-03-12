@@ -1,0 +1,378 @@
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  namespace: default
+  name: user-authentication-service
+  description: Service responsible for user authentication and authorization
+  tags: 
+    - go
+    - auth
+    - security
+  links: 
+    - url: https://auth-docs.example.com
+      title: Authentication Documentation
+      icon: docs
+spec:
+  checklistType: service
+  checklistApiVersion: quintoandar.com.br/checklist/v2
+  type: service
+  owner: user:ana.silva
+  team: identity_and_access
+  line: security
+  tier: T2
+  repository: user-authentication-service
+  system: user-platform
+  lifecycle: production
+  technologies:
+    - Go
+    - PostgreSQL
+    - Redis
+  repositoryType: singleRepo
+  path: /auth
+  deployGroup: auth-services
+  mainBranch: main
+  providesApis:
+    - auth-api
+  vault:
+    database:
+      - database/creds/prod-crud-auth
+      - database/creds/prod-root-auth
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  namespace: default
+  name: product-catalog-frontend
+  description: Web interface for product catalog management
+  tags: 
+    - react
+    - typescript
+    - frontend
+  links: 
+    - url: https://design-system.example.com
+      title: Design System
+      icon: web
+spec:
+  checklistType: website
+  checklistApiVersion: quintoandar.com.br/checklist/v2
+  type: frontend
+  owner: user:marcos.oliveira
+  team: ui_and_experience
+  line: product
+  tier: T1
+  repository: product-catalog-frontend
+  system: catalog-system
+  lifecycle: production
+  technologies:
+    - React
+    - TypeScript
+    - Material UI
+  repositoryType: singleRepo
+  deployGroup: product-frontend
+  mainBranch: main
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  namespace: default
+  name: data-ingest-pipeline
+  description: Data ingestion pipeline for product metrics and analytics
+  tags: 
+    - python
+    - data
+    - etl
+  links: 
+    - url: https://data-docs.example.com
+      title: Data Documentation
+      icon: docs
+spec:
+  checklistType: pipeline
+  checklistApiVersion: quintoandar.com.br/checklist/v2
+  type: data-pipeline
+  owner: user:carla.santos
+  team: data_engineering
+  line: data
+  tier: T2
+  repository: data-ingest-pipeline
+  system: data-platform
+  lifecycle: production
+  technologies:
+    - Python
+    - Apache Airflow
+    - Apache Kafka
+    - AWS S3
+  repositoryType: singleRepo
+  deployGroup: data-pipelines
+  mainBranch: main
+  vault:
+    database:
+      - database/creds/prod-crud-data-warehouse
+      - database/creds/prod-root-data-warehouse
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  namespace: default
+  name: payment-processing-service
+  description: Service for handling payment processing and integration with payment gateways
+  tags: 
+    - java
+    - payments
+    - financial
+  links: 
+    - url: https://payments-docs.example.com
+      title: Payment Integration Guide
+      icon: docs
+spec:
+  checklistType: service
+  checklistApiVersion: quintoandar.com.br/checklist/v2
+  type: service
+  owner: user:felipe.costa
+  team: payment_systems
+  line: financial
+  tier: T1
+  repository: payment-processing-service
+  system: financial-platform
+  lifecycle: production
+  technologies:
+    - Java
+    - Spring Boot
+    - PostgreSQL
+    - Redis
+  repositoryType: singleRepo
+  deployGroup: financial-services
+  mainBranch: main
+  providesApis:
+    - payment-api
+  vault:
+    database:
+      - database/creds/prod-crud-payment
+      - database/creds/prod-root-payment
+    secrets:
+      - secret/payment-gateway-credentials
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  namespace: default
+  name: mobile-app
+  description: Cross-platform mobile application for customers
+  tags: 
+    - flutter
+    - dart
+    - mobile
+  links: 
+    - url: https://mobile-design.example.com
+      title: Mobile Design Guidelines
+      icon: mobile
+spec:
+  checklistType: application
+  checklistApiVersion: quintoandar.com.br/checklist/v2
+  type: mobile-app
+  owner: user:julia.mendes
+  team: mobile_development
+  line: product
+  tier: T1
+  repository: mobile-app
+  system: customer-platform
+  lifecycle: production
+  technologies:
+    - Flutter
+    - Dart
+    - Firebase
+  repositoryType: singleRepo
+  deployGroup: mobile-apps
+  mainBranch: main
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  namespace: default
+  name: notification-service
+  description: Service for sending notifications via multiple channels (email, SMS, push)
+  tags: 
+    - python
+    - messaging
+    - notifications
+  links: 
+    - url: https://notification-docs.example.com
+      title: Notification Service Documentation
+      icon: docs
+spec:
+  checklistType: service
+  checklistApiVersion: quintoandar.com.br/checklist/v2
+  type: service
+  owner: user:roberto.alves
+  team: customer_communications
+  line: customer
+  tier: T2
+  repository: notification-service
+  system: communication-platform
+  lifecycle: production
+  technologies:
+    - Python
+    - Flask
+    - RabbitMQ
+    - AWS SES
+    - AWS SNS
+  repositoryType: singleRepo
+  deployGroup: communication-services
+  mainBranch: main
+  providesApis:
+    - notification-api
+  vault:
+    database:
+      - database/creds/prod-crud-notification
+    secrets:
+      - secret/email-service-credentials
+      - secret/sms-service-credentials
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  namespace: default
+  name: product-recommendation-engine
+  description: Machine learning service for personalized product recommendations
+  tags: 
+    - python
+    - ml
+    - recommendation
+  links: 
+    - url: https://ml-docs.example.com
+      title: ML Services Documentation
+      icon: docs
+spec:
+  checklistType: service
+  checklistApiVersion: quintoandar.com.br/checklist/v2
+  type: ml-service
+  owner: user:patricia.lima
+  team: machine_learning
+  line: data
+  tier: T1
+  repository: product-recommendation-engine
+  system: recommendation-platform
+  lifecycle: production
+  technologies:
+    - Python
+    - TensorFlow
+    - scikit-learn
+    - Flask
+    - Docker
+  repositoryType: singleRepo
+  deployGroup: ml-services
+  mainBranch: main
+  providesApis:
+    - recommendation-api
+  vault:
+    database:
+      - database/creds/prod-crud-ml-warehouse
+    secrets:
+      - secret/ml-model-parameters
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  namespace: default
+  name: inventory-management-service
+  description: Service for tracking and managing product inventory across warehouses
+  tags: 
+    - java
+    - inventory
+    - logistics
+  links: 
+    - url: https://inventory-docs.example.com
+      title: Inventory Management Documentation
+      icon: docs
+spec:
+  checklistType: service
+  checklistApiVersion: quintoandar.com.br/checklist/v2
+  type: service
+  owner: user:antonio.ferreira
+  team: logistics_and_inventory
+  line: operations
+  tier: T2
+  repository: inventory-management-service
+  system: logistics-platform
+  lifecycle: production
+  technologies:
+    - Java
+    - Spring Boot
+    - MySQL
+    - Redis
+  repositoryType: singleRepo
+  deployGroup: logistics-services
+  mainBranch: main
+  providesApis:
+    - inventory-api
+  vault:
+    database:
+      - database/creds/prod-crud-inventory
+      - database/creds/prod-root-inventory
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  namespace: default
+  name: customer-support-portal
+  description: Internal portal for customer support representatives
+  tags: 
+    - vue
+    - typescript
+    - support
+  links: 
+    - url: https://support-guidelines.example.com
+      title: Support Guidelines
+      icon: docs
+spec:
+  checklistType: website
+  checklistApiVersion: quintoandar.com.br/checklist/v2
+  type: frontend
+  owner: user:carolina.rocha
+  team: customer_support
+  line: customer
+  tier: T3
+  repository: customer-support-portal
+  system: support-platform
+  lifecycle: production
+  technologies:
+    - Vue.js
+    - TypeScript
+    - Vuetify
+  repositoryType: singleRepo
+  deployGroup: internal-portals
+  mainBranch: main
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  namespace: default
+  name: analytics-dashboard
+  description: Business intelligence dashboard for company metrics and KPIs
+  tags: 
+    - react
+    - typescript
+    - analytics
+  links: 
+    - url: https://analytics-docs.example.com
+      title: Analytics Documentation
+      icon: docs
+spec:
+  checklistType: website
+  checklistApiVersion: quintoandar.com.br/checklist/v2
+  type: frontend
+  owner: user:lucas.martins
+  team: business_intelligence
+  line: data
+  tier: T2
+  repository: analytics-dashboard
+  system: analytics-platform
+  lifecycle: production
+  technologies:
+    - React
+    - TypeScript
+    - D3.js
+    - Recharts
+  repositoryType: singleRepo
+  deployGroup: analytics-applications
+  mainBranch: main 
