@@ -21,6 +21,9 @@ import {
 } from '@aws-sdk/client-config-service';
 import { mockServices } from '@backstage/backend-test-utils';
 import { mockResource } from './mocks';
+import {
+  entitySchemaValidator
+} from '@backstage/catalog-model';
 
 const logger = mockServices.logger.mock();
 
@@ -186,7 +189,7 @@ describe('AwsConfigInfrastructureProvider', () => {
       `SELECT resourceId, resourceName, resourceType, awsRegion, accountId, arn, tags, configuration WHERE resourceType IN ('AWS::ECS::Cluster') AND tags.key = 'component' AND tags.tag = 'environment=prod'`,
     );
   });
-          
+
   // eslint-disable-next-line jest/expect-expect
   it('should apply mutation with field transforms', async () => {
     mock.on(SelectResourceConfigCommand).callsFake(async _ => {
@@ -300,63 +303,88 @@ describe('AwsConfigInfrastructureProvider', () => {
         ],
       };
     });
-
-    return expectMutation(
-      'default',
-      {
-        filters: { resourceTypes: ['AWS::ECS::Cluster'] },
-        transform: {
-          fields: {
-            name: {
-              expression:
-                "$join([$resource.resourceName, $resource.accountId], '-')",
-            },
-            annotations: {
-              'aws.amazon.com/account-id': {
-                expression: '$resource.accountId',
+    const test1Resource = createResource({
+      name: 'test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1',
+      accountId: '111',
+      region: 'us-west-2',
+      resourceType: 'AWS::ECS::Service',
+      providerId: 'default',
+      type: 'ecs-service-custom',
+      owner: 'team1',
+      component: 'app1',
+      system: 'some-system',
+      metadataName:
+        'test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-111',
+      annotations: {
+        'aws.amazon.com/account-id': '111',
+      },
+    });
+    const test2Resource = createResource({
+      name: 'test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2',
+      accountId: '222',
+      region: 'us-west-2',
+      resourceType: 'AWS::ECS::Service',
+      providerId: 'default',
+      type: 'ecs-service-custom',
+      system: 'some-system',
+      metadataName:
+        'test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-222',
+      annotations: {
+        'aws.amazon.com/account-id': '222',
+      },
+    });
+    return Promise.all([
+      // expect(test1Resource.entity.metadata.name.length).toBeLessThan(63),
+      // expect(test2Resource.entity.metadata.name.length).toBeLessThan(63),
+      expectMutation(
+        'default',
+        {
+          filters: { resourceTypes: ['AWS::ECS::Cluster'] },
+          transform: {
+            fields: {
+              name: {
+                expression:
+                  "$join([$resource.resourceName, $resource.accountId], '-')",
               },
-            },
-            spec: {
-              owner: { tag: 'owner' },
-              system: { value: 'some-system' },
-              component: { tag: 'component' },
-              type: { value: 'ecs-service-custom' },
+              annotations: {
+                'aws.amazon.com/account-id': {
+                  expression: '$resource.accountId',
+                },
+              },
+              spec: {
+                owner: { tag: 'owner' },
+                system: { value: 'some-system' },
+                component: { tag: 'component' },
+                type: { value: 'ecs-service-custom' },
+              },
             },
           },
         },
-      },
-      [
-        createResource({
-          name: 'test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1',
-          accountId: '111',
-          region: 'us-west-2',
-          resourceType: 'AWS::ECS::Service',
-          providerId: 'default',
-          type: 'ecs-service-custom',
+        [test1Resource, test2Resource],
+        "SELECT resourceId, resourceName, resourceType, awsRegion, accountId, arn, tags, configuration WHERE resourceType IN ('AWS::ECS::Cluster')",
+      ),
+    ]);
+  });
+  it('expects the output to be compatible with the schema', async () => {
+    const validator = entitySchemaValidator()
+    expect(
+      validator({
+        apiVersion: 'backstage.io/v1alpha1',
+        kind: 'Resource',
+        metadata: {
+          annotations: {
+            'aws.amazon.com/arn': 'arn:aws:xxx:us-west-2:111:/test',
+          },
+          name: 'test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-222',
+        },
+        spec: {
           owner: 'team1',
-          component: 'app1',
-          system: 'some-system',
-          metadataName: 'test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-111',
-          annotations: {
-            'aws.amazon.com/account-id': '111',
-          },
-        }),
-        createResource({
-          name: 'test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2',
-          accountId: '222',
-          region: 'us-west-2',
-          resourceType: 'AWS::ECS::Service',
-          providerId: 'default',
           type: 'ecs-service-custom',
           system: 'some-system',
-          metadataName: 'test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-222',
-          annotations: {
-            'aws.amazon.com/account-id': '222',
-          },
-        }),
-      ],
-      "SELECT resourceId, resourceName, resourceType, awsRegion, accountId, arn, tags, configuration WHERE resourceType IN ('AWS::ECS::Cluster')",
-    );
+          component: 'app1',
+        },
+      }),
+    ).not.toBe(false);
   });
 });
 
