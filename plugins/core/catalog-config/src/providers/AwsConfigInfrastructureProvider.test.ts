@@ -186,7 +186,7 @@ describe('AwsConfigInfrastructureProvider', () => {
       `SELECT resourceId, resourceName, resourceType, awsRegion, accountId, arn, tags, configuration WHERE resourceType IN ('AWS::ECS::Cluster') AND tags.key = 'component' AND tags.tag = 'environment=prod'`,
     );
   });
-
+          
   // eslint-disable-next-line jest/expect-expect
   it('should apply mutation with field transforms', async () => {
     mock.on(SelectResourceConfigCommand).callsFake(async _ => {
@@ -265,6 +265,91 @@ describe('AwsConfigInfrastructureProvider', () => {
           type: 'ecs-service-custom',
           system: 'some-system',
           metadataName: 'test2-222',
+          annotations: {
+            'aws.amazon.com/account-id': '222',
+          },
+        }),
+      ],
+      "SELECT resourceId, resourceName, resourceType, awsRegion, accountId, arn, tags, configuration WHERE resourceType IN ('AWS::ECS::Cluster')",
+    );
+  });
+  it('should apply mutation and truncate the field to < 63 characters, with field transforms if the name is longer than 63 characters, and not produce invalid metadata', async () => {
+    mock.on(SelectResourceConfigCommand).callsFake(async _ => {
+      return {
+        Results: [
+          JSON.stringify(
+            mockResource(
+              'test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1',
+              '111',
+              'us-west-2',
+              'AWS::ECS::Service',
+              { PlatformVersion: 'LATEST' },
+              { component: 'app1', owner: 'team1', system: 'system1' },
+            ),
+          ),
+          JSON.stringify(
+            mockResource(
+              'test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2',
+              '222',
+              'us-west-2',
+              'AWS::ECS::Service',
+              { PlatformVersion: 'LATEST' },
+              { none: 'missing' },
+            ),
+          ),
+        ],
+      };
+    });
+
+    return expectMutation(
+      'default',
+      {
+        filters: { resourceTypes: ['AWS::ECS::Cluster'] },
+        transform: {
+          fields: {
+            name: {
+              expression:
+                "$join([$resource.resourceName, $resource.accountId], '-')",
+            },
+            annotations: {
+              'aws.amazon.com/account-id': {
+                expression: '$resource.accountId',
+              },
+            },
+            spec: {
+              owner: { tag: 'owner' },
+              system: { value: 'some-system' },
+              component: { tag: 'component' },
+              type: { value: 'ecs-service-custom' },
+            },
+          },
+        },
+      },
+      [
+        createResource({
+          name: 'test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1',
+          accountId: '111',
+          region: 'us-west-2',
+          resourceType: 'AWS::ECS::Service',
+          providerId: 'default',
+          type: 'ecs-service-custom',
+          owner: 'team1',
+          component: 'app1',
+          system: 'some-system',
+          metadataName: 'test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-111',
+          annotations: {
+            'aws.amazon.com/account-id': '111',
+          },
+        }),
+        createResource({
+          name: 'test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2',
+          accountId: '222',
+          region: 'us-west-2',
+          resourceType: 'AWS::ECS::Service',
+          providerId: 'default',
+          type: 'ecs-service-custom',
+          system: 'some-system',
+          metadataName: 'test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-222',
           annotations: {
             'aws.amazon.com/account-id': '222',
           },
