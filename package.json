@@ -42,7 +42,7 @@
     "license-checker": "^25.0.1",
     "node-gyp": "^9.0.0",
     "prettier": "^2.3.2",
-    "typescript": "~5.7.0"
+    "typescript": "~5.8.0"
   },
   "resolutions": {
     "@types/react": "^18",
@@ -58,5 +58,5 @@
       "prettier --write"
     ]
   },
-  "packageManager": "yarn@4.5.3"
+  "packageManager": "yarn@4.7.0"
 }

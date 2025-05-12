@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.4.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/cost-insights-plugin-for-backstage-backend@0.3.1...@aws/cost-insights-plugin-for-backstage-backend@0.4.0) (2025-03-06)
+
+
+### Features
+
+* **cost-insights:** Allow more flexible cost category selection ([#336](https://github.com/awslabs/backstage-plugins-for-aws/issues/336)) ([49e26a3](https://github.com/awslabs/backstage-plugins-for-aws/commit/49e26a3187f02e6927823ad3cde51dff642df7d1))
+
+
+
+
+
 ## [0.3.1](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/cost-insights-plugin-for-backstage-backend@0.3.0...@aws/cost-insights-plugin-for-backstage-backend@0.3.1) (2025-02-07)
 
 
