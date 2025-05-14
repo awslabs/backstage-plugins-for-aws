@@ -54,7 +54,7 @@ function readCostInsightsAwsConfigCostExplorer(
   return {
     accountId: root?.getOptionalString('accountId'),
     region: root?.getOptionalString('region'),
-    costMetric: metric as CostExplorerMetricEnum,
+    costMetric: metric as CostInsightsAwsConfigCostExplorerMetricEnum,
   };
 }
 
