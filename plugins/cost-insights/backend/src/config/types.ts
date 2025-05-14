@@ -48,5 +48,5 @@ export type CostInsightsAwsConfigCostExplorer = {
   region: string | undefined;
   costMetric:
     | CostInsightsAwsConfigCostExplorerMetricEnum
-    | CostInsightsAwsConfigCostExplorerMetric.UnblendedCost;
+    | CostInsightsAwsConfigCostExplorerMetricEnum.UnblendedCost;
 };

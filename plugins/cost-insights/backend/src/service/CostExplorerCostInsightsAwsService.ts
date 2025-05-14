@@ -85,7 +85,7 @@ export class CostExplorerCostInsightsAwsService
   ) {
     const { auth } = createLegacyAuthAdapters(options);
 
-    const { region, accountId, costMetric } = config.costExplorer;
+    const { region, accountId } = config.costExplorer;
 
     const { credentialsManager } = options;
 

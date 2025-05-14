@@ -17,7 +17,6 @@ import {
   CostInsightsAwsConfigCache,
   CostInsightsAwsConfigCostExplorer,
   CostInsightsAwsConfigEntityGroup,
-  CostInsightsAwsConfigCostExplorerMetric,
   CostInsightsAwsConfigCostExplorerMetricEnum,
 } from './types';
 
