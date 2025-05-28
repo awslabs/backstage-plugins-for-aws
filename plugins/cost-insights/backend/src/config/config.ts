@@ -17,13 +17,13 @@ import {
   CostInsightsAwsConfigCache,
   CostInsightsAwsConfigCostExplorer,
   CostInsightsAwsConfigEntityGroup,
+  CostInsightsAwsConfigCostExplorerMetricEnum,
 } from './types';
 
 export function readCostInsightsAwsConfig(
   config: Config,
 ): CostInsightsAwsConfig {
   const root = config.getOptionalConfig('aws.costInsights');
-
   return {
     costExplorer: readCostInsightsAwsConfigCostExplorer(root),
     entityGroups: readCostInsightsAwsConfigEntityGroups(root),
@@ -36,9 +36,24 @@ function readCostInsightsAwsConfigCostExplorer(
 ): CostInsightsAwsConfigCostExplorer {
   const root = config?.getOptionalConfig('costExplorer');
 
+  const metric = root?.getOptionalString('costMetric') || 'UnblendedCost';
+
+  if (
+    !Object.values(CostInsightsAwsConfigCostExplorerMetricEnum).includes(
+      metric as CostInsightsAwsConfigCostExplorerMetricEnum,
+    )
+  ) {
+    throw new Error(
+      `Invalid config value for  aws.costExplorer.costMetric. Accepted values are: ${Object.values(
+        CostInsightsAwsConfigCostExplorerMetricEnum,
+      ).join(', ')}`,
+    );
+  }
+
   return {
     accountId: root?.getOptionalString('accountId'),
     region: root?.getOptionalString('region'),
+    costMetric: metric as CostInsightsAwsConfigCostExplorerMetricEnum,
   };
 }
 
