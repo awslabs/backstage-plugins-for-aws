@@ -42060,12 +42060,12 @@ __metadata:
   linkType: hard
 
 "xml-crypto@npm:^3.0.1":
-  version: 3.2.0
-  resolution: "xml-crypto@npm:3.2.0"
+  version: 3.2.1
+  resolution: "xml-crypto@npm:3.2.1"
   dependencies:
     "@xmldom/xmldom": "npm:^0.8.8"
     xpath: "npm:0.0.32"
-  checksum: 10c0/adfeeb810c0b25674c78386c1b537561e6d8bdf69cef0852e47559d0eb96aa20edb22dd70efa35eefae3aa98602736ce9a54f78f6dea685bd4d4f18032d803af
+  checksum: 10c0/6ebdb1049f61343c3e1d1251ed6b860d09859ad0e6b977b52b9d0b807dbd3e597d21822dcb02d54009a16af855f6828ade501f74dad7275c92d233be199bcf05
   languageName: node
   linkType: hard
 
