@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.5.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/cost-insights-plugin-for-backstage-backend@0.4.0...@aws/cost-insights-plugin-for-backstage-backend@0.5.0) (2025-05-28)
+
+
+### Features
+
+* **cost-insights:** Allow setting the cost metric in config ([#338](https://github.com/awslabs/backstage-plugins-for-aws/issues/338)) ([07c2844](https://github.com/awslabs/backstage-plugins-for-aws/commit/07c28441c5903085d15fa8a8728cce5329ea7ac5))
+
+
+
+
+
 # [0.4.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/cost-insights-plugin-for-backstage-backend@0.3.1...@aws/cost-insights-plugin-for-backstage-backend@0.4.0) (2025-03-06)
 
 
