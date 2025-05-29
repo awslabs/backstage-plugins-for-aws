@@ -9522,6 +9522,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@cfworker/json-schema@npm:^4.0.2":
+  version: 4.1.1
+  resolution: "@cfworker/json-schema@npm:4.1.1"
+  checksum: 10c0/b5253486d346b7de6feec9c73954f612b11019dacb9023d710a5666df2f5fc145dd88b6b913c88726c6d97e2e258a515fa2cab177f58b18da6bac3738cbc4739
+  languageName: node
+  linkType: hard
+
 "@changesets/types@npm:^4.0.1":
   version: 4.1.0
   resolution: "@changesets/types@npm:4.1.0"
@@ -11754,21 +11761,22 @@ __metadata:
   linkType: hard
 
 "@langchain/core@npm:^0.3.18":
-  version: 0.3.22
-  resolution: "@langchain/core@npm:0.3.22"
+  version: 0.3.57
+  resolution: "@langchain/core@npm:0.3.57"
   dependencies:
+    "@cfworker/json-schema": "npm:^4.0.2"
     ansi-styles: "npm:^5.0.0"
     camelcase: "npm:6"
     decamelize: "npm:1.2.0"
     js-tiktoken: "npm:^1.0.12"
-    langsmith: "npm:^0.2.8"
+    langsmith: "npm:^0.3.29"
     mustache: "npm:^4.2.0"
     p-queue: "npm:^6.6.2"
     p-retry: "npm:4"
     uuid: "npm:^10.0.0"
     zod: "npm:^3.22.4"
     zod-to-json-schema: "npm:^3.22.3"
-  checksum: 10c0/99050e331a71a568476195b458c1980f5a3361bc286e6031497aaa7075444ac1e319be51d34822f06c7fba22c0bb230c63e3dbab918e21f9ddeb90cc82b11e0e
+  checksum: 10c0/70e46a9ce85c1cf0fe7912d6b43be8eb57f50423b147f2cada3276a34ea99542e08c06f7c38e334dbd4e91265b40fbfa78c2708bc8c8b3b4e6a82d6deafcdb56
   languageName: node
   linkType: hard
 
@@ -22783,7 +22791,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"commander@npm:^10.0.0, commander@npm:^10.0.1":
+"commander@npm:^10.0.0":
   version: 10.0.1
   resolution: "commander@npm:10.0.1"
   checksum: 10c0/53f33d8927758a911094adadda4b2cbac111a5b377d8706700587650fd8f45b0bbe336de4b5c3fe47fd61f420a3d9bd452b6e0e6e5600a7e74d7bf0174f6efe3
@@ -23054,6 +23062,15 @@ __metadata:
   version: 1.1.0
   resolution: "console-control-strings@npm:1.1.0"
   checksum: 10c0/7ab51d30b52d461412cd467721bb82afe695da78fff8f29fe6f6b9cbaac9a2328e27a22a966014df9532100f6dd85370460be8130b9c677891ba36d96a343f50
+  languageName: node
+  linkType: hard
+
+"console-table-printer@npm:^2.12.1":
+  version: 2.14.0
+  resolution: "console-table-printer@npm:2.14.0"
+  dependencies:
+    simple-wcswidth: "npm:^1.0.1"
+  checksum: 10c0/6dd4cc5db9e4d8098a292f2baae686e481eb62aaf27a349b45a4bf22cc998122dd6cca10af2d9812e2470a9d5a5d180371b163ec76e2e902a0c9257704134d04
   languageName: node
   linkType: hard
 
@@ -31101,12 +31118,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"langsmith@npm:^0.2.8":
-  version: 0.2.11
-  resolution: "langsmith@npm:0.2.11"
+"langsmith@npm:^0.3.29":
+  version: 0.3.29
+  resolution: "langsmith@npm:0.3.29"
   dependencies:
     "@types/uuid": "npm:^10.0.0"
-    commander: "npm:^10.0.1"
+    chalk: "npm:^4.1.2"
+    console-table-printer: "npm:^2.12.1"
     p-queue: "npm:^6.6.2"
     p-retry: "npm:4"
     semver: "npm:^7.6.3"
@@ -31116,7 +31134,7 @@ __metadata:
   peerDependenciesMeta:
     openai:
       optional: true
-  checksum: 10c0/631ff17356216dafbe2635173a7af40b5024a274ffee17be8ca85b76a10f440c9220ab1e1c6c9742d9fa2ca77abb0dc2e388dab5effaeb08167b60a878ec6dd7
+  checksum: 10c0/b2555d1375889d7be0b8032fee2b7ea39722241c12850f9c39ae815a354419cf8b30a51a5707da2273fcc20fb5fbf526e8ac0f71562edc6e09b6cf41ccf21421
   languageName: node
   linkType: hard
 
@@ -38872,6 +38890,13 @@ __metadata:
   dependencies:
     is-arrayish: "npm:^0.3.1"
   checksum: 10c0/df5e4662a8c750bdba69af4e8263c5d96fe4cd0f9fe4bdfa3cbdeb45d2e869dff640beaaeb1ef0e99db4d8d2ec92f85508c269f50c972174851bc1ae5bd64308
+  languageName: node
+  linkType: hard
+
+"simple-wcswidth@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "simple-wcswidth@npm:1.0.1"
+  checksum: 10c0/2befead4c97134424aa3fba593a81daa9934fd61b9e4c65374b57ac5eecc2f2be1984b017bbdbc919923e19b77f2fcbdb94434789b9643fa8c3fde3a2a6a4b6f
   languageName: node
   linkType: hard
 
