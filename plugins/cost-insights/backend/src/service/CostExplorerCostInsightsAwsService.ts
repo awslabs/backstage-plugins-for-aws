@@ -145,7 +145,11 @@ export class CostExplorerCostInsightsAwsService
     ]);
 
     if (!annotation) {
-      throw new Error('Annotation not found on entity');
+      throw new Error(
+        `Annotation not found on entity ${stringifyEntityRef(
+          options.entityRef,
+        )}`,
+      );
     }
 
     let filter: Expression;
