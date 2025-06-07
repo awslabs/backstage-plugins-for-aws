@@ -27,17 +27,52 @@ export function createBackstageCatalogSearchTool(
     get name() {
       return 'backstageCatalogSearch';
     },
-    description: 'Searches the Backstage catalog.',
+    description: `Search the Backstage catalog for entities. Results are ordered by relevance to the query.
+
+Responses are paginated. To get the next page, pass the "nextPageCursor" value as the "pageCursor" parameter to the tool again.
+      
+DO NOT try to filter on kinds in the query string, always use the "kinds" parameter.
+`,
     schema: z.object({
       query: z.string().describe('Search query'),
+      kinds: z
+        .string()
+        .describe(
+          'Comma-separated list of Backstage entity kinds. If not specified then all kinds are searched.',
+        )
+        .optional(),
+      pageLimit: z
+        .number()
+        .describe('Number of results to return per page')
+        .optional()
+        .default(10),
+      pageCursor: z.string().describe('Cursor for the next page').optional(),
     }),
-    func: async ({ query }, _, toolConfig) => {
+    func: async ({ query, kinds, pageLimit, pageCursor }, _, toolConfig) => {
       const credentials = toolConfig?.configurable!
         .credentials as BackstageCredentials;
 
+      const filters: string[] = [];
+
+      if (kinds) {
+        kinds.split(',').forEach((kind: string) => {
+          filters.push(`filters[kind]=${kind}`);
+        });
+      }
+
+      let fullQuery = `term=${query}&pageLimit=${pageLimit}`;
+
+      if (pageCursor) {
+        fullQuery += `&pageCursor=${pageCursor}`;
+      }
+
+      if (filters.length > 0) {
+        fullQuery += `&${filters.join('&')}`;
+      }
+
       const url = `${await discoveryApi.getBaseUrl(
         'search',
-      )}/query?term=${query}&types[0]=software-catalog`;
+      )}/query?${fullQuery}`;
       const { token } = await auth.getPluginRequestToken({
         onBehalfOf: credentials,
         targetPluginId: 'search',
@@ -49,6 +84,7 @@ export function createBackstageCatalogSearchTool(
           Authorization: `Bearer ${token}`,
         },
       });
+
       return response.text();
     },
   });
