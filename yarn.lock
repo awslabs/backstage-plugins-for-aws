@@ -3153,7 +3153,7 @@ __metadata:
     "@langchain/aws": "npm:^0.1.2"
     "@langchain/core": "npm:^0.3.18"
     "@langchain/langgraph": "npm:0.2.22"
-    "@langchain/openai": "npm:^0.3.14"
+    "@langchain/openai": "npm:^0.5.0"
     langfuse-langchain: "npm:^3.29.1"
     zod: "npm:^3.23.8"
   languageName: unknown
@@ -11809,17 +11809,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@langchain/openai@npm:^0.3.14":
-  version: 0.3.14
-  resolution: "@langchain/openai@npm:0.3.14"
+"@langchain/openai@npm:^0.5.0":
+  version: 0.5.11
+  resolution: "@langchain/openai@npm:0.5.11"
   dependencies:
     js-tiktoken: "npm:^1.0.12"
-    openai: "npm:^4.71.0"
+    openai: "npm:^4.96.0"
     zod: "npm:^3.22.4"
     zod-to-json-schema: "npm:^3.22.3"
   peerDependencies:
-    "@langchain/core": ">=0.2.26 <0.4.0"
-  checksum: 10c0/03cdd457d83b0efee1a780e78b0804a2c27a85a10d57d6182f7abdd2b90bc672e0ad5b94c7b127e63e624de96e1b4472ae95a3423cc8d2f5436198e546ad6e9b
+    "@langchain/core": ">=0.3.48 <0.4.0"
+  checksum: 10c0/8575d66567505b0fa319312e1f37d05e973a875efe26c4eea8ded9b8b27c65efac604bde844caa954ee4cd87040e296798d67a04116a5a3c3577bd2d8c492dc9
   languageName: node
   linkType: hard
 
@@ -34415,9 +34415,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"openai@npm:^4.71.0":
-  version: 4.76.0
-  resolution: "openai@npm:4.76.0"
+"openai@npm:^4.96.0":
+  version: 4.103.0
+  resolution: "openai@npm:4.103.0"
   dependencies:
     "@types/node": "npm:^18.11.18"
     "@types/node-fetch": "npm:^2.6.4"
@@ -34427,13 +34427,16 @@ __metadata:
     formdata-node: "npm:^4.3.2"
     node-fetch: "npm:^2.6.7"
   peerDependencies:
+    ws: ^8.18.0
     zod: ^3.23.8
   peerDependenciesMeta:
+    ws:
+      optional: true
     zod:
       optional: true
   bin:
     openai: bin/cli
-  checksum: 10c0/f0b53906ba72e6d21405353f26ae3dd4327f3cbe212787fac321089772fccaaabfcd699abb8632e19c1eb536bd31e9fff3d1f90f7de693d86ae9624c04a9d74b
+  checksum: 10c0/48aec18e866876aa3ebbcd8b2e00cbd96306926532e80789fe903d4165ab847f60de6e6f3a5f1910813a8fe699f18e5b9010ce10461617c8adeb7bb73099be1c
   languageName: node
   linkType: hard
 
