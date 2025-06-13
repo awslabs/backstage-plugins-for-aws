@@ -26,7 +26,7 @@ import {
 import dateFormat from 'dateformat';
 import { DiscoveryApi, FetchApi } from '@backstage/core-plugin-api';
 import { ResponseError } from '@backstage/errors';
-import { parseEntityRef } from '@backstage/catalog-model';
+import { parseEntityRef, stringifyEntityRef } from '@backstage/catalog-model';
 import { CatalogApi } from '@backstage/plugin-catalog-react';
 
 export class CostExplorerClient implements CostInsightsApi {
@@ -66,7 +66,7 @@ export class CostExplorerClient implements CostInsightsApi {
       })
     ).items.map(e => {
       return {
-        id: `group:${e.metadata.namespace}/${e.metadata.name}`,
+        id: stringifyEntityRef(e),
         name: e.metadata.name,
       };
     });
