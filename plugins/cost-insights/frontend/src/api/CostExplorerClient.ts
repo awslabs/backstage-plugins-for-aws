@@ -66,7 +66,7 @@ export class CostExplorerClient implements CostInsightsApi {
       })
     ).items.map(e => {
       return {
-        id: `group:${e.metadata.name}`,
+        id: `group:${e.metadata.namespace}/${e.metadata.name}`,
         name: e.metadata.name,
       };
     });
