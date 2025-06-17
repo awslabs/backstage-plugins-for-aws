@@ -23,13 +23,13 @@ import {
 import { ChatBedrockConverse } from '@langchain/aws';
 import { ChatOpenAI } from '@langchain/openai';
 import { CompiledStateGraph, MemorySaver } from '@langchain/langgraph';
-import { AgentState, createReactAgent } from '@langchain/langgraph/prebuilt';
+import { createReactAgent } from '@langchain/langgraph/prebuilt';
 import {
   HumanMessage,
   SystemMessage,
   trimMessages,
 } from '@langchain/core/messages';
-import { ToolInterface } from '@langchain/core/tools';
+import { StructuredToolInterface } from '@langchain/core/tools';
 import { ResponseTransformStream, tiktokenCounter } from './util';
 import { BaseChatModel } from '@langchain/core/language_models/chat_models';
 import {
@@ -37,6 +37,7 @@ import {
   LangGraphAgentConfig,
   readLangGraphAgentConfig,
   readSharedLangGraphAgentConfig,
+  SharedLangGraphAgentConfig,
 } from './config';
 import { AgentConfig, AgentType } from '@aws/genai-plugin-for-backstage-node';
 import {
@@ -44,6 +45,8 @@ import {
   GenerateResponse,
 } from '@aws/genai-plugin-for-backstage-common';
 import { CallbackHandler } from 'langfuse-langchain';
+import { SqliteSaver } from '@langchain/langgraph-checkpoint-sqlite';
+import { PostgresSaver } from '@langchain/langgraph-checkpoint-postgres';
 
 export class LangGraphReactAgentType implements AgentType {
   private readonly prompt?: string;
@@ -51,12 +54,8 @@ export class LangGraphReactAgentType implements AgentType {
 
   public constructor(
     private readonly llm: BaseChatModel,
-    private readonly tools: ToolInterface[],
-    private readonly agent: CompiledStateGraph<
-      AgentState,
-      Partial<AgentState>,
-      any
-    >,
+    private readonly tools: StructuredToolInterface[],
+    private readonly agent: CompiledStateGraph<any, any, any>,
     options: {
       prompt?: string;
       langfuseConfig?: LangGraphAgentLangFuseConfig;
@@ -69,8 +68,9 @@ export class LangGraphReactAgentType implements AgentType {
   static async fromConfig(
     rootConfig: Config,
     agentConfig: AgentConfig,
-    tools: ToolInterface[],
+    tools: StructuredToolInterface[],
     logger: LoggerService,
+    dbConfig: any,
   ) {
     const prompt = agentConfig.prompt;
 
@@ -93,12 +93,17 @@ export class LangGraphReactAgentType implements AgentType {
     }
 
     logger.info(
-      `Instantiating langgraph-react agent ${
+      `Instantiating langgraph-react gent ${
         agentConfig.name
       } using model '${agentModel.getName()}'`,
     );
 
-    const agentCheckpointer = new MemorySaver();
+    const agentCheckpointer = await this.createCheckpointer(
+      sharedLangGraphConfig,
+      dbConfig,
+      logger,
+    );
+
     const agent = createReactAgent({
       llm: agentModel,
       tools,
@@ -120,6 +125,45 @@ export class LangGraphReactAgentType implements AgentType {
       prompt,
       langfuseConfig: sharedLangGraphConfig?.langfuse,
     });
+  }
+
+  private static async createCheckpointer(
+    sharedConfig: SharedLangGraphAgentConfig,
+    dbConfig: any,
+    logger: LoggerService,
+  ) {
+    if (sharedConfig.memory === 'backstage') {
+      if (dbConfig.client === 'pg') {
+        logger.info('Using postgres checkpointer');
+
+        const host = dbConfig.connection.host;
+        const port = dbConfig.connection.port;
+        const user = dbConfig.connection.user;
+        const password = dbConfig.connection.password;
+
+        const database = dbConfig.connection.database;
+
+        const checkpointer = PostgresSaver.fromConnString(
+          `postgresql://${user}:${password}@${host}:${port}/${database}`,
+        );
+
+        await checkpointer.setup();
+
+        return checkpointer;
+      } else if (dbConfig.client === 'better-sqlite3') {
+        logger.info('Using sqlite checkpointer');
+
+        const checkpointer = SqliteSaver.fromConnString(':memory:');
+
+        return checkpointer;
+      }
+
+      throw new Error(`Unsupported database client ${dbConfig.client}`);
+    }
+
+    logger.info('Using in-memory checkpointer');
+
+    return new MemorySaver();
   }
 
   private static createBedrockModel(config: LangGraphAgentConfig) {
@@ -162,9 +206,13 @@ export class LangGraphReactAgentType implements AgentType {
 
   private buildCallbackHandler(
     sessionId: string,
-    userId: string,
+    userEntityRef?: CompoundEntityRef,
   ): CallbackHandler[] {
     const callbacks: CallbackHandler[] = [];
+
+    const userId = userEntityRef
+      ? stringifyEntityRef(userEntityRef)
+      : 'unknown';
 
     if (this.langfuseConfig) {
       callbacks.push(
@@ -183,13 +231,15 @@ export class LangGraphReactAgentType implements AgentType {
     userMessage: string,
     sessionId: string,
     newSession: boolean,
-    userEntityRef: CompoundEntityRef,
     _: LoggerService,
     options: {
+      userEntityRef?: CompoundEntityRef;
       credentials?: BackstageCredentials;
     },
   ): Promise<ReadableStream<ChatEvent>> {
     const messages: (SystemMessage | HumanMessage)[] = [];
+
+    const { userEntityRef, credentials } = options;
 
     if (this.prompt) {
       if (newSession) {
@@ -205,13 +255,10 @@ export class LangGraphReactAgentType implements AgentType {
       },
       {
         version: 'v2',
-        callbacks: this.buildCallbackHandler(
-          sessionId,
-          stringifyEntityRef(userEntityRef),
-        ),
+        callbacks: this.buildCallbackHandler(sessionId, userEntityRef),
         configurable: {
           thread_id: sessionId,
-          credentials: options.credentials,
+          credentials,
         },
       },
     );
@@ -224,13 +271,15 @@ export class LangGraphReactAgentType implements AgentType {
   public async generate(
     prompt: string,
     sessionId: string,
-    userEntityRef: CompoundEntityRef,
     logger: LoggerService,
     options: {
+      userEntityRef?: CompoundEntityRef;
       credentials?: BackstageCredentials;
     },
   ): Promise<GenerateResponse> {
     const messages: (SystemMessage | HumanMessage)[] = [];
+
+    const { userEntityRef, credentials } = options;
 
     if (this.prompt) {
       messages.push(this.buildSystemPrompt(this.prompt, userEntityRef));
@@ -247,13 +296,10 @@ export class LangGraphReactAgentType implements AgentType {
     const finalState = await agent.invoke(
       { messages },
       {
-        callbacks: this.buildCallbackHandler(
-          sessionId,
-          stringifyEntityRef(userEntityRef),
-        ),
+        callbacks: this.buildCallbackHandler(sessionId, userEntityRef),
         configurable: {
           thread_id: sessionId,
-          credentials: options.credentials,
+          credentials,
         },
       },
     );
@@ -265,8 +311,9 @@ export class LangGraphReactAgentType implements AgentType {
 
       output = outputMessage.content;
     } else {
-      logger.error(`No output messages found for session ${sessionId}`);
-      throw new Error(`No output messages found for session ${sessionId}`);
+      const errorMessage = `No output messages found for session ${sessionId}`;
+      logger.error(errorMessage);
+      throw new Error(errorMessage);
     }
 
     return {
@@ -276,10 +323,10 @@ export class LangGraphReactAgentType implements AgentType {
 
   private buildSystemPrompt(
     template: string,
-    userEntityRef: CompoundEntityRef,
+    userEntityRef?: CompoundEntityRef,
   ) {
     return new SystemMessage(
-      template.replace('{username}', userEntityRef.name),
+      template.replace('{username}', userEntityRef?.name ?? 'unknown'),
     );
   }
 }

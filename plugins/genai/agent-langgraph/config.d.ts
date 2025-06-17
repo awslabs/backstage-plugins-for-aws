@@ -13,6 +13,29 @@
 
 export interface Config {
   genai?: {
+    /**
+     * (Optional) Memory store to use
+     */
+    memory?: string;
+
+    langfuse?: {
+      /**
+       * (Required) LangFuse base URL
+       */
+      baseUrl: number;
+      /**
+       * (Optional) LangFuse public key
+       */
+      publicKey: string;
+      /**
+       * (Optional) LangFuse secret key
+       */
+      secretKey: string;
+      /**
+       * (Optional) LangFuse flush batch size
+       */
+      flushAt?: number;
+    };
     agents?: {
       [name: string]: {
         langgraph?: {

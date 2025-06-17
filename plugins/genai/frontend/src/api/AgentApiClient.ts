@@ -21,6 +21,8 @@ import {
 import {
   ChatEvent,
   ChatRequest,
+  ChatSession,
+  EndSessionRequest,
   EventSchema,
 } from '@aws/genai-plugin-for-backstage-common';
 
@@ -74,6 +76,21 @@ export class AgentApiClient implements AgentApi {
     }
   }
 
+  public async getUserSession(
+    agent: string,
+    sessionId: string,
+  ): Promise<ChatSession | undefined> {
+    return this.get<ChatSession>(`v1/session/${agent}/${sessionId}`, true);
+  }
+
+  public async endSession(request: EndSessionRequest): Promise<void> {
+    await this.fetch('v1/endSession', {
+      headers: { 'Content-Type': 'application/json' },
+      method: 'POST',
+      body: JSON.stringify(request),
+    });
+  }
+
   private async getBaseUrl(): Promise<string> {
     return this.discoveryApi.getBaseUrl('aws-genai');
   }
@@ -82,9 +99,29 @@ export class AgentApiClient implements AgentApi {
     const baseUrl = await this.getBaseUrl();
     const response = await this.fetchApi.fetch(`${baseUrl}/${path}`, options);
 
-    if (!response.ok)
+    if (!response.ok) {
       throw new Error(`Failed to retrieved data from path ${path}`);
+    }
 
     return response.body!;
+  }
+
+  private async get<T>(
+    path: string,
+    handleMissing: boolean,
+  ): Promise<T | undefined> {
+    const baseUrl = await this.getBaseUrl();
+
+    const response = await this.fetchApi.fetch(`${baseUrl}/${path}`);
+
+    if (!response.ok) {
+      if (response.status === 404 && handleMissing) {
+        return undefined;
+      }
+
+      throw Error(response.statusText);
+    }
+
+    return response.json() as Promise<T>;
   }
 }

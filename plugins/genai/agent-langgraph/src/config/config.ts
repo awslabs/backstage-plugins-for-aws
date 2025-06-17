@@ -22,7 +22,7 @@ import {
 
 export function readSharedLangGraphAgentConfig(
   rootConfig: Config,
-): SharedLangGraphAgentConfig | undefined {
+): SharedLangGraphAgentConfig {
   const config = rootConfig.getOptionalConfig('genai.langgraph');
 
   let langfuseAgentConfig: LangGraphAgentLangFuseConfig | undefined;
@@ -41,6 +41,7 @@ export function readSharedLangGraphAgentConfig(
   }
 
   return {
+    memory: config?.getOptionalString('memory') ?? 'in-memory',
     langfuse: langfuseAgentConfig,
   };
 }

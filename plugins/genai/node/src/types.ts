@@ -16,7 +16,7 @@ import {
   LoggerService,
 } from '@backstage/backend-plugin-api';
 import { CompoundEntityRef } from '@backstage/catalog-model';
-import { ToolInterface } from '@langchain/core/tools';
+import { StructuredToolInterface } from '@langchain/core/tools';
 import {
   ChatEvent,
   GenerateResponse,
@@ -28,26 +28,29 @@ export interface AgentType {
     userMessage: string,
     sessionId: string,
     newSession: boolean,
-    userEntityRef: CompoundEntityRef,
     logger: LoggerService,
     options: {
-      credentials?: BackstageCredentials;
+      userEntityRef?: CompoundEntityRef;
+      credentials: BackstageCredentials;
     },
   ): Promise<ReadableStream<ChatEvent>>;
 
   generate(
     prompt: string,
     sessionId: string,
-    userEntityRef: CompoundEntityRef,
     logger: LoggerService,
     options: {
-      credentials?: BackstageCredentials;
+      userEntityRef?: CompoundEntityRef;
+      credentials: BackstageCredentials;
     },
   ): Promise<GenerateResponse>;
 }
 
 export interface AgentTypeFactory {
-  create(agentConfig: AgentConfig, tools: ToolInterface[]): Promise<AgentType>;
+  create(
+    agentConfig: AgentConfig,
+    tools: StructuredToolInterface[],
+  ): Promise<AgentType>;
 
   getTypeName(): string;
 }

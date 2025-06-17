@@ -16,7 +16,7 @@ import {
   BackstageCredentials,
   LoggerService,
 } from '@backstage/backend-plugin-api';
-import { ToolInterface } from '@langchain/core/tools';
+import { StructuredToolInterface } from '@langchain/core/tools';
 import { CompoundEntityRef } from '@backstage/catalog-model';
 import {
   AgentConfig,
@@ -42,7 +42,7 @@ export class Agent {
     toolkit: Toolkit,
     logger: LoggerService,
   ): Promise<Agent> {
-    const tools: ToolInterface[] = [];
+    const tools: StructuredToolInterface[] = [];
 
     logger.info(
       `Creating agent '${agentConfig.name}' with tools ${JSON.stringify(
@@ -82,16 +82,15 @@ export class Agent {
     userMessage: string,
     sessionId: string,
     newSession: boolean,
-    userEntityRef: CompoundEntityRef,
     options: {
-      credentials?: BackstageCredentials;
+      userEntityRef?: CompoundEntityRef;
+      credentials: BackstageCredentials;
     },
   ): Promise<ReadableStream<ChatEvent>> {
     return this.agentType.stream(
       userMessage,
       sessionId,
       newSession,
-      userEntityRef,
       this.logger,
       options,
     );
@@ -100,18 +99,12 @@ export class Agent {
   public async generate(
     prompt: string,
     sessionId: string,
-    userEntityRef: CompoundEntityRef,
     options: {
+      userEntityRef?: CompoundEntityRef;
       responseSchema?: any;
-      credentials?: BackstageCredentials;
+      credentials: BackstageCredentials;
     },
   ): Promise<GenerateResponse> {
-    return this.agentType.generate(
-      prompt,
-      sessionId,
-      userEntityRef,
-      this.logger,
-      options,
-    );
+    return this.agentType.generate(prompt, sessionId, this.logger, options);
   }
 }

@@ -11,25 +11,19 @@
  * limitations under the License.
  */
 
-import { createApiRef } from '@backstage/core-plugin-api';
-import {
-  ChatEvent,
-  ChatRequest,
-  ChatSession,
-  EndSessionRequest,
-} from '@aws/genai-plugin-for-backstage-common';
+exports.up = async function up(knex) {
+  await knex.schema.createTable('chat_sessions', table => {
+    table.string('session_id').primary();
+    table.string('agent').notNullable();
+    table.string('principal').notNullable();
+    table.timestamp('created').notNullable().defaultTo(knex.fn.now());
+    table.timestamp('ended');
+    table.timestamp('last_activity').notNullable().defaultTo(knex.fn.now());
 
-export const agentApiRef = createApiRef<AgentApi>({
-  id: 'plugin.aws-genai-agent.service',
-});
+    table.index(['principal'], 'chat_sessions_principal_idx');
+  });
+};
 
-export interface AgentApi {
-  chatSync(request: ChatRequest): AsyncGenerator<ChatEvent>;
-
-  endSession(request: EndSessionRequest): Promise<void>;
-
-  getUserSession(
-    agent: string,
-    sessionId: string,
-  ): Promise<ChatSession | undefined>;
-}
+exports.down = async function down(knex) {
+  await knex.schema.dropTable('chat_sessions');
+};

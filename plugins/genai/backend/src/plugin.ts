@@ -25,12 +25,13 @@ import {
   AgentTypeFactory,
 } from '@aws/genai-plugin-for-backstage-node';
 import { ToolInterface } from '@langchain/core/tools';
-import { catalogServiceRef } from '@backstage/plugin-catalog-node/alpha';
+import { catalogServiceRef } from '@backstage/plugin-catalog-node';
 import {
   createBackstageCatalogSearchTool,
   createBackstageEntityTool,
   createBackstageTechDocsSearchTool,
 } from './tools';
+import { DatabaseSessionStore } from './database';
 
 export const awsGenAiPlugin = createBackendPlugin({
   pluginId: 'aws-genai',
@@ -61,6 +62,7 @@ export const awsGenAiPlugin = createBackendPlugin({
         httpAuth: coreServices.httpAuth,
         userInfo: coreServices.userInfo,
         catalogApi: catalogServiceRef,
+        database: coreServices.database,
       },
       async init({
         logger,
@@ -71,18 +73,25 @@ export const awsGenAiPlugin = createBackendPlugin({
         httpAuth,
         userInfo,
         catalogApi,
+        database,
       }) {
         const winstonLogger = loggerToWinstonLogger(logger);
 
-        toolkit.add(createBackstageEntityTool(catalogApi, auth));
+        toolkit.add(createBackstageEntityTool(catalogApi));
         toolkit.add(createBackstageCatalogSearchTool(discovery, auth));
         toolkit.add(createBackstageTechDocsSearchTool(discovery, auth));
+
+        const sessionStore = await DatabaseSessionStore.create({
+          database,
+          skipMigrations: false,
+        });
 
         const agentService = await DefaultAgentService.fromConfig(config, {
           agentTypeFactories,
           toolkit,
           userInfo,
           logger,
+          sessionStore,
         });
 
         httpRouter.use(

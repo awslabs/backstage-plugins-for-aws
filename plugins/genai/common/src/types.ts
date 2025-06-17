@@ -29,3 +29,17 @@ export interface AgentRequestOptions {
 export interface GenerateResponse {
   output: any;
 }
+
+export interface EndSessionRequest {
+  sessionId: string;
+  agentName: string;
+}
+
+export interface ChatSession {
+  sessionId: string;
+  principal: string;
+  agent: string;
+  created: Date;
+  lastActivity: Date;
+  ended?: Date;
+}

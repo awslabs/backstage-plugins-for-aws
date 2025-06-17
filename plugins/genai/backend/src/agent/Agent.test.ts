@@ -18,11 +18,13 @@ import {
 } from '@aws/genai-plugin-for-backstage-node';
 import { Toolkit } from '../tools/Toolkit';
 import { CompoundEntityRef } from '@backstage/catalog-model';
-import { mockServices } from '@backstage/backend-test-utils';
+import { mockCredentials, mockServices } from '@backstage/backend-test-utils';
 import { ConfigReader } from '@backstage/config';
 
 const mockLogger = mockServices.logger.mock();
 const mockConfig = new ConfigReader({});
+
+const credentials = mockCredentials.user('user:default/guest');
 
 describe('Agent', () => {
   describe('constructor', () => {
@@ -165,21 +167,17 @@ describe('Agent', () => {
         namespace: 'default',
         name: 'testuser',
       };
-      const options = {};
-
-      await agent.stream(
-        userMessage,
-        sessionId,
-        newSession,
+      const options = {
         userEntityRef,
-        options,
-      );
+        credentials,
+      };
+
+      await agent.stream(userMessage, sessionId, newSession, options);
 
       expect(mockAgentType.stream).toHaveBeenCalledWith(
         userMessage,
         sessionId,
         newSession,
-        userEntityRef,
         mockLogger,
         options,
       );
@@ -196,18 +194,14 @@ describe('Agent', () => {
         mockLogger,
       );
 
-      const result = await agent.stream(
-        'Hello',
-        'session123',
-        true,
-        {} as CompoundEntityRef,
-        {},
-      );
+      const result = await agent.stream('Hello', 'session123', true, {
+        credentials,
+      });
 
       expect(result).toBeInstanceOf(ReadableStream);
     });
 
-    it('should handle stream with no options', async () => {
+    it('should handle stream with no userEntityRef', async () => {
       const mockAgentType = {
         stream: jest.fn().mockResolvedValue(new ReadableStream()),
       };
@@ -217,21 +211,15 @@ describe('Agent', () => {
         mockAgentType as any,
         mockLogger,
       );
-      const userEntityRef: CompoundEntityRef = {
-        kind: 'User',
-        namespace: 'default',
-        name: 'testuser',
-      };
 
-      await agent.stream('Hello', 'session123', false, userEntityRef, {});
+      await agent.stream('Hello', 'session123', false, { credentials });
 
       expect(mockAgentType.stream).toHaveBeenCalledWith(
         'Hello',
         'session123',
         false,
-        userEntityRef,
         mockLogger,
-        {},
+        { credentials },
       );
     });
 
@@ -247,7 +235,7 @@ describe('Agent', () => {
       );
 
       await expect(
-        agent.stream('Hello', 'session123', true, {} as CompoundEntityRef, {}),
+        agent.stream('Hello', 'session123', true, { credentials }),
       ).rejects.toThrow('Stream error');
     });
   });
@@ -270,14 +258,16 @@ describe('Agent', () => {
         namespace: 'default',
         name: 'testuser',
       };
-      const options = {};
+      const options = {
+        userEntityRef,
+        credentials,
+      };
 
-      await agent.generate(userMessage, sessionId, userEntityRef, options);
+      await agent.generate(userMessage, sessionId, options);
 
       expect(mockAgentType.generate).toHaveBeenCalledWith(
         userMessage,
         sessionId,
-        userEntityRef,
         mockLogger,
         options,
       );
@@ -295,7 +285,7 @@ describe('Agent', () => {
       );
 
       await expect(
-        agent.generate('Hello', 'session123', {} as CompoundEntityRef, {}),
+        agent.generate('Hello', 'session123', { credentials }),
       ).rejects.toThrow('Sync error');
     });
   });

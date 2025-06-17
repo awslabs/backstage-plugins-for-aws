@@ -28,6 +28,7 @@ import {
   ChatRequest,
   GenerateRequest,
   ChatEvent,
+  EndSessionRequest,
 } from '@aws/genai-plugin-for-backstage-common';
 
 export interface RouterOptions {
@@ -104,6 +105,38 @@ export async function createRouter(
     });
 
     response.json({ ...answer });
+  });
+
+  router.get('/v1/session/:agent/:sessionId', async (request, response) => {
+    const { agent, sessionId } = request.params;
+
+    const credentials = await httpAuth.credentials(request);
+
+    const session = await agentService.getUserSession({
+      agentName: agent,
+      sessionId,
+      credentials,
+    });
+
+    if (!session) {
+      response.status(404).send();
+      return;
+    }
+
+    response.json(session);
+  });
+
+  router.post('/v1/endSession', async (request, response) => {
+    const payload = request.body as EndSessionRequest;
+
+    const credentials = await httpAuth.credentials(request);
+
+    await agentService.endSession({
+      ...payload,
+      credentials,
+    });
+
+    response.status(200).send();
   });
 
   router.get('/health', (_, response) => {
