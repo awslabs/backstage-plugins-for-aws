@@ -1,7 +1,7 @@
 {
   "name": "@aws/genai-plugin-for-backstage-node",
   "description": "Node library for the GenAI AWS plugins for Backstage",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "repository": {
     "type": "git",
     "url": "github:awslabs/backstage-plugins-for-aws",
