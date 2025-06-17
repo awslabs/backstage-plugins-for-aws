@@ -126,8 +126,9 @@ export class DefaultAgentService implements AgentService {
     let newSession = false;
     let session: ChatSession;
 
-    const { principal, userEntityRef } =
-      await this.getUserEntityRef(credentials);
+    const { principal, userEntityRef } = await this.getUserEntityRef(
+      credentials,
+    );
 
     const agent = this.getActualAgent(options.agentName);
 
