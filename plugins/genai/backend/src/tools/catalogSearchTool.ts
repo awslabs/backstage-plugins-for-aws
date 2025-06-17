@@ -30,7 +30,7 @@ export function createBackstageCatalogSearchTool(
     description: `Search the Backstage catalog for entities. Results are ordered by relevance to the query.
 
 Responses are paginated. To get the next page, pass the "nextPageCursor" value as the "pageCursor" parameter to the tool again.
-      
+
 DO NOT try to filter on kinds in the query string, always use the "kinds" parameter.
 `,
     schema: z.object({
