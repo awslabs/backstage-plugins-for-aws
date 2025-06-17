@@ -12,11 +12,11 @@
  */
 
 import { createExtensionPoint } from '@backstage/backend-plugin-api';
-import { ToolInterface } from '@langchain/core/tools';
+import { StructuredToolInterface } from '@langchain/core/tools';
 import { AgentTypeFactory } from './types';
 
 export interface AgentToolExtensionPoint {
-  addTools(...tools: ToolInterface[]): void;
+  addTools(...tools: StructuredToolInterface[]): void;
 }
 
 export const agentToolExtensionPoint =
