@@ -21,10 +21,10 @@ repos:
         types: [file, yaml]
         entry: yamllint --strict -c yamllint-config.yaml
 
-  - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: v3.0.3
+  - repo: local
     hooks:
-      - id: prettier
-        additional_dependencies:
-          - prettier
-          - '@spotify/prettier-config'
+      - id: lint
+        language: node
+        name: Run linting
+        entry: yarn lint
+        stage: [commit]
