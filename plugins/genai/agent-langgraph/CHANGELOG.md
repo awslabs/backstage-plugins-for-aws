@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.2](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/genai-plugin-langgraph-agent-for-backstage@0.3.1...@aws/genai-plugin-langgraph-agent-for-backstage@0.3.2) (2025-06-17)
+
+
+### Bug Fixes
+
+* Pin langchain AWS package ([c9b5d46](https://github.com/awslabs/backstage-plugins-for-aws/commit/c9b5d46e76f13588f09fe00c760f12a4e5ae34c9))
+
+
+
+
+
 ## [0.3.1](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/genai-plugin-langgraph-agent-for-backstage@0.3.0...@aws/genai-plugin-langgraph-agent-for-backstage@0.3.1) (2025-06-17)
 
 **Note:** Version bump only for package @aws/genai-plugin-langgraph-agent-for-backstage
