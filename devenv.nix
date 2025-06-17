@@ -1,7 +1,7 @@
 { pkgs, lib, config, inputs, ... }:
 
 {
-  packages = [ 
+  packages = [
     pkgs.git
     pkgs.jq
     pkgs.yq-go
