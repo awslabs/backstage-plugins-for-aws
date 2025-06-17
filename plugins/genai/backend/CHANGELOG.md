@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.2](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/genai-plugin-for-backstage-backend@0.2.1...@aws/genai-plugin-for-backstage-backend@0.2.2) (2025-06-17)
+
+
+### Bug Fixes
+
+* Include migrations in package ([67ba301](https://github.com/awslabs/backstage-plugins-for-aws/commit/67ba301af2c8386b61e2193c892876cf2d4cb1d2))
+
+
+
+
+
 ## [0.2.1](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/genai-plugin-for-backstage-backend@0.2.0...@aws/genai-plugin-for-backstage-backend@0.2.1) (2025-06-17)
 
 **Note:** Version bump only for package @aws/genai-plugin-for-backstage-backend
