@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.7](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-config-catalog-module-for-backstage@0.1.6...@aws/aws-config-catalog-module-for-backstage@0.1.7) (2025-06-17)
+
+
+### Bug Fixes
+
+* **deps:** update aws-sdk-js-v3 monorepo ([#378](https://github.com/awslabs/backstage-plugins-for-aws/issues/378)) ([952981b](https://github.com/awslabs/backstage-plugins-for-aws/commit/952981b090b2036af65eabad6b2f1fa838b71332))
+
+
+
+
+
 ## [0.1.6](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-config-catalog-module-for-backstage@0.1.5...@aws/aws-config-catalog-module-for-backstage@0.1.6) (2025-05-28)
 
 

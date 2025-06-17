@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.1](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/cost-insights-plugin-for-backstage@0.2.0...@aws/cost-insights-plugin-for-backstage@0.2.1) (2025-06-17)
+
+
+### Bug Fixes
+
+* Correctly use namespaces groups for Cost Insights ([#389](https://github.com/awslabs/backstage-plugins-for-aws/issues/389)) ([2f88158](https://github.com/awslabs/backstage-plugins-for-aws/commit/2f88158cdcf44021c62be96d6272c4e11b752352))
+
+
+
+
+
 # [0.2.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/cost-insights-plugin-for-backstage@0.1.3...@aws/cost-insights-plugin-for-backstage@0.2.0) (2024-11-29)
 
 
