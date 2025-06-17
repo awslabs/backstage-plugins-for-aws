@@ -3134,7 +3134,7 @@ __metadata:
     "@backstage/catalog-model": "npm:^1.7.0"
     "@backstage/cli": "npm:^0.26.5"
     "@backstage/config": "npm:^1.2.0"
-    "@langchain/aws": "npm:^0.1.10"
+    "@langchain/aws": "npm:0.1.10"
     "@langchain/core": "npm:0.3.57"
     "@langchain/langgraph": "npm:0.2.74"
     "@langchain/langgraph-checkpoint-postgres": "npm:^0.0.5"
@@ -11916,17 +11916,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@langchain/aws@npm:^0.1.10":
-  version: 0.1.11
-  resolution: "@langchain/aws@npm:0.1.11"
+"@langchain/aws@npm:0.1.10":
+  version: 0.1.10
+  resolution: "@langchain/aws@npm:0.1.10"
   dependencies:
     "@aws-sdk/client-bedrock-agent-runtime": "npm:^3.755.0"
     "@aws-sdk/client-bedrock-runtime": "npm:^3.755.0"
     "@aws-sdk/client-kendra": "npm:^3.750.0"
     "@aws-sdk/credential-provider-node": "npm:^3.750.0"
+    zod: "npm:^3.23.8"
+    zod-to-json-schema: "npm:^3.22.5"
   peerDependencies:
-    "@langchain/core": ">=0.3.58 <0.4.0"
-  checksum: 10c0/6f779f01bfb8052cd05923e7bafe65a6a8168c76a633b05372789f9e5c17482a70514a667e9a458130d6e9b7c59646e73295c4cfababf19a9405c9db1109ec7f
+    "@langchain/core": ">=0.3.48 <0.4.0"
+  checksum: 10c0/93ff8d3961b7e762ff2baf8421fcf4835252476e1853fa80592c0c8195323d052fa2e748c58a2faca653bab4f7c267a8b0a72883869bc23365d67638b9b33ffe
   languageName: node
   linkType: hard
 
@@ -43432,6 +43434,15 @@ __metadata:
   peerDependencies:
     zod: ^3.23.3
   checksum: 10c0/bf50455f446c96b9a161476347ebab6e3bcae7fdf1376ce0b74248e79db733590164476dac2fc481a921868f705fefdcafd223a98203a700b3f01ba1cda6aa90
+  languageName: node
+  linkType: hard
+
+"zod-to-json-schema@npm:^3.22.5":
+  version: 3.24.5
+  resolution: "zod-to-json-schema@npm:3.24.5"
+  peerDependencies:
+    zod: ^3.24.1
+  checksum: 10c0/0745b94ba53e652d39f262641cdeb2f75d24339fb6076a38ce55bcf53d82dfaea63adf524ebc5f658681005401687f8e9551c4feca7c4c882e123e66091dfb90
   languageName: node
   linkType: hard
 
