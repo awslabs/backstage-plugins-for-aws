@@ -12,6 +12,7 @@
  */
 
 export interface SharedLangGraphAgentConfig {
+  memory: string;
   langfuse?: LangGraphAgentLangFuseConfig;
 }
 

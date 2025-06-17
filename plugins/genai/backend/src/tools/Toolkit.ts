@@ -11,16 +11,16 @@
  * limitations under the License.
  */
 
-import { ToolInterface } from '@langchain/core/tools';
+import { StructuredToolInterface } from '@langchain/core/tools';
 
 export class Toolkit {
-  private tools: Map<string, ToolInterface>;
+  private tools: Map<string, StructuredToolInterface>;
 
   constructor() {
-    this.tools = new Map<string, ToolInterface>();
+    this.tools = new Map<string, StructuredToolInterface>();
   }
 
-  add(...tools: ToolInterface[]): void {
+  add(...tools: StructuredToolInterface[]): void {
     tools.forEach(tool => {
       const name = tool.getName();
       if (name) {
@@ -33,11 +33,11 @@ export class Toolkit {
     });
   }
 
-  getTools(): ToolInterface[] {
+  getTools(): StructuredToolInterface[] {
     return Array.from(this.tools.values());
   }
 
-  getToolByName(name: string): ToolInterface | undefined {
+  getToolByName(name: string): StructuredToolInterface | undefined {
     return this.tools.get(name);
   }
 }

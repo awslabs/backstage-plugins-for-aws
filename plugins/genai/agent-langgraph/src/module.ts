@@ -20,7 +20,7 @@ import {
   agentTypeExtensionPoint,
 } from '@aws/genai-plugin-for-backstage-node';
 import { LangGraphReactAgentType } from './LangGraphReactAgentType';
-import { ToolInterface } from '@langchain/core/tools';
+import { StructuredToolInterface } from '@langchain/core/tools';
 
 export const genAiPluginForBackstageModuleLangGraphAgent = createBackendModule({
   pluginId: 'aws-genai',
@@ -31,15 +31,22 @@ export const genAiPluginForBackstageModuleLangGraphAgent = createBackendModule({
         config: coreServices.rootConfig,
         logger: coreServices.logger,
         agentType: agentTypeExtensionPoint,
+        database: coreServices.database,
       },
-      async init({ agentType, config, logger }) {
+      async init({ agentType, config, logger, database }) {
+        const dbClient = await database.getClient();
+
         agentType.addAgentType({
-          create: async (agentConfig: AgentConfig, tools: ToolInterface[]) =>
+          create: async (
+            agentConfig: AgentConfig,
+            tools: StructuredToolInterface[],
+          ) =>
             LangGraphReactAgentType.fromConfig(
               config,
               agentConfig,
               tools,
               logger,
+              dbClient.client.config,
             ),
 
           getTypeName: () => 'langgraph-react',

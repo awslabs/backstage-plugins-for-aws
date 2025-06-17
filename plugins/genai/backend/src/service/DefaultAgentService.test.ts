@@ -15,9 +15,11 @@ import { DefaultAgentService } from './DefaultAgentService';
 import { Agent } from '../agent/Agent';
 import {
   ChatEvent,
+  ChatSession,
   GenerateResponse,
 } from '@aws/genai-plugin-for-backstage-common';
 import { mockCredentials, mockServices } from '@backstage/backend-test-utils';
+import { SessionStore } from '../database';
 
 const loggerMock = mockServices.logger.mock();
 const userInfoMock = mockServices.userInfo.mock({
@@ -33,6 +35,7 @@ const credentials = mockCredentials.user('user:default/guest');
 describe('DefaultAgentService', () => {
   let agentMock: jest.Mocked<Agent>;
   let service: DefaultAgentService;
+  let sessionStoreMock: jest.Mocked<SessionStore>;
 
   beforeEach(() => {
     agentMock = {
@@ -40,8 +43,48 @@ describe('DefaultAgentService', () => {
       generate: jest.fn(),
     } as unknown as jest.Mocked<Agent>;
 
+    sessionStoreMock = {
+      createSession({
+        agent,
+        sessionId,
+        principal,
+        ended,
+      }: {
+        agent: string;
+        sessionId: string;
+        principal: string;
+        ended: boolean;
+      }) {
+        return {
+          agent,
+          sessionId,
+          principal,
+          created: new Date(),
+          lastActivity: new Date(),
+          ended: ended ? new Date() : undefined,
+        } as ChatSession;
+      },
+      getSession(agent: string, sessionId: string, principal: string) {
+        return {
+          agent,
+          sessionId,
+          principal,
+          created: new Date(),
+          lastActivity: new Date(),
+        } as ChatSession;
+      },
+      updateSession(session: ChatSession) {
+        return session;
+      },
+    } as unknown as jest.Mocked<SessionStore>;
+
     const agents = new Map<string, Agent>([['testAgent', agentMock]]);
-    service = new DefaultAgentService(loggerMock, userInfoMock, agents);
+    service = new DefaultAgentService(
+      loggerMock,
+      userInfoMock,
+      agents,
+      sessionStoreMock,
+    );
   });
 
   describe('stream', () => {
@@ -62,8 +105,10 @@ describe('DefaultAgentService', () => {
         userMessage,
         'test-session',
         false,
-        { kind: 'user', name: 'guest', namespace: 'default' },
-        { credentials },
+        {
+          credentials,
+          userEntityRef: { kind: 'user', name: 'guest', namespace: 'default' },
+        },
       );
       expect(result).toBe(mockStream);
     });
@@ -80,8 +125,10 @@ describe('DefaultAgentService', () => {
         userMessage,
         expect.any(String),
         true,
-        { kind: 'user', name: 'guest', namespace: 'default' },
-        { credentials },
+        {
+          credentials,
+          userEntityRef: { kind: 'user', name: 'guest', namespace: 'default' },
+        },
       );
     });
 
@@ -107,14 +154,16 @@ describe('DefaultAgentService', () => {
       expect(agentMock.generate).toHaveBeenCalledWith(
         prompt,
         expect.any(String),
-        { kind: 'user', name: 'guest', namespace: 'default' },
-        { credentials },
+        {
+          credentials,
+          userEntityRef: { kind: 'user', name: 'guest', namespace: 'default' },
+        },
       );
     });
 
     it('should throw an error if specified agent is not found', async () => {
       const prompt = 'Test prompt';
-      const options = { agentName: 'nonExistentAgent' };
+      const options = { agentName: 'nonExistentAgent', credentials };
 
       await expect(service.generate(prompt, options)).rejects.toThrow(
         'Agent nonExistentAgent not found',

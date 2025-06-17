@@ -6,11 +6,8 @@ Features:
 
 1. [ReAct pattern](https://react-lm.github.io/) to use available tools to answer prompts
 1. Choose between Amazon Bedrock or OpenAI as the model provider
+1. Optionally use the Backstage sqlite/Postgres database as a checkpoint store
 1. Integrate with [LangFuse](https://github.com/langfuse/langfuse) for observability
-
-Limitations:
-
-1. In-memory persistence only: Chat sessions only persist in-memory
 
 ## Configuration
 
@@ -23,11 +20,17 @@ Global configuration values apply to all agents, all of this is optional:
 ```yaml
 genai:
   langgraph:
+    memory: # (Optional) Memory store to use
     langfuse: # (Optional) Configuration for LangFuse observability
       baseUrl: http://localhost:3001 # (Required) LangFuse URL
       publicKey: pk-aaa # (Required) Public key
       secretKey: sk-bbb # (Required) Secret key
 ```
+
+The available options for `memory` are:
+
+- `in-memory`: (Default) Store the agent state in memory
+- `backstage`: Uses the Backstage database to store agent state, either sqlite or PostgresQL depending on the configuration
 
 ### Per-agent
 

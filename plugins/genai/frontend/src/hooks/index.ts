@@ -11,25 +11,4 @@
  * limitations under the License.
  */
 
-import { createApiRef } from '@backstage/core-plugin-api';
-import {
-  ChatEvent,
-  ChatRequest,
-  ChatSession,
-  EndSessionRequest,
-} from '@aws/genai-plugin-for-backstage-common';
-
-export const agentApiRef = createApiRef<AgentApi>({
-  id: 'plugin.aws-genai-agent.service',
-});
-
-export interface AgentApi {
-  chatSync(request: ChatRequest): AsyncGenerator<ChatEvent>;
-
-  endSession(request: EndSessionRequest): Promise<void>;
-
-  getUserSession(
-    agent: string,
-    sessionId: string,
-  ): Promise<ChatSession | undefined>;
-}
+export * from './useChatSession';

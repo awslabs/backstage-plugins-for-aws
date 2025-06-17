@@ -13,6 +13,8 @@
 
 import {
   BackstageCredentials,
+  BackstageServicePrincipal,
+  BackstageUserPrincipal,
   LoggerService,
   UserInfoService,
 } from '@backstage/backend-plugin-api';
@@ -20,21 +22,24 @@ import { AgentService } from './types';
 import { Config } from '@backstage/config';
 import { v4 as uuidv4 } from 'uuid';
 import { Toolkit } from '../tools/Toolkit';
-import { parseEntityRef } from '@backstage/catalog-model';
+import { CompoundEntityRef, parseEntityRef } from '@backstage/catalog-model';
 import { readAgentsConfig } from '../config/config';
 import { Agent } from '../agent/Agent';
 import { InvokeAgentTool } from '../tools/invokeAgentTool';
 import { AgentTypeFactory } from '@aws/genai-plugin-for-backstage-node';
 import {
   ChatEvent,
+  ChatSession,
   GenerateResponse,
 } from '@aws/genai-plugin-for-backstage-common';
+import { SessionStore } from '../database';
 
 export class DefaultAgentService implements AgentService {
   public constructor(
     private readonly logger: LoggerService,
     private readonly userInfo: UserInfoService,
     private readonly agents: Map<string, Agent>,
+    private readonly sessionStore: SessionStore,
   ) {}
 
   static async fromConfig(
@@ -44,6 +49,7 @@ export class DefaultAgentService implements AgentService {
       toolkit: Toolkit;
       userInfo: UserInfoService;
       logger: LoggerService;
+      sessionStore: SessionStore;
     },
   ) {
     const agentTypeFactoryMap = new Map(
@@ -97,6 +103,7 @@ export class DefaultAgentService implements AgentService {
       options.logger,
       options.userInfo,
       agents,
+      options.sessionStore,
     );
 
     agentTools.forEach(e => e.setAgentService(service));
@@ -109,40 +116,99 @@ export class DefaultAgentService implements AgentService {
     options: {
       agentName: string;
       sessionId?: string;
-      credentials?: BackstageCredentials;
+      credentials: BackstageCredentials<
+        BackstageUserPrincipal | BackstageServicePrincipal
+      >;
     },
   ): Promise<ReadableStream<ChatEvent>> {
-    let realSessionId = options.sessionId;
+    const { agentName, sessionId, credentials } = options;
+
     let newSession = false;
+    let session: ChatSession;
 
-    if (!realSessionId) {
-      realSessionId = this.generateSessionId();
-      newSession = true;
-    }
-
-    const userEntityRef = await this.getUserEntityRef(options.credentials);
+    const { principal, userEntityRef } = await this.getUserEntityRef(
+      credentials,
+    );
 
     const agent = this.getActualAgent(options.agentName);
 
-    return agent.stream(userMessage, realSessionId, newSession, userEntityRef, {
-      credentials: options.credentials,
+    if (!sessionId) {
+      session = await this.createSession(agentName, principal, false);
+
+      newSession = true;
+    } else {
+      const sessionResult = await this.getSession(
+        agentName,
+        principal,
+        sessionId,
+      );
+
+      if (!sessionResult) {
+        throw new Error(
+          `Session ${sessionId} not found for agent ${agentName}`,
+        );
+      }
+
+      session = sessionResult;
+    }
+
+    return agent.stream(userMessage, session.sessionId, newSession, {
+      userEntityRef,
+      credentials,
     });
+  }
+
+  async getUserSession(options: {
+    agentName: string;
+    sessionId: string;
+    credentials: BackstageCredentials<
+      BackstageUserPrincipal | BackstageServicePrincipal
+    >;
+  }): Promise<ChatSession | undefined> {
+    const { agentName, sessionId, credentials } = options;
+
+    const { principal } = await this.getUserEntityRef(credentials);
+
+    return this.sessionStore.getSession(agentName, sessionId, principal);
+  }
+
+  async endSession(options: {
+    agentName: string;
+    sessionId: string;
+    credentials: BackstageCredentials<
+      BackstageUserPrincipal | BackstageServicePrincipal
+    >;
+  }): Promise<void> {
+    const { agentName, sessionId, credentials } = options;
+
+    const { principal } = await this.getUserEntityRef(credentials);
+
+    await this.sessionStore.endSession(agentName, sessionId, principal);
   }
 
   async generate(
     prompt: string,
     options: {
       agentName: string;
-      credentials?: BackstageCredentials;
+      credentials: BackstageCredentials<
+        BackstageUserPrincipal | BackstageServicePrincipal
+      >;
     },
   ): Promise<GenerateResponse> {
-    const realSessionId = this.generateSessionId();
-
-    const userEntityRef = await this.getUserEntityRef(options.credentials);
+    const { principal, userEntityRef } = await this.getUserEntityRef(
+      options.credentials,
+    );
 
     const agent = this.getActualAgent(options.agentName);
 
-    return agent.generate(prompt, realSessionId, userEntityRef, {
+    const session = await this.createSession(
+      options.agentName,
+      principal,
+      true,
+    );
+
+    return agent.generate(prompt, session.sessionId, {
+      userEntityRef,
       credentials: options.credentials,
     });
   }
@@ -161,16 +227,41 @@ export class DefaultAgentService implements AgentService {
     return this.agents.get(agent);
   }
 
-  private generateSessionId() {
+  private createSession(agent: string, principal: string, ended: boolean) {
     const sessionId = uuidv4();
+
     this.logger.info(`Generated session ${sessionId}`);
 
-    return sessionId;
+    return this.sessionStore.createSession({
+      agent,
+      principal,
+      sessionId,
+      ended,
+    });
   }
 
-  private async getUserEntityRef(credentials?: BackstageCredentials) {
-    const userInfo = await this.userInfo.getUserInfo(credentials!);
+  private getSession(agent: string, principal: string, sessionId: string) {
+    this.logger.info(`Generated session ${sessionId}`);
 
-    return parseEntityRef(userInfo.userEntityRef);
+    return this.sessionStore.getSession(agent, sessionId, principal);
+  }
+
+  private async getUserEntityRef(
+    credentials: BackstageCredentials<
+      BackstageUserPrincipal | BackstageServicePrincipal
+    >,
+  ): Promise<{ userEntityRef?: CompoundEntityRef; principal: string }> {
+    if (credentials.principal.type === 'service') {
+      return { principal: `service:credentials.principal` };
+    }
+
+    const userInfo = await this.userInfo.getUserInfo(credentials);
+
+    const userEntityRef = parseEntityRef(userInfo.userEntityRef);
+
+    return {
+      userEntityRef,
+      principal: `user:${userEntityRef.namespace}/${userEntityRef.name}`,
+    };
   }
 }

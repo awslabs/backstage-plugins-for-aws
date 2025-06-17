@@ -11,19 +11,13 @@
  * limitations under the License.
  */
 
-import {
-  AuthService,
-  BackstageCredentials,
-} from '@backstage/backend-plugin-api';
-import { CatalogApi } from '@backstage/catalog-client';
+import { BackstageCredentials } from '@backstage/backend-plugin-api';
 import { stringifyEntityRef } from '@backstage/catalog-model';
+import { CatalogService } from '@backstage/plugin-catalog-node/index';
 import { DynamicStructuredTool } from '@langchain/core/tools';
 import { z } from 'zod';
 
-export function createBackstageEntityTool(
-  catalogApi: CatalogApi,
-  auth: AuthService,
-) {
+export function createBackstageEntityTool(catalogApi: CatalogService) {
   return new DynamicStructuredTool({
     get name() {
       return 'backstageEntity';
@@ -53,10 +47,9 @@ export function createBackstageEntityTool(
               stringifyEntityRef({ kind, namespace, name: entityName }),
             ],
           },
-          await auth.getPluginRequestToken({
-            onBehalfOf: credentials,
-            targetPluginId: 'catalog',
-          }),
+          {
+            credentials,
+          },
         ),
       );
     },

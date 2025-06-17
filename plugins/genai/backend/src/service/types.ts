@@ -13,6 +13,7 @@
 
 import {
   ChatEvent,
+  ChatSession,
   GenerateResponse,
 } from '@aws/genai-plugin-for-backstage-common';
 import { BackstageCredentials } from '@backstage/backend-plugin-api';
@@ -23,7 +24,7 @@ export interface AgentService {
     options: {
       agentName: string;
       sessionId?: string;
-      credentials?: BackstageCredentials;
+      credentials: BackstageCredentials;
     },
   ): Promise<ReadableStream<ChatEvent>>;
 
@@ -34,4 +35,16 @@ export interface AgentService {
       credentials?: BackstageCredentials;
     },
   ): Promise<GenerateResponse>;
+
+  endSession(options: {
+    agentName: string;
+    sessionId: string;
+    credentials: BackstageCredentials;
+  }): Promise<void>;
+
+  getUserSession(options: {
+    agentName: string;
+    sessionId: string;
+    credentials: BackstageCredentials;
+  }): Promise<ChatSession | undefined>;
 }

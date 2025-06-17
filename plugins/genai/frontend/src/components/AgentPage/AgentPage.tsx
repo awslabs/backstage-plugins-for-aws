@@ -1,3 +1,4 @@
+// plugins/genai/frontend/src/components/AgentPage/AgentPage.tsx
 /**
  * Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License").
@@ -13,15 +14,12 @@
 
 import { configApiRef, useApi } from '@backstage/core-plugin-api';
 import { Page, Header, Content, InfoCard } from '@backstage/core-components';
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 import { ChatHistoryComponent } from '../ChatHistoryComponent';
 import { ChatInputComponent } from '../ChatInputComponent';
-import { ChatMessage } from '../types';
-import { agentApiRef } from '../../api';
-import { match } from 'ts-pattern';
-
 import { useParams } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core';
+import { useChatSession } from '../../hooks';
 
 const useStyles = makeStyles({
   flex: {
@@ -41,90 +39,20 @@ const useStyles = makeStyles({
 export const AgentPage = ({ title = 'Chat Assistant' }: { title?: string }) => {
   const classes = useStyles();
 
-  const agentApi = useApi(agentApiRef);
   const config = useApi(configApiRef);
-
   const showInformation =
     config.getOptionalBoolean('genai.chat.showInformation') ?? false;
-
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [sessionId, setSessionId] = useState<string | undefined>(undefined);
-
-  const [isLoading, setIsLoading] = useState(false);
 
   const params = useParams() as { agentName: string };
   const agentName = params.agentName;
 
-  const onUserMessage = useCallback(
-    async (userMessage: string) => {
-      setMessages(value => [
-        ...value,
-        {
-          payload: userMessage,
-          type: 'user',
-          tools: [],
-        },
-        {
-          payload: '',
-          type: 'agent',
-          tools: [],
-        },
-      ]);
-      setIsLoading(true);
-
-      for await (const chunk of agentApi.chatSync({
-        userMessage,
-        sessionId,
-        agentName,
-      })) {
-        match(chunk)
-          .with({ type: 'ChunkEvent' }, e => {
-            setMessages(oldMessages => {
-              const lastMessage = oldMessages[oldMessages.length - 1];
-              lastMessage.payload = lastMessage.payload.concat(e.token);
-
-              return [...oldMessages.slice(0, -1), lastMessage];
-            });
-          })
-          .with({ type: 'ResponseEvent' }, e => {
-            setSessionId(e.sessionId);
-          })
-          .with({ type: 'ToolEvent' }, e => {
-            setMessages(oldMessages => {
-              const lastMessage = oldMessages[oldMessages.length - 1];
-              lastMessage.tools.push(e);
-
-              return [...oldMessages.slice(0, -1), lastMessage];
-            });
-          })
-          .with({ type: 'ErrorEvent' }, e => {
-            setMessages(oldMessages => {
-              const lastMessage = oldMessages[oldMessages.length - 1];
-              lastMessage.payload = lastMessage.payload.concat(
-                `Error: ${e.message}`,
-              );
-              lastMessage.type = 'error';
-
-              return [...oldMessages.slice(0, -1), lastMessage];
-            });
-          })
-          .exhaustive();
-      }
-
-      setIsLoading(false);
-    },
-    [agentApi, sessionId, agentName],
-  );
-
-  const onClear = () => {
-    setMessages([]);
-    setIsLoading(false);
-    setSessionId(undefined);
-  };
-
   if (!agentName) {
     throw new Error('agent name is not defined');
   }
+
+  const { messages, isLoading, onUserMessage, onClear } = useChatSession({
+    agentName,
+  });
 
   return (
     <Page themeId="tool">
