@@ -31,6 +31,7 @@ import {
   ChatEvent,
   ChatSession,
   GenerateResponse,
+  SyncResponse,
 } from '@aws/genai-plugin-for-backstage-common';
 import { SessionStore } from '../database';
 
@@ -111,6 +112,10 @@ export class DefaultAgentService implements AgentService {
     return service;
   }
 
+  getAgents(): Agent[] {
+    return Array.from(this.agents.values());
+  }
+
   async stream(
     userMessage: string,
     options: {
@@ -133,7 +138,7 @@ export class DefaultAgentService implements AgentService {
     const agent = this.getActualAgent(options.agentName);
 
     if (!sessionId) {
-      session = await this.createSession(agentName, principal, false);
+      session = await this.makeSession(agentName, principal, false);
 
       newSession = true;
     } else {
@@ -172,6 +177,19 @@ export class DefaultAgentService implements AgentService {
     return this.sessionStore.getSession(agentName, sessionId, principal);
   }
 
+  async createSession(options: {
+    agentName: string;
+    credentials: BackstageCredentials<
+      BackstageUserPrincipal | BackstageServicePrincipal
+    >;
+  }): Promise<ChatSession> {
+    const { agentName, credentials } = options;
+
+    const { principal } = await this.getUserEntityRef(credentials);
+
+    return this.makeSession(agentName, principal, false);
+  }
+
   async endSession(options: {
     agentName: string;
     sessionId: string;
@@ -184,6 +202,35 @@ export class DefaultAgentService implements AgentService {
     const { principal } = await this.getUserEntityRef(credentials);
 
     await this.sessionStore.endSession(agentName, sessionId, principal);
+  }
+
+  async sync(
+    userMessage: string,
+    options: {
+      agentName: string;
+      sessionId?: string;
+      credentials: BackstageCredentials<
+        BackstageUserPrincipal | BackstageServicePrincipal
+      >;
+    },
+  ): Promise<SyncResponse> {
+    const { principal, userEntityRef } = await this.getUserEntityRef(
+      options.credentials,
+    );
+
+    const agent = this.getActualAgent(options.agentName);
+
+    const session = await this.makeSession(options.agentName, principal, true);
+
+    const output = agent.generate(userMessage, session.sessionId, {
+      userEntityRef,
+      credentials: options.credentials,
+    });
+
+    return {
+      output,
+      sessionId: session.sessionId,
+    };
   }
 
   async generate(
@@ -201,11 +248,7 @@ export class DefaultAgentService implements AgentService {
 
     const agent = this.getActualAgent(options.agentName);
 
-    const session = await this.createSession(
-      options.agentName,
-      principal,
-      true,
-    );
+    const session = await this.makeSession(options.agentName, principal, true);
 
     return agent.generate(prompt, session.sessionId, {
       userEntityRef,
@@ -227,7 +270,7 @@ export class DefaultAgentService implements AgentService {
     return this.agents.get(agent);
   }
 
-  private createSession(agent: string, principal: string, ended: boolean) {
+  private makeSession(agent: string, principal: string, ended: boolean) {
     const sessionId = uuidv4();
 
     this.logger.info(`Generated session ${sessionId}`);

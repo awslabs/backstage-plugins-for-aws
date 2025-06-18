@@ -32,6 +32,7 @@ import {
   createBackstageTechDocsSearchTool,
 } from './tools';
 import { DatabaseSessionStore } from './database';
+import { McpService } from './service/McpService';
 
 export const awsGenAiPlugin = createBackendPlugin({
   pluginId: 'aws-genai',
@@ -94,10 +95,13 @@ export const awsGenAiPlugin = createBackendPlugin({
           sessionStore,
         });
 
+        const mcpService = await McpService.fromConfig(agentService);
+
         httpRouter.use(
           await createRouter({
             logger: winstonLogger,
             agentService,
+            mcpService,
             httpAuth,
             discovery,
             auth,

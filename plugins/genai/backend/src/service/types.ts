@@ -15,10 +15,16 @@ import {
   ChatEvent,
   ChatSession,
   GenerateResponse,
+  SyncResponse,
 } from '@aws/genai-plugin-for-backstage-common';
 import { BackstageCredentials } from '@backstage/backend-plugin-api';
+import { Agent } from '../agent/Agent';
 
 export interface AgentService {
+  getAgents(): Agent[];
+
+  getAgent(agentName: string): Agent | undefined;
+
   stream(
     userMessage: string,
     options: {
@@ -28,6 +34,15 @@ export interface AgentService {
     },
   ): Promise<ReadableStream<ChatEvent>>;
 
+  sync(
+    userMessage: string,
+    options: {
+      agentName: string;
+      sessionId?: string;
+      credentials: BackstageCredentials;
+    },
+  ): Promise<SyncResponse>;
+
   generate(
     prompt: string,
     options: {
@@ -35,6 +50,11 @@ export interface AgentService {
       credentials?: BackstageCredentials;
     },
   ): Promise<GenerateResponse>;
+
+  createSession(options: {
+    agentName: string;
+    credentials: BackstageCredentials;
+  }): Promise<ChatSession>;
 
   endSession(options: {
     agentName: string;

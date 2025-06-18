@@ -30,10 +30,13 @@ import {
   ChatEvent,
   EndSessionRequest,
 } from '@aws/genai-plugin-for-backstage-common';
+import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
+import { McpService } from './McpService';
 
 export interface RouterOptions {
   logger: LoggerService;
   agentService: AgentService;
+  mcpService: McpService;
   discovery: DiscoveryService;
   auth?: AuthService;
   httpAuth?: HttpAuthService;
@@ -42,7 +45,7 @@ export interface RouterOptions {
 export async function createRouter(
   options: RouterOptions,
 ): Promise<express.Router> {
-  const { logger, agentService } = options;
+  const { logger, agentService, mcpService } = options;
 
   const router = Router();
   router.use(express.json());
@@ -137,6 +140,41 @@ export async function createRouter(
     });
 
     response.status(200).send();
+  });
+
+  router.post('/v1/mcp/:agent', async (request, response) => {
+    const { agent } = request.params;
+
+    const credentials = await httpAuth.credentials(request);
+
+    try {
+      const server = mcpService.getServer({
+        agentName: agent,
+        credentials,
+      });
+      const transport: StreamableHTTPServerTransport =
+        new StreamableHTTPServerTransport({
+          sessionIdGenerator: undefined,
+        });
+      response.on('close', () => {
+        transport.close();
+        server.close();
+      });
+      await server.connect(transport);
+      await transport.handleRequest(request, response, request.body);
+    } catch (error) {
+      logger.error('Error handling MCP request:', error as Error);
+      if (!response.headersSent) {
+        response.status(500).json({
+          jsonrpc: '2.0',
+          error: {
+            code: -32603,
+            message: 'Internal server error',
+          },
+          id: null,
+        });
+      }
+    }
   });
 
   router.get('/health', (_, response) => {
