@@ -3136,7 +3136,7 @@ __metadata:
     "@backstage/config": "npm:^1.2.0"
     "@langchain/aws": "npm:0.1.10"
     "@langchain/core": "npm:0.3.57"
-    "@langchain/langgraph": "npm:0.2.74"
+    "@langchain/langgraph": "npm:0.3.4"
     "@langchain/langgraph-checkpoint-postgres": "npm:^0.0.5"
     "@langchain/langgraph-checkpoint-sqlite": "npm:^0.1.5"
     "@langchain/openai": "npm:^0.5.11"
@@ -11976,7 +11976,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@langchain/langgraph-checkpoint@npm:~0.0.17":
+"@langchain/langgraph-checkpoint@npm:~0.0.18":
   version: 0.0.18
   resolution: "@langchain/langgraph-checkpoint@npm:0.0.18"
   dependencies:
@@ -12007,21 +12007,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@langchain/langgraph@npm:0.2.74":
-  version: 0.2.74
-  resolution: "@langchain/langgraph@npm:0.2.74"
+"@langchain/langgraph@npm:0.3.4":
+  version: 0.3.4
+  resolution: "@langchain/langgraph@npm:0.3.4"
   dependencies:
-    "@langchain/langgraph-checkpoint": "npm:~0.0.17"
+    "@langchain/langgraph-checkpoint": "npm:~0.0.18"
     "@langchain/langgraph-sdk": "npm:~0.0.32"
     uuid: "npm:^10.0.0"
-    zod: "npm:^3.23.8"
+    zod: "npm:^3.25.32"
   peerDependencies:
-    "@langchain/core": ">=0.2.36 <0.3.0 || >=0.3.40 < 0.4.0"
+    "@langchain/core": ">=0.3.58 < 0.4.0"
     zod-to-json-schema: ^3.x
   peerDependenciesMeta:
     zod-to-json-schema:
       optional: true
-  checksum: 10c0/29522512177a6d886a5c4a33a482e90b05b6ffaa37ef2672d343d9ec011664ffad74b8cd72baaa9cbd7a529037bbe586759d59bb9185db264c28dfc9f0a4dea8
+  checksum: 10c0/a650c5a8947d10703e4cf08ec307b7715423d069a65a7103dc8636148e8cbcfe80e3cb1b94076ed84ffc205523e40fdab50a88605b65eb6280aec808bed1bbe3
   languageName: node
   linkType: hard
 
@@ -43473,6 +43473,13 @@ __metadata:
   version: 3.23.8
   resolution: "zod@npm:3.23.8"
   checksum: 10c0/8f14c87d6b1b53c944c25ce7a28616896319d95bc46a9660fe441adc0ed0a81253b02b5abdaeffedbeb23bdd25a0bf1c29d2c12dd919aef6447652dd295e3e69
+  languageName: node
+  linkType: hard
+
+"zod@npm:^3.25.32":
+  version: 3.25.67
+  resolution: "zod@npm:3.25.67"
+  checksum: 10c0/80a0cab3033272c4ab9312198081f0c4ea88e9673c059aa36dc32024906363729db54bdb78f3dc9d5529bd1601f74974d5a56c0a23e40c6f04a9270c9ff22336
   languageName: node
   linkType: hard
 
