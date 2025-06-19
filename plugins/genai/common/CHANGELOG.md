@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/genai-plugin-for-backstage-common@0.2.0...@aws/genai-plugin-for-backstage-common@0.3.0) (2025-06-19)
+
+
+### Features
+
+* Initial MCP server for GenAI plugin ([#397](https://github.com/awslabs/backstage-plugins-for-aws/issues/397)) ([f4966ed](https://github.com/awslabs/backstage-plugins-for-aws/commit/f4966ed162994ae85b18f3208975dc1a116a8f10))
+
+
+
+
+
 # [0.2.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/genai-plugin-for-backstage-common@0.1.0...@aws/genai-plugin-for-backstage-common@0.2.0) (2025-06-17)
 
 
