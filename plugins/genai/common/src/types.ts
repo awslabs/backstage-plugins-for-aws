@@ -26,6 +26,11 @@ export interface AgentRequestOptions {
   token: string;
 }
 
+export interface SyncResponse {
+  sessionId: string;
+  output: any;
+}
+
 export interface GenerateResponse {
   output: any;
 }

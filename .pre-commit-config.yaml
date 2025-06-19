@@ -26,5 +26,5 @@ repos:
       - id: lint
         language: node
         name: Run linting
-        entry: yarn lint-staged
+        entry: yarn lint-staged --no-stash
         stage: [commit]
