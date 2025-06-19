@@ -4538,24 +4538,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@backstage-community/plugin-tech-radar-common@npm:^1.5.0":
-  version: 1.5.0
-  resolution: "@backstage-community/plugin-tech-radar-common@npm:1.5.0"
+"@backstage-community/plugin-tech-radar-common@npm:^1.6.0":
+  version: 1.6.0
+  resolution: "@backstage-community/plugin-tech-radar-common@npm:1.6.0"
   dependencies:
     zod: "npm:^3.20.0"
-  checksum: 10c0/1897715f4746f3a554cedc57c9e2b0297e95810c5ec6962ee75817eb013fca3f9d7ce05f0a8b070965d50be7fe8eb2bf8353d527842ee869ba9eb307b096390d
+  checksum: 10c0/204ea410da3434bc8a1f891b644af766b7bcbebc60b1f8e5411c142f7b77beef615c4f77ad7c556700c07d63a0950a3d815e8f7615aa035d79c1d7b339f594e9
   languageName: node
   linkType: hard
 
 "@backstage-community/plugin-tech-radar@npm:^1.0.0":
-  version: 1.6.1
-  resolution: "@backstage-community/plugin-tech-radar@npm:1.6.1"
+  version: 1.7.0
+  resolution: "@backstage-community/plugin-tech-radar@npm:1.7.0"
   dependencies:
-    "@backstage-community/plugin-tech-radar-common": "npm:^1.5.0"
-    "@backstage/core-compat-api": "npm:^0.4.1"
-    "@backstage/core-components": "npm:^0.17.1"
-    "@backstage/core-plugin-api": "npm:^1.10.6"
-    "@backstage/frontend-plugin-api": "npm:^0.10.1"
+    "@backstage-community/plugin-tech-radar-common": "npm:^1.6.0"
+    "@backstage/core-compat-api": "npm:^0.4.2"
+    "@backstage/core-components": "npm:^0.17.2"
+    "@backstage/core-plugin-api": "npm:^1.10.7"
+    "@backstage/frontend-plugin-api": "npm:^0.10.2"
     "@material-ui/core": "npm:^4.12.2"
     "@material-ui/icons": "npm:^4.9.1"
     "@types/react": "npm:^16.13.1 || ^17.0.0 || ^18.0.0"
@@ -4566,7 +4566,7 @@ __metadata:
     react: ^16.13.1 || ^17.0.0 || ^18.0.0
     react-dom: ^16.13.1 || ^17.0.0 || ^18.0.0
     react-router-dom: 6.0.0-beta.0 || ^6.3.0
-  checksum: 10c0/7661a739b32d3db2b4a00178d3235b26e999c1b41c8c2573f9d0ee36672cc6f76ced7b71aa15265adcc32d9a3519764ea122a347411b9f009fb78ecaec72a112
+  checksum: 10c0/9152a44192f0d5086a52f482a9da40697e0fb55862ca6ccb591386bf0735d7774e1439c4a124c864c229436e24cc1a2d0129e7836dbe9e6e232324c740caafbc
   languageName: node
   linkType: hard
 
@@ -5990,7 +5990,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@backstage/core-compat-api@npm:^0.4.1, @backstage/core-compat-api@npm:^0.4.2":
+"@backstage/core-compat-api@npm:^0.4.2":
   version: 0.4.2
   resolution: "@backstage/core-compat-api@npm:0.4.2"
   dependencies:
@@ -6214,7 +6214,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@backstage/core-components@npm:^0.17.1, @backstage/core-components@npm:^0.17.2":
+"@backstage/core-components@npm:^0.17.2":
   version: 0.17.2
   resolution: "@backstage/core-components@npm:0.17.2"
   dependencies:
@@ -6289,7 +6289,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@backstage/core-plugin-api@npm:^1.10.6, @backstage/core-plugin-api@npm:^1.10.7":
+"@backstage/core-plugin-api@npm:^1.10.7":
   version: 1.10.7
   resolution: "@backstage/core-plugin-api@npm:1.10.7"
   dependencies:
@@ -6524,7 +6524,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@backstage/frontend-plugin-api@npm:^0.10.1, @backstage/frontend-plugin-api@npm:^0.10.2":
+"@backstage/frontend-plugin-api@npm:^0.10.2":
   version: 0.10.2
   resolution: "@backstage/frontend-plugin-api@npm:0.10.2"
   dependencies:
