@@ -31,7 +31,7 @@
     "@backstage/backend-plugin-api": "^0.8.0",
     "@backstage/catalog-model": "^1.7.0",
     "@backstage/config": "^1.2.0",
-    "@langchain/aws": "0.1.10",
+    "@langchain/aws": "0.1.11",
     "@langchain/core": "0.3.57",
     "@langchain/langgraph": "0.2.74",
     "@langchain/langgraph-checkpoint-postgres": "^0.0.5",
