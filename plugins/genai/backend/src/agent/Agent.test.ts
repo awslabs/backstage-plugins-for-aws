@@ -258,9 +258,13 @@ describe('Agent', () => {
         namespace: 'default',
         name: 'testuser',
       };
+      const responseFormat = {
+        test: 'dummy',
+      };
       const options = {
         userEntityRef,
         credentials,
+        resposeFormat: responseFormat,
       };
 
       await agent.generate(userMessage, sessionId, options);

@@ -275,11 +275,12 @@ export class LangGraphReactAgentType implements AgentType {
     options: {
       userEntityRef?: CompoundEntityRef;
       credentials?: BackstageCredentials;
+      responseFormat?: Record<string, any>;
     },
   ): Promise<GenerateResponse> {
     const messages: (SystemMessage | HumanMessage)[] = [];
 
-    const { userEntityRef, credentials } = options;
+    const { userEntityRef, credentials, responseFormat } = options;
 
     if (this.prompt) {
       messages.push(this.buildSystemPrompt(this.prompt, userEntityRef));
@@ -292,6 +293,7 @@ export class LangGraphReactAgentType implements AgentType {
     const agent = createReactAgent({
       llm: this.llm,
       tools: this.tools,
+      responseFormat,
     });
     const finalState = await agent.invoke(
       { messages },
@@ -303,6 +305,12 @@ export class LangGraphReactAgentType implements AgentType {
         },
       },
     );
+
+    if (responseFormat) {
+      return {
+        output: finalState.structuredResponse,
+      };
+    }
 
     const outputMessages = finalState.messages.slice(messages.length);
 

@@ -236,23 +236,27 @@ export class DefaultAgentService implements AgentService {
   async generate(
     prompt: string,
     options: {
+      responseFormat?: Record<string, any>;
       agentName: string;
       credentials: BackstageCredentials<
         BackstageUserPrincipal | BackstageServicePrincipal
       >;
     },
   ): Promise<GenerateResponse> {
+    const { responseFormat, agentName, credentials } = options;
+
     const { principal, userEntityRef } = await this.getUserEntityRef(
-      options.credentials,
+      credentials,
     );
 
-    const agent = this.getActualAgent(options.agentName);
+    const agent = this.getActualAgent(agentName);
 
-    const session = await this.makeSession(options.agentName, principal, true);
+    const session = await this.makeSession(agentName, principal, true);
 
     return agent.generate(prompt, session.sessionId, {
       userEntityRef,
-      credentials: options.credentials,
+      credentials,
+      responseFormat,
     });
   }
 

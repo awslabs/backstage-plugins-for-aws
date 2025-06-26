@@ -20,6 +20,7 @@ export interface ChatRequest {
 export interface GenerateRequest {
   prompt: string;
   agentName: string;
+  responseFormat?: Record<string, any>;
 }
 
 export interface AgentRequestOptions {

@@ -2699,6 +2699,7 @@ __metadata:
     "@types/uuid": "npm:^10"
     express: "npm:^4.17.1"
     express-promise-router: "npm:^4.1.0"
+    jsonschema: "npm:^1.5.0"
     knex: "npm:^3.1.0"
     lodash: "npm:^4.17.21"
     msw: "npm:^1.0.0"
@@ -30457,6 +30458,13 @@ __metadata:
   version: 1.4.1
   resolution: "jsonschema@npm:1.4.1"
   checksum: 10c0/c3422d3fc7d33ff7234a806ffa909bb6fb5d1cd664bea229c64a1785dc04cbccd5fc76cf547c6ab6dd7881dbcaf3540a6a9f925a5956c61a9cd3e23a3c1796ef
+  languageName: node
+  linkType: hard
+
+"jsonschema@npm:^1.5.0":
+  version: 1.5.0
+  resolution: "jsonschema@npm:1.5.0"
+  checksum: 10c0/c24ddb8d741f02efc0da3ad9b597a275f6b595062903d3edbfaa535c3f9c4c98613df68da5cb6635ed9aeab30d658986fea61d7662fc5b2b92840d5a1e21235e
   languageName: node
   linkType: hard
 

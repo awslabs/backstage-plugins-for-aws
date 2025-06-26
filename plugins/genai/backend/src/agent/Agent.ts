@@ -100,6 +100,7 @@ export class Agent {
     prompt: string,
     sessionId: string,
     options: {
+      responseFormat?: Record<string, any>;
       userEntityRef?: CompoundEntityRef;
       responseSchema?: any;
       credentials: BackstageCredentials;
