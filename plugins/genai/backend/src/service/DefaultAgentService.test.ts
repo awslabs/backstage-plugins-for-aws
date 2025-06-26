@@ -145,7 +145,11 @@ describe('DefaultAgentService', () => {
   describe('generate', () => {
     it('should call agent.generate with correct parameters', async () => {
       const prompt = 'Test prompt';
-      const options = { agentName: 'testAgent', credentials };
+      const options = {
+        agentName: 'testAgent',
+        credentials,
+        responseFormat: { test: 'dummy' },
+      };
 
       agentMock.generate.mockResolvedValue({} as GenerateResponse);
 
@@ -157,6 +161,7 @@ describe('DefaultAgentService', () => {
         {
           credentials,
           userEntityRef: { kind: 'user', name: 'guest', namespace: 'default' },
+          responseFormat: { test: 'dummy' },
         },
       );
     });
