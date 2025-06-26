@@ -40,6 +40,7 @@ export interface AgentType {
     sessionId: string,
     logger: LoggerService,
     options: {
+      responseFormat?: Record<string, any>;
       userEntityRef?: CompoundEntityRef;
       credentials: BackstageCredentials;
     },

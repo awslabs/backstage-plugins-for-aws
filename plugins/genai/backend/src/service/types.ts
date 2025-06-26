@@ -48,6 +48,7 @@ export interface AgentService {
     options: {
       agentName: string;
       credentials?: BackstageCredentials;
+      responseFormat?: Record<string, any>;
     },
   ): Promise<GenerateResponse>;
 

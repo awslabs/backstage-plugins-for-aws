@@ -32,6 +32,7 @@ import {
 } from '@aws/genai-plugin-for-backstage-common';
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
 import { McpService } from './McpService';
+import { Validator } from 'jsonschema';
 
 export interface RouterOptions {
   logger: LoggerService;
@@ -99,6 +100,15 @@ export async function createRouter(
 
   router.post('/v1/generate', async (request, response) => {
     const payload = request.body as GenerateRequest;
+
+    if (payload.responseFormat) {
+      try {
+        new Validator().addSchema(payload.responseFormat);
+      } catch (error) {
+        response.status(400).send('Invalid response format schema');
+        return;
+      }
+    }
 
     const credentials = await httpAuth.credentials(request);
 
