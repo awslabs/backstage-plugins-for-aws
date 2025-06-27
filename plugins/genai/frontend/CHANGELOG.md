@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.2](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/genai-plugin-for-backstage@0.2.1...@aws/genai-plugin-for-backstage@0.2.2) (2025-06-27)
+
+
+### Bug Fixes
+
+* Fix chat styling in dark mode ([b9aeea0](https://github.com/awslabs/backstage-plugins-for-aws/commit/b9aeea0ca449d9fff01dc7a8f98160fdceef2f78))
+
+
+
+
+
 ## [0.2.1](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/genai-plugin-for-backstage@0.2.0...@aws/genai-plugin-for-backstage@0.2.1) (2025-06-19)
 
 **Note:** Version bump only for package @aws/genai-plugin-for-backstage

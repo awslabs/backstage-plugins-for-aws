@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.4.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/genai-plugin-for-backstage-backend@0.3.0...@aws/genai-plugin-for-backstage-backend@0.4.0) (2025-06-27)
+
+
+### Features
+
+* Agent communication ([#412](https://github.com/awslabs/backstage-plugins-for-aws/issues/412)) ([cec39e2](https://github.com/awslabs/backstage-plugins-for-aws/commit/cec39e22e94ca754547fb8652ef276dd75f87a57))
+* GenAI structured outputs ([#410](https://github.com/awslabs/backstage-plugins-for-aws/issues/410)) ([1b65810](https://github.com/awslabs/backstage-plugins-for-aws/commit/1b658108ad08036c7bfb0df10ff82775f70a8d05))
+
+
+
+
+
 # [0.3.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/genai-plugin-for-backstage-backend@0.2.2...@aws/genai-plugin-for-backstage-backend@0.3.0) (2025-06-19)
 
 

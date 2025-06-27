@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.4.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/genai-plugin-langgraph-agent-for-backstage@0.3.3...@aws/genai-plugin-langgraph-agent-for-backstage@0.4.0) (2025-06-27)
+
+
+### Features
+
+* Added configurable langgraph recursion limit ([#411](https://github.com/awslabs/backstage-plugins-for-aws/issues/411)) ([6a9e52a](https://github.com/awslabs/backstage-plugins-for-aws/commit/6a9e52a51608d20512c84e16894eacb7dc1cb014))
+* GenAI structured outputs ([#410](https://github.com/awslabs/backstage-plugins-for-aws/issues/410)) ([1b65810](https://github.com/awslabs/backstage-plugins-for-aws/commit/1b658108ad08036c7bfb0df10ff82775f70a8d05))
+
+
+
+
+
 ## [0.3.3](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/genai-plugin-langgraph-agent-for-backstage@0.3.2...@aws/genai-plugin-langgraph-agent-for-backstage@0.3.3) (2025-06-19)
 
 **Note:** Version bump only for package @aws/genai-plugin-langgraph-agent-for-backstage
