@@ -20,7 +20,6 @@ import {
   Task,
 } from '@aws-sdk/client-ecs';
 import { parse } from '@aws-sdk/util-arn-parser';
-import { CatalogApi } from '@backstage/catalog-client';
 import {
   AwsResourceLocatorFactory,
   AwsResourceLocator,
@@ -45,23 +44,21 @@ import { AmazonECSService } from './types';
 import { DefaultAwsCredentialsManager } from '@backstage/integration-aws-node';
 import { Config } from '@backstage/config';
 import {
-  AuthService,
   BackstageCredentials,
   coreServices,
   createServiceFactory,
   createServiceRef,
-  DiscoveryService,
-  HttpAuthService,
   LoggerService,
 } from '@backstage/backend-plugin-api';
-import { createLegacyAuthAdapters } from '@backstage/backend-common';
-import { catalogServiceRef } from '@backstage/plugin-catalog-node/alpha';
+import {
+  catalogServiceRef,
+  CatalogService,
+} from '@backstage/plugin-catalog-node';
 
 export class DefaultAmazonEcsService implements AmazonECSService {
   public constructor(
     private readonly logger: LoggerService,
-    private readonly auth: AuthService,
-    private readonly catalogApi: CatalogApi,
+    private readonly catalogService: CatalogService,
     private readonly resourceLocator: AwsResourceLocator,
     private readonly credsManager: AwsCredentialsManager,
   ) {}
@@ -69,17 +66,12 @@ export class DefaultAmazonEcsService implements AmazonECSService {
   static async fromConfig(
     config: Config,
     options: {
-      catalogApi: CatalogApi;
-      discovery: DiscoveryService;
-      auth?: AuthService;
-      httpAuth?: HttpAuthService;
+      catalogService: CatalogService;
       logger: LoggerService;
       resourceLocator?: AwsResourceLocator;
     },
   ) {
     const credsManager = DefaultAwsCredentialsManager.fromConfig(config);
-
-    const { auth } = createLegacyAuthAdapters(options);
 
     const resourceLocator =
       options?.resourceLocator ??
@@ -87,8 +79,7 @@ export class DefaultAmazonEcsService implements AmazonECSService {
 
     return new DefaultAmazonEcsService(
       options.logger,
-      auth,
-      options.catalogApi,
+      options.catalogService,
       resourceLocator,
       credsManager,
     );
@@ -96,18 +87,15 @@ export class DefaultAmazonEcsService implements AmazonECSService {
 
   public async getServicesByEntity(options: {
     entityRef: CompoundEntityRef;
-    credentials?: BackstageCredentials;
+    credentials: BackstageCredentials;
   }): Promise<ServicesResponse> {
     this.logger?.debug(`Fetch ECS Services for ${options.entityRef}`);
 
-    const entity = await this.catalogApi.getEntityByRef(
-      options.entityRef,
-      options.credentials &&
-        (await this.auth.getPluginRequestToken({
-          onBehalfOf: options.credentials,
-          targetPluginId: 'catalog',
-        })),
-    );
+    const { entityRef, credentials } = options;
+
+    const entity = await this.catalogService.getEntityByRef(entityRef, {
+      credentials,
+    });
 
     if (!entity) {
       throw new Error(
@@ -278,17 +266,11 @@ export const amazonEcsServiceRef = createServiceRef<AmazonECSService>({
       deps: {
         logger: coreServices.logger,
         config: coreServices.rootConfig,
-        catalogApi: catalogServiceRef,
-        auth: coreServices.auth,
-        discovery: coreServices.discovery,
-        httpAuth: coreServices.httpAuth,
+        catalogService: catalogServiceRef,
       },
-      async factory({ logger, config, catalogApi, auth, httpAuth, discovery }) {
+      async factory({ logger, config, catalogService }) {
         const impl = await DefaultAmazonEcsService.fromConfig(config, {
-          catalogApi,
-          auth,
-          httpAuth,
-          discovery,
+          catalogService,
           logger,
         });
 

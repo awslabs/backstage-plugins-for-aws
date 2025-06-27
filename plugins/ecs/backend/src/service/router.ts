@@ -11,37 +11,27 @@
  * limitations under the License.
  */
 
-import {
-  createLegacyAuthAdapters,
-  errorHandler,
-} from '@backstage/backend-common';
 import express from 'express';
 import Router from 'express-promise-router';
 import { AmazonECSService } from './types';
-import {
-  AuthService,
-  DiscoveryService,
-  HttpAuthService,
-  LoggerService,
-} from '@backstage/backend-plugin-api';
+import { HttpAuthService, LoggerService } from '@backstage/backend-plugin-api';
+import { Config } from '@backstage/config';
+import { MiddlewareFactory } from '@backstage/backend-defaults/rootHttpRouter';
 
 export interface RouterOptions {
   logger: LoggerService;
   amazonEcsApi: AmazonECSService;
-  discovery: DiscoveryService;
-  auth?: AuthService;
-  httpAuth?: HttpAuthService;
+  config: Config;
+  httpAuth: HttpAuthService;
 }
 
 export async function createRouter(
   options: RouterOptions,
 ): Promise<express.Router> {
-  const { logger, amazonEcsApi } = options;
+  const { logger, amazonEcsApi, httpAuth, config } = options;
 
   const router = Router();
   router.use(express.json());
-
-  const { httpAuth } = createLegacyAuthAdapters(options);
 
   router.get(
     '/v1/entity/:namespace/:kind/:name/services',
@@ -64,7 +54,10 @@ export async function createRouter(
     logger.info('PONG!');
     response.json({ status: 'ok' });
   });
-  router.use(errorHandler());
+
+  const middleware = MiddlewareFactory.create({ logger, config });
+  router.use(middleware.error());
+
   return router;
 }
 

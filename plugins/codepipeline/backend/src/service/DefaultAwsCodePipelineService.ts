@@ -12,7 +12,6 @@
  */
 
 import { parse } from '@aws-sdk/util-arn-parser';
-import { CatalogApi } from '@backstage/catalog-client';
 import {
   AwsResourceLocatorFactory,
   AwsResourceLocator,
@@ -43,25 +42,24 @@ import {
   PipelineStateResponse,
 } from '@aws/aws-codepipeline-plugin-for-backstage-common';
 import {
-  AuthService,
   BackstageCredentials,
   coreServices,
   createServiceFactory,
   createServiceRef,
   DiscoveryService,
-  HttpAuthService,
   LoggerService,
 } from '@backstage/backend-plugin-api';
-import { createLegacyAuthAdapters } from '@backstage/backend-common';
-import { catalogServiceRef } from '@backstage/plugin-catalog-node/alpha';
+import {
+  catalogServiceRef,
+  CatalogService,
+} from '@backstage/plugin-catalog-node';
 
 const DEFAULT_EXECUTIONS_LIMIT = 100;
 
 export class DefaultAwsCodePipelineService implements AwsCodePipelineService {
   public constructor(
     private readonly logger: LoggerService,
-    private readonly auth: AuthService,
-    private readonly catalogApi: CatalogApi,
+    private readonly catalogService: CatalogService,
     private readonly resourceLocator: AwsResourceLocator,
     private readonly credsManager: AwsCredentialsManager,
   ) {}
@@ -69,17 +67,13 @@ export class DefaultAwsCodePipelineService implements AwsCodePipelineService {
   static async fromConfig(
     config: Config,
     options: {
-      catalogApi: CatalogApi;
+      catalogService: CatalogService;
       discovery: DiscoveryService;
-      auth?: AuthService;
-      httpAuth?: HttpAuthService;
       logger: LoggerService;
       resourceLocator?: AwsResourceLocator;
     },
   ) {
     const credsManager = DefaultAwsCredentialsManager.fromConfig(config);
-
-    const { auth } = createLegacyAuthAdapters(options);
 
     const resourceLocator =
       options?.resourceLocator ??
@@ -87,8 +81,7 @@ export class DefaultAwsCodePipelineService implements AwsCodePipelineService {
 
     return new DefaultAwsCodePipelineService(
       options.logger,
-      auth,
-      options.catalogApi,
+      options.catalogService,
       resourceLocator,
       credsManager,
     );
@@ -96,7 +89,7 @@ export class DefaultAwsCodePipelineService implements AwsCodePipelineService {
 
   public async getPipelineExecutionsByEntity(options: {
     entityRef: CompoundEntityRef;
-    credentials?: BackstageCredentials;
+    credentials: BackstageCredentials;
   }): Promise<PipelineExecutionsResponse> {
     this.logger?.debug(`Fetch CodePipeline state for ${options.entityRef}`);
 
@@ -161,7 +154,7 @@ export class DefaultAwsCodePipelineService implements AwsCodePipelineService {
 
   public async getPipelineStateByEntity(options: {
     entityRef: CompoundEntityRef;
-    credentials?: BackstageCredentials;
+    credentials: BackstageCredentials;
   }): Promise<PipelineStateResponse> {
     this.logger?.debug(`Fetch CodePipeline state for ${options.entityRef}`);
 
@@ -196,16 +189,13 @@ export class DefaultAwsCodePipelineService implements AwsCodePipelineService {
 
   private async getPipelineArnsForEntity(options: {
     entityRef: CompoundEntityRef;
-    credentials?: BackstageCredentials;
+    credentials: BackstageCredentials;
   }): Promise<string[]> {
-    const entity = await this.catalogApi.getEntityByRef(
-      options.entityRef,
-      options.credentials &&
-        (await this.auth.getPluginRequestToken({
-          onBehalfOf: options.credentials,
-          targetPluginId: 'catalog',
-        })),
-    );
+    const { entityRef, credentials } = options;
+
+    const entity = await this.catalogService.getEntityByRef(entityRef, {
+      credentials,
+    });
 
     if (!entity) {
       throw new Error(
@@ -264,23 +254,12 @@ export const awsCodePipelineServiceRef =
         deps: {
           logger: coreServices.logger,
           config: coreServices.rootConfig,
-          catalogApi: catalogServiceRef,
-          auth: coreServices.auth,
+          catalogService: catalogServiceRef,
           discovery: coreServices.discovery,
-          httpAuth: coreServices.httpAuth,
         },
-        async factory({
-          logger,
-          config,
-          catalogApi,
-          auth,
-          httpAuth,
-          discovery,
-        }) {
+        async factory({ logger, config, catalogService, discovery }) {
           const impl = await DefaultAwsCodePipelineService.fromConfig(config, {
-            catalogApi,
-            auth,
-            httpAuth,
+            catalogService,
             discovery,
             logger,
           });

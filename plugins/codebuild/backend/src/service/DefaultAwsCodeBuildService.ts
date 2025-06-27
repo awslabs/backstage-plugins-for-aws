@@ -12,7 +12,6 @@
  */
 
 import { parse } from '@aws-sdk/util-arn-parser';
-import { CatalogApi } from '@backstage/catalog-client';
 import {
   AwsResourceLocatorFactory,
   AwsResourceLocator,
@@ -43,23 +42,21 @@ import {
   ProjectsResponse,
 } from '@aws/aws-codebuild-plugin-for-backstage-common';
 import {
-  AuthService,
   BackstageCredentials,
   coreServices,
   createServiceFactory,
   createServiceRef,
-  DiscoveryService,
-  HttpAuthService,
   LoggerService,
 } from '@backstage/backend-plugin-api';
-import { createLegacyAuthAdapters } from '@backstage/backend-common';
-import { catalogServiceRef } from '@backstage/plugin-catalog-node/alpha';
+import {
+  catalogServiceRef,
+  CatalogService,
+} from '@backstage/plugin-catalog-node';
 
 export class DefaultAwsCodeBuildService implements AwsCodeBuildService {
   public constructor(
     private readonly logger: LoggerService,
-    private readonly auth: AuthService,
-    private readonly catalogApi: CatalogApi,
+    private readonly catalogService: CatalogService,
     private readonly resourceLocator: AwsResourceLocator,
     private readonly credsManager: AwsCredentialsManager,
   ) {}
@@ -67,17 +64,12 @@ export class DefaultAwsCodeBuildService implements AwsCodeBuildService {
   static async fromConfig(
     config: Config,
     options: {
-      catalogApi: CatalogApi;
-      discovery: DiscoveryService;
-      auth?: AuthService;
-      httpAuth?: HttpAuthService;
+      catalogService: CatalogService;
       logger: LoggerService;
       resourceLocator?: AwsResourceLocator;
     },
   ) {
     const credsManager = DefaultAwsCredentialsManager.fromConfig(config);
-
-    const { auth } = createLegacyAuthAdapters(options);
 
     const resourceLocator =
       options?.resourceLocator ??
@@ -85,8 +77,7 @@ export class DefaultAwsCodeBuildService implements AwsCodeBuildService {
 
     return new DefaultAwsCodeBuildService(
       options.logger,
-      auth,
-      options.catalogApi,
+      options.catalogService,
       resourceLocator,
       credsManager,
     );
@@ -94,7 +85,7 @@ export class DefaultAwsCodeBuildService implements AwsCodeBuildService {
 
   public async getProjectsByEntity(options: {
     entityRef: CompoundEntityRef;
-    credentials?: BackstageCredentials;
+    credentials: BackstageCredentials;
   }): Promise<ProjectsResponse> {
     this.logger?.debug(`Fetch CodeBuild projects for ${options.entityRef}`);
 
@@ -149,16 +140,13 @@ export class DefaultAwsCodeBuildService implements AwsCodeBuildService {
 
   private async getCodeBuildArnsForEntity(options: {
     entityRef: CompoundEntityRef;
-    credentials?: BackstageCredentials;
+    credentials: BackstageCredentials;
   }): Promise<string[]> {
-    const entity = await this.catalogApi.getEntityByRef(
-      options.entityRef,
-      options.credentials &&
-        (await this.auth.getPluginRequestToken({
-          onBehalfOf: options.credentials,
-          targetPluginId: 'catalog',
-        })),
-    );
+    const { entityRef, credentials } = options;
+
+    const entity = await this.catalogService.getEntityByRef(entityRef, {
+      credentials,
+    });
 
     if (!entity) {
       throw new Error(
@@ -216,17 +204,11 @@ export const awsCodeBuildServiceRef = createServiceRef<AwsCodeBuildService>({
       deps: {
         logger: coreServices.logger,
         config: coreServices.rootConfig,
-        catalogApi: catalogServiceRef,
-        auth: coreServices.auth,
-        discovery: coreServices.discovery,
-        httpAuth: coreServices.httpAuth,
+        catalogService: catalogServiceRef,
       },
-      async factory({ logger, config, catalogApi, auth, httpAuth, discovery }) {
+      async factory({ logger, config, catalogService }) {
         const impl = await DefaultAwsCodeBuildService.fromConfig(config, {
-          catalogApi,
-          auth,
-          httpAuth,
-          discovery,
+          catalogService,
           logger,
         });
 

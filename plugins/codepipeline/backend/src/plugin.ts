@@ -16,7 +16,6 @@ import {
   coreServices,
 } from '@backstage/backend-plugin-api';
 import { createRouter } from './service/router';
-import { catalogServiceRef } from '@backstage/plugin-catalog-node/alpha';
 import { awsCodePipelineServiceRef } from './service/DefaultAwsCodePipelineService';
 
 export const awsCodePiplinePlugin = createBackendPlugin({
@@ -27,27 +26,16 @@ export const awsCodePiplinePlugin = createBackendPlugin({
         logger: coreServices.logger,
         httpRouter: coreServices.httpRouter,
         config: coreServices.rootConfig,
-        catalogApi: catalogServiceRef,
-        auth: coreServices.auth,
-        discovery: coreServices.discovery,
         httpAuth: coreServices.httpAuth,
         awsCodePipelineApi: awsCodePipelineServiceRef,
       },
-      async init({
-        logger,
-        httpRouter,
-        auth,
-        httpAuth,
-        discovery,
-        awsCodePipelineApi,
-      }) {
+      async init({ logger, httpRouter, httpAuth, awsCodePipelineApi, config }) {
         httpRouter.use(
           await createRouter({
             logger,
             awsCodePipelineApi,
-            discovery,
-            auth,
             httpAuth,
+            config,
           }),
         );
         httpRouter.addAuthPolicy({

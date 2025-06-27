@@ -11,13 +11,13 @@
  * limitations under the License.
  */
 
-import { getVoidLogger } from '@backstage/backend-common';
 import express from 'express';
 import request from 'supertest';
 
 import { createRouter } from './router';
 import { AwsCodeBuildService } from './types';
 import { mockServices } from '@backstage/backend-test-utils';
+import { ConfigReader } from '@backstage/config';
 
 describe('createRouter', () => {
   let app: express.Express;
@@ -27,9 +27,10 @@ describe('createRouter', () => {
 
   beforeAll(async () => {
     const router = await createRouter({
-      logger: getVoidLogger(),
+      logger: mockServices.logger.mock(),
       awsCodeBuildApi: mockService,
-      discovery: mockServices.discovery(),
+      httpAuth: mockServices.httpAuth.mock(),
+      config: new ConfigReader({}),
     });
     app = express().use(router);
   });

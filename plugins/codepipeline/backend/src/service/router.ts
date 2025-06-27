@@ -11,37 +11,27 @@
  * limitations under the License.
  */
 
-import {
-  createLegacyAuthAdapters,
-  errorHandler,
-} from '@backstage/backend-common';
 import express from 'express';
 import Router from 'express-promise-router';
 import { AwsCodePipelineService } from './types';
-import {
-  AuthService,
-  DiscoveryService,
-  HttpAuthService,
-  LoggerService,
-} from '@backstage/backend-plugin-api';
+import { HttpAuthService, LoggerService } from '@backstage/backend-plugin-api';
+import { MiddlewareFactory } from '@backstage/backend-defaults/rootHttpRouter';
+import { Config } from '@backstage/config';
 
 export interface RouterOptions {
+  config: Config;
   logger: LoggerService;
   awsCodePipelineApi: AwsCodePipelineService;
-  discovery: DiscoveryService;
-  auth?: AuthService;
-  httpAuth?: HttpAuthService;
+  httpAuth: HttpAuthService;
 }
 
 export async function createRouter(
   options: RouterOptions,
 ): Promise<express.Router> {
-  const { logger, awsCodePipelineApi } = options;
+  const { logger, awsCodePipelineApi, httpAuth, config } = options;
 
   const router = Router();
   router.use(express.json());
-
-  const { httpAuth } = createLegacyAuthAdapters(options);
 
   router.get(
     '/v1/entity/:namespace/:kind/:name/executions',
@@ -81,7 +71,10 @@ export async function createRouter(
     logger.info('PONG!');
     response.json({ status: 'ok' });
   });
-  router.use(errorHandler());
+
+  const middleware = MiddlewareFactory.create({ logger, config });
+  router.use(middleware.error());
+
   return router;
 }
 
