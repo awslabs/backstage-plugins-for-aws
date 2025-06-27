@@ -23,7 +23,7 @@ import Error from '@material-ui/icons/Error';
 import { ToolsModal } from './ToolsModal';
 import { makeStyles } from '@material-ui/core';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   container: {
     display: 'flex',
     flexDirection: 'column',
@@ -51,18 +51,17 @@ const useStyles = makeStyles({
     width: '100%',
     marginBottom: '1rem',
     fontSize: '16px',
-    background: '#f8f8fa',
-    color: '#4c4d53',
+    background: theme.palette.background.default,
     borderRadius: '7px',
     padding: '10px',
+
+    '& $ChatItemAvatarIcon': {
+      backgroundColor: theme.palette.type === 'dark' ? '#B3B3B3' : '#757575',
+    },
   },
 
   ChatItemExpert: {
-    background: '#fff',
-
-    '& $ChatItemChatText': {
-      background: '#fff',
-    },
+    background: theme.palette.background.paper,
 
     '& $ChatItemAvatarIcon': {
       backgroundColor: '#f59d12',
@@ -119,7 +118,7 @@ const useStyles = makeStyles({
       backgroundColor: '#5b2e2e',
     },
   },
-});
+}));
 
 export interface ChatHistoryComponentProps {
   messages?: ChatMessage[];
