@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.4.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-core-plugin-for-backstage-scaffolder-actions@0.3.1...@aws/aws-core-plugin-for-backstage-scaffolder-actions@0.4.0) (2025-06-27)
+
+
+### Features
+
+* Remove reliance on deprecated backend APIs ([#413](https://github.com/awslabs/backstage-plugins-for-aws/issues/413)) ([2569862](https://github.com/awslabs/backstage-plugins-for-aws/commit/25698626fcc1c58a356dc08a17ab87251814eb0e))
+
+
+
+
+
 ## [0.3.1](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-core-plugin-for-backstage-scaffolder-actions@0.3.0...@aws/aws-core-plugin-for-backstage-scaffolder-actions@0.3.1) (2024-12-03)
 
 **Note:** Version bump only for package @aws/aws-core-plugin-for-backstage-scaffolder-actions
