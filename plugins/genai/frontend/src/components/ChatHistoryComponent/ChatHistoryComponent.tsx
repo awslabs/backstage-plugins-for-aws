@@ -101,7 +101,9 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center',
   },
 
-  ChatItemAvatarIcon: {},
+  ChatItemAvatarIcon: {
+    color: theme.palette.text.primary,
+  },
 
   ChatItemChatText: {
     position: 'relative',
