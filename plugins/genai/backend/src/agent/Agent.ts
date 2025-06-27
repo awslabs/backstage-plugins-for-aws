@@ -50,7 +50,13 @@ export class Agent {
       )}`,
     );
 
-    for (const toolName of agentConfig.tools) {
+    for (let toolName of agentConfig.tools) {
+      if (toolName.startsWith('agent:')) {
+        const agentName = toolName.split(':')[1];
+
+        toolName = `agent-${agentName}`;
+      }
+
       const tool = toolkit.getToolByName(toolName);
 
       if (!tool) {

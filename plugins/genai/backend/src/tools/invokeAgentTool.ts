@@ -21,13 +21,17 @@ export class InvokeAgentTool extends Tool {
     return 'InvokeAgentTool';
   }
 
+  public readonly name: string;
+
   private agentService?: AgentService;
 
   constructor(
-    public readonly name: string,
+    public readonly agentName: string,
     public readonly description: string,
   ) {
     super();
+
+    this.name = `agent-${agentName}`;
   }
 
   public setAgentService(agentService: AgentService) {
@@ -44,7 +48,7 @@ export class InvokeAgentTool extends Tool {
 
     try {
       const response = await this.agentService.generate(query, {
-        agentName: this.name,
+        agentName: this.agentName,
         credentials,
       });
 
