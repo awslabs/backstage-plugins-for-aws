@@ -24,16 +24,16 @@ export const ecrAwsPlugin = createBackendPlugin({
       deps: {
         logger: coreServices.logger,
         httpRouter: coreServices.httpRouter,
-        discovery: coreServices.discovery,
+        config: coreServices.rootConfig,
         httpAuth: coreServices.httpAuth,
         ecrAwsService: amazonEcrServiceRef,
       },
-      async init({ logger, httpRouter, httpAuth, discovery, ecrAwsService }) {
+      async init({ logger, httpRouter, httpAuth, config, ecrAwsService }) {
         httpRouter.use(
           await createRouter({
             logger,
             ecrAwsService,
-            discovery,
+            config,
             httpAuth,
           }),
         );

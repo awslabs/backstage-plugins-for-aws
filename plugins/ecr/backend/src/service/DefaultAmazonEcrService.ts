@@ -17,7 +17,6 @@ import {
   ImageDetail,
   paginateDescribeImages,
 } from '@aws-sdk/client-ecr';
-import { CatalogApi } from '@backstage/catalog-client';
 import {
   AWS_SDK_CUSTOM_USER_AGENT,
   getOneOfEntityAnnotations,
@@ -34,17 +33,12 @@ import {
   DefaultAwsCredentialsManager,
 } from '@backstage/integration-aws-node';
 import {
-  AuthService,
   BackstageCredentials,
   coreServices,
   createServiceFactory,
   createServiceRef,
-  DiscoveryService,
-  HttpAuthService,
   LoggerService,
 } from '@backstage/backend-plugin-api';
-import { createLegacyAuthAdapters } from '@backstage/backend-common';
-import { catalogServiceRef } from '@backstage/plugin-catalog-node/alpha';
 import {
   CompoundEntityRef,
   stringifyEntityRef,
@@ -56,11 +50,14 @@ import {
 import { Config } from '@backstage/config/index';
 import { parse } from '@aws-sdk/util-arn-parser';
 import { EcrConfig, readEcrConfig } from '../config';
+import {
+  catalogServiceRef,
+  CatalogService,
+} from '@backstage/plugin-catalog-node';
 
 export class DefaultAmazonEcrService implements AmazonEcrService {
   public constructor(
-    private readonly auth: AuthService,
-    private readonly catalogApi: CatalogApi,
+    private readonly catalogService: CatalogService,
     private readonly resourceLocator: AwsResourceLocator,
     private readonly credsManager: AwsCredentialsManager,
     private readonly config: EcrConfig,
@@ -69,25 +66,19 @@ export class DefaultAmazonEcrService implements AmazonEcrService {
   static async fromConfig(
     config: Config,
     options: {
-      catalogApi: CatalogApi;
-      discovery: DiscoveryService;
-      auth?: AuthService;
-      httpAuth?: HttpAuthService;
+      catalogService: CatalogService;
       logger: LoggerService;
       resourceLocator?: AwsResourceLocator;
     },
   ) {
     const credsManager = DefaultAwsCredentialsManager.fromConfig(config);
 
-    const { auth } = createLegacyAuthAdapters(options);
-
     const resourceLocator =
       options?.resourceLocator ??
       (await AwsResourceLocatorFactory.fromConfig(config, options.logger));
 
     return new DefaultAmazonEcrService(
-      auth,
-      options.catalogApi,
+      options.catalogService,
       resourceLocator,
       credsManager,
       readEcrConfig(config),
@@ -99,7 +90,7 @@ export class DefaultAmazonEcrService implements AmazonEcrService {
     credentials,
   }: {
     entityRef: CompoundEntityRef;
-    credentials?: BackstageCredentials;
+    credentials: BackstageCredentials;
   }): Promise<EcrImagesResponse> {
     const arns = await this.getRepositoryArnsForEntity({
       entityRef,
@@ -179,7 +170,7 @@ export class DefaultAmazonEcrService implements AmazonEcrService {
     digest,
   }: {
     entityRef: CompoundEntityRef;
-    credentials?: BackstageCredentials;
+    credentials: BackstageCredentials;
     arn: string;
     digest: string;
   }): Promise<EcrImageScanFindingsResponse> {
@@ -216,16 +207,13 @@ export class DefaultAmazonEcrService implements AmazonEcrService {
 
   private async getRepositoryArnsForEntity(options: {
     entityRef: CompoundEntityRef;
-    credentials?: BackstageCredentials;
+    credentials: BackstageCredentials;
   }): Promise<string[]> {
-    const entity = await this.catalogApi.getEntityByRef(
-      options.entityRef,
-      options.credentials &&
-        (await this.auth.getPluginRequestToken({
-          onBehalfOf: options.credentials,
-          targetPluginId: 'catalog',
-        })),
-    );
+    const { entityRef, credentials } = options;
+
+    const entity = await this.catalogService.getEntityByRef(entityRef, {
+      credentials,
+    });
 
     if (!entity) {
       throw new Error(
@@ -283,17 +271,11 @@ export const amazonEcrServiceRef = createServiceRef<AmazonEcrService>({
       deps: {
         logger: coreServices.logger,
         config: coreServices.rootConfig,
-        catalogApi: catalogServiceRef,
-        auth: coreServices.auth,
-        discovery: coreServices.discovery,
-        httpAuth: coreServices.httpAuth,
+        catalogService: catalogServiceRef,
       },
-      async factory({ logger, config, catalogApi, auth, httpAuth, discovery }) {
+      async factory({ logger, config, catalogService }) {
         const impl = await DefaultAmazonEcrService.fromConfig(config, {
-          catalogApi,
-          auth,
-          httpAuth,
-          discovery,
+          catalogService,
           logger,
         });
 

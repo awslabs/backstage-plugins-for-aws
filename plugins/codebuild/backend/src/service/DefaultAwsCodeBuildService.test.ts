@@ -11,11 +11,9 @@
  * limitations under the License.
  */
 
-import { CatalogApi } from '@backstage/catalog-client';
 import { Entity, CompoundEntityRef } from '@backstage/catalog-model';
 import { ConfigReader } from '@backstage/config';
 import { mockClient } from 'aws-sdk-client-mock';
-import { getVoidLogger } from '@backstage/backend-common';
 import { DefaultAwsCodeBuildService } from './DefaultAwsCodeBuildService';
 import { AwsResourceLocator } from '@aws/aws-core-plugin-for-backstage-node';
 import {
@@ -36,7 +34,8 @@ import {
   mockCodeBuildProject,
   mockCodeBuildProjectBuild,
 } from '@aws/aws-codebuild-plugin-for-backstage-common';
-import { mockServices } from '@backstage/backend-test-utils';
+import { mockCredentials, mockServices } from '@backstage/backend-test-utils';
+import { CatalogService } from '@backstage/plugin-catalog-node';
 
 function getMockCredentialProvider(): Promise<AwsCredentialProvider> {
   return Promise.resolve({
@@ -53,9 +52,11 @@ const getCredProviderMock = jest.spyOn(
   'getCredentialProvider',
 );
 
-const mockCatalog: jest.Mocked<CatalogApi> = {
+const credentials = mockCredentials.user('user:default/guest');
+
+const mockCatalog: jest.Mocked<CatalogService> = {
   getEntityByRef: jest.fn(),
-} as any as jest.Mocked<CatalogApi>;
+} as any as jest.Mocked<CatalogService>;
 
 const entityRef: CompoundEntityRef = {
   kind: 'Component',
@@ -70,7 +71,7 @@ const mockResourceLocator: jest.Mocked<AwsResourceLocator> = {
   getResourceArns: jest.fn(),
 } as any as jest.Mocked<AwsResourceLocator>;
 
-const logger = getVoidLogger();
+const logger = mockServices.logger.mock();
 
 describe('DefaultAwsCodeBuildService', () => {
   beforeAll(async () => {});
@@ -94,9 +95,8 @@ describe('DefaultAwsCodeBuildService', () => {
 
     return await DefaultAwsCodeBuildService.fromConfig(config, {
       logger,
-      catalogApi: mockCatalog,
+      catalogService: mockCatalog,
       resourceLocator: mockResourceLocator,
-      discovery: mockServices.discovery(),
     });
   }
 
@@ -134,7 +134,10 @@ describe('DefaultAwsCodeBuildService', () => {
         },
       );
 
-      const response = await service.getProjectsByEntity({ entityRef });
+      const response = await service.getProjectsByEntity({
+        entityRef,
+        credentials,
+      });
 
       expect(response.projects.length).toBe(2);
 
@@ -173,7 +176,7 @@ describe('DefaultAwsCodeBuildService', () => {
       );
 
       await expect(
-        service.getProjectsByEntity({ entityRef }),
+        service.getProjectsByEntity({ entityRef, credentials }),
       ).resolves.toMatchObject({
         projects: [],
       });
@@ -197,7 +200,10 @@ describe('DefaultAwsCodeBuildService', () => {
         },
       );
 
-      const response = await service.getProjectsByEntity({ entityRef });
+      const response = await service.getProjectsByEntity({
+        entityRef,
+        credentials,
+      });
 
       expect(response.projects.length).toBe(1);
 
@@ -229,7 +235,10 @@ describe('DefaultAwsCodeBuildService', () => {
         },
       );
 
-      const response = await service.getProjectsByEntity({ entityRef });
+      const response = await service.getProjectsByEntity({
+        entityRef,
+        credentials,
+      });
 
       expect(response.projects.length).toBe(1);
 
@@ -263,7 +272,10 @@ describe('DefaultAwsCodeBuildService', () => {
         },
       );
 
-      const response = await service.getProjectsByEntity({ entityRef });
+      const response = await service.getProjectsByEntity({
+        entityRef,
+        credentials,
+      });
 
       expect(response.projects.length).toBe(1);
 
@@ -295,7 +307,10 @@ describe('DefaultAwsCodeBuildService', () => {
         },
       );
 
-      const response = await service.getProjectsByEntity({ entityRef });
+      const response = await service.getProjectsByEntity({
+        entityRef,
+        credentials,
+      });
 
       expect(response.projects.length).toBe(1);
 
@@ -329,6 +344,7 @@ describe('DefaultAwsCodeBuildService', () => {
           namespace: 'foo',
           name: 'missing',
         },
+        credentials,
       }),
     ).rejects.toThrow('Annotation not found on entity');
   });
@@ -343,6 +359,7 @@ describe('DefaultAwsCodeBuildService', () => {
           namespace: 'foo',
           name: 'missing',
         },
+        credentials,
       }),
     ).rejects.toThrow("Couldn't find entity with name: component:foo/missing");
   });

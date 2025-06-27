@@ -18,11 +18,9 @@ import {
   ECSClient,
   ListTasksCommand,
 } from '@aws-sdk/client-ecs';
-import { CatalogApi } from '@backstage/catalog-client';
 import { Entity, CompoundEntityRef } from '@backstage/catalog-model';
 import { ConfigReader } from '@backstage/config';
 import { mockClient } from 'aws-sdk-client-mock';
-import { getVoidLogger } from '@backstage/backend-common';
 import { DefaultAmazonEcsService } from './DefaultAmazonEcsService';
 import { AwsResourceLocator } from '@aws/aws-core-plugin-for-backstage-node';
 import {
@@ -37,7 +35,8 @@ import {
   mockEcsService,
   mockEcsTask,
 } from '@aws/amazon-ecs-plugin-for-backstage-common';
-import { mockServices } from '@backstage/backend-test-utils';
+import { mockCredentials, mockServices } from '@backstage/backend-test-utils';
+import { CatalogService } from '@backstage/plugin-catalog-node/index';
 
 function getMockCredentialProvider(): Promise<AwsCredentialProvider> {
   return Promise.resolve({
@@ -54,9 +53,11 @@ const getCredProviderMock = jest.spyOn(
   'getCredentialProvider',
 );
 
-const mockCatalog: jest.Mocked<CatalogApi> = {
+const credentials = mockCredentials.user('user:default/guest');
+
+const mockCatalog: jest.Mocked<CatalogService> = {
   getEntityByRef: jest.fn(),
-} as any as jest.Mocked<CatalogApi>;
+} as any as jest.Mocked<CatalogService>;
 
 const entityRef: CompoundEntityRef = {
   kind: 'Component',
@@ -71,7 +72,7 @@ const mockResourceLocator: jest.Mocked<AwsResourceLocator> = {
   getResourceArns: jest.fn(),
 } as any as jest.Mocked<AwsResourceLocator>;
 
-const logger = getVoidLogger();
+const logger = mockServices.logger.mock();
 
 describe('DefaultAmazonEcsService', () => {
   beforeAll(async () => {});
@@ -95,9 +96,8 @@ describe('DefaultAmazonEcsService', () => {
 
     return await DefaultAmazonEcsService.fromConfig(config, {
       logger,
-      catalogApi: mockCatalog,
+      catalogService: mockCatalog,
       resourceLocator: mockResourceLocator,
-      discovery: mockServices.discovery(),
     });
   }
 
@@ -199,7 +199,10 @@ describe('DefaultAmazonEcsService', () => {
         },
       );
 
-      const response = await service.getServicesByEntity({ entityRef });
+      const response = await service.getServicesByEntity({
+        entityRef,
+        credentials,
+      });
 
       expect(response.clusters.length).toBe(2);
 
@@ -248,7 +251,7 @@ describe('DefaultAmazonEcsService', () => {
       );
 
       await expect(
-        service.getServicesByEntity({ entityRef }),
+        service.getServicesByEntity({ entityRef, credentials }),
       ).resolves.toMatchObject({
         clusters: [],
       });
@@ -308,7 +311,10 @@ describe('DefaultAmazonEcsService', () => {
         },
       );
 
-      const response = await service.getServicesByEntity({ entityRef });
+      const response = await service.getServicesByEntity({
+        entityRef,
+        credentials,
+      });
 
       expect(response.clusters.length).toBe(1);
 
@@ -371,7 +377,10 @@ describe('DefaultAmazonEcsService', () => {
         },
       );
 
-      const response = await service.getServicesByEntity({ entityRef });
+      const response = await service.getServicesByEntity({
+        entityRef,
+        credentials,
+      });
 
       await expect(response).toMatchObject({
         clusters: [
@@ -406,6 +415,7 @@ describe('DefaultAmazonEcsService', () => {
           namespace: 'foo',
           name: 'missing',
         },
+        credentials,
       }),
     ).rejects.toThrow('Annotation not found on entity');
   });
@@ -420,6 +430,7 @@ describe('DefaultAmazonEcsService', () => {
           namespace: 'foo',
           name: 'missing',
         },
+        credentials,
       }),
     ).rejects.toThrow("Couldn't find entity with name: component:foo/missing");
   });
