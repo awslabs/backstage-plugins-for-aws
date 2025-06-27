@@ -182,6 +182,27 @@ Restart Backstage to reload the configuration and try asking the chat assistant 
 
 NOTE: After Backstage starts locally there can be a delay indexing the catalog and TechDocs for search. You will not receive search results until the index is built.
 
+### Agents communicating
+
+Provided is a simple mechanism to allow agents to communicate, which treats agents as tools. You can prefix any other agent name with `agent:` as a tool name and it will treat it as a tool for the configured agent to invoke.
+
+```yaml
+genai:
+  agents:
+    general:
+      description: [...]
+      prompt: [...]
+      langgraph: [...]
+      tools:
+        - agent:weather
+    weather:
+      description: [...]
+      prompt: [...]
+      langgraph: [...]
+```
+
+The tool for invoking agents simply accepts a parameter called `query` which is expected to be a natural language query, and it will respond with the raw text output of the agent.
+
 ## Further reading
 
 You can view the rest of the documentation to understand how to evolve your chat assistant
