@@ -13,6 +13,7 @@
 
 export interface SharedLangGraphAgentConfig {
   memory: string;
+  recursionLimit: number;
   langfuse?: LangGraphAgentLangFuseConfig;
 }
 

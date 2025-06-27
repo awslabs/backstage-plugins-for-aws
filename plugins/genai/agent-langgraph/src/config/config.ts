@@ -42,6 +42,7 @@ export function readSharedLangGraphAgentConfig(
 
   return {
     memory: config?.getOptionalString('memory') ?? 'in-memory',
+    recursionLimit: config?.getOptionalNumber('recursionLimit') ?? 25,
     langfuse: langfuseAgentConfig,
   };
 }
