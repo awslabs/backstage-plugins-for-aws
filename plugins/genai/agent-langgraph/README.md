@@ -21,6 +21,7 @@ Global configuration values apply to all agents, all of this is optional:
 genai:
   langgraph:
     memory: # (Optional) Memory store to use
+    recursionLimit: # (Optional) Limit the number of graph supersteps (default 25)
     langfuse: # (Optional) Configuration for LangFuse observability
       baseUrl: http://localhost:3001 # (Required) LangFuse URL
       publicKey: pk-aaa # (Required) Public key

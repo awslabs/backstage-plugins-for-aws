@@ -33,7 +33,6 @@ import { StructuredToolInterface } from '@langchain/core/tools';
 import { ResponseTransformStream, tiktokenCounter } from './util';
 import { BaseChatModel } from '@langchain/core/language_models/chat_models';
 import {
-  LangGraphAgentLangFuseConfig,
   LangGraphAgentConfig,
   readLangGraphAgentConfig,
   readSharedLangGraphAgentConfig,
@@ -50,19 +49,17 @@ import { PostgresSaver } from '@langchain/langgraph-checkpoint-postgres';
 
 export class LangGraphReactAgentType implements AgentType {
   private readonly prompt?: string;
-  private readonly langfuseConfig?: LangGraphAgentLangFuseConfig;
 
   public constructor(
     private readonly llm: BaseChatModel,
     private readonly tools: StructuredToolInterface[],
     private readonly agent: CompiledStateGraph<any, any, any>,
+    private readonly sharedConfig: SharedLangGraphAgentConfig,
     options: {
       prompt?: string;
-      langfuseConfig?: LangGraphAgentLangFuseConfig;
     },
   ) {
     this.prompt = options.prompt;
-    this.langfuseConfig = options.langfuseConfig;
   }
 
   static async fromConfig(
@@ -121,10 +118,15 @@ export class LangGraphReactAgentType implements AgentType {
         : undefined,
     });
 
-    return new LangGraphReactAgentType(agentModel, tools, agent, {
-      prompt,
-      langfuseConfig: sharedLangGraphConfig?.langfuse,
-    });
+    return new LangGraphReactAgentType(
+      agentModel,
+      tools,
+      agent,
+      sharedLangGraphConfig,
+      {
+        prompt,
+      },
+    );
   }
 
   private static async createCheckpointer(
@@ -214,10 +216,10 @@ export class LangGraphReactAgentType implements AgentType {
       ? stringifyEntityRef(userEntityRef)
       : 'unknown';
 
-    if (this.langfuseConfig) {
+    if (this.sharedConfig.langfuse) {
       callbacks.push(
         new CallbackHandler({
-          ...this.langfuseConfig,
+          ...this.sharedConfig.langfuse,
           sessionId,
           userId,
         }),
@@ -256,6 +258,7 @@ export class LangGraphReactAgentType implements AgentType {
       {
         version: 'v2',
         callbacks: this.buildCallbackHandler(sessionId, userEntityRef),
+        recursionLimit: this.sharedConfig.recursionLimit,
         configurable: {
           thread_id: sessionId,
           credentials,
@@ -299,6 +302,7 @@ export class LangGraphReactAgentType implements AgentType {
       { messages },
       {
         callbacks: this.buildCallbackHandler(sessionId, userEntityRef),
+        recursionLimit: this.sharedConfig.recursionLimit,
         configurable: {
           thread_id: sessionId,
           credentials,

@@ -18,6 +18,11 @@ export interface Config {
      */
     memory?: string;
 
+    /**
+     * (Optional) Limit the number of graph supersteps
+     */
+    recursionLimit?: number;
+
     langfuse?: {
       /**
        * (Required) LangFuse base URL
