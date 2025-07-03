@@ -32,7 +32,7 @@
     "@backstage/catalog-model": "^1.7.0",
     "@backstage/config": "^1.2.0",
     "@langchain/aws": "0.1.10",
-    "@langchain/core": "0.3.57",
+    "@langchain/core": "0.3.62",
     "@langchain/langgraph": "0.2.74",
     "@langchain/langgraph-checkpoint-postgres": "^0.0.5",
     "@langchain/langgraph-checkpoint-sqlite": "^0.1.5",

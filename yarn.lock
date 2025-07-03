@@ -2691,7 +2691,7 @@ __metadata:
     "@backstage/plugin-auth-backend": "npm:^0.22.3"
     "@backstage/plugin-auth-backend-module-guest-provider": "npm:^0.1.2"
     "@backstage/plugin-catalog-node": "npm:^1.14.0"
-    "@langchain/core": "npm:0.3.57"
+    "@langchain/core": "npm:0.3.62"
     "@modelcontextprotocol/sdk": "npm:^1.12.3"
     "@types/express": "npm:*"
     "@types/lodash": "npm:^4"
@@ -2730,7 +2730,7 @@ __metadata:
     "@backstage/catalog-model": "npm:^1.7.0"
     "@backstage/cli": "npm:^0.27.0"
     "@backstage/config": "npm:^1.2.0"
-    "@langchain/core": "npm:0.3.57"
+    "@langchain/core": "npm:0.3.62"
     aws-sdk-client-mock: "npm:^4.0.0"
   languageName: unknown
   linkType: soft
@@ -2771,7 +2771,7 @@ __metadata:
     "@backstage/cli": "npm:^0.26.5"
     "@backstage/config": "npm:^1.2.0"
     "@langchain/aws": "npm:0.1.10"
-    "@langchain/core": "npm:0.3.57"
+    "@langchain/core": "npm:0.3.62"
     "@langchain/langgraph": "npm:0.2.74"
     "@langchain/langgraph-checkpoint-postgres": "npm:^0.0.5"
     "@langchain/langgraph-checkpoint-sqlite": "npm:^0.1.5"
@@ -11584,23 +11584,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@langchain/core@npm:0.3.57":
-  version: 0.3.57
-  resolution: "@langchain/core@npm:0.3.57"
+"@langchain/core@npm:0.3.62":
+  version: 0.3.62
+  resolution: "@langchain/core@npm:0.3.62"
   dependencies:
     "@cfworker/json-schema": "npm:^4.0.2"
     ansi-styles: "npm:^5.0.0"
     camelcase: "npm:6"
     decamelize: "npm:1.2.0"
     js-tiktoken: "npm:^1.0.12"
-    langsmith: "npm:^0.3.29"
+    langsmith: "npm:^0.3.33"
     mustache: "npm:^4.2.0"
     p-queue: "npm:^6.6.2"
     p-retry: "npm:4"
     uuid: "npm:^10.0.0"
-    zod: "npm:^3.22.4"
+    zod: "npm:^3.25.32"
     zod-to-json-schema: "npm:^3.22.3"
-  checksum: 10c0/70e46a9ce85c1cf0fe7912d6b43be8eb57f50423b147f2cada3276a34ea99542e08c06f7c38e334dbd4e91265b40fbfa78c2708bc8c8b3b4e6a82d6deafcdb56
+  checksum: 10c0/ef6301bd4a3c068a1cb83e3226bb96d815aece1c035a638ac58e50008342bf6291e12c9f1a1f882dfd2693837ff1836e3c88f9b4b6802715f1aab011b52ba087
   languageName: node
   linkType: hard
 
@@ -30940,9 +30940,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"langsmith@npm:^0.3.29":
-  version: 0.3.33
-  resolution: "langsmith@npm:0.3.33"
+"langsmith@npm:^0.3.33":
+  version: 0.3.38
+  resolution: "langsmith@npm:0.3.38"
   dependencies:
     "@types/uuid": "npm:^10.0.0"
     chalk: "npm:^4.1.2"
@@ -30952,11 +30952,20 @@ __metadata:
     semver: "npm:^7.6.3"
     uuid: "npm:^10.0.0"
   peerDependencies:
+    "@opentelemetry/api": "*"
+    "@opentelemetry/exporter-trace-otlp-proto": "*"
+    "@opentelemetry/sdk-trace-base": "*"
     openai: "*"
   peerDependenciesMeta:
+    "@opentelemetry/api":
+      optional: true
+    "@opentelemetry/exporter-trace-otlp-proto":
+      optional: true
+    "@opentelemetry/sdk-trace-base":
+      optional: true
     openai:
       optional: true
-  checksum: 10c0/3d18a7b1273a71c8b6057c3fa3de886416c0d964a19535d032cef009e2c6a6adec0af7eb61a5e4e41725b4b2d1990c0fe5f3ca4d09e95f5a5a97dbebb0fc577e
+  checksum: 10c0/eedb727cea2639c308d4f089db6a302a1a2ad9b8ec4afa5f60b19e8144cb0c0f22686c6a67670013e05bd5b4c4f726e50be53e1a94dcfc4245759324db7ed3f2
   languageName: node
   linkType: hard
 
@@ -43244,6 +43253,13 @@ __metadata:
   version: 3.23.8
   resolution: "zod@npm:3.23.8"
   checksum: 10c0/8f14c87d6b1b53c944c25ce7a28616896319d95bc46a9660fe441adc0ed0a81253b02b5abdaeffedbeb23bdd25a0bf1c29d2c12dd919aef6447652dd295e3e69
+  languageName: node
+  linkType: hard
+
+"zod@npm:^3.25.32":
+  version: 3.25.71
+  resolution: "zod@npm:3.25.71"
+  checksum: 10c0/ccb251859609e6eed04b83f96ad7b2b7a189ca78b47176cde2c368102a5416b9c472e91b3fd96ceaa5043b2e513b3aec39fd99c36686ad2ad84f6c440afca53a
   languageName: node
   linkType: hard
 

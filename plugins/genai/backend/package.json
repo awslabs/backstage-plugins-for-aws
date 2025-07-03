@@ -44,7 +44,7 @@
     "@backstage/catalog-model": "^1.4.5",
     "@backstage/config": "^1.2.0",
     "@backstage/plugin-catalog-node": "^1.14.0",
-    "@langchain/core": "0.3.57",
+    "@langchain/core": "0.3.62",
     "@modelcontextprotocol/sdk": "^1.12.3",
     "@types/express": "*",
     "express": "^4.17.1",
