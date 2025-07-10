@@ -21,5 +21,27 @@ export interface Config {
        */
       showInformation?: boolean;
     };
+
+    agents?: {
+      [agentName: string]: {
+        /**
+         * Title displayed in the UI header
+         * @visibility frontend
+         */
+        title?: string;
+
+        /**
+         * Short description for the empty state title
+         * @visibility frontend
+         */
+        description?: string;
+
+        /**
+         * Welcome message shown when no conversation has started
+         * @visibility frontend
+         */
+        welcomeMessage?: string;
+      };
+    };
   };
 }
