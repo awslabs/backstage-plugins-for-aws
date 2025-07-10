@@ -22,6 +22,7 @@ import Info from '@material-ui/icons/Info';
 import Error from '@material-ui/icons/Error';
 import { ToolsModal } from './ToolsModal';
 import { makeStyles } from '@material-ui/core';
+import { AgentUIConfig } from '../../hooks';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -127,6 +128,7 @@ export interface ChatHistoryComponentProps {
   isStreaming?: boolean;
   className?: string;
   showInformation: boolean;
+  agentMetadata?: AgentUIConfig;
 }
 
 function getMessageExtraClass(message: ChatMessage, classes: any): string {
@@ -157,6 +159,7 @@ export const ChatHistoryComponent = ({
   messages,
   className,
   showInformation,
+  agentMetadata,
 }: ChatHistoryComponentProps) => {
   const classes = useStyles();
 
@@ -186,9 +189,16 @@ export const ChatHistoryComponent = ({
         <div className={classes.markdown} ref={contentRef}>
           {messages!.length === 0 && (
             <EmptyState
-              missing="data"
-              title="Start chatting!"
-              description="This assistant can answer questions for you, type a message below to get started."
+              missing="content"
+              title={agentMetadata?.description || 'Start chatting!'}
+              description={
+                <MarkdownContent
+                  content={
+                    agentMetadata?.welcomeMessage ||
+                    'This assistant can answer questions for you, type a message below to get started.'
+                  }
+                />
+              }
             />
           )}
 
