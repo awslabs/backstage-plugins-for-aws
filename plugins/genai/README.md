@@ -205,10 +205,7 @@ The tool for invoking agents simply accepts a parameter called `query` which is 
 
 ## UI Customization
 
-To customize agent titles, descriptions, and welcome messages in the chat interface, you need to:
-
-1. **Add frontend config schema**: Copy [`config.d.ts`](./frontend/src/config.d.ts) to your `packages/app/config.d.ts` and register it in your `packages/app/package.json` with `"configSchema": "config.d.ts"`
-2. **Configure agents**: Add `title`, `description`, and `welcomeMessage` to your agent config in `app-config.yaml`
+To customize agent titles, descriptions, and welcome messages in the chat interface, you need to add `title`, `description`, and `welcomeMessage` to your agent config in `app-config.yaml`
 
 ```yaml
 genai:
