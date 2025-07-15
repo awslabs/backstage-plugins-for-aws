@@ -342,10 +342,10 @@ describe('AwsConfigInfrastructureProvider', () => {
           filters: { resourceTypes: ['AWS::ECS::Cluster'] },
           transform: {
             fields: {
-              name: {
-                expression:
-                  "$join([$resource.resourceName, $resource.accountId], '-')",
-              },
+              // name: {
+              //   expression:
+              //     "$join([$resource.resourceName, $resource.accountId], '-')",
+              // },
               annotations: {
                 'aws.amazon.com/account-id': {
                   expression: '$resource.accountId',
