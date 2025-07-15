@@ -21,9 +21,7 @@ import {
 } from '@aws-sdk/client-config-service';
 import { mockServices } from '@backstage/backend-test-utils';
 import { mockResource } from './mocks';
-import {
-  entitySchemaValidator
-} from '@backstage/catalog-model';
+import { entitySchemaValidator } from '@backstage/catalog-model';
 
 const logger = mockServices.logger.mock();
 
@@ -314,7 +312,7 @@ describe('AwsConfigInfrastructureProvider', () => {
       component: 'app1',
       system: 'some-system',
       metadataName:
-        'test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-111',
+        'test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1',
       annotations: {
         'aws.amazon.com/account-id': '111',
       },
@@ -328,7 +326,7 @@ describe('AwsConfigInfrastructureProvider', () => {
       type: 'ecs-service-custom',
       system: 'some-system',
       metadataName:
-        'test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-222',
+        'test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2',
       annotations: {
         'aws.amazon.com/account-id': '222',
       },
@@ -366,7 +364,7 @@ describe('AwsConfigInfrastructureProvider', () => {
     ]);
   });
   it('expects the output to be compatible with the schema', async () => {
-    const validator = entitySchemaValidator()
+    const validator = entitySchemaValidator();
     expect(
       validator({
         apiVersion: 'backstage.io/v1alpha1',
@@ -375,7 +373,7 @@ describe('AwsConfigInfrastructureProvider', () => {
           annotations: {
             'aws.amazon.com/arn': 'arn:aws:xxx:us-west-2:111:/test',
           },
-          name: 'test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-222',
+          name: 'test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2',
         },
         spec: {
           owner: 'team1',
@@ -384,7 +382,22 @@ describe('AwsConfigInfrastructureProvider', () => {
           component: 'app1',
         },
       }),
-    ).not.toBe(false);
+    ).toEqual({
+      apiVersion: 'backstage.io/v1alpha1',
+      kind: 'Resource',
+      metadata: {
+        annotations: {
+          'aws.amazon.com/arn': 'arn:aws:xxx:us-west-2:111:/test',
+        },
+        name: 'test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2', // This name is too long, so I'd expect the validator to throw here, rather than pass?
+      },
+      spec: {
+        component: 'app1',
+        owner: 'team1',
+        system: 'some-system',
+        type: 'ecs-service-custom',
+      },
+    });
   });
 });
 
