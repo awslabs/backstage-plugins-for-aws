@@ -22,6 +22,7 @@ import {
 import { mockServices } from '@backstage/backend-test-utils';
 import { mockResource } from './mocks';
 import { entitySchemaValidator } from '@backstage/catalog-model';
+import { validate } from '@roadiehq/roadie-backstage-entity-validator';
 
 const logger = mockServices.logger.mock();
 
@@ -364,9 +365,9 @@ describe('AwsConfigInfrastructureProvider', () => {
     ]);
   });
   it('expects the output to be compatible with the schema', async () => {
-    const validator = entitySchemaValidator();
-    expect(
-      validator({
+    // const validateFromFile = entitySchemaValidator();
+    return validate(
+        JSON.stringify({
         apiVersion: 'backstage.io/v1alpha1',
         kind: 'Resource',
         metadata: {
@@ -381,22 +382,10 @@ describe('AwsConfigInfrastructureProvider', () => {
           system: 'some-system',
           component: 'app1',
         },
-      }),
-    ).toEqual({
-      apiVersion: 'backstage.io/v1alpha1',
-      kind: 'Resource',
-      metadata: {
-        annotations: {
-          'aws.amazon.com/arn': 'arn:aws:xxx:us-west-2:111:/test',
-        },
-        name: 'test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2', // This name is too long, so I'd expect the validator to throw here, rather than pass?
-      },
-      spec: {
-        component: 'app1',
-        owner: 'team1',
-        system: 'some-system',
-        type: 'ecs-service-custom',
-      },
+      }), true)
+      .then(data => {
+        console.log(data);
+        expect(data).toEqual([{"apiVersion": "backstage.io/v1alpha1", "kind": "Resource", "metadata": {"annotations": {"aws.amazon.com/arn": "arn:aws:xxx:us-west-2:111:/test"}, "name": "test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2", "namespace": "default"}, "spec": {"component": "app1", "owner": "team1", "system": "some-system", "type": "ecs-service-custom"}}]);
     });
   });
 });
