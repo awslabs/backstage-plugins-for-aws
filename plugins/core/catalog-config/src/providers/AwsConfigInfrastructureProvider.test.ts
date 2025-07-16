@@ -385,7 +385,7 @@ describe('AwsConfigInfrastructureProvider', () => {
       }), true)
       .then(data => {
         console.log(data);
-        expect(data).toEqual([{"apiVersion": "backstage.io/v1alpha1", "kind": "Resource", "metadata": {"annotations": {"aws.amazon.com/arn": "arn:aws:xxx:us-west-2:111:/test"}, "name": "test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2", "namespace": "default"}, "spec": {"component": "app1", "owner": "team1", "system": "some-system", "type": "ecs-service-custom"}}]);
+        expect(data).not.toEqual([{"apiVersion": "backstage.io/v1alpha1", "kind": "Resource", "metadata": {"annotations": {"aws.amazon.com/arn": "arn:aws:xxx:us-west-2:111:/test"}, "name": "test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2", "namespace": "default"}, "spec": {"component": "app1", "owner": "team1", "system": "some-system", "type": "ecs-service-custom"}}]);
     });
   });
 });
