@@ -3138,7 +3138,7 @@ __metadata:
     "@langchain/langgraph": "npm:0.2.74"
     "@langchain/langgraph-checkpoint-postgres": "npm:^0.0.5"
     "@langchain/langgraph-checkpoint-sqlite": "npm:^0.1.5"
-    "@langchain/openai": "npm:^0.5.11"
+    "@langchain/openai": "npm:^0.6.0"
     langfuse-langchain: "npm:^3.29.1"
     zod: "npm:^3.23.8"
   languageName: unknown
@@ -11847,16 +11847,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@langchain/openai@npm:^0.5.11":
-  version: 0.5.13
-  resolution: "@langchain/openai@npm:0.5.13"
+"@langchain/openai@npm:^0.6.0":
+  version: 0.6.1
+  resolution: "@langchain/openai@npm:0.6.1"
   dependencies:
     js-tiktoken: "npm:^1.0.12"
-    openai: "npm:^4.96.0"
-    zod: "npm:3.25.32"
+    openai: "npm:^5.3.0"
+    zod: "npm:^3.25.32"
   peerDependencies:
     "@langchain/core": ">=0.3.58 <0.4.0"
-  checksum: 10c0/aa567c9c38ca86f810687978e2bd1e9c4e5b4d4d2634996299f00ff4faed1bacda14abc58537f80515f380f34b4c1127e5d31630948377048b28700be9662653
+  checksum: 10c0/ce16a28779a06c8a9aa582680232bcf467ed90f4c8d6734e9865398f4f62b486da57ac7d24d6ddc1c0c3c1cb48e553d6741bc7f34494cb3e27463f77d61de2e4
   languageName: node
   linkType: hard
 
@@ -18590,16 +18590,6 @@ __metadata:
     "@types/node": "npm:*"
     form-data: "npm:^4.0.0"
   checksum: 10c0/5283d4e0bcc37a5b6d8e629aee880a4ffcfb33e089f4b903b2981b19c623972d1e64af7c3f9540ab990f0f5c89b9b5dda19c5bcb37a8e177079e93683bfd2f49
-  languageName: node
-  linkType: hard
-
-"@types/node-fetch@npm:^2.6.4":
-  version: 2.6.12
-  resolution: "@types/node-fetch@npm:2.6.12"
-  dependencies:
-    "@types/node": "npm:*"
-    form-data: "npm:^4.0.0"
-  checksum: 10c0/7693acad5499b7df2d1727d46cff092a63896dc04645f36b973dd6dd754a59a7faba76fcb777bdaa35d80625c6a9dd7257cca9c401a4bab03b04480cda7fd1af
   languageName: node
   linkType: hard
 
@@ -26995,13 +26985,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"form-data-encoder@npm:1.7.2":
-  version: 1.7.2
-  resolution: "form-data-encoder@npm:1.7.2"
-  checksum: 10c0/56553768037b6d55d9de524f97fe70555f0e415e781cb56fc457a68263de3d40fadea2304d4beef2d40b1a851269bd7854e42c362107071892cb5238debe9464
-  languageName: node
-  linkType: hard
-
 "form-data@npm:^2.3.2, form-data@npm:^2.5.0":
   version: 2.5.1
   resolution: "form-data@npm:2.5.1"
@@ -27039,16 +27022,6 @@ __metadata:
   version: 0.2.2
   resolution: "format@npm:0.2.2"
   checksum: 10c0/6032ba747541a43abf3e37b402b2f72ee08ebcb58bf84d816443dd228959837f1cddf1e8775b29fa27ff133f4bd146d041bfca5f9cf27f048edf3d493cf8fee6
-  languageName: node
-  linkType: hard
-
-"formdata-node@npm:^4.3.2":
-  version: 4.4.1
-  resolution: "formdata-node@npm:4.4.1"
-  dependencies:
-    node-domexception: "npm:1.0.0"
-    web-streams-polyfill: "npm:4.0.0-beta.3"
-  checksum: 10c0/74151e7b228ffb33b565cec69182694ad07cc3fdd9126a8240468bb70a8ba66e97e097072b60bcb08729b24c7ce3fd3e0bd7f1f80df6f9f662b9656786e76f6a
   languageName: node
   linkType: hard
 
@@ -33861,7 +33834,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-domexception@npm:1.0.0, node-domexception@npm:^1.0.0":
+"node-domexception@npm:^1.0.0":
   version: 1.0.0
   resolution: "node-domexception@npm:1.0.0"
   checksum: 10c0/5e5d63cda29856402df9472335af4bb13875e1927ad3be861dc5ebde38917aecbf9ae337923777af52a48c426b70148815e890a5d72760f1b4d758cc671b1a2b
@@ -34718,17 +34691,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"openai@npm:^4.96.0":
-  version: 4.104.0
-  resolution: "openai@npm:4.104.0"
-  dependencies:
-    "@types/node": "npm:^18.11.18"
-    "@types/node-fetch": "npm:^2.6.4"
-    abort-controller: "npm:^3.0.0"
-    agentkeepalive: "npm:^4.2.1"
-    form-data-encoder: "npm:1.7.2"
-    formdata-node: "npm:^4.3.2"
-    node-fetch: "npm:^2.6.7"
+"openai@npm:^5.3.0":
+  version: 5.10.1
+  resolution: "openai@npm:5.10.1"
   peerDependencies:
     ws: ^8.18.0
     zod: ^3.23.8
@@ -34739,7 +34704,7 @@ __metadata:
       optional: true
   bin:
     openai: bin/cli
-  checksum: 10c0/c4f2e837684ed96b8cec58c65a584646d667c69918f29052775e2e8c05ff5c860d8b58214a7770bc6895ca8602480420c1db6a5392dd250179eb0b91c2b19a2f
+  checksum: 10c0/267a843eae4059f86548a6792e00dbb8b0865d712938a04402fa58dcb25b6a3943fa2da04c48b60f1605e90afd131a50c2e535bfbffb997cf161724bf6b78106
   languageName: node
   linkType: hard
 
@@ -42521,13 +42486,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"web-streams-polyfill@npm:4.0.0-beta.3":
-  version: 4.0.0-beta.3
-  resolution: "web-streams-polyfill@npm:4.0.0-beta.3"
-  checksum: 10c0/a9596779db2766990117ed3a158e0b0e9f69b887a6d6ba0779940259e95f99dc3922e534acc3e5a117b5f5905300f527d6fbf8a9f0957faf1d8e585ce3452e8e
-  languageName: node
-  linkType: hard
-
 "web-streams-polyfill@npm:^3.0.3":
   version: 3.3.3
   resolution: "web-streams-polyfill@npm:3.3.3"
@@ -43516,14 +43474,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:3.25.32":
-  version: 3.25.32
-  resolution: "zod@npm:3.25.32"
-  checksum: 10c0/de0bc052a7666578b3d5dd42bc522f02f27e1c798236439c0f6b6bc1b311a221706aebdafb1f58399d5f558b1fab7860c6970e096fe8d6947743bc791d567c4b
-  languageName: node
-  linkType: hard
-
-"zod@npm:^3.20.0, zod@npm:^3.22.4, zod@npm:^3.23.8":
+"zod@npm:^3.20.0, zod@npm:^3.22.4, zod@npm:^3.23.8, zod@npm:^3.25.32":
   version: 3.25.76
   resolution: "zod@npm:3.25.76"
   checksum: 10c0/5718ec35e3c40b600316c5b4c5e4976f7fee68151bc8f8d90ec18a469be9571f072e1bbaace10f1e85cf8892ea12d90821b200e980ab46916a6166a4260a983c
