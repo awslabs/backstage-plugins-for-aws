@@ -1,7 +1,7 @@
 {
   "name": "@aws/aws-config-catalog-module-for-backstage",
   "description": "The aws-config backend module for the catalog plugin.",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "repository": {
     "type": "git",
     "url": "github:awslabs/backstage-plugins-for-aws",

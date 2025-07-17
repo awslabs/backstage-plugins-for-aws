@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.1](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/genai-plugin-langgraph-agent-for-backstage@0.4.0...@aws/genai-plugin-langgraph-agent-for-backstage@0.4.1) (2025-07-17)
+
+
+### Bug Fixes
+
+* Fix missing whitespace between chat streams ([25fcd10](https://github.com/awslabs/backstage-plugins-for-aws/commit/25fcd10953eaa2148084fcda7ced39131ba2ba20))
+
+
+
+
+
 # [0.4.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/genai-plugin-langgraph-agent-for-backstage@0.3.3...@aws/genai-plugin-langgraph-agent-for-backstage@0.4.0) (2025-06-27)
 
 
