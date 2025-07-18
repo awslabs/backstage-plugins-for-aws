@@ -60,7 +60,7 @@ DO NOT try to filter on kinds in the query string, always use the "kinds" parame
         });
       }
 
-      let fullQuery = `term=${query}&pageLimit=${pageLimit}`;
+      let fullQuery = `types[0]=software-catalog&term=${query}&pageLimit=${pageLimit}`;
 
       if (pageCursor) {
         fullQuery += `&pageCursor=${pageCursor}`;
