@@ -14,3 +14,4 @@
 export * from './catalogEntityTool';
 export * from './catalogSearchTool';
 export * from './techDocsSearchTool';
+export * from './techDocsReadTool';
