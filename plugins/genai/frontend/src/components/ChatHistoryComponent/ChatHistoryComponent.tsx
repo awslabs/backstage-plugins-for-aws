@@ -128,7 +128,7 @@ export interface ChatHistoryComponentProps {
   isStreaming?: boolean;
   className?: string;
   showInformation: boolean;
-  agentMetadata?: AgentUIConfig;
+  agentMetadata: AgentUIConfig;
 }
 
 function getMessageExtraClass(message: ChatMessage, classes: any): string {
@@ -190,11 +190,11 @@ export const ChatHistoryComponent = ({
           {messages!.length === 0 && (
             <EmptyState
               missing="content"
-              title={agentMetadata?.description || 'Start chatting!'}
+              title={agentMetadata.tagLine || 'Start chatting!'}
               description={
                 <MarkdownContent
                   content={
-                    agentMetadata?.welcomeMessage ||
+                    agentMetadata.welcomeMessage ||
                     'This assistant can answer questions for you, type a message below to get started.'
                   }
                 />

@@ -13,30 +13,35 @@
 
 import { useApi, configApiRef } from '@backstage/core-plugin-api';
 
-export interface AgentUIConfig {
+export interface AgentMetadata {
   title: string;
-  description: string;
+  tagLine: string;
   welcomeMessage: string;
 }
 
 /**
  * Hook to load agent metadata from app-config.yaml with fallback defaults
  */
-export const useAgentMetadata = (agentName: string): AgentUIConfig => {
+export const useAgentMetadata = (agentName: string): AgentMetadata => {
   const config = useApi(configApiRef);
 
   // Load agent config directly (no metadata wrapper)
   const agentConfig = config.getOptionalConfig(`genai.agents.${agentName}`);
-  const title = agentConfig?.getOptionalString('title') ?? 'Chat Assistant';
-  const description =
-    agentConfig?.getOptionalString('description') ?? 'Start chatting!';
+
+  if(!agentConfig) {
+    throw new Error(`Agent ${agentName} not found`)
+  }
+
+  const title = agentConfig.getOptionalString('title') ?? 'Chat Assistant';
+  const tagLine =
+    agentConfig.getOptionalString('tagLine') ?? 'Start chatting!';
   const welcomeMessage =
-    agentConfig?.getOptionalString('welcomeMessage') ??
+    agentConfig.getOptionalString('welcomeMessage') ??
     'This assistant can answer questions for you, type a message below to get started.';
 
   return {
     title,
-    description,
+    tagLine: tagLine,
     welcomeMessage,
   };
 };
