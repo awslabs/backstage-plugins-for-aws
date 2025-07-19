@@ -130,7 +130,7 @@ Add this to your Backstage configuration file (for example `app-config.yaml`):
 genai:
   agents:
     general: # This matches the URL in the frontend
-      description: General chat assistant
+      tagLine: General chat assistant
       prompt: >
         You are an expert in platform engineering and answer questions in a succinct and easy to understand manner.
 
@@ -211,9 +211,9 @@ To customize agent titles, descriptions, and welcome messages in the chat interf
 genai:
   agents:
     general:
-      title: "🤖 AI Assistant"
-      description: "Your intelligent platform companion"
-      welcomeMessage: "Hello! Check out our [docs](/docs) for more info!"
+      title: '🤖 AI Assistant'
+      description: 'Your intelligent platform companion'
+      welcomeMessage: 'Hello! Check out our [docs](/docs) for more info!'
       # ... other agent config
 ```
 

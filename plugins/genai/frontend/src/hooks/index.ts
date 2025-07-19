@@ -12,4 +12,7 @@
  */
 
 export * from './useChatSession';
-export { useAgentMetadata, type AgentMetadata as AgentUIConfig } from './useAgentMetadata';
+export {
+  useAgentMetadata,
+  type AgentMetadata as AgentUIConfig,
+} from './useAgentMetadata';

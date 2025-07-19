@@ -28,13 +28,12 @@ export const useAgentMetadata = (agentName: string): AgentMetadata => {
   // Load agent config directly (no metadata wrapper)
   const agentConfig = config.getOptionalConfig(`genai.agents.${agentName}`);
 
-  if(!agentConfig) {
-    throw new Error(`Agent ${agentName} not found`)
+  if (!agentConfig) {
+    throw new Error(`Agent ${agentName} not found`);
   }
 
   const title = agentConfig.getOptionalString('title') ?? 'Chat Assistant';
-  const tagLine =
-    agentConfig.getOptionalString('tagLine') ?? 'Start chatting!';
+  const tagLine = agentConfig.getOptionalString('tagLine') ?? 'Start chatting!';
   const welcomeMessage =
     agentConfig.getOptionalString('welcomeMessage') ??
     'This assistant can answer questions for you, type a message below to get started.';
