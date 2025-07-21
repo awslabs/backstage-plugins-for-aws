@@ -27,6 +27,7 @@ const useStyles = makeStyles(theme => ({
   container: {
     display: 'flex',
     flexDirection: 'column',
+    margin: '0',
   },
 
   markdownContainer: {
@@ -217,7 +218,9 @@ export const ChatHistoryComponent = ({
                 <div className={`${classes.ChatItemChatText}`}>
                   <MarkdownContent
                     content={
-                      message.payload.length === 0 ? '...' : message.payload
+                      message.payload.length === 0
+                        ? 'Working...'
+                        : message.payload
                     }
                     dialect="gfm"
                   />

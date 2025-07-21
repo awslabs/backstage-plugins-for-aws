@@ -13,6 +13,8 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { Button, makeStyles, TextField } from '@material-ui/core';
+import SendIcon from '@material-ui/icons/Send';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const useStyles = makeStyles({
   ChatInputLayout: {
@@ -25,14 +27,20 @@ const useStyles = makeStyles({
   },
 
   ChatInputButtons: {
-    marginLeft: '2rem',
+    marginLeft: '0.5rem',
     display: 'flex',
     alignItems: 'center',
+  },
+
+  ChatInputButton: {
+    marginLeft: '0.5rem',
+    minWidth: '36px',
+    padding: '10px',
   },
 });
 
 interface ChatInputComponentProps {
-  onMessage?: (message: string) => void;
+  onMessage: (message: string) => void;
   disabled?: boolean;
   onClear?: () => void;
 }
@@ -54,43 +62,63 @@ export const ChatInputComponent = ({
     }
   }, [disabled]);
 
+  const processMessage = () => {
+    onMessage(message);
+    setMessage('');
+  };
+
   const checkKeyPress = (evt: React.KeyboardEvent<HTMLInputElement>) => {
     if (evt.code === 'Enter') {
       if (!evt.shiftKey) {
-        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-        onMessage && onMessage(message);
-        setMessage('');
+        processMessage();
         evt.preventDefault();
       }
     }
   };
 
   return (
-    <div className={classes.ChatInputLayout}>
-      <div className={classes.ChatInputContainer}>
-        <TextField
-          id="outlined-multiline-flexible"
-          label="Type a message"
-          helperText="Hold <shift> when pressing <enter> for multiline"
-          multiline
-          variant="standard"
-          value={message}
-          style={{
-            marginRight: '1rem',
-          }}
-          maxRows={8}
-          minRows={1}
-          onKeyDown={checkKeyPress}
-          onChange={evt => setMessage(evt.target.value)}
-          fullWidth
-          disabled={disabled}
-          ref={inputRef}
-        />
-      </div>
-      <div className={classes.ChatInputButtons}>
-        <Button variant="outlined" onClick={onClear} disabled={disabled}>
-          Clear Chat
-        </Button>
+    <div>
+      <div className={classes.ChatInputLayout}>
+        <div className={classes.ChatInputContainer}>
+          <TextField
+            id="outlined-multiline-flexible"
+            label="Type a message"
+            multiline
+            variant="outlined"
+            value={message}
+            style={{
+              marginRight: '1rem',
+            }}
+            maxRows={8}
+            minRows={1}
+            onKeyDown={checkKeyPress}
+            onChange={evt => setMessage(evt.target.value)}
+            fullWidth
+            disabled={disabled}
+            ref={inputRef}
+          />
+        </div>
+        <div className={classes.ChatInputButtons}>
+          <Button
+            title="Send"
+            onClick={processMessage}
+            disabled={disabled}
+            variant="contained"
+            color="primary"
+            className={classes.ChatInputButton}
+          >
+            <SendIcon />
+          </Button>
+          <Button
+            title="Clear"
+            onClick={onClear}
+            disabled={disabled}
+            variant="text"
+            className={classes.ChatInputButton}
+          >
+            <DeleteIcon />
+          </Button>
+        </div>
       </div>
     </div>
   );
