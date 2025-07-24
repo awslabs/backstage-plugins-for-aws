@@ -20,6 +20,7 @@ export type AwsInfrastructureConfig = {
   filters: FilterDefinition;
   transform?: TransformDefinition;
   aggregator?: string;
+  hashEntityNames: boolean;
   options?: AwsInfrastructureConfigOptions;
 };
 
