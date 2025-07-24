@@ -58,6 +58,7 @@ function readAwsInfrastructureConfig(
   const aggregator = config.getOptionalString('aggregator');
   const accountId = config.getOptionalString('accountId');
   const region = config.getOptionalString('region');
+  const hashEntityNames = config.getOptionalBoolean('hashEntityNames') ?? false;
 
   const options = config.has('options')
     ? readAwsInfrastructureOptionsConfig(config.getConfig('options'))
@@ -70,6 +71,7 @@ function readAwsInfrastructureConfig(
     filters,
     transform,
     aggregator,
+    hashEntityNames,
     options,
   };
 }

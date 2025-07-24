@@ -198,9 +198,18 @@ export class AwsConfigInfrastructureProvider
   }
 
   async resourceToEntity(resource: AwsConfigResource): Promise<Entity> {
-    const resourceName = resource.resourceName
-      ? resource.resourceName.replace(':', '-')
-      : SHA256(resource.arn).toString().slice(0, 63);
+    let resourceName: string;
+    let resourceTitle: string | undefined;
+
+    if (this.config.hashEntityNames) {
+      resourceName = SHA256(resource.arn).toString().slice(0, 63);
+
+      resourceTitle = resource.resourceName;
+    } else {
+      resourceName = resource.resourceName
+        ? resource.resourceName.replace(':', '-')
+        : SHA256(resource.arn).toString().slice(0, 63);
+    }
 
     const resourceResult: Entity = {
       apiVersion: 'backstage.io/v1alpha1',
@@ -214,6 +223,7 @@ export class AwsConfigInfrastructureProvider
           'aws.amazon.com/region': resource.awsRegion!,
         },
         name: resourceName,
+        title: resourceTitle,
         description: `AWS Config Resource ${resource.resourceType} ${
           resource.resourceName || resource.resourceId
         }`,
