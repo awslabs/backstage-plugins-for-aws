@@ -18,7 +18,7 @@ import React from 'react';
 import { ChatHistoryComponent } from '../ChatHistoryComponent';
 import { ChatInputComponent } from '../ChatInputComponent';
 import { useParams } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core';
+import { LinearProgress, makeStyles } from '@material-ui/core';
 import { useChatSession } from '../../hooks';
 import { useAgentMetadata } from '../../hooks/useAgentMetadata';
 
@@ -34,6 +34,10 @@ const useStyles = makeStyles({
     minHeight: 'max-content',
     maxHeight: '100%',
     marginBottom: '1rem',
+  },
+
+  chatInputContainer: {
+    margin: '1rem',
   },
 });
 
@@ -54,14 +58,23 @@ export const AgentPage = ({ title = 'Chat Assistant' }: { title?: string }) => {
   const agentMetadata = useAgentMetadata(agentName);
   const agentTitle = agentMetadata.title || title;
 
-  const { messages, isLoading, onUserMessage, onClear } = useChatSession({
-    agentName,
-  });
+  const { messages, isInitializing, isLoading, onUserMessage, onClear } =
+    useChatSession({
+      agentName,
+    });
+
+  if (isInitializing) {
+    return (
+      <Content>
+        <LinearProgress />
+      </Content>
+    );
+  }
 
   return (
     <Page themeId="tool">
       <Header title={agentTitle} />
-      <Content>
+      <Content noPadding>
         <div className={classes.flex}>
           <ChatHistoryComponent
             messages={messages}
@@ -70,13 +83,15 @@ export const AgentPage = ({ title = 'Chat Assistant' }: { title?: string }) => {
             showInformation={showInformation}
             agentMetadata={agentMetadata}
           />
-          <InfoCard>
-            <ChatInputComponent
-              onMessage={onUserMessage}
-              disabled={isLoading}
-              onClear={onClear}
-            />
-          </InfoCard>
+          <div className={classes.chatInputContainer}>
+            <InfoCard>
+              <ChatInputComponent
+                onMessage={onUserMessage}
+                disabled={isLoading}
+                onClear={onClear}
+              />
+            </InfoCard>
+          </div>
         </div>
       </Content>
     </Page>

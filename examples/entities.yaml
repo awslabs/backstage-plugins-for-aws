@@ -19,6 +19,7 @@ metadata:
     aws.amazon.com/amazon-ecs-service-tags: component=example-website
     aws.amazon.com/cost-insights-tags: component=example-website
     aws.amazon.com/amazon-ecr-tags: component=example-website
+    backstage.io/techdocs-ref: dir:.
 spec:
   type: website
   lifecycle: experimental

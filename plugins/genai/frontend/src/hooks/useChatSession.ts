@@ -24,6 +24,7 @@ interface UseChatSessionProps {
 interface UseChatSessionResult {
   messages: ChatMessage[];
   isLoading: boolean;
+  isInitializing: boolean;
   onUserMessage: (userMessage: string) => Promise<void>;
   onClear: () => void;
 }
@@ -34,6 +35,7 @@ export const useChatSession = ({
   const agentApi = useApi(agentApiRef);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isInitializing, setIsInitializing] = useState(false);
 
   const [chatManager] = useState(
     () =>
@@ -45,8 +47,10 @@ export const useChatSession = ({
   );
 
   useEffect(() => {
+    setIsInitializing(true);
     chatManager.loadFromStorage();
     setMessages(chatManager.getMessages());
+    setIsInitializing(false);
   }, [chatManager]);
 
   const onUserMessage = useCallback(
@@ -69,6 +73,7 @@ export const useChatSession = ({
   return {
     messages,
     isLoading,
+    isInitializing,
     onUserMessage,
     onClear,
   };

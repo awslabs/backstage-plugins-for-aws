@@ -49,6 +49,11 @@ export class ResponseTransformStream extends TransformStream<
           token: content.toString(),
         });
       }
+    } else if (event === 'on_chat_model_end') {
+      controller.enqueue({
+        type: 'ChunkEvent',
+        token: '\n\n',
+      });
     } else if (event === 'on_tool_start') {
       const msg = data;
 

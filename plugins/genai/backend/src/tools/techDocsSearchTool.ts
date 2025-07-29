@@ -18,6 +18,7 @@ import {
 } from '@backstage/backend-plugin-api';
 import { DynamicStructuredTool } from '@langchain/core/tools';
 import { z } from 'zod';
+import { SearchResultSet } from '@backstage/plugin-search-common';
 
 export function createBackstageTechDocsSearchTool(
   discoveryApi: DiscoveryService,
@@ -50,7 +51,16 @@ export function createBackstageTechDocsSearchTool(
           Authorization: `Bearer ${token}`,
         },
       });
-      return response.text();
+      const payload = (await response.json()) as SearchResultSet;
+
+      return {
+        nextPageCursor: payload.nextPageCursor,
+        results: payload.results.map(result => ({
+          location: result.document.location,
+          title: result.document.title,
+          text: result.document.text,
+        })),
+      };
     },
   });
 }

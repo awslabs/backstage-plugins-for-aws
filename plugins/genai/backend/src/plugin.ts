@@ -29,6 +29,7 @@ import { catalogServiceRef } from '@backstage/plugin-catalog-node';
 import {
   createBackstageCatalogSearchTool,
   createBackstageEntityTool,
+  createBackstageTechDocsReadTool,
   createBackstageTechDocsSearchTool,
 } from './tools';
 import { DatabaseSessionStore } from './database';
@@ -81,6 +82,7 @@ export const awsGenAiPlugin = createBackendPlugin({
         toolkit.add(createBackstageEntityTool(catalogApi));
         toolkit.add(createBackstageCatalogSearchTool(discovery, auth));
         toolkit.add(createBackstageTechDocsSearchTool(discovery, auth));
+        toolkit.add(createBackstageTechDocsReadTool(discovery, auth));
 
         const sessionStore = await DatabaseSessionStore.create({
           database,
