@@ -31,10 +31,11 @@ export interface Config {
         title?: string;
 
         /**
-         * Short description for the empty state title
+         * Descriptive tag line for the agent, displayed in the UI header
+         * If not set, the "'Start chatting!'" message will be used
          * @visibility frontend
          */
-        description?: string;
+        tagLine?: string;
 
         /**
          * Welcome message shown when no conversation has started
