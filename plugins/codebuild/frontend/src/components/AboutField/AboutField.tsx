@@ -11,8 +11,8 @@
  * limitations under the License.
  */
 
+import { Children } from 'react';
 import { Grid, makeStyles, Typography } from '@material-ui/core';
-import React from 'react';
 
 const useStyles = makeStyles(theme => ({
   links: {
@@ -56,7 +56,7 @@ export const AboutField = ({
   const classes = useStyles();
 
   // Content is either children or a string prop `value`
-  const content = React.Children.count(children) ? (
+  const content = Children.count(children) ? (
     children
   ) : (
     <Typography variant="body2" className={classes.description}>

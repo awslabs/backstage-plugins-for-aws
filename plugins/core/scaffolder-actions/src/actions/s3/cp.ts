@@ -18,44 +18,32 @@ import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { AwsCredentialsManager } from '@backstage/integration-aws-node';
 import { AwsCredentialIdentityProvider } from '@aws-sdk/types';
 import fs from 'fs-extra';
-import { z } from 'zod';
 import { resolveSafeChildPath } from '@backstage/backend-plugin-api';
 import { glob } from 'glob';
 import { AWS_SDK_CUSTOM_USER_AGENT } from '@aws/aws-core-plugin-for-backstage-common';
 
-export const createAwsS3CpAction = (options: {
+export function createAwsS3CpAction(options: {
   credsManager: AwsCredentialsManager;
-}) => {
-  return createTemplateAction<{
-    accountId?: string;
-    region?: string;
-
-    bucketName: string;
-    path?: string;
-    prefix?: string;
-  }>({
+}) {
+  return createTemplateAction({
     id: 'aws:s3:cp',
     description: 'Copies files to an Amazon S3 bucket',
     schema: {
-      input: z.object({
-        accountId: z
-          .string()
-          .describe('The AWS account ID to create the resource.')
+      input: {
+        accountId: z => z
+          .string({ description: 'The AWS account ID to create the resource.' })
           .optional(),
-        region: z
-          .string()
-          .describe('The AWS region to create the resource.')
+        region: z => z
+          .string({ description: 'The AWS region to create the resource.' })
           .optional(),
-        bucketName: z.string().describe('Name of the Amazon S3 bucket.'),
-        path: z
-          .string()
-          .optional()
-          .describe('File pattern to copy to the bucket'),
-        prefix: z
-          .string()
-          .optional()
-          .describe('Amazon S3 bucket prefix to add to the files.'),
-      }),
+        bucketName: z => z.string({ description: 'Name of the Amazon S3 bucket.'}),
+        path: z => z
+          .string({ description: 'File pattern to copy to the bucket' })
+          .optional(),
+        prefix: z => z
+          .string({ description: 'Amazon S3 bucket prefix to add to the files.' })
+          .optional(),
+      },
     },
     async handler(ctx) {
       const { accountId, region, bucketName, path, prefix = '' } = ctx.input;

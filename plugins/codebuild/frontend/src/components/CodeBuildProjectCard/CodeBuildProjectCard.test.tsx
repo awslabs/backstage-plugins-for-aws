@@ -1,4 +1,3 @@
-import React from 'react';
 import { renderInTestApp, TestApiProvider } from '@backstage/test-utils';
 import { CodeBuildProjectCard } from '.';
 import { AwsCodeBuildApi, awsCodeBuildApiRef } from '../../api';

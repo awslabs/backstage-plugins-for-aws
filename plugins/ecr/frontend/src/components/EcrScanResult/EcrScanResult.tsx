@@ -11,7 +11,6 @@
  * limitations under the License.
  */
 
-import React from 'react';
 import { ResponseErrorPanel } from '@backstage/core-components';
 import { Link, useParams } from 'react-router-dom';
 import { Entity } from '@backstage/catalog-model';

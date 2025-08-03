@@ -14,7 +14,6 @@
 
 import { configApiRef, useApi } from '@backstage/core-plugin-api';
 import { Page, Header, Content, InfoCard } from '@backstage/core-components';
-import React from 'react';
 import { ChatHistoryComponent } from '../ChatHistoryComponent';
 import { ChatInputComponent } from '../ChatInputComponent';
 import { useParams } from 'react-router-dom';

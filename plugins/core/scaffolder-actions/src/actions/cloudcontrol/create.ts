@@ -20,81 +20,78 @@ import {
 } from '@aws-sdk/client-cloudcontrol';
 import { AwsCredentialsManager } from '@backstage/integration-aws-node';
 import { AwsCredentialIdentityProvider } from '@aws-sdk/types';
-import { z } from 'zod';
 import { AWS_SDK_CUSTOM_USER_AGENT } from '@aws/aws-core-plugin-for-backstage-common';
 
-export const createAwsCloudControlCreateAction = (options: {
+export function createAwsCloudControlCreateAction(options: {
   credsManager: AwsCredentialsManager;
-}) => {
-  return createTemplateAction<{
-    accountId?: string;
-    region?: string;
-    typeName: string;
-    desiredState: string;
-    clientToken?: string;
-    roleArn?: string;
-    typeVersionId?: string;
-    wait?: boolean;
-    maxWaitTime?: number;
-  }>({
+}) {
+  return createTemplateAction({
     id: 'aws:cloudcontrol:create',
     description: 'Creates the specified resource.',
     schema: {
-      input: z.object({
-        accountId: z
-          .string()
-          .describe('The AWS account ID to create the resource.')
-          .optional(),
-        region: z
-          .string()
-          .describe('The AWS region to create the resource.')
-          .optional(),
-        typeName: z.string().describe('The name of the resource type.'),
-        desiredState: z
-          .string()
-          .describe(
-            "Structured data format representing the desired state of the resource, consisting of that resource's properties and their desired values.",
-          ),
-        clientToken: z
-          .string()
-          .describe(
-            'A unique identifier to ensure the idempotency of the resource request.',
-          )
-          .optional(),
-        roleArn: z
-          .string()
-          .describe(
-            'IAM role for Cloud Control API to use when performing this resource operation.',
-          )
-          .optional(),
-        typeVersionId: z
-          .string()
-          .describe(
-            'For private resource types, the type version to use in this resource operation.',
-          )
-          .optional(),
-        wait: z
-          .boolean()
-          .describe(
-            'Whether the action should wait until the requested resource is created.',
-          )
-          .optional()
-          .default(false),
-        maxWaitTime: z
-          .number()
-          .describe(
-            'If this action is configured to wait this is the maximum time in seconds it will wait before failing.',
-          )
-          .optional()
-          .default(120),
-      }),
-      output: z.object({
-        identifier: z
-          .string()
-          .describe(
-            'The primary identifier for the resource (only available if wait is enabled).',
-          ),
-      }),
+      input: {
+        accountId: z =>
+          z
+            .string({
+              description: 'The AWS account ID to create the resource.',
+            })
+            .optional(),
+        region: z =>
+          z
+            .string({ description: 'The AWS region to create the resource.' })
+            .optional(),
+        typeName: z =>
+          z.string({ description: 'The name of the resource type.' }),
+        desiredState: z =>
+          z.string({
+            description:
+              "Structured data format representing the desired state of the resource, consisting of that resource's properties and their desired values.",
+          }),
+        clientToken: z =>
+          z
+            .string({
+              description:
+                'A unique identifier to ensure the idempotency of the resource request.',
+            })
+            .optional(),
+        roleArn: z =>
+          z
+            .string({
+              description:
+                'IAM role for Cloud Control API to use when performing this resource operation.',
+            })
+            .optional(),
+        typeVersionId: z =>
+          z
+            .string({
+              description:
+                'For private resource types, the type version to use in this resource operation.',
+            })
+            .optional(),
+        wait: z =>
+          z
+            .boolean({
+              description:
+                'Whether the action should wait until the requested resource is created.',
+            })
+            .optional()
+            .default(false),
+        maxWaitTime: z =>
+          z
+            .number({
+              description:
+                'If this action is configured to wait this is the maximum time in seconds it will wait before failing.',
+            })
+            .optional()
+            .default(120),
+      },
+      output: {
+        identifier: z =>
+          z.string({
+            description:
+              'The primary identifier for the resource (only available if wait is enabled).',
+          }),
+      },
     },
     async handler(ctx) {
       const {
@@ -163,7 +160,7 @@ export const createAwsCloudControlCreateAction = (options: {
         `Resource creation succeeded, returning identifier ${identifier}`,
       );
 
-      ctx.output('identifier', identifier);
+      ctx.output('identifier', identifier || '');
     },
   });
-};
+}

@@ -11,7 +11,6 @@
  * limitations under the License.
  */
 
-import React from 'react';
 import { createDevApp } from '@backstage/dev-utils';
 import { awsCodeBuildPlugin } from '../src/plugin';
 import { TestApiRegistry } from '@backstage/test-utils';

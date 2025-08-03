@@ -22,83 +22,79 @@ import { AwsCredentialsManager } from '@backstage/integration-aws-node';
 import { AwsCredentialIdentityProvider } from '@aws-sdk/types';
 import fs from 'fs';
 import path from 'path';
-import { z } from 'zod';
 import { AWS_SDK_CUSTOM_USER_AGENT } from '@aws/aws-core-plugin-for-backstage-common';
 
-export const createAwsCodeCommitPublishAction = (options: {
+export function createAwsCodeCommitPublishAction(options: {
   credsManager: AwsCredentialsManager;
-}) => {
-  return createTemplateAction<{
-    accountId?: string;
-    region?: string;
-
-    repositoryName: string;
-    defaultBranch: string;
-    sourcePath?: string;
-    gitCommitMessage?: string;
-    gitAuthorName?: string;
-    gitAuthorEmail?: string;
-  }>({
+}) {
+  return createTemplateAction({
     id: 'aws:codecommit:publish',
     description:
       'Initializes a git repository of the content in the workspace, and publishes it to AWS CodeCommit.',
     schema: {
-      input: z.object({
-        accountId: z
-          .string()
-          .describe('The AWS account ID to create the resource.')
-          .optional(),
-        region: z
-          .string()
-          .describe('The AWS region to create the resource.')
-          .optional(),
-        repositoryName: z
-          .string()
-          .describe('Name of the AWS CodeCommit repository.'),
-        defaultBranch: z
-          .string()
-          .describe(
-            `Sets the default branch on the repository. The default value is 'main'`,
-          ),
-        sourcePath: z
-          .string()
-          .optional()
-          .describe(
-            'Path within the workspace that will be used as the repository root. If omitted, the entire workspace will be published as the repository.',
-          ),
-        gitCommitMessage: z
-          .string()
-          .optional()
-          .describe(
-            `Sets the commit message on the repository. The default value is 'initial commit'`,
-          ),
-        gitAuthorName: z
-          .string()
-          .optional()
-          .describe(
-            `Sets the default author name for the commit. The default value is 'Scaffolder'`,
-          ),
-        gitAuthorEmail: z
-          .string()
-          .optional()
-          .describe(`Sets the default author email for the commit.`),
-      }),
-      output: z.object({
-        arn: z.string().optional().describe('ARN of the repository'),
-        repositoryName: z.string().optional().describe("The repository's name"),
-        repositoryId: z
-          .string()
-          .optional()
-          .describe('The ID of the repository'),
-        cloneUrlHttp: z
-          .string()
-          .optional()
-          .describe('The URL to use for cloning the repository over HTTPS'),
-        cloneUrlSsh: z
-          .string()
-          .optional()
-          .describe('The URL to use for cloning the repository over SSH'),
-      }),
+      input: {
+        accountId: z =>
+          z
+            .string({
+              description: 'The AWS account ID to create the resource.',
+            })
+            .optional(),
+        region: z =>
+          z
+            .string({ description: 'The AWS region to create the resource.' })
+            .optional(),
+        repositoryName: z =>
+          z.string({ description: 'Name of the AWS CodeCommit repository.' }),
+        defaultBranch: z =>
+          z.string({
+            description: `Sets the default branch on the repository. The default value is 'main'`,
+          }),
+        sourcePath: z =>
+          z
+            .string({
+              description:
+                'Path within the workspace that will be used as the repository root. If omitted, the entire workspace will be published as the repository.',
+            })
+            .optional(),
+        gitCommitMessage: z =>
+          z
+            .string({
+              description: `Sets the commit message on the repository. The default value is 'initial commit'`,
+            })
+            .optional(),
+        gitAuthorName: z =>
+          z
+            .string({
+              description: `Sets the default author name for the commit. The default value is 'Scaffolder'`,
+            })
+            .optional(),
+        gitAuthorEmail: z =>
+          z
+            .string({
+              description: `Sets the default author email for the commit.`,
+            })
+            .optional(),
+      },
+      output: {
+        arn: z => z.string({ description: 'ARN of the repository' }).optional(),
+        repositoryName: z =>
+          z.string({ description: "The repository's name" }).optional(),
+        repositoryId: z =>
+          z.string({ description: 'The ID of the repository' }).optional(),
+        cloneUrlHttp: z =>
+          z
+            .string({
+              description:
+                'The URL to use for cloning the repository over HTTPS',
+            })
+            .optional(),
+        cloneUrlSsh: z =>
+          z
+            .string({
+              description: 'The URL to use for cloning the repository over SSH',
+            })
+            .optional(),
+      },
     },
     async handler(ctx) {
       const {
@@ -139,7 +135,7 @@ export const createAwsCodeCommitPublishAction = (options: {
       for (const file of readAllFiles(ctx.workspacePath)) {
         putFiles.push({
           filePath: path.relative(ctx.workspacePath, file),
-          fileContent: fs.readFileSync(file),
+          fileContent: new Uint8Array(fs.readFileSync(file)),
         });
       }
 
@@ -161,7 +157,7 @@ export const createAwsCodeCommitPublishAction = (options: {
       ctx.output('cloneUrlSsh', response.repositoryMetadata?.cloneUrlSsh);
     },
   });
-};
+}
 
 function* readAllFiles(dir: string): Generator<string> {
   const files = fs.readdirSync(dir, { withFileTypes: true });

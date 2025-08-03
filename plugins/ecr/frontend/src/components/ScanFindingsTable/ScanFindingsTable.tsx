@@ -11,7 +11,6 @@
  * limitations under the License.
  */
 
-import React from 'react';
 import { Table } from '@backstage/core-components';
 import { ImageScanFinding } from '@aws-sdk/client-ecr';
 

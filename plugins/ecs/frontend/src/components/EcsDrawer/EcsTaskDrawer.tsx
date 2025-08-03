@@ -14,7 +14,6 @@
 import { KeyValuePair, Task } from '@aws-sdk/client-ecs';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import React from 'react';
 import {
   formatTime,
   getTaskDefinition,

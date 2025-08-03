@@ -11,7 +11,6 @@
  * limitations under the License.
  */
 
-import React from 'react';
 import { WarningPanel } from '@backstage/core-components';
 
 export function MissingResources() {
