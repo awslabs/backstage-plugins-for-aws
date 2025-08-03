@@ -30,19 +30,28 @@ export function createAwsS3CpAction(options: {
     description: 'Copies files to an Amazon S3 bucket',
     schema: {
       input: {
-        accountId: z => z
-          .string({ description: 'The AWS account ID to create the resource.' })
-          .optional(),
-        region: z => z
-          .string({ description: 'The AWS region to create the resource.' })
-          .optional(),
-        bucketName: z => z.string({ description: 'Name of the Amazon S3 bucket.'}),
-        path: z => z
-          .string({ description: 'File pattern to copy to the bucket' })
-          .optional(),
-        prefix: z => z
-          .string({ description: 'Amazon S3 bucket prefix to add to the files.' })
-          .optional(),
+        accountId: z =>
+          z
+            .string({
+              description: 'The AWS account ID to create the resource.',
+            })
+            .optional(),
+        region: z =>
+          z
+            .string({ description: 'The AWS region to create the resource.' })
+            .optional(),
+        bucketName: z =>
+          z.string({ description: 'Name of the Amazon S3 bucket.' }),
+        path: z =>
+          z
+            .string({ description: 'File pattern to copy to the bucket' })
+            .optional(),
+        prefix: z =>
+          z
+            .string({
+              description: 'Amazon S3 bucket prefix to add to the files.',
+            })
+            .optional(),
       },
     },
     async handler(ctx) {
@@ -83,4 +92,4 @@ export function createAwsS3CpAction(options: {
       );
     },
   });
-};
+}
