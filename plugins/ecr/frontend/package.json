@@ -19,8 +19,8 @@
     "pluginId": "amazon-ecr",
     "pluginPackages": [
       "@aws/amazon-ecr-plugin-for-backstage",
-      "@aws/amazon-ecr-plugin-for-backstage-common",
-      "@aws/amazon-ecr-plugin-for-backstage-backend"
+      "@aws/amazon-ecr-plugin-for-backstage-backend",
+      "@aws/amazon-ecr-plugin-for-backstage-common"
     ]
   },
   "sideEffects": false,
