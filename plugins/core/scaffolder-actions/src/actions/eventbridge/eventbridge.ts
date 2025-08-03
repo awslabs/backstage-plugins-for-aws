@@ -18,45 +18,40 @@ import {
 } from '@aws-sdk/client-eventbridge';
 import { AwsCredentialsManager } from '@backstage/integration-aws-node';
 import { AwsCredentialIdentityProvider } from '@aws-sdk/types';
-import { z } from 'zod';
 import { AWS_SDK_CUSTOM_USER_AGENT } from '@aws/aws-core-plugin-for-backstage-common';
 
 export const createAwsEventBridgeEventAction = (options: {
   credsManager: AwsCredentialsManager;
 }) => {
-  return createTemplateAction<{
-    accountId?: string;
-    region?: string;
-
-    source: string;
-    detail: string;
-    detailType: string;
-    eventBusName: string;
-  }>({
+  return createTemplateAction({
     id: 'aws:eventbridge:event',
     description:
       'Posts an AWS EventBridge event matching the provided details.',
     schema: {
-      input: z.object({
-        accountId: z
-          .string()
-          .describe('The AWS account ID to create the resource.')
-          .optional(),
-        region: z
-          .string()
-          .describe('The AWS region to create the resource.')
-          .optional(),
-        source: z.string().describe('The source of the event.'),
-        detail: z.string().describe('A valid JSON object.'),
-        detailType: z
-          .string()
-          .describe(
-            'Free-form string, with a maximum of 128 characters, used to decide what fields to expect in the event detail.',
-          ),
-        eventBusName: z
-          .string()
-          .describe('The name or ARN of the event bus to receive the event.'),
-      }),
+      input: {
+        accountId: z =>
+          z
+            .string({
+              description: 'The AWS account ID to create the resource.',
+            })
+            .optional(),
+        region: z =>
+          z
+            .string({ description: 'The AWS region to create the resource.' })
+            .optional(),
+        source: z => z.string({ description: 'The source of the event.' }),
+        detail: z => z.string({ description: 'A valid JSON object.' }),
+        detailType: z =>
+          z.string({
+            description:
+              'Free-form string, with a maximum of 128 characters, used to decide what fields to expect in the event detail.',
+          }),
+        eventBusName: z =>
+          z.string({
+            description:
+              'The name or ARN of the event bus to receive the event.',
+          }),
+      },
     },
     async handler(ctx) {
       const { accountId, region, source, detail, detailType, eventBusName } =
