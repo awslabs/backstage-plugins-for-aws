@@ -74,7 +74,7 @@ With the sample resources in place, you can now run the Backstage app locally to
 Use the following command to start the Backstage app:
 
 ```
-yarn dev
+yarn start
 ```
 
 Open your browser and navigate to `http://localhost:3000`, you should see list of entities in the catalog page:
