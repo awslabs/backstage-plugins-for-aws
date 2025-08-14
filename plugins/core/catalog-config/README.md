@@ -45,6 +45,7 @@ providers:
       accountId: # [OPTIONAL] AWS account ID to use to access AWS Config API
       region: # [OPTIONAL] AWS region to use to access AWS Config API
       aggregator: # [OPTIONAL] The name of the AWS Config aggregator
+      hashEntityNames: # [OPTIONAL] Generated entity names will always be hashes of the ARN
       filters: # Filter the resources queried from AWS Config API
         tags: # [OPTIONAL] Match by tags on the AWS resources
           - key: 'component' # Only retrieve resources that have a 'component' tag
