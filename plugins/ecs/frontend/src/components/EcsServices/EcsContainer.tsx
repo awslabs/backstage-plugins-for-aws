@@ -16,7 +16,6 @@ import {
   OverflowTooltip,
   StructuredMetadataTable,
 } from '@backstage/core-components';
-import React from 'react';
 import { Box } from '@material-ui/core';
 import { stringOrDefault } from '../../util';
 import { TaskStatus } from '../EcsTaskStatus';

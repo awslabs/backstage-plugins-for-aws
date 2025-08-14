@@ -13,7 +13,7 @@
 
 import { BackstageCredentials } from '@backstage/backend-plugin-api';
 import { stringifyEntityRef } from '@backstage/catalog-model';
-import { CatalogService } from '@backstage/plugin-catalog-node/index';
+import { CatalogService } from '@backstage/plugin-catalog-node';
 import { DynamicStructuredTool } from '@langchain/core/tools';
 import { z } from 'zod';
 
