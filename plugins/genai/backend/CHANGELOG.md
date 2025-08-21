@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.5.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/genai-plugin-for-backstage-backend@0.4.0...@aws/genai-plugin-for-backstage-backend@0.5.0) (2025-08-21)
+
+
+### Bug Fixes
+
+* Catalog search tool shouldnt search TechDocs ([d1110e5](https://github.com/awslabs/backstage-plugins-for-aws/commit/d1110e5795a88b9cb10ac0bc97c3852a94811b7f))
+
+
+### Features
+
+* TechDocs tool improvements ([#432](https://github.com/awslabs/backstage-plugins-for-aws/issues/432)) ([db8c1d2](https://github.com/awslabs/backstage-plugins-for-aws/commit/db8c1d2f6667440ea98e728012f25c0b936191f2))
+
+
+
+
+
 # [0.4.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/genai-plugin-for-backstage-backend@0.3.0...@aws/genai-plugin-for-backstage-backend@0.4.0) (2025-06-27)
 
 

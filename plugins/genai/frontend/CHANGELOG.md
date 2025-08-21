@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/genai-plugin-for-backstage@0.2.2...@aws/genai-plugin-for-backstage@0.3.0) (2025-08-21)
+
+
+### Features
+
+* Chat UI updates ([#433](https://github.com/awslabs/backstage-plugins-for-aws/issues/433)) ([6628e40](https://github.com/awslabs/backstage-plugins-for-aws/commit/6628e4029f611ba7073d5e6f34401247d1072fe2))
+
+
+
+
+
 ## [0.2.2](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/genai-plugin-for-backstage@0.2.1...@aws/genai-plugin-for-backstage@0.2.2) (2025-06-27)
 
 

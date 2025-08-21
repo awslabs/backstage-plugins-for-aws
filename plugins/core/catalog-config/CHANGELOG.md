@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.2.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-config-catalog-module-for-backstage@0.1.9...@aws/aws-config-catalog-module-for-backstage@0.2.0) (2025-08-21)
+
+
+### Features
+
+* Allow config provider to generate hashed entity names ([#434](https://github.com/awslabs/backstage-plugins-for-aws/issues/434)) ([748776c](https://github.com/awslabs/backstage-plugins-for-aws/commit/748776ca26efba1f638d86cc35c0336559150277))
+
+
+
+
+
 ## [0.1.9](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-config-catalog-module-for-backstage@0.1.8...@aws/aws-config-catalog-module-for-backstage@0.1.9) (2025-07-17)
 
 

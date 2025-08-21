@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.1](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-core-plugin-for-backstage-scaffolder-actions@0.4.0...@aws/aws-core-plugin-for-backstage-scaffolder-actions@0.4.1) (2025-08-21)
+
+
+### Bug Fixes
+
+* **core:** use logger instead of logStream in scaffolder-actions ([#437](https://github.com/awslabs/backstage-plugins-for-aws/issues/437)) ([8cce998](https://github.com/awslabs/backstage-plugins-for-aws/commit/8cce9982e54271931d4aa79167ef56a3681be990))
+
+
+
+
+
 # [0.4.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-core-plugin-for-backstage-scaffolder-actions@0.3.1...@aws/aws-core-plugin-for-backstage-scaffolder-actions@0.4.0) (2025-06-27)
 
 
