@@ -21,7 +21,6 @@ import {
 } from '@backstage/core-components';
 import { useEntity } from '@backstage/plugin-catalog-react';
 import { Box, Grid, LinearProgress, Link } from '@material-ui/core';
-import React from 'react';
 import { AboutField } from '../AboutField';
 import { MissingAnnotationEmptyState } from '@backstage/plugin-catalog-react';
 import {
