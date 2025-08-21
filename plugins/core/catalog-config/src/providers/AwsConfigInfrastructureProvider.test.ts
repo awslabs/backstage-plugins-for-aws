@@ -219,7 +219,7 @@ describe('AwsConfigInfrastructureProvider', () => {
     return expectMutation(
       'default',
       {
-        filters: { resourceTypes: ['AWS::ECS::Cluster'] },
+        filters: { resourceTypes: ['AWS::ECS::Service'] },
         transform: {
           fields: {
             name: {
@@ -270,13 +270,60 @@ describe('AwsConfigInfrastructureProvider', () => {
           },
         }),
       ],
-      "SELECT resourceId, resourceName, resourceType, awsRegion, accountId, arn, tags, configuration WHERE resourceType IN ('AWS::ECS::Cluster')",
+      "SELECT resourceId, resourceName, resourceType, awsRegion, accountId, arn, tags, configuration WHERE resourceType IN ('AWS::ECS::Service')",
+    );
+  });
+
+  // eslint-disable-next-line jest/expect-expect
+  it('should apply mutation and hash entity names', async () => {
+    mock.on(SelectResourceConfigCommand).callsFake(async _ => {
+      return {
+        Results: [
+          JSON.stringify(
+            mockResource(
+              'test1',
+              '111',
+              'us-west-2',
+              'AWS::ECS::Service',
+              { PlatformVersion: 'LATEST' },
+              { component: 'app1', owner: 'team1', system: 'system1' },
+            ),
+          ),
+        ],
+      };
+    });
+
+    return expectMutation(
+      'default',
+      {
+        filters: { resourceTypes: ['AWS::ECS::Service'] },
+        hashEntityNames: true,
+      },
+      [
+        createResource({
+          arn: 'arn:aws:xxx:us-west-2:111:/test1',
+          title: 'test1',
+          description: 'AWS Config Resource AWS::ECS::Service test1',
+          name: '3e8bd21376e252c57277d4a7a3d618ef3a1597a05dc2326f028a69a7d6a172a',
+          accountId: '111',
+          region: 'us-west-2',
+          resourceType: 'AWS::ECS::Service',
+          providerId: 'default',
+          type: 'ecs-service',
+          metadataName:
+            '3e8bd21376e252c57277d4a7a3d618ef3a1597a05dc2326f028a69a7d6a172a',
+        }),
+      ],
+      "SELECT resourceId, resourceName, resourceType, awsRegion, accountId, arn, tags, configuration WHERE resourceType IN ('AWS::ECS::Service')",
     );
   });
 });
 
 function createResource({
+  arn,
   name,
+  description,
+  title,
   accountId,
   region,
   resourceType,
@@ -288,7 +335,10 @@ function createResource({
   metadataName,
   annotations = {},
 }: {
+  arn?: string;
   name: string;
+  description?: string;
+  title?: string;
   accountId: string;
   region: string;
   resourceType: string;
@@ -300,7 +350,7 @@ function createResource({
   metadataName?: string;
   annotations?: any;
 }) {
-  const arn = `arn:aws:xxx:${region}:${accountId}:/${name}`;
+  const actualArn = arn ?? `arn:aws:xxx:${region}:${accountId}:/${name}`;
   const location = `aws-config-provider:${providerId}`;
 
   const entity: any = {
@@ -309,17 +359,19 @@ function createResource({
       kind: 'Resource',
       metadata: {
         annotations: {
-          'aws.amazon.com/arn': arn,
+          'aws.amazon.com/arn': actualArn,
           'aws.amazon.com/name': name,
           'aws.amazon.com/region': region,
-          'aws.amazon.com/resource-id': arn,
+          'aws.amazon.com/resource-id': actualArn,
           'aws.amazon.com/resource-type': resourceType,
           'backstage.io/managed-by-location': location,
           'backstage.io/managed-by-origin-location': location,
           ...annotations,
         },
         name: metadataName ?? name,
-        description: `AWS Config Resource ${resourceType} ${name}`,
+        description:
+          description ?? `AWS Config Resource ${resourceType} ${name}`,
+        title: title,
       },
       spec: {
         owner,
