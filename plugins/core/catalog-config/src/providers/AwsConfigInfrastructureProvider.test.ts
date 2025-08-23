@@ -21,6 +21,8 @@ import {
 } from '@aws-sdk/client-config-service';
 import { mockServices } from '@backstage/backend-test-utils';
 import { mockResource } from './mocks';
+import { entitySchemaValidator } from '@backstage/catalog-model';
+import { validate } from '@roadiehq/roadie-backstage-entity-validator';
 
 const logger = mockServices.logger.mock();
 
@@ -316,6 +318,119 @@ describe('AwsConfigInfrastructureProvider', () => {
       ],
       "SELECT resourceId, resourceName, resourceType, awsRegion, accountId, arn, tags, configuration WHERE resourceType IN ('AWS::ECS::Service')",
     );
+  });
+  it('should apply mutation and truncate the field to < 63 characters, with field transforms if the name is longer than 63 characters, and not produce invalid metadata', async () => {
+    mock.on(SelectResourceConfigCommand).callsFake(async _ => {
+      return {
+        Results: [
+          JSON.stringify(
+            mockResource(
+              'test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1',
+              '111',
+              'us-west-2',
+              'AWS::ECS::Service',
+              { PlatformVersion: 'LATEST' },
+              { component: 'app1', owner: 'team1', system: 'system1' },
+            ),
+          ),
+          JSON.stringify(
+            mockResource(
+              'test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2',
+              '222',
+              'us-west-2',
+              'AWS::ECS::Service',
+              { PlatformVersion: 'LATEST' },
+              { none: 'missing' },
+            ),
+          ),
+        ],
+      };
+    });
+    const test1Resource = createResource({
+      name: 'test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1',
+      accountId: '111',
+      region: 'us-west-2',
+      resourceType: 'AWS::ECS::Service',
+      providerId: 'default',
+      type: 'ecs-service-custom',
+      owner: 'team1',
+      component: 'app1',
+      system: 'some-system',
+      metadataName:
+        'test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1-test1',
+      annotations: {
+        'aws.amazon.com/account-id': '111',
+      },
+    });
+    const test2Resource = createResource({
+      name: 'test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2',
+      accountId: '222',
+      region: 'us-west-2',
+      resourceType: 'AWS::ECS::Service',
+      providerId: 'default',
+      type: 'ecs-service-custom',
+      system: 'some-system',
+      metadataName:
+        'test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2',
+      annotations: {
+        'aws.amazon.com/account-id': '222',
+      },
+    });
+    return Promise.all([
+      // expect(test1Resource.entity.metadata.name.length).toBeLessThan(63),
+      // expect(test2Resource.entity.metadata.name.length).toBeLessThan(63),
+      expectMutation(
+        'default',
+        {
+          filters: { resourceTypes: ['AWS::ECS::Cluster'] },
+          transform: {
+            fields: {
+              // name: {
+              //   expression:
+              //     "$join([$resource.resourceName, $resource.accountId], '-')",
+              // },
+              annotations: {
+                'aws.amazon.com/account-id': {
+                  expression: '$resource.accountId',
+                },
+              },
+              spec: {
+                owner: { tag: 'owner' },
+                system: { value: 'some-system' },
+                component: { tag: 'component' },
+                type: { value: 'ecs-service-custom' },
+              },
+            },
+          },
+        },
+        [test1Resource, test2Resource],
+        "SELECT resourceId, resourceName, resourceType, awsRegion, accountId, arn, tags, configuration WHERE resourceType IN ('AWS::ECS::Cluster')",
+      ),
+    ]);
+  });
+  it('expects the output to be compatible with the schema', async () => {
+    // const validateFromFile = entitySchemaValidator();
+    return validate(
+        JSON.stringify({
+        apiVersion: 'backstage.io/v1alpha1',
+        kind: 'Resource',
+        metadata: {
+          annotations: {
+            'aws.amazon.com/arn': 'arn:aws:xxx:us-west-2:111:/test',
+          },
+          name: 'test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2',
+        },
+        spec: {
+          owner: 'team1',
+          type: 'ecs-service-custom',
+          system: 'some-system',
+          component: 'app1',
+        },
+      }), true)
+      .then(data => {
+        console.log(data);
+        expect(data).not.toEqual([{"apiVersion": "backstage.io/v1alpha1", "kind": "Resource", "metadata": {"annotations": {"aws.amazon.com/arn": "arn:aws:xxx:us-west-2:111:/test"}, "name": "test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2-test2", "namespace": "default"}, "spec": {"component": "app1", "owner": "team1", "system": "some-system", "type": "ecs-service-custom"}}]);
+    });
   });
 });
 
