@@ -6381,7 +6381,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@backstage/plugin-scaffolder-backend@npm:^2.1.0":
+"@backstage/plugin-scaffolder-backend@npm:^2.1.1":
   version: 2.2.0
   resolution: "@backstage/plugin-scaffolder-backend@npm:2.2.0"
   dependencies:
@@ -17109,7 +17109,7 @@ __metadata:
     "@backstage/plugin-permission-common": "npm:^0.9.1"
     "@backstage/plugin-permission-node": "npm:^0.10.2"
     "@backstage/plugin-proxy-backend": "npm:^0.6.4"
-    "@backstage/plugin-scaffolder-backend": "npm:^2.1.0"
+    "@backstage/plugin-scaffolder-backend": "npm:^2.1.1"
     "@backstage/plugin-search-backend": "npm:^2.0.4"
     "@backstage/plugin-search-backend-module-catalog": "npm:^0.3.6"
     "@backstage/plugin-search-backend-module-pg": "npm:^0.5.46"
