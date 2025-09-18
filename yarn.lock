@@ -2208,12 +2208,12 @@ __metadata:
     "@backstage/plugin-auth-backend": "npm:^0.25.4"
     "@backstage/plugin-auth-backend-module-guest-provider": "npm:^0.2.12"
     "@backstage/plugin-catalog-node": "npm:^1.19.0"
-    "@types/express": "npm:*"
+    "@types/express": "npm:4.17.17"
     "@types/luxon": "npm:^3"
     "@types/regression": "npm:^2"
     "@types/supertest": "npm:^2.0.12"
     aws-sdk-client-mock: "npm:^4.0.0"
-    express: "npm:^4.17.1"
+    express: "npm:^4.17.17"
     express-promise-router: "npm:^4.1.0"
     luxon: "npm:^3.4.4"
     msw: "npm:^1.0.0"
@@ -2299,10 +2299,10 @@ __metadata:
     "@backstage/plugin-auth-backend": "npm:^0.25.4"
     "@backstage/plugin-auth-backend-module-guest-provider": "npm:^0.2.12"
     "@backstage/plugin-catalog-node": "npm:^1.19.0"
-    "@types/express": "npm:*"
+    "@types/express": "npm:^4.17.17"
     "@types/supertest": "npm:^2.0.12"
     aws-sdk-client-mock: "npm:^4.0.0"
-    express: "npm:^4.17.1"
+    express: "npm:^4.17.17"
     express-promise-router: "npm:^4.1.0"
     msw: "npm:^1.0.0"
     node-fetch: "npm:^2.6.7"
@@ -2380,10 +2380,10 @@ __metadata:
     "@backstage/plugin-auth-backend": "npm:^0.25.4"
     "@backstage/plugin-auth-backend-module-guest-provider": "npm:^0.2.12"
     "@backstage/plugin-catalog-node": "npm:^1.19.0"
-    "@types/express": "npm:*"
+    "@types/express": "npm:^4.17.17"
     "@types/supertest": "npm:^2.0.12"
     aws-sdk-client-mock: "npm:^4.0.0"
-    express: "npm:^4.17.1"
+    express: "npm:^4.17.17"
     express-promise-router: "npm:^4.1.0"
     msw: "npm:^1.0.0"
     node-fetch: "npm:^2.6.7"
@@ -2460,10 +2460,10 @@ __metadata:
     "@backstage/plugin-auth-backend": "npm:^0.25.4"
     "@backstage/plugin-auth-backend-module-guest-provider": "npm:^0.2.12"
     "@backstage/plugin-catalog-node": "npm:^1.19.0"
-    "@types/express": "npm:*"
+    "@types/express": "npm:^4.17.17"
     "@types/supertest": "npm:^2.0.12"
     aws-sdk-client-mock: "npm:^4.0.0"
-    express: "npm:^4.17.1"
+    express: "npm:^4.17.17"
     express-promise-router: "npm:^4.1.0"
     msw: "npm:^1.0.0"
     node-fetch: "npm:^2.6.7"
@@ -2644,12 +2644,12 @@ __metadata:
     "@backstage/plugin-auth-backend": "npm:^0.25.4"
     "@backstage/plugin-auth-backend-module-guest-provider": "npm:^0.2.12"
     "@backstage/plugin-catalog-node": "npm:^1.19.0"
-    "@types/express": "npm:*"
+    "@types/express": "npm:^4.17.17"
     "@types/luxon": "npm:^3"
     "@types/regression": "npm:^2"
     "@types/supertest": "npm:^2.0.12"
     aws-sdk-client-mock: "npm:^4.0.0"
-    express: "npm:^4.17.1"
+    express: "npm:^4.17.17"
     express-promise-router: "npm:^4.1.0"
     luxon: "npm:^3.4.4"
     msw: "npm:^1.0.0"
@@ -2733,12 +2733,12 @@ __metadata:
     "@backstage/plugin-search-common": "npm:^1.2.19"
     "@langchain/core": "npm:0.3.57"
     "@modelcontextprotocol/sdk": "npm:^1.12.3"
-    "@types/express": "npm:*"
+    "@types/express": "npm:^4.17.17"
     "@types/lodash": "npm:^4"
     "@types/supertest": "npm:^2.0.12"
     "@types/turndown": "npm:^5.0.5"
     "@types/uuid": "npm:^10"
-    express: "npm:^4.17.1"
+    express: "npm:^4.17.17"
     express-promise-router: "npm:^4.1.0"
     jsonschema: "npm:^1.5.0"
     knex: "npm:^3.1.0"
@@ -13962,7 +13962,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/express@npm:^4.17.21, @types/express@npm:^4.17.6":
+"@types/express@npm:4.17.17":
+  version: 4.17.17
+  resolution: "@types/express@npm:4.17.17"
+  dependencies:
+    "@types/body-parser": "npm:*"
+    "@types/express-serve-static-core": "npm:^4.17.33"
+    "@types/qs": "npm:*"
+    "@types/serve-static": "npm:*"
+  checksum: 10c0/5802a0a28f7473744dd6a118479440d8c5c801c973d34fb6f31b5ee645a41fee936193978a8e905d55deefda9b675d19924167bf11a31339874c3161a3fc2922
+  languageName: node
+  linkType: hard
+
+"@types/express@npm:^4.17.17, @types/express@npm:^4.17.21, @types/express@npm:^4.17.6":
   version: 4.17.23
   resolution: "@types/express@npm:4.17.23"
   dependencies:
@@ -20980,7 +20992,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"express@npm:^4.14.0, express@npm:^4.17.1, express@npm:^4.21.2":
+"express@npm:^4.14.0, express@npm:^4.17.1, express@npm:^4.17.17, express@npm:^4.21.2":
   version: 4.21.2
   resolution: "express@npm:4.21.2"
   dependencies:
