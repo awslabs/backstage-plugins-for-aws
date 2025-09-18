@@ -28,16 +28,20 @@ export default defineConfig({
   },
 
   // Run your local dev server before starting the tests
-  webServer: process.env.CI
-    ? []
-    : [
-        {
-          command: 'yarn start',
-          port: 3000,
-          reuseExistingServer: true,
-          timeout: 60_000,
-        },
-      ],
+  webServer: [
+    {
+      command: 'yarn start',
+      port: 3000,
+      reuseExistingServer: true,
+      timeout: 60_000,
+    },
+    {
+      command: 'yarn start-backend',
+      port: 7007,
+      reuseExistingServer: true,
+      timeout: 60_000,
+    },
+  ],
 
   forbidOnly: !!process.env.CI,
 
