@@ -32,13 +32,13 @@ export default defineConfig({
     {
       command: 'yarn start',
       port: 3000,
-      reuseExistingServer: true,
+      reuseExistingServer: !process.env.CI,
       timeout: 60_000,
     },
     {
       command: 'yarn start-backend',
       port: 7007,
-      reuseExistingServer: true,
+      reuseExistingServer: !process.env.CI,
       timeout: 60_000,
     },
   ],
@@ -51,9 +51,7 @@ export default defineConfig({
 
   use: {
     actionTimeout: 0,
-    baseURL:
-      process.env.PLAYWRIGHT_URL ??
-      (process.env.CI ? 'http://localhost:7007' : 'http://localhost:3000'),
+    baseURL: process.env.PLAYWRIGHT_URL ?? 'http://localhost:3000',
     screenshot: 'only-on-failure',
     trace: 'on-first-retry',
   },
