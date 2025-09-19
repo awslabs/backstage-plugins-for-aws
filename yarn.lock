@@ -3520,20 +3520,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@backstage-community/plugin-tech-radar-common@npm:^1.9.0":
-  version: 1.9.0
-  resolution: "@backstage-community/plugin-tech-radar-common@npm:1.9.0"
+"@backstage-community/plugin-tech-radar-common@npm:^1.9.1":
+  version: 1.9.1
+  resolution: "@backstage-community/plugin-tech-radar-common@npm:1.9.1"
   dependencies:
     zod: "npm:^3.20.0"
-  checksum: 10c0/c3fcd4ec9325d71346eba639eac76dad81899541d27707cde4e3784c2ff0bc5a38e8d75f46dd2739877847ab3980783d4d702a18fe29afbf435edd4ceb1aff52
+  checksum: 10c0/729e9bd2e123bf8aa9e578ade031fc2464da95991e17e18755c3177aae6a3928936f7c347a068ca332418c748096f9a41c4566f09d5564c8f1529cd3fd09d0b1
   languageName: node
   linkType: hard
 
 "@backstage-community/plugin-tech-radar@npm:^1.0.0":
-  version: 1.10.0
-  resolution: "@backstage-community/plugin-tech-radar@npm:1.10.0"
+  version: 1.10.1
+  resolution: "@backstage-community/plugin-tech-radar@npm:1.10.1"
   dependencies:
-    "@backstage-community/plugin-tech-radar-common": "npm:^1.9.0"
+    "@backstage-community/plugin-tech-radar-common": "npm:^1.9.1"
     "@backstage/core-compat-api": "npm:^0.5.1"
     "@backstage/core-components": "npm:^0.17.5"
     "@backstage/core-plugin-api": "npm:^1.10.9"
@@ -3548,7 +3548,7 @@ __metadata:
     react: ^16.13.1 || ^17.0.0 || ^18.0.0
     react-dom: ^16.13.1 || ^17.0.0 || ^18.0.0
     react-router-dom: 6.0.0-beta.0 || ^6.3.0
-  checksum: 10c0/f4321d49c7cb7c71a47d899e0366ac21a68fccbad49ee75fb0b9babea27eada91c568bd891533e3ace2796f629baf5dc6eabe0a920c1cda96b97e15b41c5afb2
+  checksum: 10c0/63181d5d4fbbf22ecdc845603000ff6b736137ce5299167f752e3e8086414f15ab9ecce99e99369d40e94650701a2bdf63d1579a532579f1d63aedced2927374
   languageName: node
   linkType: hard
 
