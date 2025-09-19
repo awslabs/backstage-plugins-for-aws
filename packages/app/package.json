@@ -21,7 +21,7 @@
     "@aws/cost-insights-plugin-for-backstage": "workspace:^",
     "@aws/genai-plugin-for-backstage": "workspace:^",
     "@backstage-community/plugin-cost-insights": "^0.16.0",
-    "@backstage-community/plugin-github-actions": "^0.6.16",
+    "@backstage-community/plugin-github-actions": "^0.14.0",
     "@backstage-community/plugin-tech-radar": "^1.0.0",
     "@backstage/app-defaults": "^1.7.0",
     "@backstage/catalog-model": "^1.7.5",
