@@ -23,7 +23,7 @@ import {
   TransformDefinition,
 } from './types';
 import { IncrementalEntityProviderOptions } from '@backstage/plugin-catalog-backend-module-incremental-ingestion';
-import { JsonObject, JsonValue } from '@backstage/types/index';
+import { JsonObject, JsonValue } from '@backstage/types';
 
 export function readAwsInfrastructureConfigs(
   config: Config,

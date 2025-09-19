@@ -12,7 +12,6 @@
  */
 
 import { Entity } from '@backstage/catalog-model';
-import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import {
   useEntity,

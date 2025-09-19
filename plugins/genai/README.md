@@ -152,7 +152,7 @@ See the [LangGraph agent documentation](./agent-langgraph/) for the full configu
 Start the Backstage application:
 
 ```
-yarn dev
+yarn start
 ```
 
 Access the application in your browser and select the "Chat Assistant" option in the menu. Ask a general question like "What is Terraform?".

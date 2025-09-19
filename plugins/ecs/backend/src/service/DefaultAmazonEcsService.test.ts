@@ -36,7 +36,7 @@ import {
   mockEcsTask,
 } from '@aws/amazon-ecs-plugin-for-backstage-common';
 import { mockCredentials, mockServices } from '@backstage/backend-test-utils';
-import { CatalogService } from '@backstage/plugin-catalog-node/index';
+import { CatalogService } from '@backstage/plugin-catalog-node';
 
 function getMockCredentialProvider(): Promise<AwsCredentialProvider> {
   return Promise.resolve({

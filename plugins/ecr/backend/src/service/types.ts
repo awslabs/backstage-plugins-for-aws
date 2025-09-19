@@ -15,7 +15,7 @@ import {
   EcrImageScanFindingsResponse,
   EcrImagesResponse,
 } from '@aws/amazon-ecr-plugin-for-backstage-common';
-import { BackstageCredentials } from '@backstage/backend-plugin-api/index';
+import { BackstageCredentials } from '@backstage/backend-plugin-api';
 import { CompoundEntityRef } from '@backstage/catalog-model';
 
 /** @public */

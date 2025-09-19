@@ -94,12 +94,6 @@ jobs:
       - name: Run build
         run: yarn build:all
 
-      - uses: JarvusInnovations/background-action@v1
-        name: Start application
-        with:
-          run: yarn dev
-          wait-on: http://localhost:7007/settings
-
       - name: Run e2e tests
         run: yarn test:e2e
 
