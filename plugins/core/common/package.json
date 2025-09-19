@@ -1,7 +1,7 @@
 {
   "name": "@aws/aws-core-plugin-for-backstage-common",
   "description": "Common functionality for AWS plugins for Backstage",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "repository": {
     "type": "git",
     "url": "github:awslabs/backstage-plugins-for-aws",

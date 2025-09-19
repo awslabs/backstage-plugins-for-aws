@@ -1,7 +1,7 @@
 {
   "name": "@aws/cost-insights-plugin-for-backstage-common",
   "description": "Common functionality for the amazon-ecs-plugin-for-backstage plugin",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "repository": {
     "type": "git",
     "url": "github:awslabs/backstage-plugins-for-aws",
