@@ -82,7 +82,7 @@ describe('testing', () => {
         typeName: 'AWS::ECR::Repository',
         desiredState: '{"RepositoryName": "testing-thing"}',
         wait: false,
-        maxWaitTime: 0,
+        maxWaitTime: 10,
       },
     });
 
@@ -116,7 +116,7 @@ describe('testing', () => {
       input: {
         ...mockContext.input,
         wait: true,
-        maxWaitTime: 0,
+        maxWaitTime: 10,
       },
     });
 
