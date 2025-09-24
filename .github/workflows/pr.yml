@@ -105,7 +105,7 @@ jobs:
     steps:
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
 
       - name: Log node version
         run: node --version
@@ -139,7 +139,7 @@ jobs:
       - uses: actions/setup-python@v5
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
       - name: Install dependencies
         run: yarn install
       - uses: pre-commit/action@v3.0.1
