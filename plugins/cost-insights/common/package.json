@@ -41,7 +41,7 @@
     "dist"
   ],
   "dependencies": {
-    "@aws-sdk/client-ecs": "^3.511.0",
+    "@aws-sdk/client-ecs": "^3.911.0",
     "@backstage/catalog-model": "^1.7.5"
   }
 }
