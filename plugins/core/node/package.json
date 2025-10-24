@@ -29,10 +29,10 @@
     "postpack": "backstage-cli package postpack"
   },
   "dependencies": {
-    "@aws-sdk/client-config-service": "^3.511.0",
-    "@aws-sdk/client-resource-explorer-2": "^3.511.0",
-    "@aws-sdk/client-resource-groups-tagging-api": "^3.511.0",
-    "@aws-sdk/types": "^3.511.0",
+    "@aws-sdk/client-config-service": "^3.911.0",
+    "@aws-sdk/client-resource-explorer-2": "^3.911.0",
+    "@aws-sdk/client-resource-groups-tagging-api": "^3.911.0",
+    "@aws-sdk/types": "^3.911.0",
     "@aws/aws-core-plugin-for-backstage-common": "workspace:^",
     "@backstage/backend-plugin-api": "^1.4.3",
     "@backstage/config": "^1.3.3",
