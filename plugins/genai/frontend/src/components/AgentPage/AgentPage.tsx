@@ -19,6 +19,7 @@ import { ChatInputComponent } from '../ChatInputComponent';
 import { useParams } from 'react-router-dom';
 import { LinearProgress, makeStyles } from '@material-ui/core';
 import { useChatSession } from '../../hooks';
+import { useAgentMetadata } from '../../hooks/useAgentMetadata';
 
 const useStyles = makeStyles({
   flex: {
@@ -53,6 +54,9 @@ export const AgentPage = ({ title = 'Chat Assistant' }: { title?: string }) => {
     throw new Error('agent name is not defined');
   }
 
+  const agentMetadata = useAgentMetadata(agentName);
+  const agentTitle = agentMetadata.title || title;
+
   const { messages, isInitializing, isLoading, onUserMessage, onClear } =
     useChatSession({
       agentName,
@@ -68,7 +72,7 @@ export const AgentPage = ({ title = 'Chat Assistant' }: { title?: string }) => {
 
   return (
     <Page themeId="tool">
-      <Header title={title} />
+      <Header title={agentTitle} />
       <Content noPadding>
         <div className={classes.flex}>
           <ChatHistoryComponent
@@ -76,6 +80,7 @@ export const AgentPage = ({ title = 'Chat Assistant' }: { title?: string }) => {
             className={classes.grow}
             isStreaming={isLoading}
             showInformation={showInformation}
+            agentMetadata={agentMetadata}
           />
           <div className={classes.chatInputContainer}>
             <InfoCard>
