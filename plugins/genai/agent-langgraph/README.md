@@ -58,4 +58,10 @@ genai:
           apiKey: ${OPENAI_API_KEY} # (Required) OpenAI model name
           modelName: 'gpt-3.5-turbo-instruct' # (Optional) OpenAI model name
           baseUrl: ${OPENAI_API_BASE_URL} # (Optional) URL for OpenAI API endpoint
+        azureOpenAI:
+          apiKey: ${AZURE_OPENAI_API_KEY} # (Required) Azure OpenAI API key for authentication
+          apiVersion: ${AZURE_OPENAI_API_VERSION} # (Required) Azure OpenAI API version
+          endpoint: ${AZURE_OPENAI_API_VERSION} # (Required) Azure OpenAI endpoint
+          instanceName: ${AZURE_OPENAI_INSTANCE_NAME} # (Optional) Azure OpenAI instance name
+          deploymentName: ${AZURE_OPENAI_DEPLOYMENT_NAME} # (Optional) Azure OpenAI deployment name
 ```
