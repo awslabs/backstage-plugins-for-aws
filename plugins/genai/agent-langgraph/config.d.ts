@@ -104,6 +104,37 @@ export interface Config {
              * (Required) Base URL of the Ollama API
              */
             baseUrl: string;
+            /**
+             * (Optional) Ollama API key for authentication
+             * @visibility secret
+             */
+            apiKey?: string;
+          };
+          /**
+           * (Optional) Specific configuration for Azure OpenAI
+           */
+          azureOpenAI?: {
+            /**
+             * (Required) Azure OpenAI API key for authentication
+             * @visibility secret
+             */
+            apiKey: string;
+            /**
+             * (Required) Azure OpenAI API version
+             */
+            apiVersion: string;
+            /**
+             * (Required) Azure OpenAI endpoint
+             */
+            endpoint: string;
+            /**
+             * (Optional) Azure OpenAI instance name
+             */
+            instanceName?: string;
+            /**
+             * (Optional) Azure OpenAI deployment name
+             */
+            deploymentName?: string;
           };
         };
       };

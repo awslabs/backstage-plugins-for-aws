@@ -22,7 +22,7 @@ import {
   stringifyEntityRef,
 } from '@backstage/catalog-model';
 import { ChatBedrockConverse } from '@langchain/aws';
-import { ChatOpenAI } from '@langchain/openai';
+import { ChatOpenAI, AzureChatOpenAI } from '@langchain/openai';
 import { ChatOllama } from '@langchain/ollama';
 import { BaseCheckpointSaver, MemorySaver } from '@langchain/langgraph';
 import { createReactAgent } from '@langchain/langgraph/prebuilt';
@@ -104,6 +104,11 @@ export class LangGraphReactAgentType implements AgentType {
       );
     } else if (agentLangGraphConfig.ollama) {
       agentModel = LangGraphReactAgentType.createOllamaModel(
+        agentLangGraphConfig,
+        logger,
+      );
+    } else if (agentLangGraphConfig.azureOpenAI) {
+      agentModel = LangGraphReactAgentType.createAzureOpenAIModel(
         agentLangGraphConfig,
         logger,
       );
@@ -226,6 +231,30 @@ export class LangGraphReactAgentType implements AgentType {
       baseUrl: baseUrl,
       streaming: true,
       temperature: config.temperature,
+      topP: config.topP,
+    });
+  }
+
+  private static createAzureOpenAIModel(
+    config: LangGraphAgentConfig,
+    logger: LoggerService,
+  ) {
+    const { apiKey, apiVersion, endpoint, instanceName, deploymentName } =
+      config.azureOpenAI!;
+
+    logger.info(
+      `Instantiating ChatAzureOpenAI model using endpoint '${endpoint}'`,
+    );
+
+    return new AzureChatOpenAI({
+      azureOpenAIApiKey: apiKey,
+      azureOpenAIApiVersion: apiVersion,
+      azureOpenAIEndpoint: endpoint,
+      azureOpenAIApiInstanceName: instanceName,
+      azureOpenAIApiDeploymentName: deploymentName,
+      streaming: true,
+      temperature: config.temperature,
+      maxTokens: config.maxTokens,
       topP: config.topP,
     });
   }

@@ -61,4 +61,10 @@ genai:
         ollama:
           model: ${OLLAMA_MODEL} # (Required) Ollama model name
           baseUrl: ${OLLAMA_BASE_URL} # (Required) Base URL for Ollama
+        azureOpenAI:
+          apiKey: ${AZURE_OPENAI_API_KEY} # (Required) Azure OpenAI API key for authentication
+          apiVersion: ${AZURE_OPENAI_API_VERSION} # (Required) Azure OpenAI API version
+          endpoint: ${AZURE_OPENAI_API_VERSION} # (Required) Azure OpenAI endpoint
+          instanceName: ${AZURE_OPENAI_INSTANCE_NAME} # (Optional) Azure OpenAI instance name
+          deploymentName: ${AZURE_OPENAI_DEPLOYMENT_NAME} # (Optional) Azure OpenAI deployment name
 ```
