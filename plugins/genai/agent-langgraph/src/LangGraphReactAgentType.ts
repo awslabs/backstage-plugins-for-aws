@@ -22,6 +22,7 @@ import {
 } from '@backstage/catalog-model';
 import { ChatBedrockConverse } from '@langchain/aws';
 import { ChatOpenAI } from '@langchain/openai';
+import { ChatOllama } from '@langchain/ollama';
 import { CompiledStateGraph, MemorySaver } from '@langchain/langgraph';
 import { createReactAgent } from '@langchain/langgraph/prebuilt';
 import {
@@ -85,6 +86,11 @@ export class LangGraphReactAgentType implements AgentType {
         agentLangGraphConfig,
         logger,
       );
+    } else if (agentLangGraphConfig.ollama) {
+      agentModel = LangGraphReactAgentType.createOllamaModel(
+        agentLangGraphConfig,
+        logger,
+      );      
     } else {
       throw new Error('No agent model configured');
     }
@@ -202,6 +208,23 @@ export class LangGraphReactAgentType implements AgentType {
       modelName: modelName,
       temperature: config.temperature,
       maxTokens: config.maxTokens,
+      topP: config.topP,
+    });
+  }
+
+  private static createOllamaModel(
+    config: LangGraphAgentConfig,
+    logger: LoggerService,
+  ) {
+    const { model, baseUrl } = config.ollama!;
+
+    logger.info(`Instantiating ChatOllama model using baseUrl '${baseUrl}'`);
+
+    return new ChatOllama({
+      model: model,
+      baseUrl: baseUrl,
+      streaming: true,
+      temperature: config.temperature,
       topP: config.topP,
     });
   }

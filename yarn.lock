@@ -2773,6 +2773,7 @@ __metadata:
     "@langchain/langgraph": "npm:0.2.74"
     "@langchain/langgraph-checkpoint-postgres": "npm:^0.0.5"
     "@langchain/langgraph-checkpoint-sqlite": "npm:^0.1.5"
+    "@langchain/ollama": "npm:^1.0.0"
     "@langchain/openai": "npm:^0.5.11"
     langfuse-langchain: "npm:^3.29.1"
     zod: "npm:^3.23.8"
@@ -8054,6 +8055,18 @@ __metadata:
     zod-to-json-schema:
       optional: true
   checksum: 10c0/29522512177a6d886a5c4a33a482e90b05b6ffaa37ef2672d343d9ec011664ffad74b8cd72baaa9cbd7a529037bbe586759d59bb9185db264c28dfc9f0a4dea8
+  languageName: node
+  linkType: hard
+
+"@langchain/ollama@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@langchain/ollama@npm:1.0.0"
+  dependencies:
+    ollama: "npm:^0.5.12"
+    uuid: "npm:^10.0.0"
+  peerDependencies:
+    "@langchain/core": ^1.0.0
+  checksum: 10c0/4f1d641c2928ad4a23f1348d9dffb5d6c861d15786755ad0950876c2e37a9811168fb2cb26eccca7ce0c96d0ed2bf06cdd3a7921541da1d90a024d53226f37d9
   languageName: node
   linkType: hard
 
@@ -29069,6 +29082,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ollama@npm:^0.5.12":
+  version: 0.5.18
+  resolution: "ollama@npm:0.5.18"
+  dependencies:
+    whatwg-fetch: "npm:^3.6.20"
+  checksum: 10c0/3ed3c98f1aebf734136032704079d87929f583bab99b4359685d5f1a427b607d5aa3268ff334cda6b2d741166d80245180d9d2d65b2c2a8c8bf4146b2ea0c72d
+  languageName: node
+  linkType: hard
+
 "on-finished@npm:2.4.1, on-finished@npm:^2.3.0, on-finished@npm:^2.4.1":
   version: 2.4.1
   resolution: "on-finished@npm:2.4.1"
@@ -36794,6 +36816,13 @@ __metadata:
   dependencies:
     iconv-lite: "npm:0.6.3"
   checksum: 10c0/273b5f441c2f7fda3368a496c3009edbaa5e43b71b09728f90425e7f487e5cef9eb2b846a31bd760dd8077739c26faf6b5ca43a5f24033172b003b72cf61a93e
+  languageName: node
+  linkType: hard
+
+"whatwg-fetch@npm:^3.6.20":
+  version: 3.6.20
+  resolution: "whatwg-fetch@npm:3.6.20"
+  checksum: 10c0/fa972dd14091321d38f36a4d062298df58c2248393ef9e8b154493c347c62e2756e25be29c16277396046d6eaa4b11bd174f34e6403fff6aaca9fb30fa1ff46d
   languageName: node
   linkType: hard
 

@@ -92,6 +92,19 @@ export interface Config {
              */
             baseUrl?: string;
           };
+          /**
+           * (Optional) Specific configuration for Ollama
+           */
+          ollama?: {
+            /**
+             * (Required) Ollama model name to use
+             */
+            model: string;
+            /**
+             * (Required) Base URL of the Ollama API
+             */
+            baseUrl: string;
+          };
         };
       };
     };
