@@ -21,7 +21,7 @@ import {
   stringifyEntityRef,
 } from '@backstage/catalog-model';
 import { ChatBedrockConverse } from '@langchain/aws';
-import { ChatOpenAI } from '@langchain/openai';
+import { ChatOpenAI, AzureChatOpenAI } from '@langchain/openai';
 import { CompiledStateGraph, MemorySaver } from '@langchain/langgraph';
 import { createReactAgent } from '@langchain/langgraph/prebuilt';
 import {
@@ -82,6 +82,11 @@ export class LangGraphReactAgentType implements AgentType {
         LangGraphReactAgentType.createBedrockModel(agentLangGraphConfig);
     } else if (agentLangGraphConfig.openai) {
       agentModel = LangGraphReactAgentType.createOpenAIModel(
+        agentLangGraphConfig,
+        logger,
+      );
+    } else if (agentLangGraphConfig.azureOpenAI) {
+      agentModel = LangGraphReactAgentType.createAzureOpenAIModel(
         agentLangGraphConfig,
         logger,
       );
@@ -200,6 +205,30 @@ export class LangGraphReactAgentType implements AgentType {
       apiKey: apiKey,
       streaming: true,
       modelName: modelName,
+      temperature: config.temperature,
+      maxTokens: config.maxTokens,
+      topP: config.topP,
+    });
+  }
+
+  private static createAzureOpenAIModel(
+    config: LangGraphAgentConfig,
+    logger: LoggerService,
+  ) {
+    const { apiKey, apiVersion, endpoint, instanceName, deploymentName } =
+      config.azureOpenAI!;
+
+    logger.info(
+      `Instantiating ChatAzureOpenAI model using endpoint '${endpoint}'`,
+    );
+
+    return new AzureChatOpenAI({
+      azureOpenAIApiKey: apiKey,
+      azureOpenAIApiVersion: apiVersion,
+      azureOpenAIEndpoint: endpoint,
+      azureOpenAIApiInstanceName: instanceName,
+      azureOpenAIApiDeploymentName: deploymentName,
+      streaming: true,
       temperature: config.temperature,
       maxTokens: config.maxTokens,
       topP: config.topP,
