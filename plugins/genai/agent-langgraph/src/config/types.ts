@@ -31,6 +31,7 @@ export interface LangGraphAgentConfig {
   topP?: number;
   bedrock?: LangGraphAgentBedrockConfig;
   openai?: LangGraphAgentOpenAIConfig;
+  azureOpenAI?: LangGraphAgentAzureOpenAIConfig;
 }
 
 export interface LangGraphAgentBedrockConfig {
@@ -42,4 +43,12 @@ export interface LangGraphAgentOpenAIConfig {
   apiKey: string;
   modelName?: string;
   baseUrl?: string;
+}
+
+export interface LangGraphAgentAzureOpenAIConfig {
+  apiKey: string;
+  apiVersion: string;
+  endpoint: string;
+  instanceName?: string;
+  deploymentName?: string;
 }

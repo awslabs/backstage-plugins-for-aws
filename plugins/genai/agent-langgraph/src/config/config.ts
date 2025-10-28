@@ -13,6 +13,7 @@
 
 import { Config } from '@backstage/config';
 import {
+  LangGraphAgentAzureOpenAIConfig,
   LangGraphAgentBedrockConfig,
   LangGraphAgentConfig,
   LangGraphAgentLangFuseConfig,
@@ -59,6 +60,7 @@ export function readLangGraphAgentConfig(
     topP: config.getOptionalNumber('topP'),
     bedrock: readLangGraphAgentBedrockConfig(config),
     openai: readLangGraphAgentOpenAIConfig(config),
+    azureOpenAI: readLangGraphAgentAzureOpenAIConfig(config),
   };
 }
 
@@ -90,5 +92,23 @@ export function readLangGraphAgentOpenAIConfig(
     apiKey: config.getString('apiKey'),
     modelName: config.getOptionalString('modelName'),
     baseUrl: config.getOptionalString('baseUrl'),
+  };
+}
+
+export function readLangGraphAgentAzureOpenAIConfig(
+  agentConfig: Config,
+): LangGraphAgentAzureOpenAIConfig | undefined {
+  if (!agentConfig.has('azureOpenAI')) {
+    return undefined;
+  }
+
+  const config = agentConfig.getConfig('azureOpenAI');
+
+  return {
+    apiKey: config.getString('apiKey'),
+    apiVersion: config.getString('apiVersion'),
+    endpoint: config.getString('endpoint'),
+    instanceName: config.getString('instanceName'),
+    deploymentName: config.getString('deploymentName'),
   };
 }
