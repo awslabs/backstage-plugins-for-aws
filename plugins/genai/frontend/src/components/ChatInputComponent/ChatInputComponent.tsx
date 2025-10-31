@@ -69,7 +69,7 @@ export const ChatInputComponent = ({
 
   const checkKeyPress = (evt: React.KeyboardEvent<HTMLInputElement>) => {
     if (evt.code === 'Enter') {
-      if (!evt.shiftKey) {
+      if (!evt.shiftKey && message.trim()) {
         processMessage();
         evt.preventDefault();
       }
@@ -102,7 +102,7 @@ export const ChatInputComponent = ({
           <Button
             title="Send"
             onClick={processMessage}
-            disabled={disabled}
+            disabled={!message.trim()}
             variant="contained"
             color="primary"
             className={classes.ChatInputButton}
