@@ -31,7 +31,7 @@
     "postpack": "backstage-cli package postpack"
   },
   "dependencies": {
-    "@aws-sdk/client-config-service": "3.893.0",
+    "@aws-sdk/client-config-service": "3.921.0",
     "@aws-sdk/types": "^3.609.0",
     "@aws/aws-core-plugin-for-backstage-common": "workspace:^",
     "@backstage/backend-plugin-api": "^1.4.3",
