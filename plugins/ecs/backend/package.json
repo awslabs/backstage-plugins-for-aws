@@ -33,8 +33,8 @@
     "postpack": "backstage-cli package postpack"
   },
   "dependencies": {
-    "@aws-sdk/client-ecs": "^3.911.0",
-    "@aws-sdk/middleware-sdk-sts": "^3.911.0",
+    "@aws-sdk/client-ecs": "^3.922.0",
+    "@aws-sdk/middleware-sdk-sts": "^3.922.0",
     "@aws-sdk/util-arn-parser": "^3.893.0",
     "@aws/amazon-ecs-plugin-for-backstage-common": "workspace:^",
     "@aws/aws-core-plugin-for-backstage-common": "workspace:^",
