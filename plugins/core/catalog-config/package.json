@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-config-service": "3.921.0",
-    "@aws-sdk/types": "^3.609.0",
+    "@aws-sdk/types": "^3.922.0",
     "@aws/aws-core-plugin-for-backstage-common": "workspace:^",
     "@backstage/backend-plugin-api": "^1.4.3",
     "@backstage/catalog-model": "^1.7.5",
