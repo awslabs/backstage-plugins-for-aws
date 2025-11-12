@@ -4,34 +4,26 @@ name: Pull request
   pull_request:
     branches: [main]
 
+permissions:
+  contents: read
+
 jobs:
   test:
     name: 'Test'
+    permissions:
+      contents: read
 
     env:
       NODE_OPTIONS: --max-old-space-size=4096
 
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [20]
-
     steps:
-      - uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version}}
-
-      - name: Log node version
-        run: node --version
-
       - uses: actions/checkout@v4
         with:
           fetch-depth: '0'
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
+      - uses: jdx/mise-action@v2
 
       - name: Install dependencies
         run: yarn install
@@ -53,31 +45,20 @@ jobs:
 
   e2e-test:
     name: 'E2E Test'
+    permissions:
+      contents: read
 
     env:
       NODE_OPTIONS: --max-old-space-size=4096
 
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [20]
-
     steps:
-      - uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version}}
-
-      - name: Log node version
-        run: node --version
-
       - uses: actions/checkout@v4
         with:
           fetch-depth: '0'
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
+      - uses: jdx/mise-action@v2
 
       - name: Install dependencies
         run: yarn install
@@ -99,20 +80,17 @@ jobs:
 
   check-licenses:
     name: 'Check licenses'
+    permissions:
+      contents: read
 
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Log node version
-        run: node --version
-
       - uses: actions/checkout@v4
         with:
           fetch-depth: '0'
+
+      - uses: jdx/mise-action@v2
 
       - name: Install dependencies
         run: yarn install
@@ -122,6 +100,8 @@ jobs:
 
   semanticpr:
     name: Semantic Pull Request
+    permissions:
+      pull-requests: read
 
     runs-on: ubuntu-latest
 
@@ -132,14 +112,13 @@ jobs:
 
   pre-commit:
     name: 'Pre-commit hooks'
+    permissions:
+      contents: read
 
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
+      - uses: jdx/mise-action@v2
       - name: Install dependencies
         run: yarn install
       - uses: pre-commit/action@v3.0.1
