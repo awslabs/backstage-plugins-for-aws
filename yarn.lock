@@ -663,54 +663,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@aws-sdk/client-config-service@npm:3.921.0":
-  version: 3.921.0
-  resolution: "@aws-sdk/client-config-service@npm:3.921.0"
-  dependencies:
-    "@aws-crypto/sha256-browser": "npm:5.2.0"
-    "@aws-crypto/sha256-js": "npm:5.2.0"
-    "@aws-sdk/core": "npm:3.921.0"
-    "@aws-sdk/credential-provider-node": "npm:3.921.0"
-    "@aws-sdk/middleware-host-header": "npm:3.921.0"
-    "@aws-sdk/middleware-logger": "npm:3.921.0"
-    "@aws-sdk/middleware-recursion-detection": "npm:3.921.0"
-    "@aws-sdk/middleware-user-agent": "npm:3.921.0"
-    "@aws-sdk/region-config-resolver": "npm:3.921.0"
-    "@aws-sdk/types": "npm:3.921.0"
-    "@aws-sdk/util-endpoints": "npm:3.921.0"
-    "@aws-sdk/util-user-agent-browser": "npm:3.921.0"
-    "@aws-sdk/util-user-agent-node": "npm:3.921.0"
-    "@smithy/config-resolver": "npm:^4.4.1"
-    "@smithy/core": "npm:^3.17.2"
-    "@smithy/fetch-http-handler": "npm:^5.3.5"
-    "@smithy/hash-node": "npm:^4.2.4"
-    "@smithy/invalid-dependency": "npm:^4.2.4"
-    "@smithy/middleware-content-length": "npm:^4.2.4"
-    "@smithy/middleware-endpoint": "npm:^4.3.6"
-    "@smithy/middleware-retry": "npm:^4.4.6"
-    "@smithy/middleware-serde": "npm:^4.2.4"
-    "@smithy/middleware-stack": "npm:^4.2.4"
-    "@smithy/node-config-provider": "npm:^4.3.4"
-    "@smithy/node-http-handler": "npm:^4.4.4"
-    "@smithy/protocol-http": "npm:^5.3.4"
-    "@smithy/smithy-client": "npm:^4.9.2"
-    "@smithy/types": "npm:^4.8.1"
-    "@smithy/url-parser": "npm:^4.2.4"
-    "@smithy/util-base64": "npm:^4.3.0"
-    "@smithy/util-body-length-browser": "npm:^4.2.0"
-    "@smithy/util-body-length-node": "npm:^4.2.1"
-    "@smithy/util-defaults-mode-browser": "npm:^4.3.5"
-    "@smithy/util-defaults-mode-node": "npm:^4.2.7"
-    "@smithy/util-endpoints": "npm:^3.2.4"
-    "@smithy/util-middleware": "npm:^4.2.4"
-    "@smithy/util-retry": "npm:^4.2.4"
-    "@smithy/util-utf8": "npm:^4.2.0"
-    tslib: "npm:^2.6.2"
-  checksum: 10c0/39da35dc989aa004743c5c9c674cf72af1f7a3c120e1f1c354dd9b350099ed55a7db7081ebcbe17e2fca740a5800ecbb750a0cbe0a57f9565a72e8d6fe221b52
-  languageName: node
-  linkType: hard
-
-"@aws-sdk/client-config-service@npm:^3.922.0":
+"@aws-sdk/client-config-service@npm:3.930.0, @aws-sdk/client-config-service@npm:^3.922.0":
   version: 3.930.0
   resolution: "@aws-sdk/client-config-service@npm:3.930.0"
   dependencies:
@@ -3104,7 +3057,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@aws/aws-config-catalog-module-for-backstage@workspace:plugins/core/catalog-config"
   dependencies:
-    "@aws-sdk/client-config-service": "npm:3.921.0"
+    "@aws-sdk/client-config-service": "npm:3.930.0"
     "@aws-sdk/types": "npm:^3.922.0"
     "@aws/aws-core-plugin-for-backstage-common": "workspace:^"
     "@backstage/backend-plugin-api": "npm:^1.4.3"
