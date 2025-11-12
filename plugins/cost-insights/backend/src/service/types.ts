@@ -14,8 +14,17 @@
 import { CompoundEntityRef } from '@backstage/catalog-model';
 import { BackstageCredentials } from '@backstage/backend-plugin-api';
 import { Cost } from '@backstage-community/plugin-cost-insights-common';
+import { Granularity } from '@aws-sdk/client-cost-explorer';
 
 export interface CostInsightsAwsService {
+  getCatalogEntityRangeCost(options: {
+    entityRef: CompoundEntityRef;
+    startDate: Date;
+    endDate: Date;
+    granularity: Granularity;
+    credentials: BackstageCredentials;
+  }): Promise<Cost>;
+
   getCatalogEntityDailyCost(options: {
     entityRef: CompoundEntityRef;
     intervals: string;

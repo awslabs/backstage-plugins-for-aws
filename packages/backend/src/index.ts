@@ -14,6 +14,7 @@ backend.add(import('@backstage/plugin-search-backend'));
 backend.add(import('@backstage/plugin-search-backend-module-catalog'));
 backend.add(import('@backstage/plugin-search-backend-module-techdocs'));
 backend.add(import('@backstage/plugin-techdocs-backend'));
+backend.add(import('@backstage/plugin-mcp-actions-backend'));
 
 backend.add(import('@aws/amazon-ecs-plugin-for-backstage-backend'));
 backend.add(import('@aws/aws-codebuild-plugin-for-backstage-backend'));

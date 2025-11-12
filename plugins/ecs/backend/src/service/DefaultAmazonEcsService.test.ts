@@ -398,6 +398,223 @@ describe('DefaultAmazonEcsService', () => {
     });
   });
 
+  describe('getServicesSummaryByEntity', () => {
+    it('returns services summary', async () => {
+      const service1 = mockEcsService('service1', 'cluster1', 1, 1, 0);
+
+      ecsMock
+        .on(DescribeServicesCommand, {
+          cluster: 'cluster1',
+          services: ['service1'],
+        })
+        .resolves({
+          services: [service1],
+        });
+
+      const service = await configureProvider(
+        {},
+        {
+          metadata: {
+            annotations: {
+              [AWS_ECS_SERVICE_ARN_ANNOTATION]:
+                'arn:aws:ecs:us-west-2:1234567890:service/cluster1/service1',
+            },
+          },
+        },
+      );
+
+      const response = await service.getServicesSummaryByEntity({
+        entityRef,
+        credentials,
+      });
+
+      expect(response).toEqual([service1]);
+    });
+  });
+
+  describe('getServiceByEntityWithArn', () => {
+    it('returns service for valid arn', async () => {
+      const service1 = mockEcsService('service1', 'cluster1', 1, 1, 0);
+      const arn = 'arn:aws:ecs:us-west-2:1234567890:service/cluster1/service1';
+
+      ecsMock
+        .on(DescribeServicesCommand, {
+          cluster: 'cluster1',
+          services: ['service1'],
+        })
+        .resolves({
+          services: [service1],
+        });
+
+      const service = await configureProvider(
+        {},
+        {
+          metadata: {
+            annotations: {
+              [AWS_ECS_SERVICE_ARN_ANNOTATION]: arn,
+            },
+          },
+        },
+      );
+
+      const response = await service.getServiceByEntityWithArn({
+        entityRef,
+        arn,
+        credentials,
+      });
+
+      expect(response).toEqual(service1);
+    });
+
+    it('throws for unassociated arn', async () => {
+      const service = await configureProvider(
+        {},
+        {
+          metadata: {
+            annotations: {
+              [AWS_ECS_SERVICE_ARN_ANNOTATION]:
+                'arn:aws:ecs:us-west-2:1234567890:service/cluster1/service1',
+            },
+          },
+        },
+      );
+
+      await expect(
+        service.getServiceByEntityWithArn({
+          entityRef,
+          arn: 'arn:aws:ecs:us-west-2:1234567890:service/cluster2/service2',
+          credentials,
+        }),
+      ).rejects.toThrow(
+        'ARN arn:aws:ecs:us-west-2:1234567890:service/cluster2/service2 not associated with entity',
+      );
+    });
+  });
+
+  describe('getServiceTasksByEntityWithArn', () => {
+    it('returns tasks with default pagination', async () => {
+      const task1 = mockEcsTask('service1', 'cluster1');
+      const arn = 'arn:aws:ecs:us-west-2:1234567890:service/cluster1/service1';
+
+      ecsMock
+        .on(ListTasksCommand, {
+          cluster: 'cluster1',
+          serviceName: 'service1',
+        })
+        .resolves({
+          taskArns: [task1.taskArn],
+        });
+
+      ecsMock
+        .on(DescribeTasksCommand, {
+          cluster: 'cluster1',
+          tasks: [task1.taskArn],
+        })
+        .resolves({
+          tasks: [task1],
+        });
+
+      const service = await configureProvider(
+        {},
+        {
+          metadata: {
+            annotations: {
+              [AWS_ECS_SERVICE_ARN_ANNOTATION]: arn,
+            },
+          },
+        },
+      );
+
+      const response = await service.getServiceTasksByEntityWithArn({
+        entityRef,
+        arn,
+        credentials,
+      });
+
+      expect(response).toEqual([task1]);
+    });
+
+    it('returns empty array when no tasks', async () => {
+      const arn = 'arn:aws:ecs:us-west-2:1234567890:service/cluster1/service1';
+
+      ecsMock
+        .on(ListTasksCommand, {
+          cluster: 'cluster1',
+          serviceName: 'service1',
+        })
+        .resolves({
+          taskArns: [],
+        });
+
+      const service = await configureProvider(
+        {},
+        {
+          metadata: {
+            annotations: {
+              [AWS_ECS_SERVICE_ARN_ANNOTATION]: arn,
+            },
+          },
+        },
+      );
+
+      const response = await service.getServiceTasksByEntityWithArn({
+        entityRef,
+        arn,
+        credentials,
+      });
+
+      expect(response).toEqual([]);
+    });
+
+    it('validates page size', async () => {
+      const arn = 'arn:aws:ecs:us-west-2:1234567890:service/cluster1/service1';
+
+      const service = await configureProvider(
+        {},
+        {
+          metadata: {
+            annotations: {
+              [AWS_ECS_SERVICE_ARN_ANNOTATION]: arn,
+            },
+          },
+        },
+      );
+
+      await expect(
+        service.getServiceTasksByEntityWithArn({
+          entityRef,
+          arn,
+          pageSize: 0,
+          credentials,
+        }),
+      ).rejects.toThrow('Page size must be a positive integer');
+    });
+
+    it('validates page number', async () => {
+      const arn = 'arn:aws:ecs:us-west-2:1234567890:service/cluster1/service1';
+
+      const service = await configureProvider(
+        {},
+        {
+          metadata: {
+            annotations: {
+              [AWS_ECS_SERVICE_ARN_ANNOTATION]: arn,
+            },
+          },
+        },
+      );
+
+      await expect(
+        service.getServiceTasksByEntityWithArn({
+          entityRef,
+          arn,
+          page: 0,
+          credentials,
+        }),
+      ).rejects.toThrow('Page must be a positive integer');
+    });
+  });
+
   it('throws on missing annotation', async () => {
     const service = await configureProvider(
       {},

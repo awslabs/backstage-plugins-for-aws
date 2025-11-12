@@ -11,7 +11,6 @@
  * limitations under the License.
  */
 
-import { loggerToWinstonLogger } from '@backstage/backend-common';
 import {
   createBackendPlugin,
   coreServices,
@@ -34,6 +33,8 @@ import {
 } from './tools';
 import { DatabaseSessionStore } from './database';
 import { McpService } from './service/McpService';
+import { actionsRegistryServiceRef } from '@backstage/backend-plugin-api/alpha';
+import { createQueryAgentActions } from './actions';
 
 export const awsGenAiPlugin = createBackendPlugin({
   pluginId: 'aws-genai',
@@ -65,6 +66,7 @@ export const awsGenAiPlugin = createBackendPlugin({
         userInfo: coreServices.userInfo,
         catalogApi: catalogServiceRef,
         database: coreServices.database,
+        actionsRegistry: actionsRegistryServiceRef,
       },
       async init({
         logger,
@@ -76,9 +78,8 @@ export const awsGenAiPlugin = createBackendPlugin({
         userInfo,
         catalogApi,
         database,
+        actionsRegistry,
       }) {
-        const winstonLogger = loggerToWinstonLogger(logger);
-
         toolkit.add(createBackstageEntityTool(catalogApi));
         toolkit.add(createBackstageCatalogSearchTool(discovery, auth));
         toolkit.add(createBackstageTechDocsSearchTool(discovery, auth));
@@ -97,11 +98,13 @@ export const awsGenAiPlugin = createBackendPlugin({
           sessionStore,
         });
 
+        createQueryAgentActions({ agentService, actionsRegistry });
+
         const mcpService = await McpService.fromConfig(agentService);
 
         httpRouter.use(
           await createRouter({
-            logger: winstonLogger,
+            logger,
             agentService,
             mcpService,
             httpAuth,
