@@ -130,7 +130,7 @@ Add this to your Backstage configuration file (for example `app-config.yaml`):
 genai:
   agents:
     general: # This matches the URL in the frontend
-      description: General chat assistant
+      tagLine: General chat assistant
       prompt: >
         You are an expert in platform engineering and answer questions in a succinct and easy to understand manner.
 
@@ -202,6 +202,22 @@ genai:
 ```
 
 The tool for invoking agents simply accepts a parameter called `query` which is expected to be a natural language query, and it will respond with the raw text output of the agent.
+
+## UI Customization
+
+To customize agent titles, descriptions, and welcome messages in the chat interface, you need to add `title`, `description`, and `welcomeMessage` to your agent config in `app-config.yaml`
+
+```yaml
+genai:
+  agents:
+    general:
+      title: '🤖 AI Assistant'
+      description: 'Your intelligent platform companion'
+      welcomeMessage: 'Hello! Check out our [docs](/docs) for more info!'
+      # ... other agent config
+```
+
+The welcome message supports Markdown formatting. For details, see the [UI Customization Guide](./docs/ui-customization.md) and [Backstage config visibility documentation](https://backstage.io/docs/conf/defining/#visibility).
 
 ## Further reading
 
