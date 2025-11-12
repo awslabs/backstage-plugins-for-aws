@@ -146,3 +146,25 @@ aws:
   sso:
     subdomain: d-xxxxxxxxxx
 ```
+
+## Model Context Protocol integration
+
+This plugin integrates with the [Backstage MCP Actions Backend](https://github.com/backstage/backstage/tree/master/plugins/mcp-actions-backend) to expose plugin actions as Model Context Protocol (MCP) tools. This allows AI tools that implement MCP clients like Cursor, Cline and Q Developer to consume the actions.
+
+Before proceeding you must have installed the MCP Actions Backend.
+
+Configure the actions `pluginSources` to add this plugin:
+
+```yaml
+backend:
+  actions:
+    pluginSources:
+      [...]
+      - 'aws-codepipeline'
+```
+
+The plugin provides the following actions:
+
+- `get-aws-codepipelines`: Retrieves summary information of the AWS CodePipeline pipelines related to a single entity in the software catalog
+- `get-aws-codepipeline-state`: Retrieves the state for AWS CodePipeline pipelines related to a single entity in the software catalog
+- `get-aws-codepipeline-executions`: Retrieves the AWS CodePipeline executions related to a single entity in the software catalog

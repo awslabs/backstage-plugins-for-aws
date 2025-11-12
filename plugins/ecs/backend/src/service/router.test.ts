@@ -23,6 +23,12 @@ describe('createRouter', () => {
   let app: express.Express;
   const mockService: jest.Mocked<AmazonECSService> = {
     getServicesByEntity: jest.fn(),
+
+    getServicesSummaryByEntity: jest.fn(),
+
+    getServiceByEntityWithArn: jest.fn(),
+
+    getServiceTasksByEntityWithArn: jest.fn(),
   };
 
   beforeAll(async () => {
