@@ -15813,7 +15813,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/express@npm:4.17.25":
+"@types/express@npm:4.17.25, @types/express@npm:^4.17.17, @types/express@npm:^4.17.21, @types/express@npm:^4.17.6":
   version: 4.17.25
   resolution: "@types/express@npm:4.17.25"
   dependencies:
@@ -15822,18 +15822,6 @@ __metadata:
     "@types/qs": "npm:*"
     "@types/serve-static": "npm:^1"
   checksum: 10c0/f42b616d2c9dbc50352c820db7de182f64ebbfa8dba6fb6c98e5f8f0e2ef3edde0131719d9dc6874803d25ad9ca2d53471d0fec2fbc60a6003a43d015bab72c4
-  languageName: node
-  linkType: hard
-
-"@types/express@npm:^4.17.17, @types/express@npm:^4.17.21, @types/express@npm:^4.17.6":
-  version: 4.17.24
-  resolution: "@types/express@npm:4.17.24"
-  dependencies:
-    "@types/body-parser": "npm:*"
-    "@types/express-serve-static-core": "npm:^4.17.33"
-    "@types/qs": "npm:*"
-    "@types/serve-static": "npm:*"
-  checksum: 10c0/664e1983e47dee6e30c3c3cad84a8e43f9da07e24bd596e8398cf3fb36bc107fc813a9bc90e3da01bc8930dc70c5729a380e4ea54998159ec1b1eba2db6ce933
   languageName: node
   linkType: hard
 
@@ -16367,17 +16355,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/serve-static@npm:*, @types/serve-static@npm:^1.15.5":
-  version: 1.15.8
-  resolution: "@types/serve-static@npm:1.15.8"
-  dependencies:
-    "@types/http-errors": "npm:*"
-    "@types/node": "npm:*"
-    "@types/send": "npm:*"
-  checksum: 10c0/8ad86a25b87da5276cb1008c43c74667ff7583904d46d5fcaf0355887869d859d453d7dc4f890788ae04705c23720e9b6b6f3215e2d1d2a4278bbd090a9268dd
-  languageName: node
-  linkType: hard
-
 "@types/serve-static@npm:^1":
   version: 1.15.10
   resolution: "@types/serve-static@npm:1.15.10"
@@ -16386,6 +16363,17 @@ __metadata:
     "@types/node": "npm:*"
     "@types/send": "npm:<1"
   checksum: 10c0/842fca14c9e80468f89b6cea361773f2dcd685d4616a9f59013b55e1e83f536e4c93d6d8e3ba5072d40c4e7e64085210edd6646b15d538ded94512940a23021f
+  languageName: node
+  linkType: hard
+
+"@types/serve-static@npm:^1.15.5":
+  version: 1.15.8
+  resolution: "@types/serve-static@npm:1.15.8"
+  dependencies:
+    "@types/http-errors": "npm:*"
+    "@types/node": "npm:*"
+    "@types/send": "npm:*"
+  checksum: 10c0/8ad86a25b87da5276cb1008c43c74667ff7583904d46d5fcaf0355887869d859d453d7dc4f890788ae04705c23720e9b6b6f3215e2d1d2a4278bbd090a9268dd
   languageName: node
   linkType: hard
 
