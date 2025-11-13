@@ -11,11 +11,26 @@
  * limitations under the License.
  */
 
-import { AgentConfig } from '@aws/genai-plugin-for-backstage-node';
+import { AgentConfig, GenAIConfig } from '@aws/genai-plugin-for-backstage-node';
 import { Config } from '@backstage/config';
 
 function getRootConfig(config: Config) {
   return config.getOptionalConfig('genai');
+}
+
+export function readConfig(config: Config): GenAIConfig {
+  const rootConfig = getRootConfig(config);
+
+  if (!rootConfig) {
+    return {
+      registerCoreActions: false,
+    };
+  }
+
+  return {
+    registerCoreActions:
+      rootConfig.getOptionalBoolean('registerCoreActions') || false,
+  };
 }
 
 export function readAgentsConfig(rootConfig: Config): AgentConfig[] {
@@ -50,6 +65,7 @@ export function readAgentConfig(
     prompt: config.getString('prompt'),
     type: config.getOptionalString('type'),
     tools: config.getOptionalStringArray('tools') || [],
+    actions: config.getOptionalStringArray('actions') || [],
     config,
   };
 }

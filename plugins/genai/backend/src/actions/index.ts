@@ -12,3 +12,6 @@
  */
 
 export * from './query';
+export * from './catalogSearch';
+export * from './techDocsRead';
+export * from './techDocsSearch';

@@ -49,6 +49,7 @@ describe('Agent', () => {
         description: 'Test Description',
         tools: ['tool1', 'tool2'],
         config: mockConfig,
+        actions: ['action1', 'action2'],
       };
       const mockAgentTypeFactory = {
         create: jest.fn().mockResolvedValue({}),
@@ -78,6 +79,7 @@ describe('Agent', () => {
         description: 'Agent with no tools',
         tools: [],
         config: mockConfig,
+        actions: [],
       };
       const mockAgentTypeFactory = {
         create: jest.fn().mockResolvedValue({}),
@@ -107,6 +109,7 @@ describe('Agent', () => {
         description: 'Test Description',
         tools: ['unknownTool'],
         config: mockConfig,
+        actions: [],
       };
       const mockAgentTypeFactory = {} as AgentTypeFactory;
       const mockToolkit = {

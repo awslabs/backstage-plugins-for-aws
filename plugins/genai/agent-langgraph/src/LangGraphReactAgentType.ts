@@ -12,6 +12,7 @@
  */
 
 import { Config } from '@backstage/config';
+import { JsonObject } from '@backstage/types';
 import {
   BackstageCredentials,
   LoggerService,
@@ -22,14 +23,17 @@ import {
 } from '@backstage/catalog-model';
 import { ChatBedrockConverse } from '@langchain/aws';
 import { ChatOpenAI } from '@langchain/openai';
-import { CompiledStateGraph, MemorySaver } from '@langchain/langgraph';
+import { BaseCheckpointSaver, MemorySaver } from '@langchain/langgraph';
 import { createReactAgent } from '@langchain/langgraph/prebuilt';
 import {
   HumanMessage,
   SystemMessage,
   trimMessages,
 } from '@langchain/core/messages';
-import { StructuredToolInterface } from '@langchain/core/tools';
+import {
+  DynamicStructuredTool,
+  StructuredToolInterface,
+} from '@langchain/core/tools';
 import { ResponseTransformStream, tiktokenCounter } from './util';
 import { BaseChatModel } from '@langchain/core/language_models/chat_models';
 import {
@@ -46,15 +50,20 @@ import {
 import { CallbackHandler } from 'langfuse-langchain';
 import { SqliteSaver } from '@langchain/langgraph-checkpoint-sqlite';
 import { PostgresSaver } from '@langchain/langgraph-checkpoint-postgres';
+import { ActionsService } from '@backstage/backend-plugin-api/alpha';
 
 export class LangGraphReactAgentType implements AgentType {
   private readonly prompt?: string;
 
   public constructor(
     private readonly llm: BaseChatModel,
+    private readonly actions: ActionsService,
     private readonly tools: StructuredToolInterface[],
-    private readonly agent: CompiledStateGraph<any, any, any>,
+    private readonly checkpointSaver: BaseCheckpointSaver,
+    private readonly agentConfig: AgentConfig,
+    private readonly langGraphAgentConfig: LangGraphAgentConfig,
     private readonly sharedConfig: SharedLangGraphAgentConfig,
+    private readonly logger: LoggerService,
     options: {
       prompt?: string;
     },
@@ -65,6 +74,7 @@ export class LangGraphReactAgentType implements AgentType {
   static async fromConfig(
     rootConfig: Config,
     agentConfig: AgentConfig,
+    actions: ActionsService,
     tools: StructuredToolInterface[],
     logger: LoggerService,
     dbConfig: any,
@@ -101,28 +111,15 @@ export class LangGraphReactAgentType implements AgentType {
       logger,
     );
 
-    const agent = createReactAgent({
-      llm: agentModel,
-      tools,
-      checkpointSaver: agentCheckpointer,
-      messageModifier: agentLangGraphConfig.messagesMaxTokens
-        ? async e => {
-            return await trimMessages(e, {
-              maxTokens: agentLangGraphConfig.messagesMaxTokens,
-              strategy: 'last',
-              tokenCounter: tiktokenCounter,
-              includeSystem: true,
-              startOn: 'human',
-            });
-          }
-        : undefined,
-    });
-
     return new LangGraphReactAgentType(
       agentModel,
+      actions,
       tools,
-      agent,
+      agentCheckpointer,
+      agentConfig,
+      agentLangGraphConfig,
       sharedLangGraphConfig,
+      logger,
       {
         prompt,
       },
@@ -251,7 +248,24 @@ export class LangGraphReactAgentType implements AgentType {
 
     messages.push(new HumanMessage(userMessage));
 
-    const eventStreamFinalRes = this.agent.streamEvents(
+    const agent = createReactAgent({
+      llm: this.llm,
+      tools: await this.buildActionsTools(credentials!),
+      checkpointSaver: this.checkpointSaver,
+      messageModifier: this.langGraphAgentConfig.messagesMaxTokens
+        ? async e => {
+            return await trimMessages(e, {
+              maxTokens: this.langGraphAgentConfig.messagesMaxTokens,
+              strategy: 'last',
+              tokenCounter: tiktokenCounter,
+              includeSystem: true,
+              startOn: 'human',
+            });
+          }
+        : undefined,
+    });
+
+    const eventStreamFinalRes = agent.streamEvents(
       {
         messages,
       },
@@ -295,7 +309,7 @@ export class LangGraphReactAgentType implements AgentType {
 
     const agent = createReactAgent({
       llm: this.llm,
-      tools: this.tools,
+      tools: await this.buildActionsTools(credentials!),
       responseFormat,
     });
     const finalState = await agent.invoke(
@@ -331,6 +345,45 @@ export class LangGraphReactAgentType implements AgentType {
     return {
       output,
     };
+  }
+
+  private async buildActionsTools(credentials: BackstageCredentials) {
+    const actionList = await this.actions.list({ credentials });
+    const actionNames = [...this.agentConfig.actions];
+    const tools = actionList.actions
+      .filter(action => {
+        const index = actionNames.indexOf(action.name);
+
+        if (index >= 0) {
+          actionNames.splice(index, 1);
+
+          return true;
+        }
+
+        return false;
+      })
+      .map(action => {
+        return new DynamicStructuredTool({
+          get name() {
+            return action.name;
+          },
+          description: action.description,
+          schema: action.schema.input,
+          func: async input => {
+            return this.actions.invoke({
+              id: action.id,
+              input: input as JsonObject,
+              credentials,
+            });
+          },
+        });
+      });
+
+    actionNames.forEach(name => {
+      this.logger.warn(`Action ${name} not found`);
+    });
+
+    return [...tools, ...this.tools];
   }
 
   private buildSystemPrompt(
