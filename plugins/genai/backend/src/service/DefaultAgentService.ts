@@ -25,7 +25,6 @@ import { Toolkit } from '../tools/Toolkit';
 import { CompoundEntityRef, parseEntityRef } from '@backstage/catalog-model';
 import { readAgentsConfig } from '../config/config';
 import { Agent } from '../agent/Agent';
-import { InvokeAgentTool } from '../tools/invokeAgentTool';
 import { AgentTypeFactory } from '@aws/genai-plugin-for-backstage-node';
 import {
   ChatEvent,
@@ -34,6 +33,7 @@ import {
   SyncResponse,
 } from '@aws/genai-plugin-for-backstage-common';
 import { SessionStore } from '../database';
+import { ActionsService } from '@backstage/backend-plugin-api/alpha';
 
 export class DefaultAgentService implements AgentService {
   public constructor(
@@ -51,6 +51,7 @@ export class DefaultAgentService implements AgentService {
       userInfo: UserInfoService;
       logger: LoggerService;
       sessionStore: SessionStore;
+      actions: ActionsService;
     },
   ) {
     const agentTypeFactoryMap = new Map(
@@ -62,12 +63,6 @@ export class DefaultAgentService implements AgentService {
 
     const agentConfigs = readAgentsConfig(config);
     const agents = new Map<string, Agent>();
-
-    const agentTools = agentConfigs.map(e => {
-      return new InvokeAgentTool(e.name, e.description);
-    });
-
-    options.toolkit.add(...agentTools);
 
     for (const agentConfig of agentConfigs) {
       let agentTypeFactory: AgentTypeFactory | undefined;
@@ -106,8 +101,6 @@ export class DefaultAgentService implements AgentService {
       agents,
       options.sessionStore,
     );
-
-    agentTools.forEach(e => e.setAgentService(service));
 
     return service;
   }
@@ -214,17 +207,19 @@ export class DefaultAgentService implements AgentService {
       >;
     },
   ): Promise<SyncResponse> {
+    const { agentName, credentials } = options;
+
     const { principal, userEntityRef } = await this.getUserEntityRef(
-      options.credentials,
+      credentials,
     );
 
-    const agent = this.getActualAgent(options.agentName);
+    const agent = this.getActualAgent(agentName);
 
-    const session = await this.makeSession(options.agentName, principal, true);
+    const session = await this.makeSession(agentName, principal, true);
 
     const output = agent.generate(userMessage, session.sessionId, {
       userEntityRef,
-      credentials: options.credentials,
+      credentials,
     });
 
     return {

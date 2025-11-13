@@ -3347,6 +3347,7 @@ __metadata:
     "@backstage/catalog-model": "npm:^1.7.5"
     "@backstage/cli": "npm:^0.34.3"
     "@backstage/config": "npm:^1.3.3"
+    "@backstage/types": "npm:^1.2.2"
     "@langchain/aws": "npm:0.1.10"
     "@langchain/core": "npm:0.3.57"
     "@langchain/langgraph": "npm:0.2.74"

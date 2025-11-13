@@ -13,6 +13,11 @@
 
 export interface Config {
   genai?: {
+    /**
+     * (Optional) Whether to register actions for core Backstage functions
+     */
+    registerCoreActions?: boolean;
+
     agents?: {
       [name: string]: {
         /**
@@ -23,6 +28,10 @@ export interface Config {
          * (Required) System prompt for the agent
          */
         prompt: string;
+        /**
+         * (Optional) List of registry actions the agent has access to
+         */
+        actions?: string[];
         /**
          * (Optional) List of tools the agent has access to
          */

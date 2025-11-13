@@ -56,11 +56,16 @@ export interface AgentTypeFactory {
   getTypeName(): string;
 }
 
+export interface GenAIConfig {
+  registerCoreActions: boolean;
+}
+
 export interface AgentConfig {
   name: string;
   description: string;
   prompt: string;
   type?: string;
   tools: string[];
+  actions: string[];
   config: Config;
 }
