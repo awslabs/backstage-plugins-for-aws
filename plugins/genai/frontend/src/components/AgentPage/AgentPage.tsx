@@ -53,10 +53,16 @@ export const AgentPage = ({ title = 'Chat Assistant' }: { title?: string }) => {
     throw new Error('agent name is not defined');
   }
 
-  const { messages, isInitializing, isLoading, onUserMessage, onClear } =
-    useChatSession({
-      agentName,
-    });
+  const {
+    messages,
+    isInitializing,
+    isLoading,
+    onUserMessage,
+    onClear,
+    onCancel,
+  } = useChatSession({
+    agentName,
+  });
 
   if (isInitializing) {
     return (
@@ -83,6 +89,7 @@ export const AgentPage = ({ title = 'Chat Assistant' }: { title?: string }) => {
                 onMessage={onUserMessage}
                 disabled={isLoading}
                 onClear={onClear}
+                onCancel={onCancel}
               />
             </InfoCard>
           </div>

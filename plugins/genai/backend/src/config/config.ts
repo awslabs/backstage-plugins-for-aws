@@ -66,6 +66,7 @@ export function readAgentConfig(
     type: config.getOptionalString('type'),
     tools: config.getOptionalStringArray('tools') || [],
     actions: config.getOptionalStringArray('actions') || [],
+    peerAgents: config.getOptionalStringArray('peerAgents') || [],
     config,
   };
 }

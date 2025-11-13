@@ -11,6 +11,28 @@
  * limitations under the License.
  */
 
-export * from './transform';
-export * from './modifier';
-export * from './invoke';
+import {
+  PeerAgentResponse,
+  PeerAgentToolInstance,
+} from '@aws/genai-plugin-for-backstage-node';
+import { Tool } from '@langchain/core/tools';
+
+export class InvokeAgentTool extends Tool {
+  static lc_name() {
+    return 'InvokeAgentTool';
+  }
+
+  public readonly name: string;
+  public readonly description: string;
+
+  constructor(private readonly tool: PeerAgentToolInstance) {
+    super();
+
+    this.name = tool.getName();
+    this.description = tool.getDescription();
+  }
+
+  async _call(query: string): Promise<PeerAgentResponse> {
+    return this.tool.invoke(query);
+  }
+}

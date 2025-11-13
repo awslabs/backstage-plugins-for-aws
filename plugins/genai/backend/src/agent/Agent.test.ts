@@ -20,20 +20,32 @@ import { Toolkit } from '../tools/Toolkit';
 import { CompoundEntityRef } from '@backstage/catalog-model';
 import { mockCredentials, mockServices } from '@backstage/backend-test-utils';
 import { ConfigReader } from '@backstage/config';
+import { actionsRegistryServiceMock } from '@backstage/backend-test-utils/alpha';
 
 const mockLogger = mockServices.logger.mock();
 const mockConfig = new ConfigReader({});
+const mockActionsRegistry = actionsRegistryServiceMock();
 
 const credentials = mockCredentials.user('user:default/guest');
+
+const mockDefaultAgentConfig: AgentConfig = {
+  name: 'TestAgent',
+  prompt: 'test',
+  description: 'Test Description',
+  tools: [],
+  config: mockConfig,
+  actions: [],
+  peerAgents: [],
+};
 
 describe('Agent', () => {
   describe('constructor', () => {
     it('should create an Agent instance', () => {
       const agent = new Agent(
-        'TestAgent',
-        'Test Description',
+        mockDefaultAgentConfig,
         {} as any,
         mockLogger,
+        mockActionsRegistry,
       );
       expect(agent).toBeInstanceOf(Agent);
       expect(agent.getName()).toBe('TestAgent');
@@ -50,6 +62,7 @@ describe('Agent', () => {
         tools: ['tool1', 'tool2'],
         config: mockConfig,
         actions: ['action1', 'action2'],
+        peerAgents: [],
       };
       const mockAgentTypeFactory = {
         create: jest.fn().mockResolvedValue({}),
@@ -62,6 +75,7 @@ describe('Agent', () => {
         mockAgentConfig,
         mockAgentTypeFactory,
         mockToolkit,
+        mockActionsRegistry,
         mockLogger,
       );
 
@@ -80,6 +94,7 @@ describe('Agent', () => {
         tools: [],
         config: mockConfig,
         actions: [],
+        peerAgents: [],
       };
       const mockAgentTypeFactory = {
         create: jest.fn().mockResolvedValue({}),
@@ -92,6 +107,7 @@ describe('Agent', () => {
         mockAgentConfig,
         mockAgentTypeFactory,
         mockToolkit,
+        mockActionsRegistry,
         mockLogger,
       );
 
@@ -110,6 +126,7 @@ describe('Agent', () => {
         tools: ['unknownTool'],
         config: mockConfig,
         actions: [],
+        peerAgents: [],
       };
       const mockAgentTypeFactory = {} as AgentTypeFactory;
       const mockToolkit = {
@@ -121,6 +138,7 @@ describe('Agent', () => {
           mockAgentConfig,
           mockAgentTypeFactory,
           mockToolkit,
+          mockActionsRegistry,
           mockLogger,
         ),
       ).rejects.toThrow('Unknown tool unknownTool');
@@ -130,10 +148,10 @@ describe('Agent', () => {
   describe('getName', () => {
     it('should return the agent name', () => {
       const agent = new Agent(
-        'TestAgent',
-        'Test Description',
+        mockDefaultAgentConfig,
         {} as any,
         mockLogger,
+        mockActionsRegistry,
       );
       expect(agent.getName()).toBe('TestAgent');
     });
@@ -142,10 +160,10 @@ describe('Agent', () => {
   describe('getDescription', () => {
     it('should return the agent description', () => {
       const agent = new Agent(
-        'TestAgent',
-        'Test Description',
+        mockDefaultAgentConfig,
         {} as any,
         mockLogger,
+        mockActionsRegistry,
       );
       expect(agent.getDescription()).toBe('Test Description');
     });
@@ -155,12 +173,13 @@ describe('Agent', () => {
     it('should call agentType.stream with correct parameters', async () => {
       const mockAgentType = {
         stream: jest.fn().mockResolvedValue(new ReadableStream()),
+        generate: jest.fn().mockResolvedValue({}),
       };
       const agent = new Agent(
-        'TestAgent',
-        'Test Description',
-        mockAgentType as any,
+        mockDefaultAgentConfig,
+        mockAgentType,
         mockLogger,
+        mockActionsRegistry,
       );
       const userMessage = 'Hello';
       const sessionId = 'session123';
@@ -175,12 +194,14 @@ describe('Agent', () => {
         credentials,
       };
 
-      await agent.stream(userMessage, sessionId, newSession, options);
+      await agent.stream(userMessage, sessionId, newSession, [], options);
 
       expect(mockAgentType.stream).toHaveBeenCalledWith(
         userMessage,
         sessionId,
         newSession,
+        [],
+        [],
         mockLogger,
         options,
       );
@@ -189,15 +210,16 @@ describe('Agent', () => {
     it('should return a ReadableStream', async () => {
       const mockAgentType = {
         stream: jest.fn().mockResolvedValue(new ReadableStream()),
+        generate: jest.fn().mockResolvedValue({}),
       };
       const agent = new Agent(
-        'TestAgent',
-        'Test Description',
-        mockAgentType as any,
+        mockDefaultAgentConfig,
+        mockAgentType,
         mockLogger,
+        mockActionsRegistry,
       );
 
-      const result = await agent.stream('Hello', 'session123', true, {
+      const result = await agent.stream('Hello', 'session123', true, [], {
         credentials,
       });
 
@@ -207,20 +229,23 @@ describe('Agent', () => {
     it('should handle stream with no userEntityRef', async () => {
       const mockAgentType = {
         stream: jest.fn().mockResolvedValue(new ReadableStream()),
+        generate: jest.fn().mockResolvedValue({}),
       };
       const agent = new Agent(
-        'TestAgent',
-        'Test Description',
-        mockAgentType as any,
+        mockDefaultAgentConfig,
+        mockAgentType,
         mockLogger,
+        mockActionsRegistry,
       );
 
-      await agent.stream('Hello', 'session123', false, { credentials });
+      await agent.stream('Hello', 'session123', false, [], { credentials });
 
       expect(mockAgentType.stream).toHaveBeenCalledWith(
         'Hello',
         'session123',
         false,
+        [],
+        [],
         mockLogger,
         { credentials },
       );
@@ -229,16 +254,17 @@ describe('Agent', () => {
     it('should handle errors from agentType.stream', async () => {
       const mockAgentType = {
         stream: jest.fn().mockRejectedValue(new Error('Stream error')),
+        generate: jest.fn().mockResolvedValue({}),
       };
       const agent = new Agent(
-        'TestAgent',
-        'Test Description',
-        mockAgentType as any,
+        mockDefaultAgentConfig,
+        mockAgentType,
         mockLogger,
+        mockActionsRegistry,
       );
 
       await expect(
-        agent.stream('Hello', 'session123', true, { credentials }),
+        agent.stream('Hello', 'session123', true, [], { credentials }),
       ).rejects.toThrow('Stream error');
     });
   });
@@ -246,13 +272,14 @@ describe('Agent', () => {
   describe('sync', () => {
     it('should call agentType.sync with correct parameters', async () => {
       const mockAgentType = {
+        stream: jest.fn().mockResolvedValue(new ReadableStream()),
         generate: jest.fn().mockResolvedValue({}),
       };
       const agent = new Agent(
-        'TestAgent',
-        'Test Description',
-        mockAgentType as any,
+        mockDefaultAgentConfig,
+        mockAgentType,
         mockLogger,
+        mockActionsRegistry,
       );
       const userMessage = 'Hello';
       const sessionId = 'session123';
@@ -270,11 +297,13 @@ describe('Agent', () => {
         resposeFormat: responseFormat,
       };
 
-      await agent.generate(userMessage, sessionId, options);
+      await agent.generate(userMessage, sessionId, [], options);
 
       expect(mockAgentType.generate).toHaveBeenCalledWith(
         userMessage,
         sessionId,
+        [],
+        [],
         mockLogger,
         options,
       );
@@ -282,17 +311,18 @@ describe('Agent', () => {
 
     it('should handle errors from agentType.sync', async () => {
       const mockAgentType = {
+        stream: jest.fn().mockResolvedValue(new ReadableStream()),
         generate: jest.fn().mockRejectedValue(new Error('Sync error')),
       };
       const agent = new Agent(
-        'TestAgent',
-        'Test Description',
-        mockAgentType as any,
+        mockDefaultAgentConfig,
+        mockAgentType,
         mockLogger,
+        mockActionsRegistry,
       );
 
       await expect(
-        agent.generate('Hello', 'session123', { credentials }),
+        agent.generate('Hello', 'session123', [], { credentials }),
       ).rejects.toThrow('Sync error');
     });
   });
