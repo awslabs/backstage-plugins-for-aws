@@ -58,3 +58,5 @@ e2e-test-report/
 
 # pre-commit
 .pre-commit-config.yaml
+
+.vscode

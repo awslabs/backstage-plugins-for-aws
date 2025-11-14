@@ -119,12 +119,11 @@ export const awsGenAiPlugin = createBackendPlugin({
 
         httpRouter.use(
           await createRouter({
+            config,
             logger,
             agentService,
             mcpService,
             httpAuth,
-            discovery,
-            auth,
           }),
         );
         httpRouter.addAuthPolicy({
