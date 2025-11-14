@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.7.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/cost-insights-plugin-for-backstage-backend@0.6.1...@aws/cost-insights-plugin-for-backstage-backend@0.7.0) (2025-11-14)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @backstage-community/plugin-cost-insights-common to ^0.9.0 ([#464](https://github.com/awslabs/backstage-plugins-for-aws/issues/464)) ([19fc71b](https://github.com/awslabs/backstage-plugins-for-aws/commit/19fc71b9a52b30bbc2e210476c9e1a13c3970c1c))
+* use nullish coalescing for cache enable config ([#490](https://github.com/awslabs/backstage-plugins-for-aws/issues/490)) ([edbfe6f](https://github.com/awslabs/backstage-plugins-for-aws/commit/edbfe6fc921b257a7c9807b5971cffb592d4fdad))
+
+
+### Features
+
+* Actions registry integration to ECS, CodePipeline and Cost Insights ([#491](https://github.com/awslabs/backstage-plugins-for-aws/issues/491)) ([692b0f0](https://github.com/awslabs/backstage-plugins-for-aws/commit/692b0f024d66d1bdaecb59f4c68951874db0b81a))
+
+
+
+
+
 ## [0.6.1](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/cost-insights-plugin-for-backstage-backend@0.6.0...@aws/cost-insights-plugin-for-backstage-backend@0.6.1) (2025-11-07)
 
 **Note:** Version bump only for package @aws/cost-insights-plugin-for-backstage-backend

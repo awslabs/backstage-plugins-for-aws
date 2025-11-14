@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.2](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-config-catalog-module-for-backstage@0.3.1...@aws/aws-config-catalog-module-for-backstage@0.3.2) (2025-11-14)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @aws-sdk/client-config-service to v3.930.0 ([#495](https://github.com/awslabs/backstage-plugins-for-aws/issues/495)) ([556f241](https://github.com/awslabs/backstage-plugins-for-aws/commit/556f2410223f3f9d48e2f634b404bd6769447ab9))
+
+
+
+
+
 ## [0.3.1](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-config-catalog-module-for-backstage@0.3.0...@aws/aws-config-catalog-module-for-backstage@0.3.1) (2025-11-07)
 
 
