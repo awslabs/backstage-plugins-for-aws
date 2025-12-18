@@ -21,6 +21,8 @@
     "@aws/aws-codebuild-plugin-for-backstage-backend": "workspace:^",
     "@aws/aws-codepipeline-plugin-for-backstage-backend": "workspace:^",
     "@aws/aws-core-plugin-for-backstage-scaffolder-actions": "workspace:^",
+    "@aws/aws-securityhub-plugin-for-backstage-backend": "workspace:^",
+    "@aws/aws-securityhub-plugin-for-backstage-tools": "workspace:^",
     "@aws/cost-insights-plugin-for-backstage-backend": "workspace:^",
     "@aws/genai-plugin-for-backstage-backend": "workspace:^",
     "@aws/genai-plugin-langgraph-agent-for-backstage": "workspace:^",
