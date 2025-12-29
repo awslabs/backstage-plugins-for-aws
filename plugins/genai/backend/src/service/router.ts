@@ -11,18 +11,9 @@
  * limitations under the License.
  */
 
-import {
-  createLegacyAuthAdapters,
-  errorHandler,
-} from '@backstage/backend-common';
 import express from 'express';
 import Router from 'express-promise-router';
-import {
-  AuthService,
-  DiscoveryService,
-  HttpAuthService,
-  LoggerService,
-} from '@backstage/backend-plugin-api';
+import { HttpAuthService, LoggerService } from '@backstage/backend-plugin-api';
 import { AgentService } from './types';
 import {
   ChatRequest,
@@ -33,25 +24,24 @@ import {
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
 import { McpService } from './McpService';
 import { Validator } from 'jsonschema';
+import { MiddlewareFactory } from '@backstage/backend-defaults/rootHttpRouter';
+import { Config } from '@backstage/config';
 
 export interface RouterOptions {
+  config: Config;
   logger: LoggerService;
   agentService: AgentService;
   mcpService: McpService;
-  discovery: DiscoveryService;
-  auth?: AuthService;
-  httpAuth?: HttpAuthService;
+  httpAuth: HttpAuthService;
 }
 
 export async function createRouter(
   options: RouterOptions,
 ): Promise<express.Router> {
-  const { logger, agentService, mcpService } = options;
+  const { logger, agentService, mcpService, httpAuth, config } = options;
 
   const router = Router();
   router.use(express.json());
-
-  const { httpAuth } = createLegacyAuthAdapters(options);
 
   router.post('/v1/chat', async (request, response) => {
     const payload = request.body as ChatRequest;
@@ -64,9 +54,16 @@ export async function createRouter(
       'Cache-Control': 'no-cache',
     });
 
+    const abortController = new AbortController();
+
+    request.on('close', () => {
+      abortController.abort();
+    });
+
     const stream = await agentService.stream(payload.userMessage, {
       ...payload,
       credentials,
+      signal: abortController.signal,
     });
 
     const reader = stream.getReader();
@@ -112,9 +109,16 @@ export async function createRouter(
 
     const credentials = await httpAuth.credentials(request);
 
+    const abortController = new AbortController();
+
+    request.on('close', () => {
+      abortController.abort();
+    });
+
     const answer = await agentService.generate(payload.prompt, {
       ...payload,
       credentials,
+      signal: abortController.signal,
     });
 
     response.json({ ...answer });
@@ -191,7 +195,10 @@ export async function createRouter(
     logger.info('PONG!');
     response.json({ status: 'ok' });
   });
-  router.use(errorHandler());
+
+  const middleware = MiddlewareFactory.create({ logger, config });
+  router.use(middleware.error());
+
   return router;
 }
 

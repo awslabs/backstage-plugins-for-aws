@@ -58,6 +58,7 @@ const useStyles = makeStyles(theme => ({
 
     '& $ChatItemAvatarIcon': {
       backgroundColor: theme.palette.type === 'dark' ? '#B3B3B3' : '#757575',
+      color: 'white',
     },
   },
 

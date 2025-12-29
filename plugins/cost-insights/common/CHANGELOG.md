@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.1](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/cost-insights-plugin-for-backstage-common@0.3.0...@aws/cost-insights-plugin-for-backstage-common@0.3.1) (2025-11-07)
+
+**Note:** Version bump only for package @aws/cost-insights-plugin-for-backstage-common
+
+
+
+
+
 # [0.3.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/cost-insights-plugin-for-backstage-common@0.2.0...@aws/cost-insights-plugin-for-backstage-common@0.3.0) (2025-09-19)
 
 

@@ -16,28 +16,35 @@ import {
   LoggerService,
 } from '@backstage/backend-plugin-api';
 import { CompoundEntityRef } from '@backstage/catalog-model';
-import { StructuredToolInterface } from '@langchain/core/tools';
+import { ToolInterface } from '@langchain/core/tools';
 import {
   ChatEvent,
   GenerateResponse,
 } from '@aws/genai-plugin-for-backstage-common';
 import { Config } from '@backstage/config';
+import { ActionsServiceAction } from '@backstage/backend-plugin-api/alpha';
+import { PeerAgentToolInstance } from './peerAgent';
 
 export interface AgentType {
   stream(
     userMessage: string,
     sessionId: string,
     newSession: boolean,
+    agentActions: ActionsServiceAction[],
+    peerAgentTools: PeerAgentToolInstance[],
     logger: LoggerService,
     options: {
       userEntityRef?: CompoundEntityRef;
       credentials: BackstageCredentials;
+      signal?: AbortSignal;
     },
   ): Promise<ReadableStream<ChatEvent>>;
 
   generate(
     prompt: string,
     sessionId: string,
+    agentActions: ActionsServiceAction[],
+    peerAgentTools: PeerAgentToolInstance[],
     logger: LoggerService,
     options: {
       responseFormat?: Record<string, any>;
@@ -48,12 +55,13 @@ export interface AgentType {
 }
 
 export interface AgentTypeFactory {
-  create(
-    agentConfig: AgentConfig,
-    tools: StructuredToolInterface[],
-  ): Promise<AgentType>;
+  create(agentConfig: AgentConfig, tools: ToolInterface[]): Promise<AgentType>;
 
   getTypeName(): string;
+}
+
+export interface GenAIConfig {
+  registerCoreActions: boolean;
 }
 
 export interface AgentConfig {
@@ -62,5 +70,20 @@ export interface AgentConfig {
   prompt: string;
   type?: string;
   tools: string[];
+  actions: string[];
+  peerAgents: string[];
   config: Config;
+}
+
+export interface PeerAgentRunner {
+  invoke(
+    name: string,
+    query: string,
+    credentials: BackstageCredentials,
+    signal?: AbortSignal,
+  ): Promise<PeerAgentResponse>;
+}
+
+export interface PeerAgentResponse {
+  output: string;
 }

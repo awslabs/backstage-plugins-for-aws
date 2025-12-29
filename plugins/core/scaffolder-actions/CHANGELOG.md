@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.6.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-core-plugin-for-backstage-scaffolder-actions@0.5.1...@aws/aws-core-plugin-for-backstage-scaffolder-actions@0.6.0) (2025-11-22)
+
+
+### Features
+
+* Added detailObj field to EventBridge scaffolder action ([#504](https://github.com/awslabs/backstage-plugins-for-aws/issues/504)) ([fdc3e1f](https://github.com/awslabs/backstage-plugins-for-aws/commit/fdc3e1fc931ca19006f1ba6f60cb15ad3a9244ac))
+
+
+
+
+
+## [0.5.1](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-core-plugin-for-backstage-scaffolder-actions@0.5.0...@aws/aws-core-plugin-for-backstage-scaffolder-actions@0.5.1) (2025-11-07)
+
+**Note:** Version bump only for package @aws/aws-core-plugin-for-backstage-scaffolder-actions
+
+
+
+
+
 # [0.5.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-core-plugin-for-backstage-scaffolder-actions@0.4.1...@aws/aws-core-plugin-for-backstage-scaffolder-actions@0.5.0) (2025-09-19)
 
 

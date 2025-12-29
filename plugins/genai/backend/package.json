@@ -1,7 +1,7 @@
 {
   "name": "@aws/genai-plugin-for-backstage-backend",
   "description": "Backend package for the GenAI AWS plugins for Backstage",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "repository": {
     "type": "git",
     "url": "github:awslabs/backstage-plugins-for-aws",
@@ -39,6 +39,7 @@
     "@aws/genai-plugin-for-backstage-common": "workspace:^",
     "@aws/genai-plugin-for-backstage-node": "workspace:^",
     "@backstage/backend-common": "^0.25.0",
+    "@backstage/backend-defaults": "^0.12.1",
     "@backstage/backend-plugin-api": "^1.4.3",
     "@backstage/catalog-client": "^1.12.0",
     "@backstage/catalog-model": "^1.7.5",
@@ -59,7 +60,6 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@backstage/backend-defaults": "^0.12.1",
     "@backstage/backend-test-utils": "^1.9.0",
     "@backstage/cli": "^0.34.3",
     "@backstage/plugin-auth-backend": "^0.25.4",

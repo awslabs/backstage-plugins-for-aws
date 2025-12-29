@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.1](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/amazon-ecr-plugin-for-backstage-backend@0.3.0...@aws/amazon-ecr-plugin-for-backstage-backend@0.3.1) (2025-11-07)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @types/express to v4.17.23 ([#457](https://github.com/awslabs/backstage-plugins-for-aws/issues/457)) ([406879f](https://github.com/awslabs/backstage-plugins-for-aws/commit/406879fb941f1f965421d1b94d03a9fec3dc7c21))
+* **deps:** update dependency @types/express to v4.17.25 ([#480](https://github.com/awslabs/backstage-plugins-for-aws/issues/480)) ([e9c53f6](https://github.com/awslabs/backstage-plugins-for-aws/commit/e9c53f6dbf5dc8407bc429dccb640fb0cf6e6f16))
+
+
+
+
+
 # [0.3.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/amazon-ecr-plugin-for-backstage-backend@0.2.0...@aws/amazon-ecr-plugin-for-backstage-backend@0.3.0) (2025-09-19)
 
 

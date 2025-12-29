@@ -21,6 +21,9 @@ import {
 import { mockCredentials, mockServices } from '@backstage/backend-test-utils';
 import { SessionStore } from '../database';
 
+const uuidRegex =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
 const loggerMock = mockServices.logger.mock();
 const userInfoMock = mockServices.userInfo.mock({
   getUserInfo: jest.fn(_ => {
@@ -41,6 +44,8 @@ describe('DefaultAgentService', () => {
     agentMock = {
       stream: jest.fn(),
       generate: jest.fn(),
+      getName: jest.fn().mockReturnValue('testAgent'),
+      getDescription: jest.fn().mockReturnValue('Test Agent'),
     } as unknown as jest.Mocked<Agent>;
 
     sessionStoreMock = {
@@ -105,6 +110,12 @@ describe('DefaultAgentService', () => {
         userMessage,
         'test-session',
         false,
+        expect.arrayContaining([
+          expect.objectContaining({
+            name: 'testAgent',
+            description: 'Test Agent',
+          }),
+        ]),
         {
           credentials,
           userEntityRef: { kind: 'user', name: 'guest', namespace: 'default' },
@@ -123,8 +134,14 @@ describe('DefaultAgentService', () => {
 
       expect(agentMock.stream).toHaveBeenCalledWith(
         userMessage,
-        expect.any(String),
+        expect.stringMatching(uuidRegex),
         true,
+        expect.arrayContaining([
+          expect.objectContaining({
+            name: 'testAgent',
+            description: 'Test Agent',
+          }),
+        ]),
         {
           credentials,
           userEntityRef: { kind: 'user', name: 'guest', namespace: 'default' },
@@ -157,7 +174,13 @@ describe('DefaultAgentService', () => {
 
       expect(agentMock.generate).toHaveBeenCalledWith(
         prompt,
-        expect.any(String),
+        expect.stringMatching(uuidRegex),
+        expect.arrayContaining([
+          expect.objectContaining({
+            name: 'testAgent',
+            description: 'Test Agent',
+          }),
+        ]),
         {
           credentials,
           userEntityRef: { kind: 'user', name: 'guest', namespace: 'default' },

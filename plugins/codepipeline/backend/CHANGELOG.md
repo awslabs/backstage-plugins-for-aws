@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.10.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-codepipeline-plugin-for-backstage-backend@0.9.1...@aws/aws-codepipeline-plugin-for-backstage-backend@0.10.0) (2025-11-14)
+
+
+### Features
+
+* Actions registry integration to ECS, CodePipeline and Cost Insights ([#491](https://github.com/awslabs/backstage-plugins-for-aws/issues/491)) ([692b0f0](https://github.com/awslabs/backstage-plugins-for-aws/commit/692b0f024d66d1bdaecb59f4c68951874db0b81a))
+
+
+
+
+
+## [0.9.1](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-codepipeline-plugin-for-backstage-backend@0.9.0...@aws/aws-codepipeline-plugin-for-backstage-backend@0.9.1) (2025-11-07)
+
+**Note:** Version bump only for package @aws/aws-codepipeline-plugin-for-backstage-backend
+
+
+
+
+
 # [0.9.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-codepipeline-plugin-for-backstage-backend@0.8.0...@aws/aws-codepipeline-plugin-for-backstage-backend@0.9.0) (2025-09-19)
 
 

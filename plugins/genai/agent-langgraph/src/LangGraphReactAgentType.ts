@@ -12,6 +12,7 @@
  */
 
 import { Config } from '@backstage/config';
+import { JsonObject } from '@backstage/types';
 import {
   BackstageCredentials,
   LoggerService,
@@ -22,15 +23,19 @@ import {
 } from '@backstage/catalog-model';
 import { ChatBedrockConverse } from '@langchain/aws';
 import { ChatOpenAI, AzureChatOpenAI } from '@langchain/openai';
-import { CompiledStateGraph, MemorySaver } from '@langchain/langgraph';
+import { BaseCheckpointSaver, MemorySaver } from '@langchain/langgraph';
 import { createReactAgent } from '@langchain/langgraph/prebuilt';
 import {
   HumanMessage,
   SystemMessage,
   trimMessages,
 } from '@langchain/core/messages';
-import { StructuredToolInterface } from '@langchain/core/tools';
-import { ResponseTransformStream, tiktokenCounter } from './util';
+import { DynamicStructuredTool, ToolInterface } from '@langchain/core/tools';
+import {
+  InvokeAgentTool,
+  ResponseTransformStream,
+  tiktokenCounter,
+} from './util';
 import { BaseChatModel } from '@langchain/core/language_models/chat_models';
 import {
   LangGraphAgentConfig,
@@ -38,7 +43,11 @@ import {
   readSharedLangGraphAgentConfig,
   SharedLangGraphAgentConfig,
 } from './config';
-import { AgentConfig, AgentType } from '@aws/genai-plugin-for-backstage-node';
+import {
+  AgentConfig,
+  AgentType,
+  PeerAgentToolInstance,
+} from '@aws/genai-plugin-for-backstage-node';
 import {
   ChatEvent,
   GenerateResponse,
@@ -46,14 +55,20 @@ import {
 import { CallbackHandler } from 'langfuse-langchain';
 import { SqliteSaver } from '@langchain/langgraph-checkpoint-sqlite';
 import { PostgresSaver } from '@langchain/langgraph-checkpoint-postgres';
+import {
+  ActionsService,
+  ActionsServiceAction,
+} from '@backstage/backend-plugin-api/alpha';
 
 export class LangGraphReactAgentType implements AgentType {
   private readonly prompt?: string;
 
   public constructor(
     private readonly llm: BaseChatModel,
-    private readonly tools: StructuredToolInterface[],
-    private readonly agent: CompiledStateGraph<any, any, any>,
+    private readonly actions: ActionsService,
+    private readonly tools: ToolInterface[],
+    private readonly checkpointSaver: BaseCheckpointSaver,
+    private readonly langGraphAgentConfig: LangGraphAgentConfig,
     private readonly sharedConfig: SharedLangGraphAgentConfig,
     options: {
       prompt?: string;
@@ -65,7 +80,8 @@ export class LangGraphReactAgentType implements AgentType {
   static async fromConfig(
     rootConfig: Config,
     agentConfig: AgentConfig,
-    tools: StructuredToolInterface[],
+    actions: ActionsService,
+    tools: ToolInterface[],
     logger: LoggerService,
     dbConfig: any,
   ) {
@@ -106,27 +122,12 @@ export class LangGraphReactAgentType implements AgentType {
       logger,
     );
 
-    const agent = createReactAgent({
-      llm: agentModel,
-      tools,
-      checkpointSaver: agentCheckpointer,
-      messageModifier: agentLangGraphConfig.messagesMaxTokens
-        ? async e => {
-            return await trimMessages(e, {
-              maxTokens: agentLangGraphConfig.messagesMaxTokens,
-              strategy: 'last',
-              tokenCounter: tiktokenCounter,
-              includeSystem: true,
-              startOn: 'human',
-            });
-          }
-        : undefined,
-    });
-
     return new LangGraphReactAgentType(
       agentModel,
+      actions,
       tools,
-      agent,
+      agentCheckpointer,
+      agentLangGraphConfig,
       sharedLangGraphConfig,
       {
         prompt,
@@ -262,10 +263,13 @@ export class LangGraphReactAgentType implements AgentType {
     userMessage: string,
     sessionId: string,
     newSession: boolean,
+    agentActions: ActionsServiceAction[],
+    peerAgentTools: PeerAgentToolInstance[],
     _: LoggerService,
     options: {
       userEntityRef?: CompoundEntityRef;
-      credentials?: BackstageCredentials;
+      credentials: BackstageCredentials;
+      signal?: AbortSignal;
     },
   ): Promise<ReadableStream<ChatEvent>> {
     const messages: (SystemMessage | HumanMessage)[] = [];
@@ -280,7 +284,41 @@ export class LangGraphReactAgentType implements AgentType {
 
     messages.push(new HumanMessage(userMessage));
 
-    const eventStreamFinalRes = this.agent.streamEvents(
+    const agent = createReactAgent({
+      llm: this.llm,
+      tools: await this.buildActionsTools(
+        agentActions,
+        peerAgentTools,
+        credentials,
+      ),
+      checkpointSaver: this.checkpointSaver,
+      messageModifier: this.langGraphAgentConfig.messagesMaxTokens
+        ? async e => {
+            const trimmed = await trimMessages(e, {
+              maxTokens: this.langGraphAgentConfig.messagesMaxTokens,
+              strategy: 'last',
+              tokenCounter: tiktokenCounter,
+              includeSystem: true,
+              startOn: 'human',
+            });
+
+            // If there are two human messages in a row at the end
+            // then assume the first was cancelled
+            const len = trimmed.length;
+            if (
+              len >= 2 &&
+              trimmed[len - 1] instanceof HumanMessage &&
+              trimmed[len - 2] instanceof HumanMessage
+            ) {
+              trimmed.splice(len - 2, 1);
+            }
+
+            return trimmed;
+          }
+        : undefined,
+    });
+
+    const eventStreamFinalRes = agent.streamEvents(
       {
         messages,
       },
@@ -292,22 +330,48 @@ export class LangGraphReactAgentType implements AgentType {
           thread_id: sessionId,
           credentials,
         },
+        signal: options.signal,
       },
     );
 
-    return eventStreamFinalRes.pipeThrough(
+    const stream = eventStreamFinalRes.pipeThrough(
       new ResponseTransformStream(sessionId),
     );
+
+    return new ReadableStream({
+      async start(controller) {
+        const reader = stream.getReader();
+        try {
+          while (true as const) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            controller.enqueue(value);
+          }
+          controller.close();
+        } catch (error: any) {
+          if (error.message && error.message === 'Abort') {
+            return;
+          }
+
+          controller.error(error);
+        } finally {
+          reader.releaseLock();
+        }
+      },
+    });
   }
 
   public async generate(
     prompt: string,
     sessionId: string,
+    agentActions: ActionsServiceAction[],
+    peerAgentTools: PeerAgentToolInstance[],
     logger: LoggerService,
     options: {
       userEntityRef?: CompoundEntityRef;
-      credentials?: BackstageCredentials;
+      credentials: BackstageCredentials;
       responseFormat?: Record<string, any>;
+      signal?: AbortSignal;
     },
   ): Promise<GenerateResponse> {
     const messages: (SystemMessage | HumanMessage)[] = [];
@@ -324,7 +388,11 @@ export class LangGraphReactAgentType implements AgentType {
 
     const agent = createReactAgent({
       llm: this.llm,
-      tools: this.tools,
+      tools: await this.buildActionsTools(
+        agentActions,
+        peerAgentTools,
+        credentials,
+      ),
       responseFormat,
     });
     const finalState = await agent.invoke(
@@ -336,6 +404,7 @@ export class LangGraphReactAgentType implements AgentType {
           thread_id: sessionId,
           credentials,
         },
+        signal: options.signal,
       },
     );
 
@@ -360,6 +429,35 @@ export class LangGraphReactAgentType implements AgentType {
     return {
       output,
     };
+  }
+
+  private async buildActionsTools(
+    agentActions: ActionsServiceAction[],
+    peerAgentTools: PeerAgentToolInstance[],
+    credentials: BackstageCredentials,
+  ) {
+    const tools = agentActions.map(action => {
+      return new DynamicStructuredTool({
+        get name() {
+          return action.name;
+        },
+        description: action.description,
+        schema: action.schema.input,
+        func: async input => {
+          return this.actions.invoke({
+            id: action.id,
+            input: input as JsonObject,
+            credentials,
+          });
+        },
+      });
+    });
+
+    const peerAgents = peerAgentTools.map(peer => {
+      return new InvokeAgentTool(peer);
+    });
+
+    return [...tools, ...peerAgents, ...this.tools];
   }
 
   private buildSystemPrompt(

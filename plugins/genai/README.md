@@ -157,7 +157,48 @@ yarn start
 
 Access the application in your browser and select the "Chat Assistant" option in the menu. Ask a general question like "What is Terraform?".
 
+### Registering actions
+
+We can register Backstage actions as tools available to the agents to retrieve context or perform actions.
+
+Any action available in Backstage is viable to be added as an action to an agent.
+
+Update the previous agent definition to add the `actions` field:
+
+```yaml
+backend:
+  actions:
+    pluginSources:
+      - 'catalog'
+      - 'aws-genai'
+genai:
+  registerCoreActions: true
+  agents:
+    general:
+      description: [...]
+      prompt: [...]
+      langgraph: [...]
+      actions:
+        - get-catalog-entity # This is built in to Backstage
+        - search-catalog
+        - search-techdocs
+```
+
+Also note the `genai.registerCoreActions` flag which has been enabled. This registers several actions related to "core" Backstage functions like the catalog and TechDocs. It is expected that when upstream Backstage makes general implementations of these actions available these will be removed.
+
+These are the core actions provided:
+
+| Tools name        | Description                                        |
+| ----------------- | -------------------------------------------------- |
+| `search-catalog`  | Search the Backstage catalog using the Search API  |
+| `search-techdocs` | Search TechDocs documentation using the Search API |
+| `read-techdocs`   | Reads a specific page of TechDocs documentation    |
+
+You can find other actions from various plugins, such as the [CodePipeline plugin](../codepipeline/README.md#model-context-protocol-integration) in this repository.
+
 ### Adding tools
+
+WARNING: This mechanism is deprecated and will be removed soon. Please migrate any custom tools to the actions registry (see above).
 
 We can provide tools/functions that can be called by agents to retrieve context or perform actions. Tools can be added to the agent using a Backstage extension point and packaged as NPM packages.
 
@@ -184,17 +225,25 @@ NOTE: After Backstage starts locally there can be a delay indexing the catalog a
 
 ### Agents communicating
 
-Provided is a simple mechanism to allow agents to communicate, which treats agents as tools. You can prefix any other agent name with `agent:` as a tool name and it will treat it as a tool for the configured agent to invoke.
+WARNING: When configuring agents to communicate with each other you must take care to ensure that agent interactions are behaving appropriately. Failing to do so can result in prolonged agent interactions, for example with looping behavior, that will consume a large number of LLM tokens.
+
+A simple mechanism is provided to allow agents to communicate, which treats agents as tools. An action is added to the registry for each agent of the format `query-agent-<agent name>`.
+
+You can provide these tools to agents:
 
 ```yaml
+backend:
+  actions:
+    pluginSources:
+      - 'aws-genai' # You need to enable the registration of actions from this plugin
 genai:
   agents:
     general:
       description: [...]
       prompt: [...]
       langgraph: [...]
-      tools:
-        - agent:weather
+      actions:
+        - query-agent-weather
     weather:
       description: [...]
       prompt: [...]
@@ -208,5 +257,4 @@ The tool for invoking agents simply accepts a parameter called `query` which is 
 You can view the rest of the documentation to understand how to evolve your chat assistant
 
 1. Prompting tips: Various tips on how to configure the agent system prompt. [See here](./docs/prompting-tips.md).
-1. Tools: Provide tools/functions that can be called by agents to retrieve context or perform actions. [See here](./docs/tools.md).
 1. Agent implementation: Provide an implementation for how an agent responds to prompts. [See here](./docs/agent-types.md).
