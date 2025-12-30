@@ -1,7 +1,7 @@
 {
   "name": "@aws/amazon-ecs-plugin-for-backstage-common",
   "description": "Common functionality for the amazon-ecs-plugin-for-backstage plugin",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "repository": {
     "type": "git",
     "url": "github:awslabs/backstage-plugins-for-aws",
@@ -41,7 +41,7 @@
     "dist"
   ],
   "dependencies": {
-    "@aws-sdk/client-ecs": "^3.511.0",
+    "@aws-sdk/client-ecs": "^3.922.0",
     "@backstage/catalog-model": "^1.7.5"
   }
 }

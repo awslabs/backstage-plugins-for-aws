@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.5.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/genai-plugin-for-backstage-node@0.4.0...@aws/genai-plugin-for-backstage-node@0.5.0) (2025-11-14)
+
+
+### Features
+
+* GenAI agent tools from action registry ([#499](https://github.com/awslabs/backstage-plugins-for-aws/issues/499)) ([7874d85](https://github.com/awslabs/backstage-plugins-for-aws/commit/7874d85c59c7527dd2a4005e11b2660093f6ab99))
+* Requests to AI agents can be cancelled ([#500](https://github.com/awslabs/backstage-plugins-for-aws/issues/500)) ([475d7a7](https://github.com/awslabs/backstage-plugins-for-aws/commit/475d7a73924e27eecd176b42937572493a344eea))
+
+
+
+
+
 # [0.4.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/genai-plugin-for-backstage-node@0.3.0...@aws/genai-plugin-for-backstage-node@0.4.0) (2025-09-19)
 
 

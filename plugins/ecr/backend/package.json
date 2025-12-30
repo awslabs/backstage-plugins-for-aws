@@ -1,6 +1,6 @@
 {
   "name": "@aws/amazon-ecr-plugin-for-backstage-backend",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "repository": {
     "type": "git",
     "url": "github:awslabs/backstage-plugins-for-aws",
@@ -33,10 +33,10 @@
     "postpack": "backstage-cli package postpack"
   },
   "dependencies": {
-    "@aws-sdk/client-ecr": "^3.568.0",
-    "@aws-sdk/middleware-sdk-sts": "^3.523.0",
-    "@aws-sdk/types": "^3.609.0",
-    "@aws-sdk/util-arn-parser": "^3.495.0",
+    "@aws-sdk/client-ecr": "^3.922.0",
+    "@aws-sdk/middleware-sdk-sts": "^3.922.0",
+    "@aws-sdk/types": "^3.922.0",
+    "@aws-sdk/util-arn-parser": "^3.893.0",
     "@aws/amazon-ecr-plugin-for-backstage-common": "workspace:^",
     "@aws/aws-core-plugin-for-backstage-common": "workspace:^",
     "@aws/aws-core-plugin-for-backstage-node": "workspace:^",
@@ -49,7 +49,7 @@
     "@backstage/errors": "^1.2.7",
     "@backstage/integration-aws-node": "^0.1.17",
     "@backstage/plugin-catalog-node": "^1.19.0",
-    "@types/express": "4.17.23",
+    "@types/express": "4.17.25",
     "express": "^4.17.17",
     "express-promise-router": "^4.1.0",
     "luxon": "^3.4.4",

@@ -16,8 +16,9 @@ import {
   coreServices,
 } from '@backstage/backend-plugin-api';
 import { costInsightsAwsServiceRef, createRouter } from './service/router';
-import { catalogServiceRef } from '@backstage/plugin-catalog-node/alpha';
 import { readCostInsightsAwsConfig } from './config';
+import { actionsRegistryServiceRef } from '@backstage/backend-plugin-api/alpha';
+import { createGetTrailingCostsAction } from './actions';
 
 export const costInsightsAwsPlugin = createBackendPlugin({
   pluginId: 'cost-insights-aws',
@@ -27,22 +28,19 @@ export const costInsightsAwsPlugin = createBackendPlugin({
         logger: coreServices.logger,
         httpRouter: coreServices.httpRouter,
         config: coreServices.rootConfig,
-        catalogApi: catalogServiceRef,
-        auth: coreServices.auth,
-        discovery: coreServices.discovery,
         httpAuth: coreServices.httpAuth,
         cache: coreServices.cache,
         costInsightsAwsService: costInsightsAwsServiceRef,
+        actionsRegistry: actionsRegistryServiceRef,
       },
       async init({
         logger,
         httpRouter,
         config,
-        auth,
         httpAuth,
-        discovery,
         cache,
         costInsightsAwsService,
+        actionsRegistry,
       }) {
         const pluginConfig = readCostInsightsAwsConfig(config);
 
@@ -50,16 +48,20 @@ export const costInsightsAwsPlugin = createBackendPlugin({
           await createRouter({
             logger,
             costInsightsAwsService,
-            discovery,
-            auth,
             httpAuth,
             cache,
             config: pluginConfig,
+            rootConfig: config,
           }),
         );
         httpRouter.addAuthPolicy({
           path: '/health',
           allow: 'unauthenticated',
+        });
+
+        createGetTrailingCostsAction({
+          costInsightsAwsService,
+          actionsRegistry,
         });
       },
     });

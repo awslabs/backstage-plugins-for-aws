@@ -1,6 +1,6 @@
 {
   "name": "@aws/aws-codebuild-plugin-for-backstage",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "repository": {
     "type": "git",
     "url": "github:awslabs/backstage-plugins-for-aws",
@@ -34,7 +34,7 @@
     "postpack": "backstage-cli package postpack"
   },
   "dependencies": {
-    "@aws-sdk/client-codebuild": "^3.511.0",
+    "@aws-sdk/client-codebuild": "^3.922.0",
     "@aws/aws-codebuild-plugin-for-backstage-common": "workspace:^",
     "@aws/aws-core-plugin-for-backstage-common": "workspace:^",
     "@aws/aws-core-plugin-for-backstage-react": "workspace:^",

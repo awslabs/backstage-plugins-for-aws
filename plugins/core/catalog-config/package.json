@@ -1,7 +1,7 @@
 {
   "name": "@aws/aws-config-catalog-module-for-backstage",
   "description": "The aws-config backend module for the catalog plugin.",
-  "version": "0.3.0",
+  "version": "0.3.2",
   "repository": {
     "type": "git",
     "url": "github:awslabs/backstage-plugins-for-aws",
@@ -31,8 +31,8 @@
     "postpack": "backstage-cli package postpack"
   },
   "dependencies": {
-    "@aws-sdk/client-config-service": "3.893.0",
-    "@aws-sdk/types": "^3.609.0",
+    "@aws-sdk/client-config-service": "3.930.0",
+    "@aws-sdk/types": "^3.922.0",
     "@aws/aws-core-plugin-for-backstage-common": "workspace:^",
     "@backstage/backend-plugin-api": "^1.4.3",
     "@backstage/catalog-model": "^1.7.5",

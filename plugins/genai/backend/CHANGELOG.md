@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.7.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/genai-plugin-for-backstage-backend@0.6.0...@aws/genai-plugin-for-backstage-backend@0.7.0) (2025-11-14)
+
+
+### Features
+
+* Actions registry integration to ECS, CodePipeline and Cost Insights ([#491](https://github.com/awslabs/backstage-plugins-for-aws/issues/491)) ([692b0f0](https://github.com/awslabs/backstage-plugins-for-aws/commit/692b0f024d66d1bdaecb59f4c68951874db0b81a))
+* GenAI agent tools from action registry ([#499](https://github.com/awslabs/backstage-plugins-for-aws/issues/499)) ([7874d85](https://github.com/awslabs/backstage-plugins-for-aws/commit/7874d85c59c7527dd2a4005e11b2660093f6ab99))
+* Requests to AI agents can be cancelled ([#500](https://github.com/awslabs/backstage-plugins-for-aws/issues/500)) ([475d7a7](https://github.com/awslabs/backstage-plugins-for-aws/commit/475d7a73924e27eecd176b42937572493a344eea))
+
+
+
+
+
 # [0.6.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/genai-plugin-for-backstage-backend@0.5.0...@aws/genai-plugin-for-backstage-backend@0.6.0) (2025-09-19)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "@aws/aws-codepipeline-plugin-for-backstage",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "repository": {
     "type": "git",
     "url": "github:awslabs/backstage-plugins-for-aws",
@@ -34,8 +34,8 @@
     "postpack": "backstage-cli package postpack"
   },
   "dependencies": {
-    "@aws-sdk/client-codepipeline": "^3.511.0",
-    "@aws-sdk/util-arn-parser": "^3.568.0",
+    "@aws-sdk/client-codepipeline": "^3.922.0",
+    "@aws-sdk/util-arn-parser": "^3.893.0",
     "@aws/aws-codepipeline-plugin-for-backstage-common": "workspace:^",
     "@aws/aws-core-plugin-for-backstage-common": "workspace:^",
     "@aws/aws-core-plugin-for-backstage-react": "workspace:^",

@@ -40,7 +40,12 @@ export const createAwsEventBridgeEventAction = (options: {
             .string({ description: 'The AWS region to create the resource.' })
             .optional(),
         source: z => z.string({ description: 'The source of the event.' }),
-        detail: z => z.string({ description: 'A valid JSON object.' }),
+        detail: z =>
+          z
+            .string({ description: 'A valid JSON object as a string.' })
+            .optional(),
+        detailObject: z =>
+          z.any({ description: 'A valid JSON object.' }).optional(),
         detailType: z =>
           z.string({
             description:
@@ -54,8 +59,15 @@ export const createAwsEventBridgeEventAction = (options: {
       },
     },
     async handler(ctx) {
-      const { accountId, region, source, detail, detailType, eventBusName } =
-        ctx.input;
+      const {
+        accountId,
+        region,
+        source,
+        detail,
+        detailObject,
+        detailType,
+        eventBusName,
+      } = ctx.input;
 
       let credentialProvider: AwsCredentialIdentityProvider;
 
@@ -69,6 +81,16 @@ export const createAwsEventBridgeEventAction = (options: {
         ).sdkCredentialProvider;
       }
 
+      let detailPayload: string;
+
+      if (detail) {
+        detailPayload = detail;
+      } else if (detailObject) {
+        detailPayload = JSON.stringify(detailObject);
+      } else {
+        throw new Error('Either detail or detailObject must be provided.');
+      }
+
       const client = new EventBridgeClient({
         region,
         customUserAgent: AWS_SDK_CUSTOM_USER_AGENT,
@@ -79,13 +101,15 @@ export const createAwsEventBridgeEventAction = (options: {
           Entries: [
             {
               Source: source,
-              Detail: detail,
+              Detail: detailPayload,
               DetailType: detailType,
               EventBusName: eventBusName,
             },
           ],
         }),
       );
+
+      ctx.logger.info(`Event posted`);
     },
   });
 };

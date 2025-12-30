@@ -25,8 +25,10 @@ import { Toolkit } from '../tools/Toolkit';
 import { CompoundEntityRef, parseEntityRef } from '@backstage/catalog-model';
 import { readAgentsConfig } from '../config/config';
 import { Agent } from '../agent/Agent';
-import { InvokeAgentTool } from '../tools/invokeAgentTool';
-import { AgentTypeFactory } from '@aws/genai-plugin-for-backstage-node';
+import {
+  AgentTypeFactory,
+  PeerAgentRunner,
+} from '@aws/genai-plugin-for-backstage-node';
 import {
   ChatEvent,
   ChatSession,
@@ -34,6 +36,8 @@ import {
   SyncResponse,
 } from '@aws/genai-plugin-for-backstage-common';
 import { SessionStore } from '../database';
+import { ActionsService } from '@backstage/backend-plugin-api/alpha';
+import { PeerAgentTool } from '@aws/genai-plugin-for-backstage-node';
 
 export class DefaultAgentService implements AgentService {
   public constructor(
@@ -51,6 +55,7 @@ export class DefaultAgentService implements AgentService {
       userInfo: UserInfoService;
       logger: LoggerService;
       sessionStore: SessionStore;
+      actions: ActionsService;
     },
   ) {
     const agentTypeFactoryMap = new Map(
@@ -62,12 +67,6 @@ export class DefaultAgentService implements AgentService {
 
     const agentConfigs = readAgentsConfig(config);
     const agents = new Map<string, Agent>();
-
-    const agentTools = agentConfigs.map(e => {
-      return new InvokeAgentTool(e.name, e.description);
-    });
-
-    options.toolkit.add(...agentTools);
 
     for (const agentConfig of agentConfigs) {
       let agentTypeFactory: AgentTypeFactory | undefined;
@@ -92,6 +91,7 @@ export class DefaultAgentService implements AgentService {
         agentConfig,
         agentTypeFactory,
         options.toolkit,
+        options.actions,
         options.logger.child({
           agent: agentConfig.name,
         }),
@@ -106,8 +106,6 @@ export class DefaultAgentService implements AgentService {
       agents,
       options.sessionStore,
     );
-
-    agentTools.forEach(e => e.setAgentService(service));
 
     return service;
   }
@@ -124,9 +122,10 @@ export class DefaultAgentService implements AgentService {
       credentials: BackstageCredentials<
         BackstageUserPrincipal | BackstageServicePrincipal
       >;
+      signal?: AbortSignal;
     },
   ): Promise<ReadableStream<ChatEvent>> {
-    const { agentName, sessionId, credentials } = options;
+    const { agentName, sessionId, credentials, signal } = options;
 
     let newSession = false;
     let session: ChatSession;
@@ -157,10 +156,17 @@ export class DefaultAgentService implements AgentService {
       session = sessionResult;
     }
 
-    return agent.stream(userMessage, session.sessionId, newSession, {
-      userEntityRef,
-      credentials,
-    });
+    return agent.stream(
+      userMessage,
+      session.sessionId,
+      newSession,
+      this.getPeerAgentTools(),
+      {
+        userEntityRef,
+        credentials,
+        signal,
+      },
+    );
   }
 
   async getUserSession(options: {
@@ -212,20 +218,29 @@ export class DefaultAgentService implements AgentService {
       credentials: BackstageCredentials<
         BackstageUserPrincipal | BackstageServicePrincipal
       >;
+      signal?: AbortSignal;
     },
   ): Promise<SyncResponse> {
+    const { agentName, credentials, signal } = options;
+
     const { principal, userEntityRef } = await this.getUserEntityRef(
-      options.credentials,
+      credentials,
     );
 
-    const agent = this.getActualAgent(options.agentName);
+    const agent = this.getActualAgent(agentName);
 
-    const session = await this.makeSession(options.agentName, principal, true);
+    const session = await this.makeSession(agentName, principal, true);
 
-    const output = agent.generate(userMessage, session.sessionId, {
-      userEntityRef,
-      credentials: options.credentials,
-    });
+    const output = agent.generate(
+      userMessage,
+      session.sessionId,
+      this.getPeerAgentTools(),
+      {
+        userEntityRef,
+        credentials,
+        signal,
+      },
+    );
 
     return {
       output,
@@ -241,9 +256,10 @@ export class DefaultAgentService implements AgentService {
       credentials: BackstageCredentials<
         BackstageUserPrincipal | BackstageServicePrincipal
       >;
+      signal?: AbortSignal;
     },
   ): Promise<GenerateResponse> {
-    const { responseFormat, agentName, credentials } = options;
+    const { responseFormat, agentName, credentials, signal } = options;
 
     const { principal, userEntityRef } = await this.getUserEntityRef(
       credentials,
@@ -253,10 +269,11 @@ export class DefaultAgentService implements AgentService {
 
     const session = await this.makeSession(agentName, principal, true);
 
-    return agent.generate(prompt, session.sessionId, {
+    return agent.generate(prompt, session.sessionId, this.getPeerAgentTools(), {
       userEntityRef,
       credentials,
       responseFormat,
+      signal,
     });
   }
 
@@ -309,6 +326,36 @@ export class DefaultAgentService implements AgentService {
     return {
       userEntityRef,
       principal: `user:${userEntityRef.namespace}/${userEntityRef.name}`,
+    };
+  }
+
+  private getPeerAgentTools() {
+    return Array.from(this.agents.values()).map(
+      a =>
+        new PeerAgentTool(
+          a.getName(),
+          a.getDescription(),
+          this.getPeerAgentRunner(),
+        ),
+    );
+  }
+
+  private getPeerAgentRunner(): PeerAgentRunner {
+    return {
+      invoke: async (
+        name: string,
+        prompt: string,
+        credentials: BackstageCredentials<
+          BackstageUserPrincipal | BackstageServicePrincipal
+        >,
+        signal?: AbortSignal,
+      ) => {
+        return this.generate(prompt, {
+          agentName: name,
+          credentials,
+          signal,
+        });
+      },
     };
   }
 }

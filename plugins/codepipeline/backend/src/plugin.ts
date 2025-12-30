@@ -17,6 +17,11 @@ import {
 } from '@backstage/backend-plugin-api';
 import { createRouter } from './service/router';
 import { awsCodePipelineServiceRef } from './service/DefaultAwsCodePipelineService';
+import { actionsRegistryServiceRef } from '@backstage/backend-plugin-api/alpha';
+import {
+  createGetPipelineExecutionsByEntityAction,
+  createGetPipelinesByEntityAction,
+} from './actions';
 
 export const awsCodePiplinePlugin = createBackendPlugin({
   pluginId: 'aws-codepipeline',
@@ -28,8 +33,16 @@ export const awsCodePiplinePlugin = createBackendPlugin({
         config: coreServices.rootConfig,
         httpAuth: coreServices.httpAuth,
         awsCodePipelineApi: awsCodePipelineServiceRef,
+        actionsRegistry: actionsRegistryServiceRef,
       },
-      async init({ logger, httpRouter, httpAuth, awsCodePipelineApi, config }) {
+      async init({
+        logger,
+        httpRouter,
+        httpAuth,
+        awsCodePipelineApi,
+        config,
+        actionsRegistry,
+      }) {
         httpRouter.use(
           await createRouter({
             logger,
@@ -41,6 +54,15 @@ export const awsCodePiplinePlugin = createBackendPlugin({
         httpRouter.addAuthPolicy({
           path: '/health',
           allow: 'unauthenticated',
+        });
+
+        createGetPipelinesByEntityAction({
+          awsCodePipelineApi,
+          actionsRegistry,
+        });
+        createGetPipelineExecutionsByEntityAction({
+          awsCodePipelineApi,
+          actionsRegistry,
         });
       },
     });

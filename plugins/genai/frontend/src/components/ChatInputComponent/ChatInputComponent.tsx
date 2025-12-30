@@ -43,12 +43,14 @@ interface ChatInputComponentProps {
   onMessage: (message: string) => void;
   disabled?: boolean;
   onClear?: () => void;
+  onCancel?: () => void;
 }
 
 export const ChatInputComponent = ({
   onMessage,
   disabled,
   onClear,
+  onCancel,
 }: ChatInputComponentProps) => {
   const classes = useStyles();
 
@@ -69,7 +71,7 @@ export const ChatInputComponent = ({
 
   const checkKeyPress = (evt: React.KeyboardEvent<HTMLInputElement>) => {
     if (evt.code === 'Enter') {
-      if (!evt.shiftKey) {
+      if (!evt.shiftKey && message.trim()) {
         processMessage();
         evt.preventDefault();
       }
@@ -99,16 +101,28 @@ export const ChatInputComponent = ({
           />
         </div>
         <div className={classes.ChatInputButtons}>
-          <Button
-            title="Send"
-            onClick={processMessage}
-            disabled={disabled}
-            variant="contained"
-            color="primary"
-            className={classes.ChatInputButton}
-          >
-            <SendIcon />
-          </Button>
+          {disabled && onCancel ? (
+            <Button
+              title="Cancel"
+              onClick={onCancel}
+              variant="contained"
+              color="secondary"
+              className={classes.ChatInputButton}
+            >
+              Cancel
+            </Button>
+          ) : (
+            <Button
+              title="Send"
+              onClick={processMessage}
+              disabled={!message.trim()}
+              variant="contained"
+              color="primary"
+              className={classes.ChatInputButton}
+            >
+              <SendIcon />
+            </Button>
+          )}
           <Button
             title="Clear"
             onClick={onClear}

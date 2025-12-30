@@ -5,5 +5,3 @@ coverage
 CHANGELOG.md
 .git
 .yarn
-.devenv
-.direnv

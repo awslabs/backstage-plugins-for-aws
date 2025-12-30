@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.2](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/cost-insights-plugin-for-backstage@0.3.1...@aws/cost-insights-plugin-for-backstage@0.3.2) (2025-11-14)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @backstage-community/plugin-cost-insights to ^0.22.0 ([#488](https://github.com/awslabs/backstage-plugins-for-aws/issues/488)) ([0927699](https://github.com/awslabs/backstage-plugins-for-aws/commit/09276997e3bfdbf85ddea16c535850714ec313f8))
+* **deps:** update dependency @backstage-community/plugin-cost-insights-common to ^0.9.0 ([#464](https://github.com/awslabs/backstage-plugins-for-aws/issues/464)) ([19fc71b](https://github.com/awslabs/backstage-plugins-for-aws/commit/19fc71b9a52b30bbc2e210476c9e1a13c3970c1c))
+
+
+
+
+
+## [0.3.1](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/cost-insights-plugin-for-backstage@0.3.0...@aws/cost-insights-plugin-for-backstage@0.3.1) (2025-11-07)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @backstage-community/plugin-cost-insights to ^0.20.0 ([#463](https://github.com/awslabs/backstage-plugins-for-aws/issues/463)) ([b7c23ee](https://github.com/awslabs/backstage-plugins-for-aws/commit/b7c23ee2188395380b324168baca661951231169))
+
+
+
+
+
 # [0.3.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/cost-insights-plugin-for-backstage@0.2.2...@aws/cost-insights-plugin-for-backstage@0.3.0) (2025-09-19)
 
 
