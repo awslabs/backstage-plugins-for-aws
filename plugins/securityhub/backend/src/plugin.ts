@@ -18,6 +18,8 @@ import {
 import { createRouter } from './service/router';
 import { catalogServiceRef } from '@backstage/plugin-catalog-node/alpha';
 import { awsSecurityHubApiServiceRef } from './lib';
+import { createGetFindingsByEntityAction } from './actions';
+import { actionsRegistryServiceRef } from '@backstage/backend-plugin-api/alpha';
 
 export const awsSecurityHubPlugin = createBackendPlugin({
   pluginId: 'aws-securityhub',
@@ -33,6 +35,7 @@ export const awsSecurityHubPlugin = createBackendPlugin({
         awsSecurityHubApi: awsSecurityHubApiServiceRef,
         cache: coreServices.cache,
         config: coreServices.rootConfig,
+        actionsRegistry: actionsRegistryServiceRef,
       },
       async init({
         logger,
@@ -43,6 +46,7 @@ export const awsSecurityHubPlugin = createBackendPlugin({
         discovery,
         cache,
         config,
+        actionsRegistry,
       }) {
         httpRouter.use(
           await createRouter({
@@ -59,6 +63,8 @@ export const awsSecurityHubPlugin = createBackendPlugin({
           path: '/health',
           allow: 'unauthenticated',
         });
+
+        createGetFindingsByEntityAction({ actionsRegistry, awsSecurityHubApi });
       },
     });
   },

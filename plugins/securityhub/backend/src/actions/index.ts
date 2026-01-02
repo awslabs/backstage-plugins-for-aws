@@ -11,7 +11,4 @@
  * limitations under the License.
  */
 
-export * from './service';
-export * from './lib';
-export * from './actions';
-export { awsSecurityHubPlugin as default } from './plugin';
+export * from './findings';

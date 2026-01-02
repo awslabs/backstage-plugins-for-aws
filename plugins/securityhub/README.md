@@ -201,14 +201,14 @@ Learn more in [AWS documentation](https://docs.aws.amazon.com/securityhub/latest
 
 The plugin provides two types of GenAI integration to help with security finding analysis and remediation.
 
+**Prerequisites:**
+- Install and configure the `@aws/genai-plugin-for-backstage` plugin ([documentation](https://github.com/awslabs/backstage-plugins-for-aws/tree/main/plugins/genai)).
+
 ### 1. AI Assistant for Individual Findings
 
 Each finding in the UI includes an AI assistant that provides tailored analysis and remediation steps. When enabled, users can:
 - View official AWS remediation guides (always available)
 - Ask an AI agent for customized analysis and remediation specific to their finding context
-
-**Prerequisites:**
-- Install and configure the `@aws/genai-plugin-for-backstage` plugin ([documentation](https://github.com/awslabs/backstage-plugins-for-aws/tree/main/plugins/genai)).
 
 **Configuration:**
 
@@ -243,27 +243,19 @@ genai:
 
 ### 2. GenAI Actions for Querying Findings
 
-The tools package provides actions that allow AI assistants to query Security Hub findings across entities.
-
-**Installation:**
-
-Install the tools package:
-
-```shell
-yarn workspace backend add @aws/aws-securityhub-plugin-for-backstage-tools
-```
-
-Add the module to `packages/backend/src/index.ts`:
-
-```typescript
-backend.add(import('@aws/aws-securityhub-plugin-for-backstage-tools'));
-```
+The backend plugin automatically registers an action that allows AI assistants to query Security Hub findings across entities.
 
 **Configuration:**
 
 Add the action to your GenAI agent in `app-config.yaml`:
 
 ```yaml
+backend:
+  actions:
+    pluginSources:
+      - 'catalog' # built-in actions from Backstage
+      - 'aws-securityhub' # add this line
+
 genai:
   agents:
     general:
@@ -271,18 +263,22 @@ genai:
       langgraph:
         messagesMaxTokens: 15000
         bedrock:
-          modelId: amazon.nova-lite-v1:0
+          modelId: amazon.nova-lite-v1:0 # or other model
           region: us-east-1
       actions:
-        - get-catalog-entity
-        - aws-securityhub-findings  # Add this action
+        - get-catalog-entity # built-in Backstage action
+        - get-amazon-securityhub-findings  # add this action
       prompt: |
         You are an AWS platform expert helping developers with security and compliance.
 ```
 
-The `aws-securityhub-findings` action retrieves Security Hub findings for catalog entities and returns a formatted summary including title, ID, severity, description, remediation URL, creation date, and AWS account ID.
+Now, you can ask a Chat Assistant to query findings across your catalog entities:
 
-See the [tools package README](./tools/README.md) for more details.
+```text
+What security finding from securityhub does my component <COMPONENT NAME> have?
+```
+
+The `get-amazon-securityhub-findings` action retrieves Security Hub findings for catalog entities and returns a formatted summary including title, ID, severity, description, remediation URL, creation date, and AWS account ID.
 
 
 ## Features

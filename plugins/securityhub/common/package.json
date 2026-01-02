@@ -22,8 +22,7 @@
     "pluginPackages": [
       "@aws/aws-securityhub-plugin-for-backstage",
       "@aws/aws-securityhub-plugin-for-backstage-backend",
-      "@aws/aws-securityhub-plugin-for-backstage-common",
-      "@aws/aws-securityhub-plugin-for-backstage-tools"
+      "@aws/aws-securityhub-plugin-for-backstage-common"
     ]
   },
   "sideEffects": false,

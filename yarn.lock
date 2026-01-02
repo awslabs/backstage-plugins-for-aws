@@ -3860,21 +3860,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@aws/aws-securityhub-plugin-for-backstage-tools@workspace:^, @aws/aws-securityhub-plugin-for-backstage-tools@workspace:plugins/securityhub/tools":
-  version: 0.0.0-use.local
-  resolution: "@aws/aws-securityhub-plugin-for-backstage-tools@workspace:plugins/securityhub/tools"
-  dependencies:
-    "@aws/aws-securityhub-plugin-for-backstage-backend": "workspace:^"
-    "@aws/genai-plugin-for-backstage-node": "npm:^0.2.2"
-    "@backstage/backend-common": "npm:^0.25.0"
-    "@backstage/backend-plugin-api": "npm:^1.5.0"
-    "@backstage/backend-test-utils": "npm:^1.10.1"
-    "@backstage/cli": "npm:^0.34.5"
-    "@langchain/core": "npm:0.3.57"
-    zod: "npm:^3.23.8"
-  languageName: unknown
-  linkType: soft
-
 "@aws/aws-securityhub-plugin-for-backstage@workspace:^, @aws/aws-securityhub-plugin-for-backstage@workspace:plugins/securityhub/frontend":
   version: 0.0.0-use.local
   resolution: "@aws/aws-securityhub-plugin-for-backstage@workspace:plugins/securityhub/frontend"
@@ -4044,17 +4029,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@aws/genai-plugin-for-backstage-common@npm:^0.3.0":
-  version: 0.3.0
-  resolution: "@aws/genai-plugin-for-backstage-common@npm:0.3.0"
-  dependencies:
-    cross-fetch: "npm:^4.0.0"
-    uri-template: "npm:^2.0.0"
-    zod: "npm:^3.23.8"
-  checksum: 10c0/f4529b8147dc7581f94ef7aeb662950ab34c55f1b4df64b7faa976f5749d795171ae699d719c3c87bb1f9dc292f277e621f0f5111ab5f99bc96e76a390b55f8f
-  languageName: node
-  linkType: hard
-
 "@aws/genai-plugin-for-backstage-common@npm:^0.4.0":
   version: 0.4.0
   resolution: "@aws/genai-plugin-for-backstage-common@npm:0.4.0"
@@ -4076,19 +4050,6 @@ __metadata:
     zod: "npm:^3.23.8"
   languageName: unknown
   linkType: soft
-
-"@aws/genai-plugin-for-backstage-node@npm:^0.2.2":
-  version: 0.2.2
-  resolution: "@aws/genai-plugin-for-backstage-node@npm:0.2.2"
-  dependencies:
-    "@aws/genai-plugin-for-backstage-common": "npm:^0.3.0"
-    "@backstage/backend-plugin-api": "npm:^0.8.1"
-    "@backstage/catalog-model": "npm:^1.7.0"
-    "@backstage/config": "npm:^1.2.0"
-    "@langchain/core": "npm:0.3.57"
-  checksum: 10c0/443f7f3b4281a76893bd57c76511d183e9b7ae7e8ae52292531b82302ed0b80bccb4046aa5db96ead56e774d1b5bbaea6a9fc5ca99f7cd25e794dacadee86c3d
-  languageName: node
-  linkType: hard
 
 "@aws/genai-plugin-for-backstage-node@workspace:^, @aws/genai-plugin-for-backstage-node@workspace:plugins/genai/node":
   version: 0.0.0-use.local
@@ -5421,25 +5382,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@backstage/backend-plugin-api@npm:^0.8.1":
-  version: 0.8.1
-  resolution: "@backstage/backend-plugin-api@npm:0.8.1"
-  dependencies:
-    "@backstage/cli-common": "npm:^0.1.14"
-    "@backstage/config": "npm:^1.2.0"
-    "@backstage/errors": "npm:^1.2.4"
-    "@backstage/plugin-auth-node": "npm:^0.5.1"
-    "@backstage/plugin-permission-common": "npm:^0.8.1"
-    "@backstage/types": "npm:^1.1.1"
-    "@types/express": "npm:^4.17.6"
-    "@types/luxon": "npm:^3.0.0"
-    express: "npm:^4.17.1"
-    knex: "npm:^3.0.0"
-    luxon: "npm:^3.0.0"
-  checksum: 10c0/14fbd1ce8b0f18b672479b6c0e49a57ff7a77cc965fe9928dc5ff6af31b8c8ee968b912bc3b32c26509578649d67b7717aef4c7a32017dcaaf9425e89e75e9da
-  languageName: node
-  linkType: hard
-
 "@backstage/backend-plugin-api@npm:^1.0.0, @backstage/backend-plugin-api@npm:^1.1.1, @backstage/backend-plugin-api@npm:^1.4.3":
   version: 1.4.3
   resolution: "@backstage/backend-plugin-api@npm:1.4.3"
@@ -5610,7 +5552,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@backstage/catalog-model@npm:^1.6.0, @backstage/catalog-model@npm:^1.7.0, @backstage/catalog-model@npm:^1.7.6":
+"@backstage/catalog-model@npm:^1.6.0, @backstage/catalog-model@npm:^1.7.6":
   version: 1.7.6
   resolution: "@backstage/catalog-model@npm:1.7.6"
   dependencies:
@@ -7378,7 +7320,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@backstage/plugin-auth-node@npm:^0.5.1, @backstage/plugin-auth-node@npm:^0.5.2":
+"@backstage/plugin-auth-node@npm:^0.5.2":
   version: 0.5.6
   resolution: "@backstage/plugin-auth-node@npm:0.5.6"
   dependencies:
@@ -8002,21 +7944,6 @@ __metadata:
     "@types/react":
       optional: true
   checksum: 10c0/effdf0a3096c62969b32846e5c1dcf3f47e92fbc38cc6e6b64d3ef9fd86b25f632d5c8aa5f7cd3ddb5fb6b2bdfc05166f8e653f38a5f59bdeffcc6660b77eb0d
-  languageName: node
-  linkType: hard
-
-"@backstage/plugin-permission-common@npm:^0.8.1":
-  version: 0.8.4
-  resolution: "@backstage/plugin-permission-common@npm:0.8.4"
-  dependencies:
-    "@backstage/config": "npm:^1.3.2"
-    "@backstage/errors": "npm:^1.2.7"
-    "@backstage/types": "npm:^1.2.1"
-    cross-fetch: "npm:^4.0.0"
-    uuid: "npm:^11.0.0"
-    zod: "npm:^3.22.4"
-    zod-to-json-schema: "npm:^3.20.4"
-  checksum: 10c0/35d52365c1abb23c6ad167149ab78aad0396b97d5c9e591f5a5e397ea029855a6b88f05060e2215e2480244bec797d92871ad92fa613255eeddd54228c01b7f1
   languageName: node
   linkType: hard
 
@@ -22177,7 +22104,6 @@ __metadata:
     "@aws/aws-codepipeline-plugin-for-backstage-backend": "workspace:^"
     "@aws/aws-core-plugin-for-backstage-scaffolder-actions": "workspace:^"
     "@aws/aws-securityhub-plugin-for-backstage-backend": "workspace:^"
-    "@aws/aws-securityhub-plugin-for-backstage-tools": "workspace:^"
     "@aws/cost-insights-plugin-for-backstage-backend": "workspace:^"
     "@aws/genai-plugin-for-backstage-backend": "workspace:^"
     "@aws/genai-plugin-langgraph-agent-for-backstage": "workspace:^"
