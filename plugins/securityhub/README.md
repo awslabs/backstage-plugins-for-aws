@@ -4,12 +4,22 @@ This plugin integrates AWS Security Hub V1 with Backstage, allowing you to view 
 
 ![AWS SecurityHub plugin tab](../../docs/images/securityhub-tab.png)
 
+It provides:
+
+- **Security Findings Dashboard**: View all Security Hub findings for your catalog entities
+- **Severity Filtering**: Filter findings by severity (CRITICAL, HIGH, MEDIUM, LOW, INFORMATIONAL)
+- **Finding Details**: View detailed information about each finding including remediation steps
+- **AI-Powered Remediation**: Get tailored analysis and remediation guidance for individual findings using GenAI
+- **Response Caching**: AI responses are cached to reduce costs and improve performance
+- **GenAI Actions**: Query findings across entities using natural language through GenAI agent actions
+- **Multi-account Support**: Query findings across multiple AWS accounts using Security Hub aggregation
+- **Custom Filters**: Configure custom filters to focus on specific finding types or compliance statuses
+
 The plugin consists of the following packages:
 
 - `frontend`: The frontend plugin package installed in Backstage
 - `backend`: The backend plugin package installed in Backstage
 - `common`: Types and utilities shared between the packages
-- `tools`: GenAI agent actions for Security Hub integration
 
 ## Installing
 
@@ -196,10 +206,29 @@ aws securityhub create-finding-aggregator \
 
 Learn more in [AWS documentation](https://docs.aws.amazon.com/securityhub/latest/userguide/finding-aggregation.html).
 
+## Model Context Protocol integration
 
-## GenAI Integration
+This plugin integrates with the [Backstage MCP Actions Backend](https://github.com/backstage/backstage/tree/master/plugins/mcp-actions-backend) to expose plugin actions as Model Context Protocol (MCP) tools. This allows AI tools that implement MCP clients like Cursor, Cline and Q Developer to consume the actions.
 
-The plugin provides two types of GenAI integration to help with security finding analysis and remediation.
+Before proceeding you must have installed the MCP Actions Backend.
+
+Configure the actions `pluginSources` to add this plugin:
+
+```yaml
+backend:
+  actions:
+    pluginSources:
+      [...]
+      - 'aws-securityhub'
+```
+
+The plugin provides the following actions:
+
+- `get-aws-securityhub-findings`: Retrieves AWS Security Hub findings related to a single entity in the software catalog
+
+## GenAI plugin integration
+
+The plugin integrates with the [GenAI plugin](https://github.com/awslabs/backstage-plugins-for-aws/tree/main/plugins/genai) to help with security finding analysis and remediation.
 
 **Prerequisites:**
 - Install and configure the `@aws/genai-plugin-for-backstage` plugin ([documentation](https://github.com/awslabs/backstage-plugins-for-aws/tree/main/plugins/genai)).
@@ -279,18 +308,6 @@ What security finding from securityhub does my component <COMPONENT NAME> have?
 ```
 
 The `get-amazon-securityhub-findings` action retrieves Security Hub findings for catalog entities and returns a formatted summary including title, ID, severity, description, remediation URL, creation date, and AWS account ID.
-
-
-## Features
-
-- **Security Findings Dashboard**: View all Security Hub findings for your catalog entities
-- **Severity Filtering**: Filter findings by severity (CRITICAL, HIGH, MEDIUM, LOW, INFORMATIONAL)
-- **Finding Details**: View detailed information about each finding including remediation steps
-- **AI-Powered Remediation**: Get tailored analysis and remediation guidance for individual findings using GenAI
-- **Response Caching**: AI responses are cached to reduce costs and improve performance
-- **GenAI Actions**: Query findings across entities using natural language through GenAI agent actions
-- **Multi-account Support**: Query findings across multiple AWS accounts using Security Hub aggregation
-- **Custom Filters**: Configure custom filters to focus on specific finding types or compliance statuses
 
 ## Troubleshooting
 
