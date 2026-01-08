@@ -22,7 +22,7 @@ export const createGetFindingsByEntityAction = ({
   actionsRegistry: ActionsRegistryService;
 }) => {
   actionsRegistry.register({
-    name: 'get-amazon-securityhub-findings',
+    name: 'get-aws-securityhub-findings',
     title: 'AWS Security Hub Findings',
     attributes: {
       destructive: false,

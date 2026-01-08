@@ -296,7 +296,7 @@ genai:
           region: us-east-1
       actions:
         - get-catalog-entity # built-in Backstage action
-        - get-amazon-securityhub-findings  # add this action
+        - get-aws-securityhub-findings  # add this action
       prompt: |
         You are an AWS platform expert helping developers with security and compliance.
 ```
@@ -307,7 +307,7 @@ Now, you can ask a Chat Assistant to query findings across your catalog entities
 What security finding from securityhub does my component <COMPONENT NAME> have?
 ```
 
-The `get-amazon-securityhub-findings` action retrieves Security Hub findings for catalog entities and returns a formatted summary including title, ID, severity, description, remediation URL, creation date, and AWS account ID.
+The `get-aws-securityhub-findings` action retrieves Security Hub findings for catalog entities and returns a formatted summary including title, ID, severity, description, remediation URL, creation date, and AWS account ID.
 
 ## Troubleshooting
 
