@@ -11,10 +11,24 @@
  * limitations under the License.
  */
 
-import { Box, Grid, LinearProgress, Typography, Chip, Button } from '@material-ui/core';
+import {
+  Box,
+  Grid,
+  LinearProgress,
+  Typography,
+  Chip,
+  Button,
+} from '@material-ui/core';
 import { useSecurityHubFindings } from '../../hooks/useSecurityHubFindings';
 import { Entity } from '@backstage/catalog-model';
-import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip, Legend } from 'recharts';
+import {
+  Cell,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+  Legend,
+} from 'recharts';
 import { InfoCard, ResponseErrorPanel } from '@backstage/core-components';
 import { AwsSecurityFinding } from '@aws-sdk/client-securityhub';
 import { Table } from '@backstage/core-components';
@@ -73,14 +87,21 @@ const SeverityChart = ({
             label={({ name, value }) => `${name}: ${value}`}
           >
             {mappedData.map((entry, index) => (
-              <Cell key={`severity-${index}`} fill={getSeverityColorByName(entry.name)} />
+              <Cell
+                key={`severity-${index}`}
+                fill={getSeverityColorByName(entry.name)}
+              />
             ))}
           </Pie>
-          <Tooltip formatter={(value: number) => [`${value} findings`, 'Count']} />
-          <Legend 
-            verticalAlign="bottom" 
+          <Tooltip
+            formatter={(value: number) => [`${value} findings`, 'Count']}
+          />
+          <Legend
+            verticalAlign="bottom"
             height={36}
-            formatter={(value) => <span style={{ fontSize: '12px' }}>{value}</span>}
+            formatter={value => (
+              <span style={{ fontSize: '12px' }}>{value}</span>
+            )}
           />
         </PieChart>
       </ResponsiveContainer>
@@ -97,9 +118,18 @@ const SummaryChart = ({
   title: string;
   retriever: (f: AwsSecurityFinding) => string;
 }) => {
-  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#82ca9d', '#ffc658', '#ff7c7c'];
+  const COLORS = [
+    '#0088FE',
+    '#00C49F',
+    '#FFBB28',
+    '#FF8042',
+    '#8884d8',
+    '#82ca9d',
+    '#ffc658',
+    '#ff7c7c',
+  ];
   const chartData = generateChartData(data, retriever);
-  
+
   return (
     <InfoCard title={title} titleTypographyProps={{ variant: 'h6' }} noPadding>
       <ResponsiveContainer width="95%" height={300}>
@@ -116,14 +146,21 @@ const SummaryChart = ({
             label={({ value }) => value}
           >
             {chartData.map((_entry, index) => (
-              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+              <Cell
+                key={`cell-${index}`}
+                fill={COLORS[index % COLORS.length]}
+              />
             ))}
           </Pie>
-          <Tooltip formatter={(value: number) => [`${value} findings`, 'Count']} />
-          <Legend 
-            verticalAlign="bottom" 
+          <Tooltip
+            formatter={(value: number) => [`${value} findings`, 'Count']}
+          />
+          <Legend
+            verticalAlign="bottom"
             height={36}
-            formatter={(value) => <span style={{ fontSize: '12px' }}>{value}</span>}
+            formatter={value => (
+              <span style={{ fontSize: '12px' }}>{value}</span>
+            )}
           />
         </PieChart>
       </ResponsiveContainer>
@@ -133,19 +170,19 @@ const SummaryChart = ({
 
 const getSeverityOrder = (severity: string): number => {
   const order: Record<string, number> = {
-    'CRITICAL': 0,
-    'HIGH': 1,
-    'MEDIUM': 2,
-    'LOW': 3,
-    'INFORMATIONAL': 4,
+    CRITICAL: 0,
+    HIGH: 1,
+    MEDIUM: 2,
+    LOW: 3,
+    INFORMATIONAL: 4,
   };
   return order[severity.toUpperCase()] ?? 999;
 };
 
-const generatedColumns = ({ 
-  entity, 
-  onRowClick
-}: { 
+const generatedColumns = ({
+  entity,
+  onRowClick,
+}: {
   entity: Entity;
   onRowClick: (finding: AwsSecurityFinding) => void;
 }) => {
@@ -165,7 +202,7 @@ const generatedColumns = ({
           <Chip
             label={severity}
             size="small"
-            style={{ 
+            style={{
               backgroundColor: getSeverityColorByName(severity),
               color: '#fff',
               fontWeight: 600,
@@ -178,13 +215,13 @@ const generatedColumns = ({
       title: 'Title',
       field: 'Title',
       render: (row: AwsSecurityFinding) => (
-        <Box 
-          style={{ 
+        <Box
+          style={{
             cursor: 'pointer',
             color: '#1976d2',
             textDecoration: 'none',
           }}
-          onClick={(e) => {
+          onClick={e => {
             e.stopPropagation();
             onRowClick(row);
           }}
@@ -227,23 +264,30 @@ const AWSSecurityHubContent = ({
   response: AwsSecurityFinding[];
   entity: Entity;
 }) => {
-  const [selectedFinding, setSelectedFinding] = useState<AwsSecurityFinding | null>(null);
+  const [selectedFinding, setSelectedFinding] =
+    useState<AwsSecurityFinding | null>(null);
   const [severityFilter, setSeverityFilter] = useState<string[]>([]);
   const [accountFilter, setAccountFilter] = useState<string[]>([]);
   const [resourceTypeFilter, setResourceTypeFilter] = useState<string[]>([]);
 
   // Get unique values for filters
-  const uniqueSeverities = useMemo(() => 
-    Array.from(new Set(response.map(f => f.Severity?.Label).filter(Boolean))) as string[],
-    [response]
+  const uniqueSeverities = useMemo(
+    () =>
+      Array.from(
+        new Set(response.map(f => f.Severity?.Label).filter(Boolean)),
+      ) as string[],
+    [response],
   );
-  const uniqueAccounts = useMemo(() => 
-    Array.from(new Set(response.map(f => f.AwsAccountId).filter(Boolean))) as string[],
-    [response]
+  const uniqueAccounts = useMemo(
+    () =>
+      Array.from(
+        new Set(response.map(f => f.AwsAccountId).filter(Boolean)),
+      ) as string[],
+    [response],
   );
   const uniqueResourceTypes = useMemo(() => {
-    const allTypes = response.flatMap(f => 
-      f.Resources?.map(r => r.Type).filter(Boolean) || []
+    const allTypes = response.flatMap(
+      f => f.Resources?.map(r => r.Type).filter(Boolean) || [],
     );
     return Array.from(new Set(allTypes)) as string[];
   }, [response]);
@@ -251,13 +295,18 @@ const AWSSecurityHubContent = ({
   // Filter data
   const filteredData = useMemo(() => {
     return response.filter(finding => {
-      const severityMatch = severityFilter.length === 0 || 
+      const severityMatch =
+        severityFilter.length === 0 ||
         severityFilter.includes(finding.Severity?.Label || '');
-      const accountMatch = accountFilter.length === 0 || 
+      const accountMatch =
+        accountFilter.length === 0 ||
         accountFilter.includes(finding.AwsAccountId || '');
-      const resourceTypeMatch = resourceTypeFilter.length === 0 ||
-        finding.Resources?.some(r => r.Type && resourceTypeFilter.includes(r.Type));
-      
+      const resourceTypeMatch =
+        resourceTypeFilter.length === 0 ||
+        finding.Resources?.some(
+          r => r.Type && resourceTypeFilter.includes(r.Type),
+        );
+
       return severityMatch && accountMatch && resourceTypeMatch;
     });
   }, [response, severityFilter, accountFilter, resourceTypeFilter]);
@@ -265,7 +314,7 @@ const AWSSecurityHubContent = ({
   const handleFilterToggle = (
     filterArray: string[],
     setFilter: (value: string[]) => void,
-    value: string
+    value: string,
   ) => {
     if (filterArray.includes(value)) {
       setFilter(filterArray.filter(v => v !== value));
@@ -284,11 +333,14 @@ const AWSSecurityHubContent = ({
     setResourceTypeFilter([]);
   };
 
-  const hasActiveFilters = severityFilter.length > 0 || accountFilter.length > 0 || resourceTypeFilter.length > 0;
+  const hasActiveFilters =
+    severityFilter.length > 0 ||
+    accountFilter.length > 0 ||
+    resourceTypeFilter.length > 0;
 
-  const columns = generatedColumns({ 
-    entity, 
-    onRowClick: handleRowClick
+  const columns = generatedColumns({
+    entity,
+    onRowClick: handleRowClick,
   });
 
   return (
@@ -316,16 +368,20 @@ const AWSSecurityHubContent = ({
           />
         </Grid>
         <Grid item md={12}>
-          <InfoCard 
+          <InfoCard
             title={
-              <Box display="flex" alignItems="center" justifyContent="space-between">
+              <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="space-between"
+              >
                 <Box display="flex" alignItems="center">
                   <FilterListIcon style={{ marginRight: 8 }} />
                   <Typography variant="h6">Filters</Typography>
                 </Box>
                 {hasActiveFilters && (
-                  <Button 
-                    size="small" 
+                  <Button
+                    size="small"
                     onClick={clearAllFilters}
                     variant="outlined"
                   >
@@ -345,17 +401,33 @@ const AWSSecurityHubContent = ({
                     <Chip
                       key={severity}
                       label={severity}
-                      onClick={() => handleFilterToggle(severityFilter, setSeverityFilter, severity)}
-                      style={severityFilter.includes(severity) ? {
-                        backgroundColor: getSeverityColorByName(severity),
-                        color: '#fff',
-                        fontWeight: 600,
-                      } : {
-                        border: `2px solid ${getSeverityColorByName(severity)}`,
-                        color: getSeverityColorByName(severity),
-                        fontWeight: 600,
-                      }}
-                      variant={severityFilter.includes(severity) ? 'default' : 'outlined'}
+                      onClick={() =>
+                        handleFilterToggle(
+                          severityFilter,
+                          setSeverityFilter,
+                          severity,
+                        )
+                      }
+                      style={
+                        severityFilter.includes(severity)
+                          ? {
+                              backgroundColor: getSeverityColorByName(severity),
+                              color: '#fff',
+                              fontWeight: 600,
+                            }
+                          : {
+                              border: `2px solid ${getSeverityColorByName(
+                                severity,
+                              )}`,
+                              color: getSeverityColorByName(severity),
+                              fontWeight: 600,
+                            }
+                      }
+                      variant={
+                        severityFilter.includes(severity)
+                          ? 'default'
+                          : 'outlined'
+                      }
                     />
                   ))}
                 </Box>
@@ -369,9 +441,19 @@ const AWSSecurityHubContent = ({
                     <Chip
                       key={account}
                       label={account}
-                      onClick={() => handleFilterToggle(accountFilter, setAccountFilter, account)}
-                      color={accountFilter.includes(account) ? 'primary' : 'default'}
-                      variant={accountFilter.includes(account) ? 'default' : 'outlined'}
+                      onClick={() =>
+                        handleFilterToggle(
+                          accountFilter,
+                          setAccountFilter,
+                          account,
+                        )
+                      }
+                      color={
+                        accountFilter.includes(account) ? 'primary' : 'default'
+                      }
+                      variant={
+                        accountFilter.includes(account) ? 'default' : 'outlined'
+                      }
                     />
                   ))}
                 </Box>
@@ -385,9 +467,23 @@ const AWSSecurityHubContent = ({
                     <Chip
                       key={resourceType}
                       label={resourceType}
-                      onClick={() => handleFilterToggle(resourceTypeFilter, setResourceTypeFilter, resourceType)}
-                      color={resourceTypeFilter.includes(resourceType) ? 'primary' : 'default'}
-                      variant={resourceTypeFilter.includes(resourceType) ? 'default' : 'outlined'}
+                      onClick={() =>
+                        handleFilterToggle(
+                          resourceTypeFilter,
+                          setResourceTypeFilter,
+                          resourceType,
+                        )
+                      }
+                      color={
+                        resourceTypeFilter.includes(resourceType)
+                          ? 'primary'
+                          : 'default'
+                      }
+                      variant={
+                        resourceTypeFilter.includes(resourceType)
+                          ? 'default'
+                          : 'outlined'
+                      }
                     />
                   ))}
                 </Box>
@@ -401,7 +497,8 @@ const AWSSecurityHubContent = ({
             title={
               <Box display="flex" alignItems="center">
                 <Typography variant="h6">
-                  Findings {filteredData.length !== response.length && 
+                  Findings{' '}
+                  {filteredData.length !== response.length &&
                     `(${filteredData.length} of ${response.length})`}
                 </Typography>
               </Box>
@@ -417,8 +514,8 @@ const AWSSecurityHubContent = ({
         </Grid>
       </Grid>
       {selectedFinding && (
-        <FindingDrawer 
-          finding={selectedFinding} 
+        <FindingDrawer
+          finding={selectedFinding}
           open
           onClose={() => setSelectedFinding(null)}
         />

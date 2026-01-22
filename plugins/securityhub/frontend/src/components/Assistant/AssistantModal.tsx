@@ -1,5 +1,13 @@
 import { useState } from 'react';
-import { Button, LinearProgress, makeStyles, Modal, Typography, Box, Divider } from '@material-ui/core';
+import {
+  Button,
+  LinearProgress,
+  makeStyles,
+  Modal,
+  Typography,
+  Box,
+  Divider,
+} from '@material-ui/core';
 import { MarkdownContent } from '@backstage/core-components';
 import { Entity } from '@backstage/catalog-model';
 import { useSecurityHubAssistant } from '../../hooks';
@@ -108,45 +116,51 @@ const AssistantModalContent = ({
           </Box>
         )}
         {showAIResponse && loading && <LinearProgress />}
-        {showAIResponse && !loading && error && (() => {
-          const errorMessage = 'message' in error && typeof error.message === 'string' 
-            ? error.message 
-            : 'Failed to get AI assistance. Please try again later.';
-          const is501Error = errorMessage.includes('501 Not Implemented');
-          
-          return (
-            <Box 
-              mt={2} 
-              p={2} 
-              style={{ 
-                backgroundColor: is501Error ? '#fff3e0' : '#ffebee', 
-                borderRadius: '4px',
-                border: is501Error ? '1px solid #ff9800' : '1px solid #ef5350'
-              }}
-            >
-              <Typography 
-                variant="subtitle1" 
-                style={{ 
-                  fontWeight: 600, 
-                  color: is501Error ? '#e65100' : '#c62828' 
+        {showAIResponse &&
+          !loading &&
+          error &&
+          (() => {
+            const errorMessage =
+              'message' in error && typeof error.message === 'string'
+                ? error.message
+                : 'Failed to get AI assistance. Please try again later.';
+            const is501Error = errorMessage.includes('501 Not Implemented');
+
+            return (
+              <Box
+                mt={2}
+                p={2}
+                style={{
+                  backgroundColor: is501Error ? '#fff3e0' : '#ffebee',
+                  borderRadius: '4px',
+                  border: is501Error
+                    ? '1px solid #ff9800'
+                    : '1px solid #ef5350',
                 }}
               >
-                {is501Error ? 'Setup Required' : 'Error'}
-              </Typography>
-              <Typography 
-                variant="body2" 
-                style={{ 
-                  color: is501Error ? '#e65100' : '#c62828', 
-                  marginTop: '8px' 
-                }}
-              >
-                {is501Error 
-                  ? 'AI Assistant is not enabled. Enable it in app-config.yaml under aws.securityHub.agent.enabled'
-                  : errorMessage}
-              </Typography>
-            </Box>
-          );
-        })()}
+                <Typography
+                  variant="subtitle1"
+                  style={{
+                    fontWeight: 600,
+                    color: is501Error ? '#e65100' : '#c62828',
+                  }}
+                >
+                  {is501Error ? 'Setup Required' : 'Error'}
+                </Typography>
+                <Typography
+                  variant="body2"
+                  style={{
+                    color: is501Error ? '#e65100' : '#c62828',
+                    marginTop: '8px',
+                  }}
+                >
+                  {is501Error
+                    ? 'AI Assistant is not enabled. Enable it in app-config.yaml under aws.securityHub.agent.enabled'
+                    : errorMessage}
+                </Typography>
+              </Box>
+            );
+          })()}
         {showAIResponse && !loading && !error && response && (
           <Box mt={1} mb={2}>
             <MarkdownContent content={response.analysis} dialect="gfm" />
@@ -176,8 +190,8 @@ export const AssistantModal = ({ entity, finding }: AssistantModalProps) => {
 
   return (
     <>
-      <Button 
-        variant="outlined" 
+      <Button
+        variant="outlined"
         color="primary"
         onClick={handleOpen}
         size="small"
@@ -205,10 +219,7 @@ export const AssistantModal = ({ entity, finding }: AssistantModalProps) => {
           </Typography>
           <AssistantModalContent entity={entity} finding={finding} />
           <div className={classes.modalFooter}>
-            <Button
-              variant="contained"
-              onClick={handleClose}
-            >
+            <Button variant="contained" onClick={handleClose}>
               Close
             </Button>
           </div>

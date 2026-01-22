@@ -35,10 +35,7 @@ The IAM role(s) used by Backstage will require the following permissions:
   "Statement": [
     {
       "Effect": "Allow",
-      "Action": [
-        "securityhub:GetFindings",
-        "securityhub:DescribeHub"
-      ],
+      "Action": ["securityhub:GetFindings", "securityhub:DescribeHub"],
       "Resource": "*"
     }
   ]
@@ -137,7 +134,7 @@ aws:
     # Optional: AI Agent configuration (see GenAI Integration section)
     agent:
       enabled: true # (Optional) Enable AI assistant for findings, defaults to true
-      name: 'security-hub'  # Name of the agent configured in genai.agents
+      name: 'security-hub' # Name of the agent configured in genai.agents
 ```
 
 ### Default Filters
@@ -153,12 +150,14 @@ By default, the plugin filters findings to show only active and actionable items
 You can override the default filters or add additional filters using the `filters` configuration. Custom filters will **replace** the default WorkflowStatus and RecordState filters, so include them explicitly if needed.
 
 Available filter options:
+
 - **name**: The Security Hub filter field name (e.g., `SeverityLabel`, `ComplianceStatus`, `WorkflowStatus`, `RecordState`)
 - **value**: Single value for the filter
 - **values**: Array of values for the filter (use either `value` or `values`, not both)
 - **comparison**: Comparison operator (default: `EQUALS`). Options: `EQUALS`, `PREFIX`, `NOT_EQUALS`, `PREFIX_NOT_EQUALS`, `CONTAINS`, `NOT_CONTAINS`
 
 Example - Show only critical and high severity findings that are still active:
+
 ```yaml
 aws:
   securityHub:
@@ -174,12 +173,12 @@ aws:
         comparison: EQUALS
 ```
 
-
 ### Multi-account and cross-region configuration
 
 AWS Security Hub supports cross-account and cross-region aggregation through its administrator-member account model and finding aggregation features.
 
 This configuration will:
+
 - Aggregate findings from all member accounts in your AWS Organization
 - Collect findings from all AWS regions into your designated aggregation region
 - Provide centralized visibility in the Security Hub administrator account
@@ -197,6 +196,7 @@ Learn more in [AWS documentation](https://docs.aws.amazon.com/securityhub/latest
 #### Cross-Region Aggregation
 
 Enable finding aggregation in your administrator account:
+
 ```bash
 # Create aggregation region (choose your primary region)
 aws securityhub create-finding-aggregator \
@@ -231,11 +231,13 @@ The plugin provides the following actions:
 The plugin integrates with the [GenAI plugin](https://github.com/awslabs/backstage-plugins-for-aws/tree/main/plugins/genai) to help with security finding analysis and remediation.
 
 **Prerequisites:**
+
 - Install and configure the `@aws/genai-plugin-for-backstage` plugin ([documentation](https://github.com/awslabs/backstage-plugins-for-aws/tree/main/plugins/genai)).
 
 ### 1. AI Assistant for Individual Findings
 
 Each finding in the UI includes an AI assistant that provides tailored analysis and remediation steps. When enabled, users can:
+
 - View official AWS remediation guides (always available)
 - Ask an AI agent for customized analysis and remediation specific to their finding context
 
@@ -247,8 +249,8 @@ Add the AI agent configuration in `app-config.yaml`:
 aws:
   securityHub:
     agent:
-      enabled: true  # Set to false to disable AI assistant
-      name: 'security-hub'  # Name of the agent configured in genai.agents
+      enabled: true # Set to false to disable AI assistant
+      name: 'security-hub' # Name of the agent configured in genai.agents
 
 genai:
   agents:
@@ -260,11 +262,12 @@ genai:
           modelId: amazon.nova-lite-v1:0 # or other model
           region: us-east-1
       prompt: |
-        You are an AWS security expert assistant helping developers understand and remediate 
+        You are an AWS security expert assistant helping developers understand and remediate
         AWS Security Hub findings. Provide clear, actionable guidance with code examples when appropriate.
 ```
 
 **Features:**
+
 - Contextual analysis of each finding
 - Tailored remediation steps with code examples
 - Response caching to reduce costs and improve performance
@@ -296,7 +299,7 @@ genai:
           region: us-east-1
       actions:
         - get-catalog-entity # built-in Backstage action
-        - get-aws-securityhub-findings  # add this action
+        - get-aws-securityhub-findings # add this action
       prompt: |
         You are an AWS platform expert helping developers with security and compliance.
 ```
@@ -321,5 +324,6 @@ The `get-aws-securityhub-findings` action retrieves Security Hub findings for ca
 ### Permission errors
 
 Ensure your AWS credentials have:
+
 - `securityhub:GetFindings`
 - `securityhub:DescribeHub`

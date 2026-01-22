@@ -29,7 +29,9 @@ import { AwsSecurityFinding } from '@aws-sdk/client-securityhub';
 import { getSeverityColor } from '../constants';
 import Link from '@material-ui/core/Link';
 
-const getSecurityHubFindingUrl = (region: string | undefined): string | null => {
+const getSecurityHubFindingUrl = (
+  region: string | undefined,
+): string | null => {
   if (!region) return null;
   return `https://console.aws.amazon.com/securityhub/v2/home?region=${region}`;
 };
@@ -63,7 +65,7 @@ const formatResources = (finding: AwsSecurityFinding) => {
 
   return {
     Type: resource.Type,
-    ID: resource.Id
+    ID: resource.Id,
   };
 };
 
@@ -92,7 +94,11 @@ export interface FindingDrawerProps {
   onClose?: () => void;
 }
 
-export const FindingDrawer = ({ open, finding, onClose }: FindingDrawerProps) => {
+export const FindingDrawer = ({
+  open,
+  finding,
+  onClose,
+}: FindingDrawerProps) => {
   const classes = useDrawerStyles();
   const [isOpen, setIsOpen] = useState<boolean>(open ?? false);
 

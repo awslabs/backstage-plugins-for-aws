@@ -47,7 +47,7 @@ export class DefaultAwsSecurityHubService implements AwsSecurityHubService {
     private readonly catalogApi: CatalogApi,
     private readonly client: SecurityHubClient,
     private readonly customFilters?: any,
-  ) { }
+  ) {}
 
   static async fromConfig(
     config: Config,
@@ -69,7 +69,7 @@ export class DefaultAwsSecurityHubService implements AwsSecurityHubService {
     if (conf) {
       accountId = conf.getOptionalString('accountId');
       region = conf.getOptionalString('region');
-      
+
       // Read custom filters from config
       const filtersConfig = conf.getOptionalConfigArray('filters');
       if (filtersConfig) {
@@ -78,12 +78,13 @@ export class DefaultAwsSecurityHubService implements AwsSecurityHubService {
           const name = filterConfig.getString('name');
           const values = filterConfig.getOptionalStringArray('values');
           const value = filterConfig.getOptionalString('value');
-          const comparison = filterConfig.getOptionalString('comparison') || 'EQUALS';
-          
+          const comparison =
+            filterConfig.getOptionalString('comparison') || 'EQUALS';
+
           if (!customFilters[name]) {
             customFilters[name] = [];
           }
-          
+
           if (values) {
             // Multiple values for the same filter
             for (const val of values) {
@@ -142,10 +143,10 @@ export class DefaultAwsSecurityHubService implements AwsSecurityHubService {
     const entity = await this.catalogApi.getEntityByRef(
       options.entityRef,
       options.credentials &&
-      (await this.auth.getPluginRequestToken({
-        onBehalfOf: options.credentials,
-        targetPluginId: 'catalog',
-      })),
+        (await this.auth.getPluginRequestToken({
+          onBehalfOf: options.credentials,
+          targetPluginId: 'catalog',
+        })),
     );
 
     if (!entity) {
@@ -230,7 +231,11 @@ export class DefaultAwsSecurityHubService implements AwsSecurityHubService {
     }
 
     this.logger.debug(
-      `Found ${result.length} SecurityHub findings for entity with tags: ${JSON.stringify(resourceTags)}`,
+      `Found ${
+        result.length
+      } SecurityHub findings for entity with tags: ${JSON.stringify(
+        resourceTags,
+      )}`,
     );
 
     return result;

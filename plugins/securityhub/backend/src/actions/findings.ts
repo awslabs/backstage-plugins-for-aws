@@ -75,8 +75,7 @@ export const createGetFindingsByEntityAction = ({
       const summary = results
         .map(e => {
           const severityLabel = e.Severity?.Label || 'UNKNOWN';
-          const remediationUrl =
-            e.Remediation?.Recommendation?.Url || 'N/A';
+          const remediationUrl = e.Remediation?.Recommendation?.Url || 'N/A';
           return [
             `Title: ${e.Title}`,
             `ID: ${e.Id}`,

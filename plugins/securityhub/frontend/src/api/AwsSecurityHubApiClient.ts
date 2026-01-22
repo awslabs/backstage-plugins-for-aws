@@ -63,7 +63,7 @@ export class AwsSecurityHubApiClient
 
     const baseUrl = await this.discoveryApi.getBaseUrl('aws-securityhub');
     const url = `${baseUrl}/${urlSegment}`;
-    
+
     const response = await this.fetchApi.fetch(url, {
       method: 'POST',
       headers: {
@@ -71,7 +71,7 @@ export class AwsSecurityHubApiClient
       },
       body: JSON.stringify({ finding }),
     });
-    
+
     if (!response.ok) {
       let errorMessage = 'Failed to get AI assistance';
       try {
@@ -84,7 +84,7 @@ export class AwsSecurityHubApiClient
       }
       throw new Error(errorMessage);
     }
-    
+
     return await response.json();
   }
 }

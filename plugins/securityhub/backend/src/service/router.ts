@@ -76,8 +76,10 @@ export async function createRouter(
   const agentClient = new DefaultAgentClient(discovery);
 
   // Get agent configuration from app-config.yaml
-  const agentEnabled = config.getOptionalBoolean('aws.securityHub.agent.enabled') ?? true;
-  const agentName = config.getOptionalString('aws.securityHub.agent.name') ?? 'security-hub';
+  const agentEnabled =
+    config.getOptionalBoolean('aws.securityHub.agent.enabled') ?? true;
+  const agentName =
+    config.getOptionalString('aws.securityHub.agent.name') ?? 'security-hub';
 
   const { httpAuth } = createLegacyAuthAdapters(options);
 
@@ -105,7 +107,8 @@ export async function createRouter(
         // Check if agent is enabled
         if (!agentEnabled) {
           response.status(501).json({
-            message: 'AI Assistant is not enabled. Enable it in app-config.yaml under aws.securityHub.agent.enabled',
+            message:
+              'AI Assistant is not enabled. Enable it in app-config.yaml under aws.securityHub.agent.enabled',
           });
           return;
         }
@@ -129,8 +132,10 @@ export async function createRouter(
           return;
         }
 
-        const prompt = PROMPT_TEMPLATE
-          .replace('{entityRef}', `${namespace}/${kind}/${name}`)
+        const prompt = PROMPT_TEMPLATE.replace(
+          '{entityRef}',
+          `${namespace}/${kind}/${name}`,
+        )
           .replace('{findingId}', finding.Id)
           .replace('{title}', finding.Title || 'N/A')
           .replace('{description}', finding.Description || 'N/A')
@@ -174,7 +179,10 @@ export async function createRouter(
       } catch (error) {
         logger.error('Failed to generate AI response', error);
         response.status(500).json({
-          message: error instanceof Error ? error.message : 'Failed to generate AI response',
+          message:
+            error instanceof Error
+              ? error.message
+              : 'Failed to generate AI response',
         });
       }
     },
