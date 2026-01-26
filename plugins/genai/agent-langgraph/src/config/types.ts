@@ -32,6 +32,7 @@ export interface LangGraphAgentConfig {
   bedrock?: LangGraphAgentBedrockConfig;
   openai?: LangGraphAgentOpenAIConfig;
   ollama?: LangGraphAgentOllamaConfig;
+  azureOpenAI?: LangGraphAgentAzureOpenAIConfig;
 }
 
 export interface LangGraphAgentBedrockConfig {
@@ -48,4 +49,12 @@ export interface LangGraphAgentOpenAIConfig {
 export interface LangGraphAgentOllamaConfig {
   model: string;
   baseUrl: string;
+}
+
+export interface LangGraphAgentAzureOpenAIConfig {
+  apiKey: string;
+  apiVersion: string;
+  endpoint: string;
+  instanceName?: string;
+  deploymentName?: string;
 }
