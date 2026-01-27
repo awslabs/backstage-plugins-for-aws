@@ -29,9 +29,9 @@ export interface AwsSecurityHubApi {
 
   assistant({
     entity,
-    findingId,
+    finding,
   }: {
     entity: CompoundEntityRef;
-    findingId: string;
+    finding: AwsSecurityFinding;
   }): Promise<AssistantResponse>;
 }

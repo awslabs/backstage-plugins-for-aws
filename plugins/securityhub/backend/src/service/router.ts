@@ -11,10 +11,7 @@
  * limitations under the License.
  */
 
-import {
-  createLegacyAuthAdapters,
-  errorHandler,
-} from '@backstage/backend-common';
+import { createLegacyAuthAdapters } from '@backstage/backend-common';
 import express from 'express';
 import Router from 'express-promise-router';
 import { AwsSecurityHubService } from './types';
@@ -26,6 +23,8 @@ import {
   LoggerService,
 } from '@backstage/backend-plugin-api';
 import { DefaultAgentClient } from '@aws/genai-plugin-for-backstage-common';
+import { MiddlewareFactory } from '@backstage/backend-defaults/rootHttpRouter';
+import { Config } from '@backstage/config';
 
 const PROMPT_TEMPLATE = `
 Your task is to help provide information and remediate the AWS Security Hub finding with ID '{findingId}' for the following Backstage entity: {entityRef}
@@ -62,7 +61,7 @@ export interface RouterOptions {
   auth: AuthService;
   httpAuth?: HttpAuthService;
   cache: CacheService;
-  config: any;
+  config: Config;
 }
 
 export async function createRouter(
@@ -177,7 +176,7 @@ export async function createRouter(
         cache.set(cacheKey, result);
         response.status(200).json(result);
       } catch (error) {
-        logger.error('Failed to generate AI response', error);
+        logger.error('Failed to generate AI response', error as Error);
         response.status(500).json({
           message:
             error instanceof Error
@@ -192,8 +191,11 @@ export async function createRouter(
     logger.info('PONG!');
     response.json({ status: 'ok' });
   });
-  router.use(errorHandler());
-  return router;
+
+  const middleware = MiddlewareFactory.create({ logger, config });
+  router.use(middleware.error());
+
+  return router as any;
 }
 
 export * from './DefaultAwsSecurityHubService';

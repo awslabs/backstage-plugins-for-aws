@@ -48,17 +48,16 @@ export const awsSecurityHubPlugin = createBackendPlugin({
         config,
         actionsRegistry,
       }) {
-        httpRouter.use(
-          await createRouter({
-            logger,
-            awsSecurityHubApi,
-            discovery,
-            auth,
-            httpAuth,
-            cache,
-            config,
-          }),
-        );
+        const router = await createRouter({
+          logger,
+          awsSecurityHubApi,
+          discovery,
+          auth,
+          httpAuth,
+          cache,
+          config,
+        });
+        httpRouter.use(router as any);
         httpRouter.addAuthPolicy({
           path: '/health',
           allow: 'unauthenticated',

@@ -22,6 +22,9 @@ export class AwsSecurityHubApiClient
   extends AwsApiClient
   implements AwsSecurityHubApi
 {
+  private readonly _discoveryApi: DiscoveryApi;
+  private readonly _fetchApi: FetchApi;
+
   public constructor(options: {
     discoveryApi: DiscoveryApi;
     fetchApi: FetchApi;
@@ -30,6 +33,8 @@ export class AwsSecurityHubApiClient
       backendName: 'aws-securityhub',
       ...options,
     });
+    this._discoveryApi = options.discoveryApi;
+    this._fetchApi = options.fetchApi;
   }
 
   async getFindingsByEntity({
@@ -61,10 +66,10 @@ export class AwsSecurityHubApiClient
       entity.name,
     )}/assistant`;
 
-    const baseUrl = await this.discoveryApi.getBaseUrl('aws-securityhub');
+    const baseUrl = await this._discoveryApi.getBaseUrl('aws-securityhub');
     const url = `${baseUrl}/${urlSegment}`;
 
-    const response = await this.fetchApi.fetch(url, {
+    const response = await this._fetchApi.fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
