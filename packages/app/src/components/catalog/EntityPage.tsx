@@ -60,6 +60,10 @@ import {
   isAmazonEcrAvailable,
   EntityAmazonEcrImagesContent,
 } from '@aws/amazon-ecr-plugin-for-backstage';
+import {
+  EntityAwsSecurityHubContent,
+  isAwsSecurithHubFindingsAvailable,
+} from '@aws/aws-securityhub-plugin-for-backstage';
 
 import { TechDocsAddons } from '@backstage/plugin-techdocs-react';
 import { ReportIssue } from '@backstage/plugin-techdocs-module-addons-contrib';
@@ -169,6 +173,14 @@ const serviceEntityPage = (
       <EntityAmazonEcsServicesContent />
     </EntityLayout.Route>
 
+    <EntityLayout.Route
+      path="/security-hub"
+      title="Security Hub"
+      if={isAwsSecurithHubFindingsAvailable}
+    >
+      <EntityAwsSecurityHubContent />
+    </EntityLayout.Route>
+
     <EntityLayout.Route path="/costs" title="Cost Insights">
       <EntityCostInsightsContent />
     </EntityLayout.Route>
@@ -213,6 +225,14 @@ const websiteEntityPage = (
 
     <EntityLayout.Route path="/ecs" title="Amazon ECS">
       <EntityAmazonEcsServicesContent />
+    </EntityLayout.Route>
+
+    <EntityLayout.Route
+      path="/security-hub"
+      title="Security Hub"
+      if={isAwsSecurithHubFindingsAvailable}
+    >
+      <EntityAwsSecurityHubContent />
     </EntityLayout.Route>
 
     <EntityLayout.Route path="/costs" title="Cost Insights">
