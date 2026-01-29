@@ -32,7 +32,7 @@ export interface Config {
        * - WorkflowStatus: NEW or NOTIFIED
        * - RecordState: ACTIVE
        * - ResourceTags: Filtered based on entity annotations
-       * 
+       *
        * Custom filters will replace the default WorkflowStatus and RecordState filters.
        * @visibility frontend
        */
