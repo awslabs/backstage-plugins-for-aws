@@ -2,6 +2,11 @@
   "name": "@aws/genai-plugin-langgraph-agent-for-backstage",
   "description": "LangGraph agent module package for the GenAI AWS plugins for Backstage",
   "version": "0.7.0",
+  "repository": {
+    "type": "git",
+    "url": "github:awslabs/backstage-plugins-for-aws",
+    "directory": "plugins/genai/agent-langgraph"
+  },
   "main": "src/index.ts",
   "types": "src/index.ts",
   "license": "Apache-2.0",
