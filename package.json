@@ -36,7 +36,7 @@
     "@spotify/prettier-config": "^12.0.0",
     "@types/license-checker": "^25",
     "concurrently": "^9.0.0",
-    "lerna": "^7.3.0",
+    "lerna": "^9.0.0",
     "license-checker": "^25.0.1",
     "lint-staged": "^16.1.2",
     "node-gyp": "^9.0.0",
