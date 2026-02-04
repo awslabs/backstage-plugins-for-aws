@@ -20282,18 +20282,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/dockerode@npm:^3.3.0, @types/dockerode@npm:^3.3.35":
-  version: 3.3.45
-  resolution: "@types/dockerode@npm:3.3.45"
-  dependencies:
-    "@types/docker-modem": "npm:*"
-    "@types/node": "npm:*"
-    "@types/ssh2": "npm:*"
-  checksum: 10c0/73611abf15d12ea7e26d3ba3dd76df4795ae83f188bbc110284f2184ff8d428285bc81a331d1276e7dea157a060ea607089bcb93aac618c4266aef6488dd711c
-  languageName: node
-  linkType: hard
-
-"@types/dockerode@npm:^3.3.47":
+"@types/dockerode@npm:^3.3.0, @types/dockerode@npm:^3.3.35, @types/dockerode@npm:^3.3.47":
   version: 3.3.47
   resolution: "@types/dockerode@npm:3.3.47"
   dependencies:
