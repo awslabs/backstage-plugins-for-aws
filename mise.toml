@@ -1,5 +1,5 @@
 [tools]
-node = "20"
+node = "22"
 aws-cli = "2"
 pre-commit = "4.4.0"
 jq = "1.8.1"

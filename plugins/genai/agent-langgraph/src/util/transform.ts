@@ -12,8 +12,8 @@
  */
 
 import { ChatEvent } from '@aws/genai-plugin-for-backstage-common';
-import { StreamEvent } from '@langchain/core/dist/tracers/event_stream';
 import { AIMessageChunk } from '@langchain/core/messages';
+import { StreamEvent } from '@langchain/core/tracers/log_stream';
 
 export class ResponseTransformStream extends TransformStream<
   StreamEvent,
