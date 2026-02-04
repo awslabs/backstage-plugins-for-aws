@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.7.1](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/genai-plugin-langgraph-agent-for-backstage@0.7.0...@aws/genai-plugin-langgraph-agent-for-backstage@0.7.1) (2026-02-04)
+
+
+### Bug Fixes
+
+* Fixed package repository metadata ([4249190](https://github.com/awslabs/backstage-plugins-for-aws/commit/4249190ffcb82415c0eda847b959330dd4496008))
+
+
+
+
+
 # [0.7.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/genai-plugin-langgraph-agent-for-backstage@0.6.0...@aws/genai-plugin-langgraph-agent-for-backstage@0.7.0) (2026-02-04)
 
 
