@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.7.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/genai-plugin-langgraph-agent-for-backstage@0.6.0...@aws/genai-plugin-langgraph-agent-for-backstage@0.7.0) (2026-02-04)
+
+
+### Features
+
+* Ollama support for GenAI plugin ([#517](https://github.com/awslabs/backstage-plugins-for-aws/issues/517)) ([3bcd04b](https://github.com/awslabs/backstage-plugins-for-aws/commit/3bcd04b023c85bb8d6d342d24376f315d23b1389))
+
+
+
+
+
 # [0.6.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/genai-plugin-langgraph-agent-for-backstage@0.5.0...@aws/genai-plugin-langgraph-agent-for-backstage@0.6.0) (2025-11-14)
 
 
