@@ -11,7 +11,6 @@
  * limitations under the License.
  */
 
-import { createLegacyAuthAdapters } from '@backstage/backend-common';
 import express from 'express';
 import Router from 'express-promise-router';
 import { AwsSecurityHubService } from './types';
@@ -57,9 +56,9 @@ The answer should always be formatted as Markdown and use code fences where appr
 export interface RouterOptions {
   logger: LoggerService;
   awsSecurityHubApi: AwsSecurityHubService;
-  discovery: DiscoveryService;
   auth: AuthService;
-  httpAuth?: HttpAuthService;
+  httpAuth: HttpAuthService;
+  discovery: DiscoveryService;
   cache: CacheService;
   config: Config;
 }
@@ -67,7 +66,15 @@ export interface RouterOptions {
 export async function createRouter(
   options: RouterOptions,
 ): Promise<express.Router> {
-  const { logger, auth, discovery, awsSecurityHubApi, cache, config } = options;
+  const {
+    logger,
+    awsSecurityHubApi,
+    auth,
+    httpAuth,
+    cache,
+    config,
+    discovery,
+  } = options;
 
   const router = Router();
   router.use(express.json());
@@ -79,8 +86,6 @@ export async function createRouter(
     config.getOptionalBoolean('aws.securityHub.agent.enabled') ?? true;
   const agentName =
     config.getOptionalString('aws.securityHub.agent.name') ?? 'security-hub';
-
-  const { httpAuth } = createLegacyAuthAdapters(options);
 
   router.get(
     '/v1/entity/:namespace/:kind/:name/findings',

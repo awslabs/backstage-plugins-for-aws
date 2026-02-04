@@ -16,7 +16,6 @@ import {
   coreServices,
 } from '@backstage/backend-plugin-api';
 import { createRouter } from './service/router';
-import { catalogServiceRef } from '@backstage/plugin-catalog-node/alpha';
 import { awsSecurityHubApiServiceRef } from './lib';
 import { createGetFindingsByEntityAction } from './actions';
 import { actionsRegistryServiceRef } from '@backstage/backend-plugin-api/alpha';
@@ -28,10 +27,9 @@ export const awsSecurityHubPlugin = createBackendPlugin({
       deps: {
         logger: coreServices.logger,
         httpRouter: coreServices.httpRouter,
-        catalogApi: catalogServiceRef,
         auth: coreServices.auth,
-        discovery: coreServices.discovery,
         httpAuth: coreServices.httpAuth,
+        discovery: coreServices.discovery,
         awsSecurityHubApi: awsSecurityHubApiServiceRef,
         cache: coreServices.cache,
         config: coreServices.rootConfig,
@@ -41,8 +39,8 @@ export const awsSecurityHubPlugin = createBackendPlugin({
         logger,
         httpRouter,
         awsSecurityHubApi,
-        auth,
         httpAuth,
+        auth,
         discovery,
         cache,
         config,
@@ -51,9 +49,9 @@ export const awsSecurityHubPlugin = createBackendPlugin({
         const router = await createRouter({
           logger,
           awsSecurityHubApi,
-          discovery,
           auth,
           httpAuth,
+          discovery,
           cache,
           config,
         });

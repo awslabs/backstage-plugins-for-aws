@@ -13,7 +13,7 @@
 
 import { ConfigReader } from '@backstage/config';
 import { mockClient } from 'aws-sdk-client-mock';
-import { getVoidLogger } from '@backstage/backend-common';
+import { mockServices } from '@backstage/backend-test-utils';
 import {
   DefaultAwsCredentialsManager,
   AwsCredentialProvider,
@@ -43,7 +43,7 @@ const getCredProviderMock = jest.spyOn(
 
 const resourceTaggingMock = mockClient(ResourceGroupsTaggingAPIClient);
 
-const logger = getVoidLogger();
+const logger = mockServices.logger.mock();
 
 describe('Resource Explorer locator', () => {
   beforeAll(async () => {});

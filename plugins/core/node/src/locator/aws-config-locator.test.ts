@@ -13,7 +13,6 @@
 
 import { ConfigReader } from '@backstage/config';
 import { mockClient } from 'aws-sdk-client-mock';
-import { getVoidLogger } from '@backstage/backend-common';
 import {
   DefaultAwsCredentialsManager,
   AwsCredentialProvider,
@@ -25,6 +24,7 @@ import {
   SelectResourceConfigCommand,
 } from '@aws-sdk/client-config-service';
 import { AwsConfigResourceLocator } from './aws-config-locator';
+import { mockServices } from '@backstage/backend-test-utils';
 
 function getMockCredentialProvider(): Promise<AwsCredentialProvider> {
   return Promise.resolve({
@@ -43,7 +43,7 @@ const getCredProviderMock = jest.spyOn(
 
 const awsConfigMock = mockClient(ConfigServiceClient);
 
-const logger = getVoidLogger();
+const logger = mockServices.logger.mock();
 
 describe('AWS Config locator', () => {
   beforeAll(async () => {});

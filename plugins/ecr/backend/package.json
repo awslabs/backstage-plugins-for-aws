@@ -40,7 +40,6 @@
     "@aws/amazon-ecr-plugin-for-backstage-common": "workspace:^",
     "@aws/aws-core-plugin-for-backstage-common": "workspace:^",
     "@aws/aws-core-plugin-for-backstage-node": "workspace:^",
-    "@backstage/backend-common": "^0.25.0",
     "@backstage/backend-defaults": "^0.15.1",
     "@backstage/backend-plugin-api": "^1.6.2",
     "@backstage/catalog-client": "^1.12.1",

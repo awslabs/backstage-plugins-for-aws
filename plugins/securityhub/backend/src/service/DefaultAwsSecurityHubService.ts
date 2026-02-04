@@ -17,7 +17,6 @@ import {
   SecurityHubClient,
   MapFilterComparison,
 } from '@aws-sdk/client-securityhub';
-import { CatalogApi } from '@backstage/catalog-client';
 import {
   getOneOfEntityAnnotations,
   AWS_SDK_CUSTOM_USER_AGENT,
@@ -32,19 +31,15 @@ import { AwsSecurityHubService } from './types';
 import { DefaultAwsCredentialsManager } from '@backstage/integration-aws-node';
 import { Config } from '@backstage/config';
 import {
-  AuthService,
   BackstageCredentials,
-  DiscoveryService,
-  HttpAuthService,
   LoggerService,
 } from '@backstage/backend-plugin-api';
-import { createLegacyAuthAdapters } from '@backstage/backend-common';
+import { CatalogService } from '@backstage/plugin-catalog-node';
 
 export class DefaultAwsSecurityHubService implements AwsSecurityHubService {
   public constructor(
     private readonly logger: LoggerService,
-    private readonly auth: AuthService,
-    private readonly catalogApi: CatalogApi,
+    private readonly catalogService: CatalogService,
     private readonly client: SecurityHubClient,
     private readonly customFilters?: any,
   ) {}
@@ -52,10 +47,7 @@ export class DefaultAwsSecurityHubService implements AwsSecurityHubService {
   static async fromConfig(
     config: Config,
     options: {
-      catalogApi: CatalogApi;
-      discovery: DiscoveryService;
-      auth?: AuthService;
-      httpAuth?: HttpAuthService;
+      catalogService: CatalogService;
       logger: LoggerService;
     },
   ) {
@@ -117,8 +109,6 @@ export class DefaultAwsSecurityHubService implements AwsSecurityHubService {
         .sdkCredentialProvider;
     }
 
-    const { auth } = createLegacyAuthAdapters(options);
-
     const client = new SecurityHubClient({
       region: region,
       customUserAgent: AWS_SDK_CUSTOM_USER_AGENT,
@@ -127,8 +117,7 @@ export class DefaultAwsSecurityHubService implements AwsSecurityHubService {
 
     return new DefaultAwsSecurityHubService(
       options.logger,
-      auth,
-      options.catalogApi,
+      options.catalogService,
       client,
       customFilters,
     );
@@ -136,18 +125,15 @@ export class DefaultAwsSecurityHubService implements AwsSecurityHubService {
 
   public async getFindingsByEntity(options: {
     entityRef: CompoundEntityRef;
-    credentials?: BackstageCredentials;
+    credentials: BackstageCredentials;
   }): Promise<AwsSecurityFinding[]> {
     this.logger.debug(`Fetch SecurityHub findings for ${options.entityRef}`);
 
-    const entity = await this.catalogApi.getEntityByRef(
-      options.entityRef,
-      options.credentials &&
-        (await this.auth.getPluginRequestToken({
-          onBehalfOf: options.credentials,
-          targetPluginId: 'catalog',
-        })),
-    );
+    const { entityRef, credentials } = options;
+
+    const entity = await this.catalogService.getEntityByRef(entityRef, {
+      credentials,
+    });
 
     if (!entity) {
       throw new Error(
