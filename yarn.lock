@@ -12029,14 +12029,14 @@ __metadata:
   linkType: hard
 
 "@langchain/ollama@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "@langchain/ollama@npm:1.0.0"
+  version: 1.2.2
+  resolution: "@langchain/ollama@npm:1.2.2"
   dependencies:
-    ollama: "npm:^0.5.12"
+    ollama: "npm:^0.6.3"
     uuid: "npm:^10.0.0"
   peerDependencies:
     "@langchain/core": ^1.0.0
-  checksum: 10c0/4f1d641c2928ad4a23f1348d9dffb5d6c861d15786755ad0950876c2e37a9811168fb2cb26eccca7ce0c96d0ed2bf06cdd3a7921541da1d90a024d53226f37d9
+  checksum: 10c0/9ed19581f71ff283e97b2f5f52a39cbbb3a534248a6de180086c0fa0dbe8b0c50d6c5b373c58f1661a1e30b68d0e0ef1daa69cd942e94243acaf2ad3a272ea77
   languageName: node
   linkType: hard
 
@@ -36425,12 +36425,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ollama@npm:^0.5.12":
-  version: 0.5.18
-  resolution: "ollama@npm:0.5.18"
+"ollama@npm:^0.6.3":
+  version: 0.6.3
+  resolution: "ollama@npm:0.6.3"
   dependencies:
     whatwg-fetch: "npm:^3.6.20"
-  checksum: 10c0/3ed3c98f1aebf734136032704079d87929f583bab99b4359685d5f1a427b607d5aa3268ff334cda6b2d741166d80245180d9d2d65b2c2a8c8bf4146b2ea0c72d
+  checksum: 10c0/040742dd1f96ad06d5508e387d8d953b3cfab527427f5dd463be7ccd589877eccfbf13ccea0bcb4d6b044a90a327c82c3089834fd3c0ea7243bb830a9c07295d
   languageName: node
   linkType: hard
 
