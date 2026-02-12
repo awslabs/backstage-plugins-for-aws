@@ -2973,7 +2973,7 @@ __metadata:
     "@langchain/core": "npm:0.3.57"
     "@langchain/langgraph": "npm:0.2.74"
     "@langchain/langgraph-checkpoint-postgres": "npm:^0.0.5"
-    "@langchain/langgraph-checkpoint-sqlite": "npm:^0.1.5"
+    "@langchain/langgraph-checkpoint-sqlite": "npm:^0.2.0"
     "@langchain/ollama": "npm:^1.0.0"
     "@langchain/openai": "npm:^0.5.11"
     langfuse-langchain: "npm:^3.29.1"
@@ -10824,15 +10824,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@langchain/langgraph-checkpoint-sqlite@npm:^0.1.5":
-  version: 0.1.5
-  resolution: "@langchain/langgraph-checkpoint-sqlite@npm:0.1.5"
+"@langchain/langgraph-checkpoint-sqlite@npm:^0.2.0":
+  version: 0.2.1
+  resolution: "@langchain/langgraph-checkpoint-sqlite@npm:0.2.1"
   dependencies:
     better-sqlite3: "npm:^11.7.0"
   peerDependencies:
-    "@langchain/core": ">=0.2.31 <0.4.0"
-    "@langchain/langgraph-checkpoint": ~0.0.15
-  checksum: 10c0/88982837b19e103c1c4aac83025c06025847a478bd0487e3684ffa2efffddc7a54536099b60d21e66c09f34d6c1cc69e2fdcfa76ec7850d07d27fa70bf2715b3
+    "@langchain/core": ">=0.2.31 <0.4.0 || ^1.0.0-alpha"
+    "@langchain/langgraph-checkpoint": ^0.1.0
+  checksum: 10c0/8df1aef880f5fa27b56010dc1b9c0604beb4543093cb8bc578530397f25af703ebe57523e7ee5992fce9d63ac71bfccbaaeb041ed7e15db99484ba7add99a2fb
   languageName: node
   linkType: hard
 
