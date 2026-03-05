@@ -6129,45 +6129,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@backstage/integration@npm:^1.15.0, @backstage/integration@npm:^1.17.1, @backstage/integration@npm:^1.18.0":
-  version: 1.18.0
-  resolution: "@backstage/integration@npm:1.18.0"
-  dependencies:
-    "@azure/identity": "npm:^4.0.0"
-    "@azure/storage-blob": "npm:^12.5.0"
-    "@backstage/config": "npm:^1.3.3"
-    "@backstage/errors": "npm:^1.2.7"
-    "@octokit/auth-app": "npm:^4.0.0"
-    "@octokit/rest": "npm:^19.0.3"
-    cross-fetch: "npm:^4.0.0"
-    git-url-parse: "npm:^15.0.0"
-    lodash: "npm:^4.17.21"
-    luxon: "npm:^3.0.0"
-  checksum: 10c0/40ac8029ab82902bf294ee0df6c117f61926bc76d6818e5a81bff0ef0d6e98274b7cbc3193948efd5f8dc124559ebab6928e5358e8e645de52f270f055d2243d
-  languageName: node
-  linkType: hard
-
-"@backstage/integration@npm:^1.18.1":
-  version: 1.18.1
-  resolution: "@backstage/integration@npm:1.18.1"
-  dependencies:
-    "@azure/identity": "npm:^4.0.0"
-    "@azure/storage-blob": "npm:^12.5.0"
-    "@backstage/config": "npm:^1.3.5"
-    "@backstage/errors": "npm:^1.2.7"
-    "@octokit/auth-app": "npm:^4.0.0"
-    "@octokit/rest": "npm:^19.0.3"
-    cross-fetch: "npm:^4.0.0"
-    git-url-parse: "npm:^15.0.0"
-    lodash: "npm:^4.17.21"
-    luxon: "npm:^3.0.0"
-  checksum: 10c0/bc2a2e060155e720b9a4a24269fd7894caa67ecf3d9de8cb4931622c9bb4ac080fab9fef4f1c0b1815d78160ee494b8ac62bc624e8b1fa339bc7bdcd6b4b981a
-  languageName: node
-  linkType: hard
-
-"@backstage/integration@npm:^1.18.2, @backstage/integration@npm:^1.19.0":
-  version: 1.19.0
-  resolution: "@backstage/integration@npm:1.19.0"
+"@backstage/integration@npm:^1.15.0, @backstage/integration@npm:^1.17.1, @backstage/integration@npm:^1.18.0, @backstage/integration@npm:^1.18.1, @backstage/integration@npm:^1.18.2, @backstage/integration@npm:^1.19.0, @backstage/integration@npm:^1.19.2":
+  version: 1.20.1
+  resolution: "@backstage/integration@npm:1.20.1"
   dependencies:
     "@azure/identity": "npm:^4.0.0"
     "@azure/storage-blob": "npm:^12.5.0"
@@ -6179,25 +6143,7 @@ __metadata:
     git-url-parse: "npm:^15.0.0"
     lodash: "npm:^4.17.21"
     luxon: "npm:^3.0.0"
-  checksum: 10c0/0ec55421038098890a55f4cbc2b7872b58826a10024f8a27da43bdf13a8959ac8e8033152cf80854205dbb4ea19172832dd1a64ca6cc30c50fc4ed0da2ae843d
-  languageName: node
-  linkType: hard
-
-"@backstage/integration@npm:^1.19.2":
-  version: 1.19.2
-  resolution: "@backstage/integration@npm:1.19.2"
-  dependencies:
-    "@azure/identity": "npm:^4.0.0"
-    "@azure/storage-blob": "npm:^12.5.0"
-    "@backstage/config": "npm:^1.3.6"
-    "@backstage/errors": "npm:^1.2.7"
-    "@octokit/auth-app": "npm:^4.0.0"
-    "@octokit/rest": "npm:^19.0.3"
-    cross-fetch: "npm:^4.0.0"
-    git-url-parse: "npm:^15.0.0"
-    lodash: "npm:^4.17.21"
-    luxon: "npm:^3.0.0"
-  checksum: 10c0/10c99c848368d6745dd38e906aaba1d5082aa35d53ef814ab97cf0a919f6a8be33e140dc7ee6365411d950e38b71913e8c008c1064ed4e5db9f01a004c8c6295
+  checksum: 10c0/f117b378dd4865e3dd9d74992049d61df38c0534f95221afbaac6e9506d7ef543fa9cc5f7adc11633fc1bec298bf10064e7a62dc066b00b666f758056e51f187
   languageName: node
   linkType: hard
 
