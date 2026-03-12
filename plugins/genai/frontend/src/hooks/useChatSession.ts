@@ -27,6 +27,7 @@ interface UseChatSessionResult {
   isInitializing: boolean;
   onUserMessage: (userMessage: string) => Promise<void>;
   onClear: () => void;
+  onCancel: () => void;
 }
 
 export const useChatSession = ({
@@ -36,6 +37,8 @@ export const useChatSession = ({
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isInitializing, setIsInitializing] = useState(false);
+  const [abortController, setAbortController] =
+    useState<AbortController | null>(null);
 
   const [chatManager] = useState(
     () =>
@@ -55,11 +58,14 @@ export const useChatSession = ({
 
   const onUserMessage = useCallback(
     async (userMessage: string) => {
+      const controller = new AbortController();
+      setAbortController(controller);
       setIsLoading(true);
       try {
-        await chatManager.sendUserMessage(userMessage);
+        await chatManager.sendUserMessage(userMessage, controller.signal);
       } finally {
         setIsLoading(false);
+        setAbortController(null);
       }
     },
     [chatManager],
@@ -70,11 +76,18 @@ export const useChatSession = ({
     setIsLoading(false);
   }, [chatManager]);
 
+  const onCancel = useCallback(() => {
+    abortController?.abort();
+    setIsLoading(false);
+    setAbortController(null);
+  }, [abortController]);
+
   return {
     messages,
     isLoading,
     isInitializing,
     onUserMessage,
     onClear,
+    onCancel,
   };
 };

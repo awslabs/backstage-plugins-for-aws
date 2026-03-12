@@ -22,7 +22,14 @@ import { ConfigReader } from '@backstage/config';
 describe('createRouter', () => {
   let app: express.Express;
   const mockService: jest.Mocked<AwsCodePipelineService> = {
+    getPipelinesByEntity: jest.fn(),
+
+    getPipelineExecutionsByEntityWithArn: jest.fn(),
+
     getPipelineExecutionsByEntity: jest.fn(),
+
+    getPipelineStateByEntityWithArn: jest.fn(),
+
     getPipelineStateByEntity: jest.fn(),
   };
 

@@ -11,7 +11,6 @@
  * limitations under the License.
  */
 
-import { loggerToWinstonLogger } from '@backstage/backend-common';
 import {
   createBackendPlugin,
   coreServices,
@@ -25,15 +24,19 @@ import {
   AgentTypeFactory,
 } from '@aws/genai-plugin-for-backstage-node';
 import { ToolInterface } from '@langchain/core/tools';
-import { catalogServiceRef } from '@backstage/plugin-catalog-node';
-import {
-  createBackstageCatalogSearchTool,
-  createBackstageEntityTool,
-  createBackstageTechDocsReadTool,
-  createBackstageTechDocsSearchTool,
-} from './tools';
 import { DatabaseSessionStore } from './database';
 import { McpService } from './service/McpService';
+import {
+  actionsRegistryServiceRef,
+  actionsServiceRef,
+} from '@backstage/backend-plugin-api/alpha';
+import {
+  createCatalogSearchAction,
+  createQueryAgentActions,
+  createTechDocsReadAction,
+  createTechDocsSearchAction,
+} from './actions';
+import { readConfig } from './config/config';
 
 export const awsGenAiPlugin = createBackendPlugin({
   pluginId: 'aws-genai',
@@ -42,6 +45,11 @@ export const awsGenAiPlugin = createBackendPlugin({
 
     env.registerExtensionPoint(agentToolExtensionPoint, {
       addTools(...tools: ToolInterface[]) {
+        tools.forEach(t => {
+          console.warn(
+            `DEPRECATED: Migrate tool ${t.getName()} to action registry`,
+          );
+        });
         toolkit.add(...tools);
       },
     });
@@ -63,8 +71,9 @@ export const awsGenAiPlugin = createBackendPlugin({
         discovery: coreServices.discovery,
         httpAuth: coreServices.httpAuth,
         userInfo: coreServices.userInfo,
-        catalogApi: catalogServiceRef,
         database: coreServices.database,
+        actionsRegistry: actionsRegistryServiceRef,
+        actions: actionsServiceRef,
       },
       async init({
         logger,
@@ -74,16 +83,10 @@ export const awsGenAiPlugin = createBackendPlugin({
         auth,
         httpAuth,
         userInfo,
-        catalogApi,
         database,
+        actionsRegistry,
+        actions,
       }) {
-        const winstonLogger = loggerToWinstonLogger(logger);
-
-        toolkit.add(createBackstageEntityTool(catalogApi));
-        toolkit.add(createBackstageCatalogSearchTool(discovery, auth));
-        toolkit.add(createBackstageTechDocsSearchTool(discovery, auth));
-        toolkit.add(createBackstageTechDocsReadTool(discovery, auth));
-
         const sessionStore = await DatabaseSessionStore.create({
           database,
           skipMigrations: false,
@@ -95,18 +98,32 @@ export const awsGenAiPlugin = createBackendPlugin({
           userInfo,
           logger,
           sessionStore,
+          actions,
         });
+
+        const genaiConfig = readConfig(config);
+
+        createQueryAgentActions({ agentService, actionsRegistry });
+
+        if (genaiConfig.registerCoreActions) {
+          createCatalogSearchAction({
+            discovery,
+            auth,
+            actionsRegistry,
+          });
+          createTechDocsReadAction({ discovery, auth, actionsRegistry });
+          createTechDocsSearchAction({ discovery, auth, actionsRegistry });
+        }
 
         const mcpService = await McpService.fromConfig(agentService);
 
         httpRouter.use(
           await createRouter({
-            logger: winstonLogger,
+            config,
+            logger,
             agentService,
             mcpService,
             httpAuth,
-            discovery,
-            auth,
           }),
         );
         httpRouter.addAuthPolicy({

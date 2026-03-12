@@ -3,6 +3,47 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.6.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-core-plugin-for-backstage-scaffolder-actions@0.5.1...@aws/aws-core-plugin-for-backstage-scaffolder-actions@0.6.0) (2025-11-22)
+
+
+### Features
+
+* Added detailObj field to EventBridge scaffolder action ([#504](https://github.com/awslabs/backstage-plugins-for-aws/issues/504)) ([fdc3e1f](https://github.com/awslabs/backstage-plugins-for-aws/commit/fdc3e1fc931ca19006f1ba6f60cb15ad3a9244ac))
+
+
+
+
+
+## [0.5.1](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-core-plugin-for-backstage-scaffolder-actions@0.5.0...@aws/aws-core-plugin-for-backstage-scaffolder-actions@0.5.1) (2025-11-07)
+
+**Note:** Version bump only for package @aws/aws-core-plugin-for-backstage-scaffolder-actions
+
+
+
+
+
+# [0.5.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-core-plugin-for-backstage-scaffolder-actions@0.4.1...@aws/aws-core-plugin-for-backstage-scaffolder-actions@0.5.0) (2025-09-19)
+
+
+### Features
+
+* Bump Backstage framework version to 1.43.1 ([#436](https://github.com/awslabs/backstage-plugins-for-aws/issues/436)) ([328c3ee](https://github.com/awslabs/backstage-plugins-for-aws/commit/328c3ee74d67b78432d51ba29e6aef16e94bec25))
+
+
+
+
+
+## [0.4.1](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-core-plugin-for-backstage-scaffolder-actions@0.4.0...@aws/aws-core-plugin-for-backstage-scaffolder-actions@0.4.1) (2025-08-21)
+
+
+### Bug Fixes
+
+* **core:** use logger instead of logStream in scaffolder-actions ([#437](https://github.com/awslabs/backstage-plugins-for-aws/issues/437)) ([8cce998](https://github.com/awslabs/backstage-plugins-for-aws/commit/8cce9982e54271931d4aa79167ef56a3681be990))
+
+
+
+
+
 # [0.4.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-core-plugin-for-backstage-scaffolder-actions@0.3.1...@aws/aws-core-plugin-for-backstage-scaffolder-actions@0.4.0) (2025-06-27)
 
 

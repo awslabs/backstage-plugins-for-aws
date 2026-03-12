@@ -236,3 +236,23 @@ aws:
 See the [Cost Explorer documentation](https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_GetCostAndUsage.html#awscostmanagement-GetCostAndUsage-request-GroupBy) for the available values that can be used to group cost data.
 
 Note that grouping by AWS tags requires that the tags be already be applied to the respective AWS resources and configured as cost allocation tags. It is the users responsibility to apply tags to the AWS resources using the appropriate mechanism for their situation such as infrastructure-as-code, the AWS CLI etc.
+
+## Model Context Protocol integration
+
+This plugin integrates with the [Backstage MCP Actions Backend](https://github.com/backstage/backstage/tree/master/plugins/mcp-actions-backend) to expose plugin actions as Model Context Protocol (MCP) tools. This allows AI tools that implement MCP clients like Cursor, Cline and Q Developer to consume the actions.
+
+Before proceeding you must have installed the MCP Actions Backend.
+
+Configure the actions `pluginSources` to add this plugin:
+
+```yaml
+backend:
+  actions:
+    pluginSources:
+      [...]
+      - 'cost-insights-aws'
+```
+
+The plugin provides the following actions:
+
+- `get-cost-insights-aws-history`: retrieve historical cost information for AWS resources related to a single entity from the software catalog

@@ -47,7 +47,7 @@ import {
   AwsResourceLocator,
   AwsResourceLocatorFactory,
 } from '@aws/aws-core-plugin-for-backstage-node';
-import { Config } from '@backstage/config/index';
+import { Config } from '@backstage/config';
 import { parse } from '@aws-sdk/util-arn-parser';
 import { EcrConfig, readEcrConfig } from '../config';
 import {

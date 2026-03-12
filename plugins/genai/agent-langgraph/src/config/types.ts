@@ -31,6 +31,7 @@ export interface LangGraphAgentConfig {
   topP?: number;
   bedrock?: LangGraphAgentBedrockConfig;
   openai?: LangGraphAgentOpenAIConfig;
+  ollama?: LangGraphAgentOllamaConfig;
 }
 
 export interface LangGraphAgentBedrockConfig {
@@ -42,4 +43,9 @@ export interface LangGraphAgentOpenAIConfig {
   apiKey: string;
   modelName?: string;
   baseUrl?: string;
+}
+
+export interface LangGraphAgentOllamaConfig {
+  model: string;
+  baseUrl: string;
 }

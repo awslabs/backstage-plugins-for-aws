@@ -43,6 +43,12 @@ export interface Config {
            */
           accountId?: string;
           /**
+           * (Optional) Enable hashed entity names to prevent length > 63 characters.
+           * If not set, entity names are not hashed
+           * @see https://github.com/backstage/backstage/blob/master/packages/integration-aws-node/README.md
+           */
+          hashEntityNames?: boolean;
+          /**
            * (Required) Filters to apply in AWS Config query
            */
           filters: {

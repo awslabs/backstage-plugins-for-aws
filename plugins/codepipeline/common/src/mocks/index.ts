@@ -92,10 +92,12 @@ export function mockCodePipelineExecutions() {
   ];
 }
 
-export function mockCodePipelineStatus() {
+export function mockCodePipelineStatus(pipeline?: string) {
+  const pipelineName = pipeline ?? 'test-pipeline';
+
   return {
     created: new Date('2022-04-15T17:45:51.244Z'),
-    pipelineName: 'test-pipeline',
+    pipelineName: pipelineName,
     pipelineVersion: 1,
     stageStates: [
       {

@@ -11,42 +11,42 @@
  * limitations under the License.
  */
 
-import {
-  createLegacyAuthAdapters,
-  errorHandler,
-} from '@backstage/backend-common';
 import express from 'express';
 import Router from 'express-promise-router';
 import { CostInsightsAwsService } from './types';
 import {
-  AuthService,
   CacheService,
-  DiscoveryService,
   HttpAuthService,
   LoggerService,
 } from '@backstage/backend-plugin-api';
 import { CostInsightsCache } from '../cache';
 import { CostInsightsAwsConfig } from '../config';
+import { MiddlewareFactory } from '@backstage/backend-defaults/rootHttpRouter';
+import { Config } from '@backstage/config';
 
 export interface RouterOptions {
   logger: LoggerService;
   costInsightsAwsService: CostInsightsAwsService;
-  discovery: DiscoveryService;
-  auth?: AuthService;
-  httpAuth?: HttpAuthService;
+  httpAuth: HttpAuthService;
   cache: CacheService;
   config: CostInsightsAwsConfig;
+  rootConfig: Config;
 }
 
 export async function createRouter(
   options: RouterOptions,
 ): Promise<express.Router> {
-  const { logger, costInsightsAwsService, config, cache } = options;
+  const {
+    logger,
+    costInsightsAwsService,
+    config,
+    cache,
+    httpAuth,
+    rootConfig,
+  } = options;
 
   const router = Router();
   router.use(express.json());
-
-  const { httpAuth } = createLegacyAuthAdapters(options);
 
   let cacheClient: CostInsightsCache | undefined;
   if (config.cache.enable) {
@@ -54,8 +54,6 @@ export async function createRouter(
 
     router.use((req, res, next) => {
       const cacheKey = req.originalUrl;
-
-      console.log(`Cache key ${cacheKey}`);
 
       if (cacheClient) {
         cacheClient.get(cacheKey).then(e => {
@@ -99,7 +97,10 @@ export async function createRouter(
     logger.info('PONG!');
     response.json({ status: 'ok' });
   });
-  router.use(errorHandler());
+
+  const middleware = MiddlewareFactory.create({ logger, config: rootConfig });
+  router.use(middleware.error());
+
   return router;
 }
 

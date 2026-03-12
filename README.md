@@ -18,6 +18,7 @@ For detailed documentation regarding each plugin please see below:
 | AWS Config catalog module | [Link](./plugins/core/catalog-config/README.md)     | Module that implements an entity provider to ingest AWS resources in to the Backstage catalog. |
 | Generative AI             | [Link](./plugins/genai/README.md)                   | Build assistants powered by Generative AI                                                      |
 | Cost Insights for AWS     | [Link](./plugins/cost-insights/README.md)           | An implementation of the Cost Insights plugin that provides AWS cost information               |
+| AWS Security Hub          | [Link](./plugins/securityhub/README.md)             | View and manage AWS Security Hub findings for your resources on the entity page.               |
 
 ## Security
 

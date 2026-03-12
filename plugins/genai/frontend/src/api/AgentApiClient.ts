@@ -38,12 +38,16 @@ export class AgentApiClient implements AgentApi {
     this.fetchApi = options.fetchApi;
   }
 
-  async *chatSync(request: ChatRequest): AsyncGenerator<ChatEvent> {
+  async *chatSync(
+    request: ChatRequest,
+    signal?: AbortSignal,
+  ): AsyncGenerator<ChatEvent> {
     try {
       const stream = await this.fetch('v1/chat', {
         headers: { 'Content-Type': 'application/json' },
         method: 'POST',
         body: JSON.stringify(request),
+        signal,
       });
 
       const reader = stream

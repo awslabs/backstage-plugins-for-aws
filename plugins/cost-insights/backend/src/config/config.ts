@@ -63,7 +63,7 @@ function readCostInsightsAwsConfigCache(
   const root = config?.getOptionalConfig('cache');
 
   return {
-    enable: root?.getOptionalBoolean('enable') || true,
+    enable: root?.getOptionalBoolean('enable') ?? true,
     defaultTtl: root?.getOptionalNumber('defaultTtl') || 86400000,
     readTimeout: root?.getOptionalNumber('readTimeout') || 1000,
   };

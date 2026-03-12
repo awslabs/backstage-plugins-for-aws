@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { LinearProgress, Select } from '@material-ui/core';
 import { Box, Link as LinkCore } from '@material-ui/core';
 import { Table, ResponseErrorPanel, Link } from '@backstage/core-components';

@@ -16,6 +16,7 @@ import {
   LangGraphAgentBedrockConfig,
   LangGraphAgentConfig,
   LangGraphAgentLangFuseConfig,
+  LangGraphAgentOllamaConfig,
   LangGraphAgentOpenAIConfig,
   SharedLangGraphAgentConfig,
 } from './types';
@@ -59,6 +60,7 @@ export function readLangGraphAgentConfig(
     topP: config.getOptionalNumber('topP'),
     bedrock: readLangGraphAgentBedrockConfig(config),
     openai: readLangGraphAgentOpenAIConfig(config),
+    ollama: readLangGraphAgentOllamaConfig(config),
   };
 }
 
@@ -90,5 +92,20 @@ export function readLangGraphAgentOpenAIConfig(
     apiKey: config.getString('apiKey'),
     modelName: config.getOptionalString('modelName'),
     baseUrl: config.getOptionalString('baseUrl'),
+  };
+}
+
+export function readLangGraphAgentOllamaConfig(
+  agentConfig: Config,
+): LangGraphAgentOllamaConfig | undefined {
+  if (!agentConfig.has('ollama')) {
+    return undefined;
+  }
+
+  const config = agentConfig.getConfig('ollama');
+
+  return {
+    model: config.getString('model'),
+    baseUrl: config.getString('baseUrl'),
   };
 }

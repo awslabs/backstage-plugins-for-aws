@@ -14,7 +14,6 @@
 
 import { configApiRef, useApi } from '@backstage/core-plugin-api';
 import { Page, Header, Content, InfoCard } from '@backstage/core-components';
-import React from 'react';
 import { ChatHistoryComponent } from '../ChatHistoryComponent';
 import { ChatInputComponent } from '../ChatInputComponent';
 import { useParams } from 'react-router-dom';
@@ -58,10 +57,16 @@ export const AgentPage = ({ title = 'Chat Assistant' }: { title?: string }) => {
   const agentMetadata = useAgentMetadata(agentName);
   const agentTitle = agentMetadata.title || title;
 
-  const { messages, isInitializing, isLoading, onUserMessage, onClear } =
-    useChatSession({
-      agentName,
-    });
+  const {
+    messages,
+    isInitializing,
+    isLoading,
+    onUserMessage,
+    onClear,
+    onCancel,
+  } = useChatSession({
+    agentName,
+  });
 
   if (isInitializing) {
     return (
@@ -89,6 +94,7 @@ export const AgentPage = ({ title = 'Chat Assistant' }: { title?: string }) => {
                 onMessage={onUserMessage}
                 disabled={isLoading}
                 onClear={onClear}
+                onCancel={onCancel}
               />
             </InfoCard>
           </div>

@@ -18,6 +18,18 @@ export const AWS_ECS_SERVICE_ARN_ANNOTATION =
 export const AWS_ECS_SERVICE_TAGS_ANNOTATION =
   'aws.amazon.com/amazon-ecs-service-tags';
 
+export interface ServicesSummary {
+  serviceArn: string;
+  serviceName: string;
+  serviceRegion: string;
+  clusterArn: string;
+  clusterName: string;
+}
+
+export interface ServicesSummaryResponse {
+  services: Array<ServicesSummary>;
+}
+
 export interface ServicesResponse {
   clusters: Array<ClusterResponse>;
 }

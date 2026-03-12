@@ -121,7 +121,10 @@ export class ChatSessionManager {
     return [...this.messages];
   }
 
-  async sendUserMessage(userMessage: string): Promise<void> {
+  async sendUserMessage(
+    userMessage: string,
+    signal?: AbortSignal,
+  ): Promise<void> {
     this.messages = [
       ...this.messages,
       {
@@ -138,11 +141,14 @@ export class ChatSessionManager {
     this.emitMessagesChanged();
 
     try {
-      for await (const chunk of this.agentApi.chatSync({
-        userMessage,
-        sessionId: this.sessionId,
-        agentName: this.agentName,
-      })) {
+      for await (const chunk of this.agentApi.chatSync(
+        {
+          userMessage,
+          sessionId: this.sessionId,
+          agentName: this.agentName,
+        },
+        signal,
+      )) {
         match(chunk)
           .with({ type: 'ChunkEvent' }, e => {
             const lastIndex = this.messages.length - 1;

@@ -1,7 +1,12 @@
 {
   "name": "@aws/genai-plugin-langgraph-agent-for-backstage",
   "description": "LangGraph agent module package for the GenAI AWS plugins for Backstage",
-  "version": "0.4.1",
+  "version": "0.7.1",
+  "repository": {
+    "type": "git",
+    "url": "github:awslabs/backstage-plugins-for-aws",
+    "directory": "plugins/genai/agent-langgraph"
+  },
   "main": "src/index.ts",
   "types": "src/index.ts",
   "license": "Apache-2.0",
@@ -28,20 +33,22 @@
   "dependencies": {
     "@aws/genai-plugin-for-backstage-common": "workspace:^",
     "@aws/genai-plugin-for-backstage-node": "workspace:^",
-    "@backstage/backend-plugin-api": "^0.8.0",
-    "@backstage/catalog-model": "^1.7.0",
-    "@backstage/config": "^1.2.0",
+    "@backstage/backend-plugin-api": "^1.4.3",
+    "@backstage/catalog-model": "^1.7.5",
+    "@backstage/config": "^1.3.3",
+    "@backstage/types": "^1.2.2",
     "@langchain/aws": "0.1.10",
     "@langchain/core": "0.3.57",
     "@langchain/langgraph": "0.2.74",
     "@langchain/langgraph-checkpoint-postgres": "^0.0.5",
     "@langchain/langgraph-checkpoint-sqlite": "^0.1.5",
+    "@langchain/ollama": "^1.0.0",
     "@langchain/openai": "^0.5.11",
     "langfuse-langchain": "^3.29.1",
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@backstage/cli": "^0.26.5"
+    "@backstage/cli": "^0.34.3"
   },
   "files": [
     "dist",

@@ -31,6 +31,7 @@ export interface AgentService {
       agentName: string;
       sessionId?: string;
       credentials: BackstageCredentials;
+      signal?: AbortSignal;
     },
   ): Promise<ReadableStream<ChatEvent>>;
 
@@ -40,6 +41,7 @@ export interface AgentService {
       agentName: string;
       sessionId?: string;
       credentials: BackstageCredentials;
+      signal?: AbortSignal;
     },
   ): Promise<SyncResponse>;
 
@@ -48,6 +50,7 @@ export interface AgentService {
     options: {
       agentName: string;
       credentials?: BackstageCredentials;
+      signal?: AbortSignal;
       responseFormat?: Record<string, any>;
     },
   ): Promise<GenerateResponse>;

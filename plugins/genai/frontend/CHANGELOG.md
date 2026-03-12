@@ -3,6 +3,50 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.5.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/genai-plugin-for-backstage@0.4.1...@aws/genai-plugin-for-backstage@0.5.0) (2025-11-14)
+
+
+### Features
+
+* Requests to AI agents can be cancelled ([#500](https://github.com/awslabs/backstage-plugins-for-aws/issues/500)) ([475d7a7](https://github.com/awslabs/backstage-plugins-for-aws/commit/475d7a73924e27eecd176b42937572493a344eea))
+
+
+
+
+
+## [0.4.1](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/genai-plugin-for-backstage@0.4.0...@aws/genai-plugin-for-backstage@0.4.1) (2025-11-07)
+
+
+### Bug Fixes
+
+* Disable chat on empty input ([#470](https://github.com/awslabs/backstage-plugins-for-aws/issues/470)) ([95931e3](https://github.com/awslabs/backstage-plugins-for-aws/commit/95931e3ea83f718ced2332b076939c2675fad22f))
+
+
+
+
+
+# [0.4.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/genai-plugin-for-backstage@0.3.0...@aws/genai-plugin-for-backstage@0.4.0) (2025-09-19)
+
+
+### Features
+
+* Bump Backstage framework version to 1.43.1 ([#436](https://github.com/awslabs/backstage-plugins-for-aws/issues/436)) ([328c3ee](https://github.com/awslabs/backstage-plugins-for-aws/commit/328c3ee74d67b78432d51ba29e6aef16e94bec25))
+
+
+
+
+
+# [0.3.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/genai-plugin-for-backstage@0.2.2...@aws/genai-plugin-for-backstage@0.3.0) (2025-08-21)
+
+
+### Features
+
+* Chat UI updates ([#433](https://github.com/awslabs/backstage-plugins-for-aws/issues/433)) ([6628e40](https://github.com/awslabs/backstage-plugins-for-aws/commit/6628e4029f611ba7073d5e6f34401247d1072fe2))
+
+
+
+
+
 ## [0.2.2](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/genai-plugin-for-backstage@0.2.1...@aws/genai-plugin-for-backstage@0.2.2) (2025-06-27)
 
 

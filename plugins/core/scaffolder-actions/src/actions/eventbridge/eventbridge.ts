@@ -18,49 +18,56 @@ import {
 } from '@aws-sdk/client-eventbridge';
 import { AwsCredentialsManager } from '@backstage/integration-aws-node';
 import { AwsCredentialIdentityProvider } from '@aws-sdk/types';
-import { z } from 'zod';
 import { AWS_SDK_CUSTOM_USER_AGENT } from '@aws/aws-core-plugin-for-backstage-common';
 
 export const createAwsEventBridgeEventAction = (options: {
   credsManager: AwsCredentialsManager;
 }) => {
-  return createTemplateAction<{
-    accountId?: string;
-    region?: string;
-
-    source: string;
-    detail: string;
-    detailType: string;
-    eventBusName: string;
-  }>({
+  return createTemplateAction({
     id: 'aws:eventbridge:event',
     description:
       'Posts an AWS EventBridge event matching the provided details.',
     schema: {
-      input: z.object({
-        accountId: z
-          .string()
-          .describe('The AWS account ID to create the resource.')
-          .optional(),
-        region: z
-          .string()
-          .describe('The AWS region to create the resource.')
-          .optional(),
-        source: z.string().describe('The source of the event.'),
-        detail: z.string().describe('A valid JSON object.'),
-        detailType: z
-          .string()
-          .describe(
-            'Free-form string, with a maximum of 128 characters, used to decide what fields to expect in the event detail.',
-          ),
-        eventBusName: z
-          .string()
-          .describe('The name or ARN of the event bus to receive the event.'),
-      }),
+      input: {
+        accountId: z =>
+          z
+            .string({
+              description: 'The AWS account ID to create the resource.',
+            })
+            .optional(),
+        region: z =>
+          z
+            .string({ description: 'The AWS region to create the resource.' })
+            .optional(),
+        source: z => z.string({ description: 'The source of the event.' }),
+        detail: z =>
+          z
+            .string({ description: 'A valid JSON object as a string.' })
+            .optional(),
+        detailObject: z =>
+          z.any({ description: 'A valid JSON object.' }).optional(),
+        detailType: z =>
+          z.string({
+            description:
+              'Free-form string, with a maximum of 128 characters, used to decide what fields to expect in the event detail.',
+          }),
+        eventBusName: z =>
+          z.string({
+            description:
+              'The name or ARN of the event bus to receive the event.',
+          }),
+      },
     },
     async handler(ctx) {
-      const { accountId, region, source, detail, detailType, eventBusName } =
-        ctx.input;
+      const {
+        accountId,
+        region,
+        source,
+        detail,
+        detailObject,
+        detailType,
+        eventBusName,
+      } = ctx.input;
 
       let credentialProvider: AwsCredentialIdentityProvider;
 
@@ -74,6 +81,16 @@ export const createAwsEventBridgeEventAction = (options: {
         ).sdkCredentialProvider;
       }
 
+      let detailPayload: string;
+
+      if (detail) {
+        detailPayload = detail;
+      } else if (detailObject) {
+        detailPayload = JSON.stringify(detailObject);
+      } else {
+        throw new Error('Either detail or detailObject must be provided.');
+      }
+
       const client = new EventBridgeClient({
         region,
         customUserAgent: AWS_SDK_CUSTOM_USER_AGENT,
@@ -84,13 +101,15 @@ export const createAwsEventBridgeEventAction = (options: {
           Entries: [
             {
               Source: source,
-              Detail: detail,
+              Detail: detailPayload,
               DetailType: detailType,
               EventBusName: eventBusName,
             },
           ],
         }),
       );
+
+      ctx.logger.info(`Event posted`);
     },
   });
 };

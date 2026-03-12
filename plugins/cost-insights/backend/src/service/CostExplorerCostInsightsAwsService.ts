@@ -29,7 +29,6 @@ import {
   DateAggregation,
   Trendline,
 } from '@backstage-community/plugin-cost-insights-common';
-import { CatalogApi } from '@backstage/catalog-client';
 import {
   AWS_SDK_CUSTOM_USER_AGENT,
   getOneOfEntityAnnotations,
@@ -44,30 +43,28 @@ import {
   DefaultAwsCredentialsManager,
 } from '@backstage/integration-aws-node';
 import {
-  AuthService,
   BackstageCredentials,
   coreServices,
   createServiceFactory,
   createServiceRef,
-  DiscoveryService,
-  HttpAuthService,
   LoggerService,
 } from '@backstage/backend-plugin-api';
-import { createLegacyAuthAdapters } from '@backstage/backend-common';
 import { AwsCredentialIdentityProvider } from '@aws-sdk/types';
 import regression, { DataPoint } from 'regression';
 import { CostInsightsAwsConfig } from '../config';
 import { DateTime, Duration as LuxonDuration } from 'luxon';
-import { catalogServiceRef } from '@backstage/plugin-catalog-node/alpha';
 import { readCostInsightsAwsConfig } from '../config';
+import {
+  catalogServiceRef,
+  CatalogService,
+} from '@backstage/plugin-catalog-node';
 
 export class CostExplorerCostInsightsAwsService
   implements CostInsightsAwsService
 {
   public constructor(
     private readonly logger: LoggerService,
-    private readonly auth: AuthService,
-    private readonly catalogApi: CatalogApi,
+    private readonly catalogService: CatalogService,
     private readonly costExplorerClient: CostExplorerClient,
     private readonly config: CostInsightsAwsConfig,
   ) {}
@@ -75,16 +72,11 @@ export class CostExplorerCostInsightsAwsService
   static async fromConfig(
     config: CostInsightsAwsConfig,
     options: {
-      catalogApi: CatalogApi;
-      discovery: DiscoveryService;
-      auth?: AuthService;
-      httpAuth?: HttpAuthService;
+      catalogService: CatalogService;
       logger: LoggerService;
       credentialsManager: AwsCredentialsManager;
     },
   ) {
-    const { auth } = createLegacyAuthAdapters(options);
-
     const { region, accountId } = config.costExplorer;
 
     const { credentialsManager } = options;
@@ -108,34 +100,30 @@ export class CostExplorerCostInsightsAwsService
 
     return new CostExplorerCostInsightsAwsService(
       options.logger,
-      auth,
-      options.catalogApi,
+      options.catalogService,
       costExplorerClient,
       config,
     );
   }
 
-  public async getCatalogEntityDailyCost(options: {
+  public async getCatalogEntityRangeCost(options: {
     entityRef: CompoundEntityRef;
-    intervals: string;
-    credentials?: BackstageCredentials;
+    startDate: Date;
+    endDate: Date;
+    granularity: Granularity;
+    credentials: BackstageCredentials;
   }): Promise<Cost> {
-    this.logger.debug(`Fetch daily costs for ${options.entityRef}`);
+    const { entityRef, credentials, startDate, endDate, granularity } = options;
 
-    const entity = await this.catalogApi.getEntityByRef(
-      options.entityRef,
-      options.credentials &&
-        (await this.auth.getPluginRequestToken({
-          onBehalfOf: options.credentials,
-          targetPluginId: 'catalog',
-        })),
-    );
+    this.logger.debug(`Fetch ${granularity} costs for ${entityRef}`);
+
+    const entity = await this.catalogService.getEntityByRef(entityRef, {
+      credentials,
+    });
 
     if (!entity) {
       throw new Error(
-        `Couldn't find entity with name: ${stringifyEntityRef(
-          options.entityRef,
-        )}`,
+        `Couldn't find entity with name: ${stringifyEntityRef(entityRef)}`,
       );
     }
 
@@ -174,13 +162,13 @@ export class CostExplorerCostInsightsAwsService
       filter = filters[0];
     }
 
-    const { startDate, endDate } = this.parseInterval(options.intervals);
     const costMetric = this.config.costExplorer.costMetric;
 
     const root = await this.getAggregations(
       entity.metadata.name,
       filter,
       costMetric,
+      granularity,
       startDate,
       endDate,
     );
@@ -202,6 +190,7 @@ export class CostExplorerCostInsightsAwsService
                   Key: group.key as GroupDefinition['Key'],
                 },
               ],
+              granularity,
               startDate,
               endDate,
             ).then(e => {
@@ -226,10 +215,26 @@ export class CostExplorerCostInsightsAwsService
     return root;
   }
 
+  public async getCatalogEntityDailyCost(options: {
+    entityRef: CompoundEntityRef;
+    intervals: string;
+    credentials: BackstageCredentials;
+  }): Promise<Cost> {
+    const { startDate, endDate } = this.parseInterval(options.intervals);
+
+    return this.getCatalogEntityRangeCost({
+      ...options,
+      startDate,
+      endDate,
+      granularity: Granularity.DAILY,
+    });
+  }
+
   private async getAggregations(
     id: string,
     filter: Expression | undefined,
     costMetric: string,
+    granularity: Granularity,
     startDate: Date,
     endDate: Date,
   ): Promise<Cost> {
@@ -239,7 +244,7 @@ export class CostExplorerCostInsightsAwsService
           Start: this.formatDate(endDate),
           End: this.formatDate(startDate),
         },
-        Granularity: Granularity.DAILY,
+        Granularity: granularity,
         Metrics: [costMetric],
         Filter: filter,
       }),
@@ -264,6 +269,7 @@ export class CostExplorerCostInsightsAwsService
     filter: Expression | undefined,
     costMetric: string,
     groupBy: GroupDefinition[] | undefined,
+    granularity: Granularity,
     startDate: Date,
     endDate: Date,
   ): Promise<Cost[]> {
@@ -273,7 +279,7 @@ export class CostExplorerCostInsightsAwsService
           Start: this.formatDate(endDate),
           End: this.formatDate(startDate),
         },
-        Granularity: Granularity.DAILY,
+        Granularity: granularity,
         Metrics: [costMetric],
         Filter: filter,
         GroupBy: groupBy,
@@ -389,28 +395,15 @@ export const costInsightsAwsServiceRef =
         deps: {
           logger: coreServices.logger,
           config: coreServices.rootConfig,
-          catalogApi: catalogServiceRef,
-          auth: coreServices.auth,
-          discovery: coreServices.discovery,
-          httpAuth: coreServices.httpAuth,
+          catalogService: catalogServiceRef,
         },
-        async factory({
-          logger,
-          config,
-          catalogApi,
-          auth,
-          httpAuth,
-          discovery,
-        }) {
+        async factory({ logger, config, catalogService }) {
           const pluginConfig = readCostInsightsAwsConfig(config);
 
           const impl = await CostExplorerCostInsightsAwsService.fromConfig(
             pluginConfig,
             {
-              catalogApi,
-              auth,
-              httpAuth,
-              discovery,
+              catalogService,
               logger,
               credentialsManager:
                 DefaultAwsCredentialsManager.fromConfig(config),

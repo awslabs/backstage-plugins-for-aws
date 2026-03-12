@@ -3,6 +3,51 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.7.1](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/genai-plugin-langgraph-agent-for-backstage@0.7.0...@aws/genai-plugin-langgraph-agent-for-backstage@0.7.1) (2026-02-04)
+
+
+### Bug Fixes
+
+* Fixed package repository metadata ([4249190](https://github.com/awslabs/backstage-plugins-for-aws/commit/4249190ffcb82415c0eda847b959330dd4496008))
+
+
+
+
+
+# [0.7.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/genai-plugin-langgraph-agent-for-backstage@0.6.0...@aws/genai-plugin-langgraph-agent-for-backstage@0.7.0) (2026-02-04)
+
+
+### Features
+
+* Ollama support for GenAI plugin ([#517](https://github.com/awslabs/backstage-plugins-for-aws/issues/517)) ([3bcd04b](https://github.com/awslabs/backstage-plugins-for-aws/commit/3bcd04b023c85bb8d6d342d24376f315d23b1389))
+
+
+
+
+
+# [0.6.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/genai-plugin-langgraph-agent-for-backstage@0.5.0...@aws/genai-plugin-langgraph-agent-for-backstage@0.6.0) (2025-11-14)
+
+
+### Features
+
+* GenAI agent tools from action registry ([#499](https://github.com/awslabs/backstage-plugins-for-aws/issues/499)) ([7874d85](https://github.com/awslabs/backstage-plugins-for-aws/commit/7874d85c59c7527dd2a4005e11b2660093f6ab99))
+* Requests to AI agents can be cancelled ([#500](https://github.com/awslabs/backstage-plugins-for-aws/issues/500)) ([475d7a7](https://github.com/awslabs/backstage-plugins-for-aws/commit/475d7a73924e27eecd176b42937572493a344eea))
+
+
+
+
+
+# [0.5.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/genai-plugin-langgraph-agent-for-backstage@0.4.1...@aws/genai-plugin-langgraph-agent-for-backstage@0.5.0) (2025-09-19)
+
+
+### Features
+
+* Bump Backstage framework version to 1.43.1 ([#436](https://github.com/awslabs/backstage-plugins-for-aws/issues/436)) ([328c3ee](https://github.com/awslabs/backstage-plugins-for-aws/commit/328c3ee74d67b78432d51ba29e6aef16e94bec25))
+
+
+
+
+
 ## [0.4.1](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/genai-plugin-langgraph-agent-for-backstage@0.4.0...@aws/genai-plugin-langgraph-agent-for-backstage@0.4.1) (2025-07-17)
 
 

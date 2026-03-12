@@ -24,7 +24,10 @@ export const agentApiRef = createApiRef<AgentApi>({
 });
 
 export interface AgentApi {
-  chatSync(request: ChatRequest): AsyncGenerator<ChatEvent>;
+  chatSync(
+    request: ChatRequest,
+    signal?: AbortSignal,
+  ): AsyncGenerator<ChatEvent>;
 
   endSession(request: EndSessionRequest): Promise<void>;
 

@@ -1,0 +1,113 @@
+/**
+ * Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License").
+ * You may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import { ActionsRegistryService } from '@backstage/backend-plugin-api/alpha';
+import { AmazonECSService } from '../service';
+
+export const createGetServiceResourcesByEntityAction = ({
+  amazonEcsApi,
+  actionsRegistry,
+}: {
+  amazonEcsApi: AmazonECSService;
+  actionsRegistry: ActionsRegistryService;
+}) => {
+  actionsRegistry.register({
+    name: `get-amazon-ecs-resources`,
+    title: `Get Amazon ECS Service Resources`,
+    attributes: {
+      destructive: false,
+      readOnly: true,
+      idempotent: true,
+    },
+    description: `
+This allows you to retrieve various resources for Amazon ECS Services related to a single entity from the software catalog.
+For example this can be used to retrieve details of a given service such as tasks, events and deployments.
+
+Each entity in the software catalog has a unique name, kind, and namespace. The default namespace is "default".
+Each entity is identified by a unique entity reference, which is a string of the form "kind:namespace/name".
+    `,
+    schema: {
+      input: z =>
+        z.object({
+          name: z
+            .string()
+            .describe('Entity name as it appears in the Backstage catalog'),
+          kind: z
+            .string()
+            .describe('Entity kind as it appears in the Backstage catalog'),
+          namespace: z
+            .string()
+            .describe(
+              'Entity namespace as it appears in the Backstage catalog',
+            ),
+          arn: z.string().describe('Amazon ECS Service ARN'),
+          resourceType: z
+            .enum(['tasks', 'events', 'deployments'])
+            .describe('The type of resource to retrieve'),
+          pageSize: z
+            .number()
+            .describe('Number of results to return in a page')
+            .default(5)
+            .optional(),
+          page: z
+            .number()
+            .describe('Page number of results to return')
+            .default(1)
+            .optional(),
+        }),
+      output: z => z.object({}).passthrough(),
+    },
+    action: async ({ input, credentials }) => {
+      const { resourceType, arn, page = 1, pageSize = 5 } = input;
+
+      const paginate = (data: any[]) => {
+        const startIndex = (page - 1) * pageSize;
+        return data.slice(startIndex, startIndex + pageSize);
+      };
+
+      const service = await amazonEcsApi.getServiceByEntityWithArn({
+        entityRef: input,
+        arn,
+        credentials,
+      });
+
+      let response: any;
+
+      switch (resourceType) {
+        case 'events':
+          response = paginate(service.events || []);
+          break;
+        case 'deployments':
+          response = paginate(service.deployments || []);
+          break;
+        case 'tasks':
+          response = amazonEcsApi.getServiceTasksByEntityWithArn({
+            entityRef: input,
+            arn,
+            page: input.page,
+            pageSize: input.pageSize,
+            credentials,
+          });
+          break;
+        default:
+          throw new Error(`Unknown resource type ${resourceType}`);
+      }
+
+      return {
+        output: {
+          response,
+        },
+      };
+    },
+  });
+};

@@ -13,19 +13,41 @@
 
 import { CompoundEntityRef } from '@backstage/catalog-model';
 import {
+  PipelineExecutions,
   PipelineExecutionsResponse,
+  PipelineState,
   PipelineStateResponse,
+  PipelineSummaryResponse,
 } from '@aws/aws-codepipeline-plugin-for-backstage-common';
 import { BackstageCredentials } from '@backstage/backend-plugin-api';
 
 export interface AwsCodePipelineService {
+  getPipelinesByEntity(options: {
+    entityRef: CompoundEntityRef;
+    credentials: BackstageCredentials;
+  }): Promise<PipelineSummaryResponse>;
+
+  getPipelineExecutionsByEntityWithArn(options: {
+    entityRef: CompoundEntityRef;
+    arn: string;
+    credentials: BackstageCredentials;
+    pageSize?: number;
+    page?: number;
+  }): Promise<PipelineExecutions>;
+
   getPipelineExecutionsByEntity(options: {
     entityRef: CompoundEntityRef;
-    credentials?: BackstageCredentials;
+    credentials: BackstageCredentials;
   }): Promise<PipelineExecutionsResponse>;
+
+  getPipelineStateByEntityWithArn(options: {
+    entityRef: CompoundEntityRef;
+    arn: string;
+    credentials: BackstageCredentials;
+  }): Promise<PipelineState>;
 
   getPipelineStateByEntity(options: {
     entityRef: CompoundEntityRef;
-    credentials?: BackstageCredentials;
+    credentials: BackstageCredentials;
   }): Promise<PipelineStateResponse>;
 }

@@ -23,6 +23,16 @@ export const AWS_CODEPIPELINE_TAGS_ANNOTATION =
 export const AWS_CODEPIPELINE_ARN_ANNOTATION_LEGACY =
   'aws.amazon.com/aws-codepipeline';
 
+export interface PipelineSummary {
+  pipelineName: string;
+  pipelineArn: string;
+  pipelineRegion: string;
+}
+
+export interface PipelineSummaryResponse {
+  pipelines: Array<PipelineSummary>;
+}
+
 export interface PipelineExecutions {
   pipelineExecutions: Array<PipelineExecutionSummary>;
   pipelineName: string;

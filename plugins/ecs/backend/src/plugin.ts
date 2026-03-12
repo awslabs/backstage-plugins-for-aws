@@ -16,6 +16,11 @@ import {
   coreServices,
 } from '@backstage/backend-plugin-api';
 import { amazonEcsServiceRef, createRouter } from './service/router';
+import {
+  createGetServiceResourcesByEntityAction,
+  createGetServicesByEntityAction,
+} from './actions';
+import { actionsRegistryServiceRef } from '@backstage/backend-plugin-api/alpha';
 
 export const amazonEcsPlugin = createBackendPlugin({
   pluginId: 'amazon-ecs',
@@ -27,8 +32,16 @@ export const amazonEcsPlugin = createBackendPlugin({
         config: coreServices.rootConfig,
         httpAuth: coreServices.httpAuth,
         amazonEcsApi: amazonEcsServiceRef,
+        actionsRegistry: actionsRegistryServiceRef,
       },
-      async init({ logger, httpRouter, httpAuth, amazonEcsApi, config }) {
+      async init({
+        logger,
+        httpRouter,
+        httpAuth,
+        amazonEcsApi,
+        config,
+        actionsRegistry,
+      }) {
         httpRouter.use(
           await createRouter({
             config,
@@ -40,6 +53,12 @@ export const amazonEcsPlugin = createBackendPlugin({
         httpRouter.addAuthPolicy({
           path: '/health',
           allow: 'unauthenticated',
+        });
+
+        createGetServicesByEntityAction({ actionsRegistry, amazonEcsApi });
+        createGetServiceResourcesByEntityAction({
+          actionsRegistry,
+          amazonEcsApi,
         });
       },
     });

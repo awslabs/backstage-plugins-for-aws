@@ -38,8 +38,11 @@ import {
   AWS_CODEPIPELINE_ARN_ANNOTATION,
   AWS_CODEPIPELINE_ARN_ANNOTATION_LEGACY,
   AWS_CODEPIPELINE_TAGS_ANNOTATION,
+  PipelineExecutions,
   PipelineExecutionsResponse,
+  PipelineState,
   PipelineStateResponse,
+  PipelineSummaryResponse,
 } from '@aws/aws-codepipeline-plugin-for-backstage-common';
 import {
   BackstageCredentials,
@@ -54,7 +57,7 @@ import {
   CatalogService,
 } from '@backstage/plugin-catalog-node';
 
-const DEFAULT_EXECUTIONS_LIMIT = 100;
+const DEFAULT_PAGE_SIZE = 25;
 
 export class DefaultAwsCodePipelineService implements AwsCodePipelineService {
   public constructor(
@@ -87,63 +90,119 @@ export class DefaultAwsCodePipelineService implements AwsCodePipelineService {
     );
   }
 
+  public async getPipelinesByEntity(options: {
+    entityRef: CompoundEntityRef;
+    credentials: BackstageCredentials;
+  }): Promise<PipelineSummaryResponse> {
+    this.logger.debug(`Fetch CodePipeline summary for ${options.entityRef}`);
+
+    const arns = await this.getPipelineArnsForEntity(options);
+
+    const pipelines = arns.map(arn => {
+      const { region, resource } = parse(arn);
+
+      const pipelineName = resource;
+
+      return {
+        pipelineName,
+        pipelineRegion: region,
+        pipelineArn: arn,
+      };
+    });
+
+    return {
+      pipelines,
+    };
+  }
+
+  public async getPipelineExecutionsByEntityWithArn(options: {
+    entityRef: CompoundEntityRef;
+    credentials: BackstageCredentials;
+    arn: string;
+    pageSize?: number;
+    page?: number;
+  }): Promise<PipelineExecutions> {
+    const { arn, entityRef } = options;
+
+    const arns = await this.getPipelineArnsForEntity(options);
+
+    if (arns.indexOf(arn) < 0) {
+      throw new Error(`ARN ${arn} not associated with entity ${entityRef}`);
+    }
+
+    return this.doGetPipelineExecutionsByEntityWithArn(options);
+  }
+
+  private async doGetPipelineExecutionsByEntityWithArn(options: {
+    entityRef: CompoundEntityRef;
+    credentials: BackstageCredentials;
+    arn: string;
+    pageSize?: number;
+    page?: number;
+  }): Promise<PipelineExecutions> {
+    const { arn, entityRef, pageSize = DEFAULT_PAGE_SIZE, page = 1 } = options;
+
+    this.logger.debug(
+      `Fetch CodePipeline executions for ${entityRef} with ARN ${arn}`,
+    );
+
+    if (pageSize <= 0 || !Number.isInteger(pageSize)) {
+      throw new Error('Page size must be a positive integer');
+    }
+    if (page <= 0 || !Number.isInteger(page)) {
+      throw new Error('Page must be a positive integer');
+    }
+
+    const apiPageSize = pageSize < 100 ? pageSize : 100;
+
+    const { region, resource } = parse(arn);
+
+    const pipelineName = resource;
+
+    const client = await this.getClient(region, arn);
+    const paginator = paginateListPipelineExecutions(
+      { client, pageSize: apiPageSize },
+      { pipelineName },
+    );
+
+    const targetCount = page * pageSize;
+    const executions: PipelineExecutionSummary[] = [];
+
+    for await (const pageData of paginator) {
+      executions.push(...(pageData.pipelineExecutionSummaries || []));
+      if (executions.length >= targetCount) break;
+    }
+
+    const startIndex = (page - 1) * pageSize;
+    const paginatedExecutions = executions.slice(
+      startIndex,
+      startIndex + pageSize,
+    );
+
+    return {
+      pipelineName,
+      pipelineRegion: region,
+      pipelineArn: arn,
+      pipelineExecutions: paginatedExecutions,
+    };
+  }
+
   public async getPipelineExecutionsByEntity(options: {
     entityRef: CompoundEntityRef;
     credentials: BackstageCredentials;
+    pageSize?: number;
+    page?: number;
   }): Promise<PipelineExecutionsResponse> {
-    this.logger?.debug(`Fetch CodePipeline state for ${options.entityRef}`);
+    this.logger.debug(`Fetch CodePipeline executions for ${options.entityRef}`);
 
     const arns = await this.getPipelineArnsForEntity(options);
 
     const pipelineExecutions = await Promise.all(
       arns.map(async arn => {
-        const { region, resource } = parse(arn);
-
-        const pipelineName = resource;
-
-        const client = await this.getClient(region, arn);
-        const paginatorConfig = {
-          client,
-          pageSize: 25,
-        };
-        const commandParams = {
-          pipelineName,
-        };
-        const paginator = paginateListPipelineExecutions(
-          paginatorConfig,
-          commandParams,
-        );
-
-        const pipelineExecutionSummaries: PipelineExecutionSummary[] = [];
-
-        for await (const page of paginator) {
-          const executions = page.pipelineExecutionSummaries || [];
-
-          if (
-            pipelineExecutionSummaries.length + executions.length >
-            DEFAULT_EXECUTIONS_LIMIT
-          ) {
-            pipelineExecutionSummaries.push(
-              ...executions.slice(
-                0,
-                DEFAULT_EXECUTIONS_LIMIT - pipelineExecutionSummaries.length,
-              ),
-            );
-          } else {
-            pipelineExecutionSummaries.push(...executions);
-          }
-
-          if (pipelineExecutionSummaries.length === DEFAULT_EXECUTIONS_LIMIT) {
-            break;
-          }
-        }
-
-        return {
-          pipelineName,
-          pipelineRegion: region,
-          pipelineArn: arn,
-          pipelineExecutions: pipelineExecutionSummaries,
-        };
+        return this.getPipelineExecutionsByEntityWithArn({
+          arn,
+          ...options,
+        });
       }),
     );
 
@@ -152,33 +211,66 @@ export class DefaultAwsCodePipelineService implements AwsCodePipelineService {
     };
   }
 
+  public async getPipelineStateByEntityWithArn(options: {
+    entityRef: CompoundEntityRef;
+    credentials: BackstageCredentials;
+    arn: string;
+  }): Promise<PipelineState> {
+    const { arn, entityRef } = options;
+
+    const arns = await this.getPipelineArnsForEntity(options);
+
+    if (arns.indexOf(arn) < 0) {
+      throw new Error(`ARN ${arn} not associated with entity ${entityRef}`);
+    }
+
+    return this.doGetPipelineStateByEntityWithArn(options);
+  }
+
+  public async doGetPipelineStateByEntityWithArn(options: {
+    entityRef: CompoundEntityRef;
+    arn: string;
+    credentials: BackstageCredentials;
+  }): Promise<PipelineState> {
+    const { arn, entityRef } = options;
+
+    this.logger.debug(
+      `Fetch CodePipeline state for ${entityRef} with ARN ${arn}`,
+    );
+
+    const { region, resource } = parse(arn);
+
+    const pipelineName = resource;
+
+    const client = await this.getClient(region, arn);
+    const pipelineState = await client.send(
+      new GetPipelineStateCommand({
+        name: pipelineName,
+      }),
+    );
+
+    return {
+      pipelineName,
+      pipelineRegion: region,
+      pipelineArn: arn,
+      pipelineState,
+    };
+  }
+
   public async getPipelineStateByEntity(options: {
     entityRef: CompoundEntityRef;
     credentials: BackstageCredentials;
   }): Promise<PipelineStateResponse> {
-    this.logger?.debug(`Fetch CodePipeline state for ${options.entityRef}`);
+    this.logger.debug(`Fetch CodePipeline state for ${options.entityRef}`);
 
     const arns = await this.getPipelineArnsForEntity(options);
 
     const pipelines = await Promise.all(
       arns.map(async arn => {
-        const { region, resource } = parse(arn);
-
-        const pipelineName = resource;
-
-        const client = await this.getClient(region, arn);
-        const pipelineState = await client.send(
-          new GetPipelineStateCommand({
-            name: pipelineName,
-          }),
-        );
-
-        return {
-          pipelineName,
-          pipelineRegion: region,
-          pipelineArn: arn,
-          pipelineState,
-        };
+        return this.getPipelineStateByEntityWithArn({
+          arn,
+          ...options,
+        });
       }),
     );
 

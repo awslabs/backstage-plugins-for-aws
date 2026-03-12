@@ -14,10 +14,30 @@
 import { CompoundEntityRef } from '@backstage/catalog-model';
 import { ServicesResponse } from '@aws/amazon-ecs-plugin-for-backstage-common';
 import { BackstageCredentials } from '@backstage/backend-plugin-api';
+import { Service, Task } from '@aws-sdk/client-ecs';
 
 export interface AmazonECSService {
   getServicesByEntity(options: {
     entityRef: CompoundEntityRef;
     credentials?: BackstageCredentials;
   }): Promise<ServicesResponse>;
+
+  getServicesSummaryByEntity(options: {
+    entityRef: CompoundEntityRef;
+    credentials: BackstageCredentials;
+  }): Promise<Service[]>;
+
+  getServiceByEntityWithArn(options: {
+    entityRef: CompoundEntityRef;
+    arn: string;
+    credentials: BackstageCredentials;
+  }): Promise<Service>;
+
+  getServiceTasksByEntityWithArn(options: {
+    entityRef: CompoundEntityRef;
+    arn: string;
+    pageSize?: number;
+    page?: number;
+    credentials: BackstageCredentials;
+  }): Promise<Task[]>;
 }
