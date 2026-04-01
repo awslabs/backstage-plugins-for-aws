@@ -2972,7 +2972,7 @@ __metadata:
     "@langchain/aws": "npm:0.1.10"
     "@langchain/core": "npm:0.3.57"
     "@langchain/langgraph": "npm:0.2.74"
-    "@langchain/langgraph-checkpoint-postgres": "npm:^0.0.5"
+    "@langchain/langgraph-checkpoint-postgres": "npm:^0.1.0"
     "@langchain/langgraph-checkpoint-sqlite": "npm:^0.1.5"
     "@langchain/ollama": "npm:^1.0.0"
     "@langchain/openai": "npm:^0.5.11"
@@ -10812,15 +10812,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@langchain/langgraph-checkpoint-postgres@npm:^0.0.5":
-  version: 0.0.5
-  resolution: "@langchain/langgraph-checkpoint-postgres@npm:0.0.5"
+"@langchain/langgraph-checkpoint-postgres@npm:^0.1.0":
+  version: 0.1.2
+  resolution: "@langchain/langgraph-checkpoint-postgres@npm:0.1.2"
   dependencies:
     pg: "npm:^8.12.0"
   peerDependencies:
-    "@langchain/core": ">=0.2.31 <0.4.0"
-    "@langchain/langgraph-checkpoint": ~0.0.15
-  checksum: 10c0/9d90b2ac2a51276d001b5023f591ba9091b166537b4dde4527b13d73d6ff60f6c4d6dd31dac82e54647129480562fa64a5f41b83075feb0c09b3d2af1e5426b5
+    "@langchain/core": ">=0.2.31 <0.4.0 || ^1.0.0-alpha"
+    "@langchain/langgraph-checkpoint": ^0.1.0
+  checksum: 10c0/4dc07cb71f29bfa7f65117ed4c2a9f16e1280c87d0f01eee4bf088357c0d923476cb2308956204c039b7438da7e2edecf59335a28be51288e097a15eba453252
   languageName: node
   linkType: hard
 
