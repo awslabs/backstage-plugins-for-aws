@@ -2975,7 +2975,7 @@ __metadata:
     "@langchain/langgraph-checkpoint-postgres": "npm:^0.0.5"
     "@langchain/langgraph-checkpoint-sqlite": "npm:^0.1.5"
     "@langchain/ollama": "npm:^1.0.0"
-    "@langchain/openai": "npm:^0.5.11"
+    "@langchain/openai": "npm:^0.6.0"
     langfuse-langchain: "npm:^3.29.1"
     zod: "npm:^3.23.8"
   languageName: unknown
@@ -10900,16 +10900,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@langchain/openai@npm:^0.5.11":
-  version: 0.5.18
-  resolution: "@langchain/openai@npm:0.5.18"
+"@langchain/openai@npm:^0.6.0":
+  version: 0.6.17
+  resolution: "@langchain/openai@npm:0.6.17"
   dependencies:
     js-tiktoken: "npm:^1.0.12"
-    openai: "npm:^5.3.0"
+    openai: "npm:5.12.2"
     zod: "npm:^3.25.32"
   peerDependencies:
-    "@langchain/core": ">=0.3.58 <0.4.0"
-  checksum: 10c0/c8a42927de5d6b22d08fee38d1b47766f521e81f4e51c718896c4de2e9ed0e1667c0d5173658158a5e6d278336d7f8674615a04d699bb5e61668347b8c6116f3
+    "@langchain/core": ">=0.3.68 <0.4.0"
+  checksum: 10c0/88fb09a4b32123c3e55524e88763eae3d53975b59abe03afd0bc998083104dbaca6073eeeec042c787394aa9fc466f9c1c7ef7d7930e09e091ab12b0f6ed19e7
   languageName: node
   linkType: hard
 
@@ -34539,9 +34539,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"openai@npm:^5.3.0":
-  version: 5.16.0
-  resolution: "openai@npm:5.16.0"
+"openai@npm:5.12.2":
+  version: 5.12.2
+  resolution: "openai@npm:5.12.2"
   peerDependencies:
     ws: ^8.18.0
     zod: ^3.23.8
@@ -34552,7 +34552,7 @@ __metadata:
       optional: true
   bin:
     openai: bin/cli
-  checksum: 10c0/4ddd3292ed9ff5991de9f12b765c977efdfe9fdb6f3f7c01eef13ef927d0300b2c6cf0c9379a36c522353a7bacf07e8bdf5ff9ab7a3e5a5f839e0b741e9a86cf
+  checksum: 10c0/7737b9b24edc81fcf9e6dcfb18a196cc0f8e29b6e839adf06a2538558c03908e3aa4cd94901b1a7f4a9dd62676fe9e34d6202281b2395090d998618ea1614c0c
   languageName: node
   linkType: hard
 
