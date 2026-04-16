@@ -133,12 +133,9 @@ export class DefaultAwsSecurityHubService implements AwsSecurityHubService {
   }): Promise<AwsSecurityFinding[]> {
     this.logger.debug(`Fetch SecurityHub findings for ${options.entityRef}`);
 
-    const entity = await this.catalogApi.getEntityByRef(
-      options.entityRef,
-      {
-        credentials: await this.auth.getOwnServiceCredentials()
-      }
-    );
+    const entity = await this.catalogApi.getEntityByRef(options.entityRef, {
+      credentials: await this.auth.getOwnServiceCredentials(),
+    });
 
     if (!entity) {
       throw new Error(

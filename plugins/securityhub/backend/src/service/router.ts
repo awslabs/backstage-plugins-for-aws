@@ -66,7 +66,15 @@ export interface RouterOptions {
 export async function createRouter(
   options: RouterOptions,
 ): Promise<express.Router> {
-  const { logger, auth, httpAuth, discovery, awsSecurityHubApi, cache, config } = options;
+  const {
+    logger,
+    auth,
+    httpAuth,
+    discovery,
+    awsSecurityHubApi,
+    cache,
+    config,
+  } = options;
 
   const router = Router();
   router.use(express.json());

@@ -31,12 +31,7 @@ export const awsSecurityHubApiServiceRef =
           catalogApi: catalogServiceRef,
           auth: coreServices.auth,
         },
-        async factory({
-          logger,
-          config,
-          catalogApi,
-          auth,
-        }) {
+        async factory({ logger, config, catalogApi, auth }) {
           const impl = await DefaultAwsSecurityHubService.fromConfig(config, {
             catalogApi,
             auth,
