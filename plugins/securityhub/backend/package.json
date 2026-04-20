@@ -41,7 +41,6 @@
     "@aws/aws-core-plugin-for-backstage-node": "0.1.0",
     "@aws/aws-securityhub-plugin-for-backstage-common": "workspace:^",
     "@aws/genai-plugin-for-backstage-common": "^0.4.0",
-    "@backstage/backend-common": "^0.25.0",
     "@backstage/backend-defaults": "^0.13.1",
     "@backstage/backend-plugin-api": "^1.5.0",
     "@backstage/catalog-client": "^1.12.1",

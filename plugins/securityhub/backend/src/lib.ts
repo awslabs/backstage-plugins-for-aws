@@ -17,7 +17,7 @@ import {
   createServiceRef,
 } from '@backstage/backend-plugin-api';
 import { AwsSecurityHubService, DefaultAwsSecurityHubService } from './service';
-import { catalogServiceRef } from '@backstage/plugin-catalog-node/alpha';
+import { catalogServiceRef } from '@backstage/plugin-catalog-node';
 
 export const awsSecurityHubApiServiceRef =
   createServiceRef<AwsSecurityHubService>({
@@ -30,22 +30,11 @@ export const awsSecurityHubApiServiceRef =
           config: coreServices.rootConfig,
           catalogApi: catalogServiceRef,
           auth: coreServices.auth,
-          discovery: coreServices.discovery,
-          httpAuth: coreServices.httpAuth,
         },
-        async factory({
-          logger,
-          config,
-          catalogApi,
-          auth,
-          httpAuth,
-          discovery,
-        }) {
+        async factory({ logger, config, catalogApi, auth }) {
           const impl = await DefaultAwsSecurityHubService.fromConfig(config, {
             catalogApi,
             auth,
-            httpAuth,
-            discovery,
             logger,
           });
 
