@@ -25,14 +25,22 @@ export default defineConfig({
     timeout: 30_000,
   },
   // Run your local dev server before starting the tests
-  webServer: [
-    {
-      command: 'yarn start',
-      port: 3000,
-      reuseExistingServer: !process.env.CI,
-      timeout: 60_000,
-    },
-  ],
+  webServer: process.env.CI
+    ? []
+    : [
+        {
+          command: 'yarn start app',
+          port: 3000,
+          reuseExistingServer: true,
+          timeout: 60_000,
+        },
+        {
+          command: 'yarn start backend',
+          port: 7007,
+          reuseExistingServer: true,
+          timeout: 60_000,
+        },
+      ],
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   reporter: [['html', { open: 'never', outputFolder: 'e2e-test-report' }]],
