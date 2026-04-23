@@ -19,8 +19,10 @@ const DEFAULT_FINDINGS_LIMIT = 100;
 
 export function readEcrConfig(config: Config): EcrConfig {
   return {
-    maxImages: config.getOptionalNumber('aws.ecr.maxImages') || DEFAULT_IMAGES_LIMIT,
+    maxImages:
+      config.getOptionalNumber('aws.ecr.maxImages') || DEFAULT_IMAGES_LIMIT,
     maxScanFindings:
-      config.getOptionalNumber('aws.ecr.maxScanFindings') || DEFAULT_FINDINGS_LIMIT,
+      config.getOptionalNumber('aws.ecr.maxScanFindings') ||
+      DEFAULT_FINDINGS_LIMIT,
   };
 }
