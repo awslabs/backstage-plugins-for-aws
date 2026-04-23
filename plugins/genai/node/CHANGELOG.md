@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.1](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/genai-plugin-for-backstage-node@0.5.0...@aws/genai-plugin-for-backstage-node@0.5.1) (2026-04-23)
+
+**Note:** Version bump only for package @aws/genai-plugin-for-backstage-node
+
+
+
+
+
 # [0.5.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/genai-plugin-for-backstage-node@0.4.0...@aws/genai-plugin-for-backstage-node@0.5.0) (2025-11-14)
 
 

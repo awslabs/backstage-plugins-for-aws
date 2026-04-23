@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.2](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/amazon-ecr-plugin-for-backstage@0.2.1...@aws/amazon-ecr-plugin-for-backstage@0.2.2) (2026-04-23)
+
+**Note:** Version bump only for package @aws/amazon-ecr-plugin-for-backstage
+
+
+
+
+
 ## [0.2.1](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/amazon-ecr-plugin-for-backstage@0.2.0...@aws/amazon-ecr-plugin-for-backstage@0.2.1) (2025-11-07)
 
 **Note:** Version bump only for package @aws/amazon-ecr-plugin-for-backstage

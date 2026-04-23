@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.7.2](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-codebuild-plugin-for-backstage@0.7.1...@aws/aws-codebuild-plugin-for-backstage@0.7.2) (2026-04-23)
+
+**Note:** Version bump only for package @aws/aws-codebuild-plugin-for-backstage
+
+
+
+
+
 ## [0.7.1](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/aws-codebuild-plugin-for-backstage@0.7.0...@aws/aws-codebuild-plugin-for-backstage@0.7.1) (2025-11-07)
 
 **Note:** Version bump only for package @aws/aws-codebuild-plugin-for-backstage
