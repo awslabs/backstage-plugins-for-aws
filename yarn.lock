@@ -8830,14 +8830,13 @@ __metadata:
   linkType: hard
 
 "@langchain/ollama@npm:^1.0.0":
-  version: 1.2.2
-  resolution: "@langchain/ollama@npm:1.2.2"
+  version: 1.2.7
+  resolution: "@langchain/ollama@npm:1.2.7"
   dependencies:
     ollama: "npm:^0.6.3"
-    uuid: "npm:^10.0.0"
   peerDependencies:
     "@langchain/core": ^1.0.0
-  checksum: 10c0/9ed19581f71ff283e97b2f5f52a39cbbb3a534248a6de180086c0fa0dbe8b0c50d6c5b373c58f1661a1e30b68d0e0ef1daa69cd942e94243acaf2ad3a272ea77
+  checksum: 10c0/c044f46c14d474569dac38d53f76c6bdbd028201a1fd17e59eca79c84c579527ecf84a21ecc6109e90653bc06b9fd72a5a5dab0fd46bf6eada96fecf2df840d4
   languageName: node
   linkType: hard
 
