@@ -2768,7 +2768,7 @@ __metadata:
     "@aws-sdk/util-arn-parser": "npm:^3.893.0"
     "@aws/aws-core-plugin-for-backstage-common": "workspace:^"
     "@aws/cost-insights-plugin-for-backstage-common": "workspace:^"
-    "@backstage-community/plugin-cost-insights-common": "npm:^0.9.0"
+    "@backstage-community/plugin-cost-insights-common": "npm:^0.13.0"
     "@backstage/backend-defaults": "npm:^0.12.1"
     "@backstage/backend-plugin-api": "npm:^1.4.3"
     "@backstage/backend-test-utils": "npm:^1.9.0"
@@ -2818,7 +2818,7 @@ __metadata:
     "@aws/aws-core-plugin-for-backstage-common": "workspace:^"
     "@aws/aws-core-plugin-for-backstage-react": "workspace:^"
     "@backstage-community/plugin-cost-insights": "npm:^0.22.0"
-    "@backstage-community/plugin-cost-insights-common": "npm:^0.9.0"
+    "@backstage-community/plugin-cost-insights-common": "npm:^0.13.0"
     "@backstage/catalog-model": "npm:^1.7.5"
     "@backstage/cli": "npm:^0.34.3"
     "@backstage/core-app-api": "npm:^1.19.0"
@@ -3589,6 +3589,13 @@ __metadata:
     "@babel/helper-string-parser": "npm:^7.27.1"
     "@babel/helper-validator-identifier": "npm:^7.27.1"
   checksum: 10c0/24b11c9368e7e2c291fe3c1bcd1ed66f6593a3975f479cbb9dd7b8c8d8eab8a962b0d2fca616c043396ce82500ac7d23d594fbbbd013828182c01596370a0b10
+  languageName: node
+  linkType: hard
+
+"@backstage-community/plugin-cost-insights-common@npm:^0.13.0":
+  version: 0.13.0
+  resolution: "@backstage-community/plugin-cost-insights-common@npm:0.13.0"
+  checksum: 10c0/a092cc61956bfa3fa6e41c4eb6e3979c13206de6a33e14b5f34a0d481f0a5ed7b7b08899a33e5dc18463dc7d4d53a02549a508dae702c2eebbb2fd97628338de
   languageName: node
   linkType: hard
 
