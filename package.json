@@ -3,7 +3,16 @@
   "version": "1.0.0",
   "private": true,
   "engines": {
-    "node": "20 || 22"
+    "node": "22 || 24"
+  },
+  "backstage": {
+    "cli": {
+      "new": {
+        "globals": {
+          "license": "Apache-2.0"
+        }
+      }
+    }
   },
   "scripts": {
     "start": "backstage-cli repo start",
@@ -23,23 +32,26 @@
     "new": "backstage-cli new --scope internal",
     "check-licenses": "yarn lerna exec --scope '@aws/*' --concurrency 1 -- 'bash $LERNA_ROOT_PATH/hack/license-checker.sh'"
   },
-  "workspaces": {
-    "packages": [
-      "packages/*",
-      "plugins/**"
-    ]
-  },
+  "workspaces": [
+    "packages/*",
+    "plugins/**"
+  ],
   "devDependencies": {
-    "@backstage/cli": "^0.34.3",
-    "@backstage/e2e-test-utils": "^0.1.1",
+    "@backstage/cli": "backstage:^",
+    "@backstage/cli-defaults": "backstage:^",
+    "@backstage/e2e-test-utils": "backstage:^",
+    "@jest/environment-jsdom-abstract": "~30.2.0",
     "@playwright/test": "^1.32.3",
     "@spotify/prettier-config": "^12.0.0",
+    "@types/jest": "^30.0.0",
     "@types/license-checker": "^25",
     "concurrently": "^9.0.0",
+    "jest": "~30.2.0",
+    "jsdom": "^27.1.0",
     "lerna": "^9.0.0",
     "license-checker": "^25.0.1",
     "lint-staged": "^16.1.2",
-    "node-gyp": "^9.0.0",
+    "node-gyp": "^10.0.0",
     "prettier": "^2.3.2",
     "typescript": "~5.9.0"
   },
