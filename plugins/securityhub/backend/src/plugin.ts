@@ -16,7 +16,7 @@ import {
   coreServices,
 } from '@backstage/backend-plugin-api';
 import { createRouter } from './service/router';
-import { catalogServiceRef } from '@backstage/plugin-catalog-node/alpha';
+import { catalogServiceRef } from '@backstage/plugin-catalog-node';
 import { awsSecurityHubApiServiceRef } from './lib';
 import { createGetFindingsByEntityAction } from './actions';
 import { actionsRegistryServiceRef } from '@backstage/backend-plugin-api/alpha';
