@@ -17,7 +17,7 @@
   },
   "backstage": {
     "role": "backend-plugin-module",
-    "pluginId": "scaffolder-backend-module-aws-core",
+    "pluginId": "scaffolder",
     "pluginPackage": "@backstage/plugin-scaffolder-backend"
   },
   "scripts": {
