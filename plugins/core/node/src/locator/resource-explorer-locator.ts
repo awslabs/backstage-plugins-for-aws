@@ -20,7 +20,7 @@ import { AwsCredentialIdentityProvider } from '@aws-sdk/types';
 import { Config } from '@backstage/config';
 import { DefaultAwsCredentialsManager } from '@backstage/integration-aws-node';
 import { convertResourceTypeString, parseResourceLocatorTags } from './utils';
-import { AwsResourceLocator } from '.';
+import { AwsResourceLocator } from './resource-locator';
 import { LoggerService } from '@backstage/backend-plugin-api';
 
 export class AwsResourceExplorerLocator implements AwsResourceLocator {
