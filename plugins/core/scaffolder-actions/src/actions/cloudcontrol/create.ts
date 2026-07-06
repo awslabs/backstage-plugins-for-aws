@@ -93,6 +93,20 @@ export function createAwsCloudControlCreateAction(options: {
           }),
       },
     },
+    examples: [
+      {
+        description: 'Create an ECR repository using Cloud Control API',
+        example: `steps:
+  - id: create-ecr-repository
+    name: Create ECR Repository
+    action: aws:cloudcontrol:create
+    input:
+      typeName: 'AWS::ECR::Repository'
+      desiredState: '{"RepositoryName": "\${{ parameters.name }}-ecr-repository"}'
+      wait: true
+      maxWaitTime: 20`,
+      },
+    ],
     async handler(ctx) {
       const {
         accountId,
