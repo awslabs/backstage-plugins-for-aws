@@ -17,6 +17,7 @@ import {
   AccordionSummary,
   Grid,
   LinearProgress,
+  Link as LinkCore,
   Paper,
   Typography,
 } from '@material-ui/core';
@@ -35,6 +36,9 @@ import {
 } from '@aws/amazon-ecs-plugin-for-backstage-common';
 
 import { Entity } from '@backstage/catalog-model';
+import { configApiRef, useApi } from '@backstage/core-plugin-api';
+import { parse } from '@aws-sdk/util-arn-parser';
+import { generateShortcutLink } from '@aws/aws-core-plugin-for-backstage-common';
 import { useEcsServices } from '../../hooks';
 import { MissingResources } from '@aws/aws-core-plugin-for-backstage-react';
 import { EcsTaskDrawer } from '../EcsDrawer/EcsTaskDrawer';
@@ -79,7 +83,13 @@ const generatedColumns = () => {
   ];
 };
 
-const ClusterSummary = ({ cluster }: { cluster: ClusterResponse }) => {
+const ClusterSummary = ({
+  cluster,
+  ssoSubdomain,
+}: {
+  cluster: ClusterResponse;
+  ssoSubdomain?: string;
+}) => {
   let runningTasks = 0;
   let pendingTasks = 0;
 
@@ -87,6 +97,11 @@ const ClusterSummary = ({ cluster }: { cluster: ClusterResponse }) => {
     runningTasks += service.service.runningCount!;
     pendingTasks += service.service.pendingCount!;
   }
+
+  const consoleUrl = getClusterConsoleUrl(
+    cluster.cluster.clusterArn,
+    ssoSubdomain,
+  );
 
   return (
     <Grid
@@ -106,7 +121,20 @@ const ClusterSummary = ({ cluster }: { cluster: ClusterResponse }) => {
         spacing={0}
       >
         <Grid item xs>
-          <Typography variant="body1">{cluster.cluster.clusterName}</Typography>
+          <Typography variant="body1">
+            {consoleUrl ? (
+              <LinkCore
+                href={consoleUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={e => e.stopPropagation()}
+              >
+                {cluster.cluster.clusterName}
+              </LinkCore>
+            ) : (
+              cluster.cluster.clusterName
+            )}
+          </Typography>
           <Typography color="textSecondary" variant="subtitle1">
             Cluster
           </Typography>
@@ -140,7 +168,67 @@ const ClusterSummary = ({ cluster }: { cluster: ClusterResponse }) => {
   );
 };
 
-const ServiceSummary = ({ service }: { service: Service }) => {
+function getClusterConsoleUrl(
+  clusterArn: string | undefined,
+  ssoSubdomain?: string,
+): string | undefined {
+  if (!clusterArn) return undefined;
+
+  let arn;
+  try {
+    arn = parse(clusterArn);
+  } catch (error) {
+    return undefined;
+  }
+
+  const { region, accountId, resource } = arn;
+  const parts = resource.split('/');
+  if (parts.length !== 2) return undefined;
+
+  const [, clusterName] = parts;
+  const projectUrl = `https://${region}.console.aws.amazon.com/ecs/v2/clusters/${clusterName}?region=${region}`;
+
+  if (ssoSubdomain) {
+    return generateShortcutLink(ssoSubdomain, accountId, projectUrl);
+  }
+  return projectUrl;
+}
+
+function getServiceConsoleUrl(
+  service: Service,
+  ssoSubdomain?: string,
+): string | undefined {
+  if (!service.serviceArn) return undefined;
+
+  let arn;
+  try {
+    arn = parse(service.serviceArn);
+  } catch (error) {
+    return undefined;
+  }
+
+  const { region, accountId, resource } = arn;
+  const parts = resource.split('/');
+  if (parts.length !== 3) return undefined;
+
+  const [, clusterName, serviceName] = parts;
+  const projectUrl = `https://${region}.console.aws.amazon.com/ecs/v2/clusters/${clusterName}/services/${serviceName}?region=${region}`;
+
+  if (ssoSubdomain) {
+    return generateShortcutLink(ssoSubdomain, accountId, projectUrl);
+  }
+  return projectUrl;
+}
+
+const ServiceSummary = ({
+  service,
+  ssoSubdomain,
+}: {
+  service: Service;
+  ssoSubdomain?: string;
+}) => {
+  const consoleUrl = getServiceConsoleUrl(service, ssoSubdomain);
+
   return (
     <Grid
       container
@@ -159,7 +247,20 @@ const ServiceSummary = ({ service }: { service: Service }) => {
         spacing={0}
       >
         <Grid item xs style={{ width: '100%' }}>
-          <Typography variant="body1">{service.serviceName}</Typography>
+          <Typography variant="body1">
+            {consoleUrl ? (
+              <LinkCore
+                href={consoleUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={e => e.stopPropagation()}
+              >
+                {service.serviceName}
+              </LinkCore>
+            ) : (
+              service.serviceName
+            )}
+          </Typography>
           <Typography color="textSecondary" variant="subtitle1">
             Service
           </Typography>
@@ -194,9 +295,13 @@ const ServiceSummary = ({ service }: { service: Service }) => {
 
 type EcsServicesContentProps = {
   response: ServicesResponse;
+  ssoSubdomain?: string;
 };
 
-const EcsServicesContent = ({ response }: EcsServicesContentProps) => {
+const EcsServicesContent = ({
+  response,
+  ssoSubdomain,
+}: EcsServicesContentProps) => {
   const columns = generatedColumns();
 
   return (
@@ -205,7 +310,7 @@ const EcsServicesContent = ({ response }: EcsServicesContentProps) => {
         return (
           <Accordion key="{e}" elevation={0}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <ClusterSummary cluster={e} />
+              <ClusterSummary cluster={e} ssoSubdomain={ssoSubdomain} />
             </AccordionSummary>
             <AccordionDetails>
               <Grid container direction="column">
@@ -214,7 +319,10 @@ const EcsServicesContent = ({ response }: EcsServicesContentProps) => {
                     return (
                       <Accordion key="{s}" elevation={0}>
                         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                          <ServiceSummary service={s.service} />
+                          <ServiceSummary
+                            service={s.service}
+                            ssoSubdomain={ssoSubdomain}
+                          />
                         </AccordionSummary>
                         <AccordionDetails>
                           <Grid container direction="column">
@@ -249,14 +357,17 @@ const EcsServicesContent = ({ response }: EcsServicesContentProps) => {
   );
 };
 
-const EcsServicesWrapper = ({ response }: EcsServicesContentProps) => {
+const EcsServicesWrapper = ({
+  response,
+  ssoSubdomain,
+}: EcsServicesContentProps) => {
   const hasClusters = response.clusters.length > 0;
 
   return (
     <>
       {hasClusters ? (
         <InfoCard title="Amazon ECS Services">
-          <EcsServicesContent response={response} />
+          <EcsServicesContent response={response} ssoSubdomain={ssoSubdomain} />
         </InfoCard>
       ) : (
         <MissingResources />
@@ -270,6 +381,8 @@ type EcsServicesProps = {
 };
 
 export const EcsServices = ({ entity }: EcsServicesProps) => {
+  const configApi = useApi(configApiRef);
+  const ssoSubdomain = configApi.getOptionalString('aws.sso.subdomain');
   const { response, loading, error } = useEcsServices({ entity });
 
   if (error) {
@@ -280,5 +393,7 @@ export const EcsServices = ({ entity }: EcsServicesProps) => {
     return <LinearProgress />;
   }
 
-  return <EcsServicesWrapper response={response!} />;
+  return (
+    <EcsServicesWrapper response={response!} ssoSubdomain={ssoSubdomain} />
+  );
 };
