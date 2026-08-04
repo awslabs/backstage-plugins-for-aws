@@ -39,7 +39,7 @@
     "@aws/amazon-ecs-plugin-for-backstage-common": "workspace:^",
     "@aws/aws-core-plugin-for-backstage-common": "workspace:^",
     "@aws/aws-core-plugin-for-backstage-react": "workspace:^",
-    "@backstage-community/plugin-cost-insights": "^0.22.0",
+    "@backstage-community/plugin-cost-insights": "^0.29.0",
     "@backstage-community/plugin-cost-insights-common": "^0.9.0",
     "@backstage/catalog-model": "backstage:^",
     "@backstage/core-components": "backstage:^",
