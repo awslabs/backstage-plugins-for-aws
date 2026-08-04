@@ -6,6 +6,11 @@
     {
       "matchPackagePatterns": ["^@backstage/", "^react", "@types/react"],
       "enabled": false
+    },
+    {
+      "matchManagers": ["npm"],
+      "matchPackageNames": ["@backstage-community/**"],
+      "groupName": "community-plugins"
     }
   ]
 }
