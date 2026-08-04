@@ -174,7 +174,14 @@ function getClusterConsoleUrl(
 ): string | undefined {
   if (!clusterArn) return undefined;
 
-  const { region, accountId, resource } = parse(clusterArn);
+  let arn;
+  try {
+    arn = parse(clusterArn);
+  } catch (error) {
+    return undefined;
+  }
+
+  const { region, accountId, resource } = arn;
   const parts = resource.split('/');
   if (parts.length !== 2) return undefined;
 
@@ -193,7 +200,14 @@ function getServiceConsoleUrl(
 ): string | undefined {
   if (!service.serviceArn) return undefined;
 
-  const { region, accountId, resource } = parse(service.serviceArn);
+  let arn;
+  try {
+    arn = parse(service.serviceArn);
+  } catch (error) {
+    return undefined;
+  }
+
+  const { region, accountId, resource } = arn;
   const parts = resource.split('/');
   if (parts.length !== 3) return undefined;
 
