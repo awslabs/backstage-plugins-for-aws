@@ -54,6 +54,31 @@ export function createAwsS3CpAction(options: {
             .optional(),
       },
     },
+    examples: [
+      {
+        description: 'Copy all workspace files to an S3 bucket',
+        example: `steps:
+  - id: copyFiles
+    name: Copy files to S3
+    action: aws:s3:cp
+    input:
+      bucketName: my-bucket`,
+      },
+      {
+        description:
+          'Copy specific files to an S3 bucket with a prefix in a specific account and region',
+        example: `steps:
+  - id: copyFiles
+    name: Copy files to S3
+    action: aws:s3:cp
+    input:
+      accountId: '1234567890'
+      region: us-east-1
+      bucketName: my-bucket
+      path: 'build/**'
+      prefix: 'artifacts/'`,
+      },
+    ],
     async handler(ctx) {
       const { accountId, region, bucketName, path, prefix = '' } = ctx.input;
 

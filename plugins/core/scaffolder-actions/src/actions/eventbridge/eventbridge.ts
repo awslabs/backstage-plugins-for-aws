@@ -58,6 +58,34 @@ export const createAwsEventBridgeEventAction = (options: {
           }),
       },
     },
+    examples: [
+      {
+        description: 'Post an event to EventBridge with a JSON string detail',
+        example: `steps:
+  - id: eventbridge-event
+    name: Post EventBridge event
+    action: aws:eventbridge:event
+    input:
+      region: us-east-1
+      eventBusName: my-event-bus
+      source: my-app
+      detailType: MyDetailType
+      detail: '{"key": "value"}'`,
+      },
+      {
+        description: 'Post an event to EventBridge with an object detail',
+        example: `steps:
+  - id: eventbridge-event
+    name: Post EventBridge event
+    action: aws:eventbridge:event
+    input:
+      eventBusName: my-event-bus
+      source: my-app
+      detailType: MyDetailType
+      detailObject:
+        key: value`,
+      },
+    ],
     async handler(ctx) {
       const {
         accountId,

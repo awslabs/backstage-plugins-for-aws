@@ -12,7 +12,8 @@
  */
 
 import { Config } from '@backstage/config';
-import { AwsResourceLocator, AwsResourceTaggingApiLocator } from '.';
+import { AwsResourceLocator } from './resource-locator';
+import { AwsResourceTaggingApiLocator } from './resource-tagging-api-locator';
 import { AwsResourceExplorerLocator } from './resource-explorer-locator';
 import { AwsConfigResourceLocator } from './aws-config-locator';
 import { LoggerService } from '@backstage/backend-plugin-api';

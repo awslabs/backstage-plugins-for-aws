@@ -96,6 +96,36 @@ export function createAwsCodeCommitPublishAction(options: {
             .optional(),
       },
     },
+    examples: [
+      {
+        description:
+          'Create a CodeCommit repository and publish the workspace contents',
+        example: `steps:
+  - id: publish
+    name: Publish to CodeCommit
+    action: aws:codecommit:publish
+    input:
+      repositoryName: my-new-repo
+      defaultBranch: main`,
+      },
+      {
+        description:
+          'Publish to CodeCommit with custom author and a subdirectory',
+        example: `steps:
+  - id: publish
+    name: Publish to CodeCommit
+    action: aws:codecommit:publish
+    input:
+      accountId: '1234567890'
+      region: us-west-2
+      repositoryName: my-new-repo
+      defaultBranch: main
+      sourcePath: ./output
+      gitCommitMessage: 'Initial scaffolded commit'
+      gitAuthorName: Backstage
+      gitAuthorEmail: backstage@example.com`,
+      },
+    ],
     async handler(ctx) {
       const {
         accountId,
