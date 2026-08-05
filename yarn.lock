@@ -26524,33 +26524,33 @@ __metadata:
   languageName: node
   linkType: hard
 
-"langfuse-core@npm:^3.38.6":
-  version: 3.38.6
-  resolution: "langfuse-core@npm:3.38.6"
+"langfuse-core@npm:^3.38.20":
+  version: 3.38.20
+  resolution: "langfuse-core@npm:3.38.20"
   dependencies:
     mustache: "npm:^4.2.0"
-  checksum: 10c0/d101c6f05a98b7dcdc865b32e67803b538b60ff95a1e96e947b584c88f53a4e019450ba5609dcf30a9a5d80e9afd3eec28cae093157e5003bca9c3c595e63073
+  checksum: 10c0/c102d700dd1843d8177ca0941cb25d4f656777a808d3203d5dd2ebfc45fc843d956e179e79567a5de79055f24b5feeeeb68c08a0447ab275da055de6cf363d80
   languageName: node
   linkType: hard
 
 "langfuse-langchain@npm:^3.29.1":
-  version: 3.38.6
-  resolution: "langfuse-langchain@npm:3.38.6"
+  version: 3.38.20
+  resolution: "langfuse-langchain@npm:3.38.20"
   dependencies:
-    langfuse: "npm:^3.38.6"
-    langfuse-core: "npm:^3.38.6"
+    langfuse: "npm:^3.38.20"
+    langfuse-core: "npm:^3.38.20"
   peerDependencies:
     langchain: ">=0.0.157 <0.4.0"
-  checksum: 10c0/9e21af3779c7ca8d9b6145c4105533ff28119ed8862658cc963eea5cb5ef6ff11becad7c15f80486496711a256458e9986a7e853e4ceb9a37ce4e7e1be5c6a87
+  checksum: 10c0/6786307aecc00601693e4e5ca18bd292feedaaa84e96ff850896fb8de349d8b756bb2b970ee259c66865705a485a408d1e7112ce4cfae8a152eaeab6619c5057
   languageName: node
   linkType: hard
 
-"langfuse@npm:^3.38.6":
-  version: 3.38.6
-  resolution: "langfuse@npm:3.38.6"
+"langfuse@npm:^3.38.20":
+  version: 3.38.20
+  resolution: "langfuse@npm:3.38.20"
   dependencies:
-    langfuse-core: "npm:^3.38.6"
-  checksum: 10c0/3605e30e3de486fd268cd09e6bd9ca879d483aa78837786762760093ecc43c7f4d93491064f86716e939479e67609cf212baf64c6101188db0947a71edbbdea4
+    langfuse-core: "npm:^3.38.20"
+  checksum: 10c0/0c0a080d2d366bcb00eba364b9b534befe0fb8f50374e06b03ba518be4bdcee769e1b557d2eb274424f3b6426c2c560d0f423ac09c0928bc5542cd5ede03d9f5
   languageName: node
   linkType: hard
 
