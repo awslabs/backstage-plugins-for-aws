@@ -29089,12 +29089,12 @@ __metadata:
   linkType: hard
 
 "node-html-parser@npm:^7.0.1":
-  version: 7.0.2
-  resolution: "node-html-parser@npm:7.0.2"
+  version: 7.1.0
+  resolution: "node-html-parser@npm:7.1.0"
   dependencies:
     css-select: "npm:^5.1.0"
     he: "npm:1.2.0"
-  checksum: 10c0/ff37da038bea4b43d040900f6715707015cf9e0f60d4254b60976730950c1178ebd9904c127d6f0974fd28d2f7a2151a3143be565d3818e83a91bef2049eee18
+  checksum: 10c0/8bee2616de374bb6f43b62cc8523f6d923cd199b2b7a42c6cf2ca503f1e89c32fb44195bd5af17d6fde1b992ad62c24465b29437213ae25f7770261fc9819173
   languageName: node
   linkType: hard
 
