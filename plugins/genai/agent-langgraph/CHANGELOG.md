@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.8.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/genai-plugin-langgraph-agent-for-backstage@0.7.2...@aws/genai-plugin-langgraph-agent-for-backstage@0.8.0) (2026-08-06)
+
+
+### Features
+
+* Upgrade to Backstage 1.52 and fixed scaffolder-actions pluginId ([#635](https://github.com/awslabs/backstage-plugins-for-aws/issues/635)) ([321dcbb](https://github.com/awslabs/backstage-plugins-for-aws/commit/321dcbbfea2f16fd5b06c10eccca292d2c1eba88))
+
+
+
+
+
 ## [0.7.2](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/genai-plugin-langgraph-agent-for-backstage@0.7.1...@aws/genai-plugin-langgraph-agent-for-backstage@0.7.2) (2026-04-23)
 
 **Note:** Version bump only for package @aws/genai-plugin-langgraph-agent-for-backstage

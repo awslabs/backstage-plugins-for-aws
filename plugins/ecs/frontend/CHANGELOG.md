@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.7.0](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/amazon-ecs-plugin-for-backstage@0.6.3...@aws/amazon-ecs-plugin-for-backstage@0.7.0) (2026-08-06)
+
+
+### Bug Fixes
+
+* Add console link to cluster and service for ECS ([#644](https://github.com/awslabs/backstage-plugins-for-aws/issues/644)) ([93bd149](https://github.com/awslabs/backstage-plugins-for-aws/commit/93bd149bd4c1a1a5a73b395964fd283a2f355a62))
+
+
+### Features
+
+* Upgrade to Backstage 1.52 and fixed scaffolder-actions pluginId ([#635](https://github.com/awslabs/backstage-plugins-for-aws/issues/635)) ([321dcbb](https://github.com/awslabs/backstage-plugins-for-aws/commit/321dcbbfea2f16fd5b06c10eccca292d2c1eba88))
+
+
+
+
+
 ## [0.6.3](https://github.com/awslabs/backstage-plugins-for-aws/compare/@aws/amazon-ecs-plugin-for-backstage@0.6.2...@aws/amazon-ecs-plugin-for-backstage@0.6.3) (2026-04-23)
 
 **Note:** Version bump only for package @aws/amazon-ecs-plugin-for-backstage
