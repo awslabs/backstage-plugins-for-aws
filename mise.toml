@@ -1,7 +1,7 @@
 [tools]
 node = "22"
 aws-cli = "2"
-pre-commit = "4.5.1"
+pre-commit = "4.6.0"
 jq = "1.8.2"
 yq = "4.52.2"
 yarn = "4.11.0"
