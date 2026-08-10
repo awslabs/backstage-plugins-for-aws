@@ -12,6 +12,11 @@
       "matchManagers": ["npm"],
       "matchPackageNames": ["@backstage-community/**"],
       "groupName": "community-plugins"
+    },
+    {
+      "matchManagers": ["npm"],
+      "matchPackageNames": ["@langchain/**"],
+      "groupName": "langchain"
     }
   ]
 }
