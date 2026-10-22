@@ -13405,7 +13405,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/dockerode@npm:^3.3.0, @types/dockerode@npm:^3.3.47":
+"@types/dockerode@npm:^3.3.47":
   version: 3.3.47
   resolution: "@types/dockerode@npm:3.3.47"
   dependencies:
@@ -13413,6 +13413,17 @@ __metadata:
     "@types/node": "npm:*"
     "@types/ssh2": "npm:*"
   checksum: 10c0/165746fdeceab022608ec28a6021c7d6835d6b164847f5d3cda63e721da4e6e3f1bcf72bb6f9c266117991f9d8038332a0d69d2a8d73ef02a4874bc0853d214c
+  languageName: node
+  linkType: hard
+
+"@types/dockerode@npm:^4.0.0":
+  version: 4.0.2
+  resolution: "@types/dockerode@npm:4.0.2"
+  dependencies:
+    "@types/docker-modem": "npm:*"
+    "@types/node": "npm:*"
+    "@types/ssh2": "npm:*"
+  checksum: 10c0/562af199716c0e219501d9b80fa82ceedd2d99d45e653f00b4a61e2c4baad68114bd4400da87cbba45cd24db133e336e3cddc12c9753b0e9d5b722cd02d325a4
   languageName: node
   linkType: hard
 
@@ -16080,7 +16091,7 @@ __metadata:
     "@backstage/plugin-search-backend-module-techdocs": "backstage:^"
     "@backstage/plugin-search-backend-node": "backstage:^"
     "@backstage/plugin-techdocs-backend": "backstage:^"
-    "@types/dockerode": "npm:^3.3.0"
+    "@types/dockerode": "npm:^4.0.0"
     app: "link:../app"
     better-sqlite3: "npm:^11.0.0"
     dockerode: "npm:^3.3.1"
