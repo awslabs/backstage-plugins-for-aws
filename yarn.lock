@@ -1978,7 +1978,7 @@ __metadata:
     aws-sdk-client-mock-jest: "npm:^4.0.0"
     fs-extra: "npm:^11.2.0"
     glob: "npm:^11.0.0"
-    zod: "npm:^3.22.4"
+    zod: "npm:^4.0.0"
   languageName: unknown
   linkType: soft
 
@@ -2016,7 +2016,7 @@ __metadata:
     supertest: "npm:^6.2.4"
     winston: "npm:^3.2.1"
     yn: "npm:^4.0.0"
-    zod: "npm:^3.23.8"
+    zod: "npm:^4.0.0"
     zod-to-json-schema: "npm:^3.23.5"
   languageName: unknown
   linkType: soft
@@ -2193,7 +2193,7 @@ __metadata:
     supertest: "npm:^6.2.4"
     turndown: "npm:^7.2.0"
     uuid: "npm:^11.0.0"
-    zod: "npm:^3.23.8"
+    zod: "npm:^4.0.0"
   languageName: unknown
   linkType: soft
 
@@ -2215,7 +2215,7 @@ __metadata:
     "@backstage/cli": "backstage:^"
     cross-fetch: "npm:^4.0.0"
     uri-template: "npm:^2.0.0"
-    zod: "npm:^3.23.8"
+    zod: "npm:^4.0.0"
   languageName: unknown
   linkType: soft
 
@@ -2277,7 +2277,7 @@ __metadata:
     "@langchain/ollama": "npm:^1.0.0"
     "@langchain/openai": "npm:^0.5.11"
     langfuse-langchain: "npm:^3.29.1"
-    zod: "npm:^3.23.8"
+    zod: "npm:^4.0.0"
   languageName: unknown
   linkType: soft
 

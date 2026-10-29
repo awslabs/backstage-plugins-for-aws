@@ -45,7 +45,7 @@
     "@langchain/ollama": "^1.0.0",
     "@langchain/openai": "^0.5.11",
     "langfuse-langchain": "^3.29.1",
-    "zod": "^3.23.8"
+    "zod": "^4.0.0"
   },
   "devDependencies": {
     "@backstage/cli": "backstage:^"
