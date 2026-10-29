@@ -21,5 +21,28 @@ export interface Config {
        */
       showInformation?: boolean;
     };
+
+    agents?: {
+      [agentName: string]: {
+        /**
+         * Title displayed in the UI header
+         * @visibility frontend
+         */
+        title?: string;
+
+        /**
+         * Descriptive tag line for the agent, displayed in the UI header
+         * If not set, the "'Start chatting!'" message will be used
+         * @visibility frontend
+         */
+        tagLine?: string;
+
+        /**
+         * Welcome message shown when no conversation has started
+         * @visibility frontend
+         */
+        welcomeMessage?: string;
+      };
+    };
   };
 }
