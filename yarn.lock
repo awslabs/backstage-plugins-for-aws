@@ -5261,25 +5261,25 @@ __metadata:
   linkType: hard
 
 "@backstage/plugin-proxy-backend@backstage:^::backstage=1.52.1&npm=0.6.14, @backstage/plugin-proxy-backend@npm:^0.6.14":
-  version: 0.6.14
-  resolution: "@backstage/plugin-proxy-backend@npm:0.6.14"
+  version: 0.6.18
+  resolution: "@backstage/plugin-proxy-backend@npm:0.6.18"
   dependencies:
-    "@backstage/backend-plugin-api": "npm:^1.9.2"
-    "@backstage/plugin-proxy-node": "npm:^0.1.16"
+    "@backstage/backend-plugin-api": "npm:^1.10.1"
+    "@backstage/plugin-proxy-node": "npm:^0.1.19"
     "@backstage/types": "npm:^1.2.2"
     express-promise-router: "npm:^4.1.0"
     http-proxy-middleware: "npm:^2.0.0"
-  checksum: 10c0/ec71c797b5ae05ef5192b89432caa544f37748ccb07a806887be42bfa25e06a0a0780385cf27af826415f5a3c4cc2d92af88154c9c9286e93df2e79984ee928e
+  checksum: 10c0/d02abccd3cec8815ac09d65caf8b2c6599f53994209794f2c166679d5a5ba735573c2e860a9eaf58ffb3d1fea04d8aa4eb25fedbd11d20e51e4328e692131b40
   languageName: node
   linkType: hard
 
-"@backstage/plugin-proxy-node@npm:^0.1.16":
-  version: 0.1.16
-  resolution: "@backstage/plugin-proxy-node@npm:0.1.16"
+"@backstage/plugin-proxy-node@npm:^0.1.19":
+  version: 0.1.19
+  resolution: "@backstage/plugin-proxy-node@npm:0.1.19"
   dependencies:
-    "@backstage/backend-plugin-api": "npm:^1.9.2"
+    "@backstage/backend-plugin-api": "npm:^1.10.1"
     http-proxy-middleware: "npm:^2.0.0"
-  checksum: 10c0/f92dc291bab6e5893b6ee7f8a59234f713063ea1899aa338676faef3e23a8cb6a948a68c456bc8646e23d17fde1ecdf2e32a042bc4ca10f3509d68f204a4ad12
+  checksum: 10c0/3ff01469f69e1436c70a943a1a4760e5b6d5186af5f32ea72c597899e42d6871d06c76b7e8a9589a972d1a6624400e93726bd5ae3009c458e7f441d4317b6f6f
   languageName: node
   linkType: hard
 
