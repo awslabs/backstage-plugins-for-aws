@@ -39,7 +39,7 @@
     "@backstage/backend-plugin-api": "backstage:^",
     "@backstage/catalog-model": "backstage:^",
     "@backstage/config": "backstage:^",
-    "@langchain/core": "0.3.57"
+    "@langchain/core": "0.3.80"
   },
   "devDependencies": {
     "@backstage/cli": "backstage:^",
