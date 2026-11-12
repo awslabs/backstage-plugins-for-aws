@@ -66,6 +66,31 @@ export interface Config {
                * If not set, only the key of the tag fill be used
                */
               value?: string;
+              /**
+               * (Optional) Match any of these values of the tag
+               * Cannot be combined with 'value'
+               */
+              values?: string[];
+            }[];
+            /**
+             * (Optional) Exclude AWS Config resources that have these tags
+             * Resources without the tag are kept
+             */
+            excludeTags?: {
+              /**
+               * (Required) Key of the tag to exclude
+               */
+              key: string;
+              /**
+               * (Optional) Value of the tag to exclude
+               * If not set, resources that have the key with any value are excluded
+               */
+              value?: string;
+              /**
+               * (Optional) Exclude any of these values of the tag
+               * Cannot be combined with 'value'
+               */
+              values?: string[];
             }[];
             /**
              * (Required) List of AWS Config resource types to retrieve

@@ -71,10 +71,14 @@ export interface FieldTransformDefinition {
 
 export interface FilterDefinition {
   tagFilters?: TagFilterDefinition[];
+  excludeTagFilters?: TagFilterDefinition[];
   resourceTypes: string[];
 }
 
 export interface TagFilterDefinition {
   key: string;
-  value?: string;
+  /**
+   * Accepted values of the tag. If not set, only the key of the tag is matched.
+   */
+  values?: string[];
 }

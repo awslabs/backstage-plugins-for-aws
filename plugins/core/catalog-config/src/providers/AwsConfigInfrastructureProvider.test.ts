@@ -187,6 +187,92 @@ describe('AwsConfigInfrastructureProvider', () => {
     );
   });
 
+  const queryWithTagFilters = async (filters: object) => {
+    mock.on(SelectResourceConfigCommand).callsFake(async _ => {
+      return { Results: [] };
+    });
+
+    return expectMutation(
+      'default',
+      { filters: { resourceTypes: ['AWS::ECS::Cluster'], ...filters } },
+      [],
+      undefined,
+    );
+  };
+
+  const expectQueryWhere = (where: string) => {
+    expect(mock).toHaveReceivedCommandWith(SelectResourceConfigCommand, {
+      Expression: `SELECT resourceId, resourceName, resourceType, awsRegion, accountId, arn, tags, configuration WHERE resourceType IN ('AWS::ECS::Cluster') AND ${where}`,
+    });
+  };
+
+  // eslint-disable-next-line jest/expect-expect
+  it('should match any of several tag values', async () => {
+    await queryWithTagFilters({
+      tags: [{ key: 'environment', values: ['dev', 'staging'] }],
+    });
+
+    expectQueryWhere(`tags.tag IN ('environment=dev', 'environment=staging')`);
+  });
+
+  // eslint-disable-next-line jest/expect-expect
+  it('should treat a single-item values list like value', async () => {
+    await queryWithTagFilters({
+      tags: [{ key: 'environment', values: ['prod'] }],
+    });
+
+    expectQueryWhere(`tags.tag = 'environment=prod'`);
+  });
+
+  // eslint-disable-next-line jest/expect-expect
+  it('should exclude tag values', async () => {
+    await queryWithTagFilters({
+      excludeTags: [{ key: 'environment', values: ['dev', 'test'] }],
+    });
+
+    expectQueryWhere(`tags.tag NOT IN ('environment=dev', 'environment=test')`);
+  });
+
+  // eslint-disable-next-line jest/expect-expect
+  it('should exclude a tag key', async () => {
+    await queryWithTagFilters({
+      excludeTags: [{ key: 'ephemeral' }],
+    });
+
+    expectQueryWhere(`NOT tags.key = 'ephemeral'`);
+  });
+
+  // eslint-disable-next-line jest/expect-expect
+  it('should combine include and exclude tag filters', async () => {
+    await queryWithTagFilters({
+      tags: [
+        { key: 'component' },
+        { key: 'environment', values: ['dev', 'prod'] },
+      ],
+      excludeTags: [{ key: 'lifecycle', value: 'ephemeral' }],
+    });
+
+    expectQueryWhere(
+      `tags.key = 'component' AND tags.tag IN ('environment=dev', 'environment=prod') AND tags.tag NOT IN ('lifecycle=ephemeral')`,
+    );
+  });
+
+  it('should reject a tag filter with both value and values', async () => {
+    await expect(
+      queryWithTagFilters({
+        tags: [{ key: 'environment', value: 'prod', values: ['dev'] }],
+      }),
+    ).rejects.toThrow(/either 'value' or 'values', not both/);
+  });
+
+  it('should reject a tag filter with an empty values list', async () => {
+    await expect(
+      queryWithTagFilters({
+        excludeTags: [{ key: 'environment', values: [] }],
+      }),
+    ).rejects.toThrow(/empty 'values' list/);
+  });
+
   // eslint-disable-next-line jest/expect-expect
   it('should apply mutation with field transforms', async () => {
     mock.on(SelectResourceConfigCommand).callsFake(async _ => {

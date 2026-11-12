@@ -30,6 +30,7 @@ import {
   AwsInfrastructureConfig,
   AwsInfrastructureConfigOptions,
   FieldTransformDefinition,
+  TagFilterDefinition,
 } from './types';
 import {
   ConfigServiceClient,
@@ -263,19 +264,35 @@ export class AwsConfigInfrastructureProvider
   }
 
   tagsToFilter(): string {
-    if (!this.config.filters.tagFilters) {
-      return '';
-    }
+    const { tagFilters = [], excludeTagFilters = [] } = this.config.filters;
 
-    const clauses = this.config.filters.tagFilters.map(f => {
-      if (f.value) {
-        return `tags.tag = '${f.key}=${f.value}'`;
+    const includeClauses = tagFilters.map(f => {
+      if (!f.values) {
+        return `tags.key = '${f.key}'`;
       }
 
-      return `tags.key = '${f.key}'`;
+      if (f.values.length === 1) {
+        return `tags.tag = '${f.key}=${f.values[0]}'`;
+      }
+
+      return `tags.tag IN (${this.tagList(f)})`;
     });
 
-    return clauses.join(' AND ');
+    const excludeClauses = excludeTagFilters.map(f => {
+      if (!f.values) {
+        return `NOT tags.key = '${f.key}'`;
+      }
+
+      return `tags.tag NOT IN (${this.tagList(f)})`;
+    });
+
+    return [...includeClauses, ...excludeClauses].join(' AND ');
+  }
+
+  private tagList(filter: TagFilterDefinition): string {
+    return (filter.values ?? [])
+      .map(value => `'${filter.key}=${value}'`)
+      .join(', ');
   }
 
   createQuery(): string {
