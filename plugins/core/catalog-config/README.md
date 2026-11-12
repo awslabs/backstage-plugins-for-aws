@@ -51,6 +51,11 @@ providers:
           - key: 'component' # Only retrieve resources that have a 'component' tag
           - key: environment # Only retrieve resources that have a 'environment' tag with value 'prod'
             value: prod
+          - key: team # Only retrieve resources whose 'team' tag is 'payments' or 'billing'
+            values: [payments, billing]
+        excludeTags: # [OPTIONAL] Skip resources that have these tags (resources without the tag are kept)
+          - key: lifecycle # Skip resources whose 'lifecycle' tag is 'ephemeral' or 'test'
+            values: [ephemeral, test]
         resourceTypes: # [REQUIRED] Filter by AWS resource type
           - AWS::ECS::Cluster
           - AWS::ECS::Service

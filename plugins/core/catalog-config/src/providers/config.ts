@@ -53,7 +53,7 @@ function readAwsInfrastructureConfig(
 ): AwsInfrastructureConfig {
   const transform = readTransformDefinitionFromConfig(config);
 
-  const filters = readFiltersFromConfig(config.getConfig('filters'));
+  const filters = readFiltersFromConfig(id, config.getConfig('filters'));
 
   const aggregator = config.getOptionalString('aggregator');
   const accountId = config.getOptionalString('accountId');
@@ -115,28 +115,51 @@ function readAwsInfrastructureIncrementalOptionsConfig(
   };
 }
 
-function readFiltersFromConfig(config: Config): FilterDefinition {
-  const tagFilters = readTagFiltersFromConfig(config);
+function readFiltersFromConfig(id: string, config: Config): FilterDefinition {
+  const tagFilters = readTagFiltersFromConfig(id, config, 'tags');
+  const excludeTagFilters = readTagFiltersFromConfig(id, config, 'excludeTags');
 
   const resourceTypes = config.getStringArray('resourceTypes');
 
   return {
     resourceTypes,
     tagFilters,
+    excludeTagFilters,
   };
 }
 
-function readTagFiltersFromConfig(config: Config): TagFilterDefinition[] {
-  if (!config.has('tags')) {
+function readTagFiltersFromConfig(
+  id: string,
+  config: Config,
+  field: 'tags' | 'excludeTags',
+): TagFilterDefinition[] {
+  if (!config.has(field)) {
     return [];
   }
 
-  const tagFiltersConfig = config.getConfigArray('tags');
+  const tagFiltersConfig = config.getConfigArray(field);
 
   return tagFiltersConfig.map(c => {
+    const key = c.getString('key');
+    // An empty value has always meant "match the key only"
+    const value = c.getOptionalString('value') || undefined;
+    const values = c.getOptionalStringArray('values');
+
+    if (value !== undefined && values !== undefined) {
+      throw new Error(
+        `Invalid AWS Config provider '${id}': filters.${field} entry for key '${key}' must set either 'value' or 'values', not both`,
+      );
+    }
+
+    if (values !== undefined && values.length === 0) {
+      throw new Error(
+        `Invalid AWS Config provider '${id}': filters.${field} entry for key '${key}' has an empty 'values' list`,
+      );
+    }
+
     return {
-      key: c.getString('key'),
-      value: c.getOptionalString('value'),
+      key,
+      values: value !== undefined ? [value] : values,
     };
   });
 }
