@@ -11,4 +11,7 @@
  * limitations under the License.
  */
 
-export { CodePipelineExecutions } from './CodePipelineExecutions';
+export {
+  CodePipelineExecutions,
+  EntityCodePipelineExecutions,
+} from './CodePipelineExecutions';

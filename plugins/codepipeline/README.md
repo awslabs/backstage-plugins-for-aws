@@ -71,6 +71,35 @@ Install the frontend package in your Backstage app:
 yarn workspace app add @aws/aws-codepipeline-plugin-for-backstage
 ```
 
+<details>
+
+<summary>New Frontend System</summary>
+
+If you're using [feature discovery](https://backstage.io/docs/frontend-system/architecture/app/#feature-discovery), the plugin should be automatically discovered and enabled. Otherwise, you can manually enable the plugin by adding it to your app:
+
+```tsx
+// packages/app/src/App.tsx
+import awsCodePipelinePlugin from '@aws/aws-codepipeline-plugin-for-backstage/alpha';
+
+const app = createApp({
+  features: [
+    // ...
+    awsCodePipelinePlugin,
+  ],
+});
+```
+
+The plugin provides the following extensions, both shown only for entities with a CodePipeline annotation:
+
+- `entity-content:aws-codepipeline/executions`: an "AWS CodePipeline" tab at `/aws-codepipeline`
+- `entity-card:aws-codepipeline/state`: the pipeline state card on the overview tab
+
+</details>
+
+<details>
+
+<summary>Old Frontend System</summary>
+
 Edit `packages/app/src/components/catalog/EntityPage.tsx` to add AWS CodePipeline content to the CI/CD tab of the entity page:
 
 ```typescript
@@ -100,6 +129,8 @@ const overviewContent = (
       <EntityAwsCodePipelineCard />
     </Grid>
 ```
+
+</details>
 
 ## Entity annotations
 
