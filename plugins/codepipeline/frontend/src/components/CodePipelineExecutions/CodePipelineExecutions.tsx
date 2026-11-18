@@ -27,6 +27,7 @@ import { PipelineExecutionSummary } from '@aws-sdk/client-codepipeline';
 import { PipelineStageStatus } from '../PipelineStageStatus';
 import { formatTime } from '../../util';
 import { Entity } from '@backstage/catalog-model';
+import { useEntity } from '@backstage/plugin-catalog-react';
 import { usePipelineExecutions } from '../../hooks';
 import { MissingResources } from '@aws/aws-core-plugin-for-backstage-react';
 import { configApiRef, useApi } from '@backstage/core-plugin-api';
@@ -237,4 +238,10 @@ export const CodePipelineExecutions = ({
   }
 
   return <CodePipelineExecutionsContent response={response!} />;
+};
+
+export const EntityCodePipelineExecutions = () => {
+  const { entity } = useEntity();
+
+  return <CodePipelineExecutions entity={entity} />;
 };
