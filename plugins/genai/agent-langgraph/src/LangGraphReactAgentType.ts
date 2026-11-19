@@ -53,7 +53,7 @@ import {
   ChatEvent,
   GenerateResponse,
 } from '@aws/genai-plugin-for-backstage-common';
-import { CallbackHandler } from 'langfuse-langchain';
+import { CallbackHandler } from '@langfuse/langchain';
 import { SqliteSaver } from '@langchain/langgraph-checkpoint-sqlite';
 import { PostgresSaver } from '@langchain/langgraph-checkpoint-postgres';
 import {
@@ -241,13 +241,9 @@ export class LangGraphReactAgentType implements AgentType {
       : 'unknown';
 
     if (this.sharedConfig.langfuse) {
-      callbacks.push(
-        new CallbackHandler({
-          ...this.sharedConfig.langfuse,
-          sessionId,
-          userId,
-        }),
-      );
+      // Credentials and export settings belong to the span processor
+      // registered at module startup (see registerLangfuseTracing).
+      callbacks.push(new CallbackHandler({ sessionId, userId }));
     }
 
     return callbacks;
