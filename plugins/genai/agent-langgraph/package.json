@@ -44,7 +44,15 @@
     "@langchain/langgraph-checkpoint-sqlite": "^0.1.5",
     "@langchain/ollama": "^1.0.0",
     "@langchain/openai": "^0.5.11",
-    "langfuse-langchain": "^3.29.1",
+    "@langfuse/langchain": "^5.14.0",
+    "@langfuse/otel": "^5.14.0",
+    "@langfuse/tracing": "^5.14.0",
+    "@opentelemetry/api": "^1.9.0",
+    "@opentelemetry/context-async-hooks": "^2.0.1",
+    "@opentelemetry/core": "^2.0.1",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.223.0",
+    "@opentelemetry/otlp-exporter-base": "^0.223.0",
+    "@opentelemetry/sdk-trace-base": "^2.0.1",
     "zod": "^3.23.8"
   },
   "devDependencies": {

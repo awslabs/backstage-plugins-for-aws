@@ -20,6 +20,8 @@ import {
   agentTypeExtensionPoint,
 } from '@aws/genai-plugin-for-backstage-node';
 import { LangGraphReactAgentType } from './LangGraphReactAgentType';
+import { readSharedLangGraphAgentConfig } from './config';
+import { registerLangfuseTracing } from './langfuse';
 import { ToolInterface } from '@langchain/core/tools';
 import { actionsServiceRef } from '@backstage/backend-plugin-api/alpha';
 
@@ -34,8 +36,15 @@ export const genAiPluginForBackstageModuleLangGraphAgent = createBackendModule({
         agentType: agentTypeExtensionPoint,
         database: coreServices.database,
         actions: actionsServiceRef,
+        lifecycle: coreServices.lifecycle,
       },
-      async init({ agentType, config, logger, database, actions }) {
+      async init({ agentType, config, logger, database, actions, lifecycle }) {
+        const { langfuse } = readSharedLangGraphAgentConfig(config);
+
+        if (langfuse) {
+          lifecycle.addShutdownHook(registerLangfuseTracing(langfuse));
+        }
+
         const dbClient = await database.getClient();
 
         agentType.addAgentType({

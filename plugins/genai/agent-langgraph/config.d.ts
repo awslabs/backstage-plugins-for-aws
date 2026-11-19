@@ -27,13 +27,14 @@ export interface Config {
       /**
        * (Required) LangFuse base URL
        */
-      baseUrl: number;
+      baseUrl: string;
       /**
        * (Optional) LangFuse public key
        */
       publicKey: string;
       /**
        * (Optional) LangFuse secret key
+       * @visibility secret
        */
       secretKey: string;
       /**
